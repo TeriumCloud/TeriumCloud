@@ -1,0 +1,24 @@
+{
+  "ip": "127.0.0.1",
+  "port": "12345 (please don't change)",
+  "maxMemory": 10000,
+  "license": "TLE8zEc0j-x6BpFF1HoSLs-NbnuYhHIa",
+  "rabbitmq": {
+    "address": "127.0.0.1",
+    "port": 5672,
+    "user": "admin",
+    "password": "password",
+    "virtualhost": "/"
+  },
+  "cloudbridge": {
+    "maintenance": false,
+    "full_kick.message": "<gradient:#d173f7:#991c9a><bold>ᴡᴡᴡ.ᴊxɴɴɪᴋ.ᴅᴇᴠ</bold></gradient> \n \n <red>This service is full. \n <red>You can't join without permission.",
+    "maintenance.message": "<gradient:#d173f7:#991c9a><bold>ᴡᴡᴡ.ᴊxɴɴɪᴋ.ᴅᴇᴠ</bold></gradient> \n \n <red>This service is under maintenance. \n <red>More information: https://dsc.gg/jxnnik",
+    "tablist_header": "\n <gradient:#b7ffff:#37b4b4>ᴊᴀɴɴɪᴋ's ᴄʟᴏᴜᴅ</gradient> <dark_gray>⇨ <white>ᴀ ᴘʀɪᴠᴀᴛᴇ ᴄʟᴏᴜᴅsʏsᴛᴇᴍ \n <white>You're connected with <#e2adf7>%server% \n",
+    "tablist_footer": "\n <white>CloudSystem by <#c95df5>Jxnnik \n <gradient:#d173f7:#991c9a>ᴡᴡᴡ.ᴊxɴɴɪᴋ.ᴅᴇᴠ</gradient> \n",
+    "motd.line1": "<gradient:#b7ffff:#37b4b4>ᴊᴀɴɴɪᴋ's ᴄʟᴏᴜᴅ</gradient> <dark_gray>⇨ <white>ᴀ ᴘʀɪᴠᴀᴛᴇ ᴄʟᴏᴜᴅsʏsᴛᴇᴍ <dark_gray>(<white>1.19<dark_gray>)",
+    "motd.line2": "<white>A cloudsystem by <#c95df5>Jxnnik",
+    "motd.maintenance.line1": "<gradient:#b7ffff:#37b4b4>ᴊᴀɴɴɪᴋ's ᴄʟᴏᴜᴅ</gradient> <dark_gray>⇨ <white>ᴀ ᴘʀɪᴠᴀᴛᴇ ᴄʟᴏᴜᴅsʏsᴛᴇᴍ <dark_gray>(<white>1.19<dark_gray>)",
+    "motd.maintenance.line2": "<red>This service is under maintenance."
+  }
+}

@@ -1,0 +1,9 @@
+name: TeriumBridge
+version: '1.0-SNAPSHOT'
+main: cloud.terium.bridge.bukkit.BridgeBukkitStartup
+author: Jxnnik
+description: TeriumBridge for Jxnnik's Cloud
+
+commands:
+  stop:
+    aliases: shutdown, restart

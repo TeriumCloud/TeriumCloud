@@ -1,0 +1,9 @@
+{
+  "group_name": "Hub",
+  "parent_group": "MAIN_HUB",
+  "servicetype": "Lobby",
+  "maximum_players": 40,
+  "memory": 1024,
+  "minimal_services": 1,
+  "maximal_services": 1
+}
