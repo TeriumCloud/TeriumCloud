@@ -1,4 +1,4 @@
-[![Banner](https://i.imgur.com/YGVJEqu.png)](https://terium.cloud)
+[![Banner](https://i.imgur.com/zw4M7fR.png)](https://terium.cloud)
 ## Terium
 #### Terium is the best way to set up a server network with enough but not too many features.
 
