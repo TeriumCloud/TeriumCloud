@@ -16,12 +16,12 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Getter
 public class ServiceGroupManager {
-
 
     private File file;
     private Gson gson;
@@ -156,6 +156,7 @@ public class ServiceGroupManager {
         this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), port ? new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
                 serviceGroup.get("group_title").getAsString(),
                 ServiceType.valueOf(serviceGroup.get("servicetype").getAsString()),
+                serviceGroup.get("maintenance").getAsBoolean(),
                 serviceGroup.get("port").getAsInt(),
                 serviceGroup.get("maximum_players").getAsInt(),
                 serviceGroup.get("memory").getAsInt(),
@@ -163,6 +164,7 @@ public class ServiceGroupManager {
                 serviceGroup.get("maximal_services").getAsInt()) : new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
                 serviceGroup.get("group_title").getAsString(),
                 ServiceType.valueOf(serviceGroup.get("servicetype").getAsString()),
+                serviceGroup.get("maintenance").getAsBoolean(),
                 serviceGroup.get("maximum_players").getAsInt(),
                 serviceGroup.get("memory").getAsInt(),
                 serviceGroup.get("minimal_services").getAsInt(),
@@ -177,12 +179,47 @@ public class ServiceGroupManager {
         this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
                 serviceGroup.get("group_title").getAsString(),
                 ServiceType.valueOf(serviceGroup.get("servicetype").getAsString()),
+                serviceGroup.get("maintenance").getAsBoolean(),
                 serviceGroup.get("maximum_players").getAsInt(),
                 serviceGroup.get("memory").getAsInt(),
                 serviceGroup.get("minimal_services").getAsInt(),
                 serviceGroup.get("maximal_services").getAsInt()));
         if (!bridge)
             Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
+    }
+
+    @SneakyThrows
+    public void updateServiceGroup(DefaultServiceGroup defaultServiceGroup, String update_key, Object update_value) {
+        File groupFile = new File("groups/" + defaultServiceGroup.serviceType() + "/" + defaultServiceGroup.name() + ".json");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(groupFile.toPath()), StandardCharsets.UTF_8)) {
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            if(update_value instanceof String value) json.addProperty(update_key, value);
+            else if(update_value instanceof Integer value) json.addProperty(update_key, value);
+            else if(update_value instanceof Boolean value) json.addProperty(update_key, value);
+
+            pool.execute(() -> {
+                try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(groupFile.toPath()), StandardCharsets.UTF_8)) {
+                    gson.toJson(json, writer);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            pool.shutdownNow();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        switch (update_key) {
+            case "memory" -> defaultServiceGroup.setMemory((Integer) update_value);
+            case "maximum_players" -> defaultServiceGroup.setMaximumPlayers((Integer) update_value);
+            case "minimal_services" -> defaultServiceGroup.setMinimalServices((Integer) update_value);
+            case "maximal_services" -> defaultServiceGroup.setMaximalServices((Integer) update_value);
+            case "port" -> defaultServiceGroup.setPort((Integer) update_value);
+            case "maintenance" -> defaultServiceGroup.setMaintenance((Boolean) update_value);
+        }
     }
 
     public DefaultServiceGroup getServiceGroupByName(String name) {

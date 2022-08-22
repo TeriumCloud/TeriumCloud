@@ -1,5 +1,6 @@
 package cloud.terium.cloudsystem.command.commands;
 
+import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.service.ServiceType;
@@ -15,17 +16,40 @@ public class EditGroupCommand  extends Command {
         commandManager.register(this);
     }
 
+    /*
+     * TODO: Create update packet and send it to the servers.
+     * TODO: And let the servers do something with the packet :)
+     */
+
     @Override
     public void execute(String[] args) {
         switch (args.length) {
             case 1 -> {
-
+                if(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
+                    Logger.log("Information of service group '" + args[0] + "':", LogType.INFO);
+                    Logger.log(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]).toString());
+                } else {
+                    Logger.log("Terium could't find a service-group with name '" + args[0] + "'.", LogType.ERROR);
+                }
             }
-            case 2 -> {
+            case 3 -> {
+                if(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
+                    if(args[1].equalsIgnoreCase("maximum_players") || args[1].equalsIgnoreCase("memory") || args[1].equalsIgnoreCase("minimal_services") || args[1].equalsIgnoreCase("maximal_services") || args[1].equalsIgnoreCase("port")) {
+                        Terium.getTerium().getServiceGroupManager().updateServiceGroup(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]), args[1], Integer.parseInt(args[2]));
+                        Logger.log("Successfully updated service group '" + args[0] + "'.", LogType.INFO);
+                        return;
+                    }
 
+                    if(args[1].equalsIgnoreCase("maintenance")) {
+                        Terium.getTerium().getServiceGroupManager().updateServiceGroup(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]), args[1], Boolean.parseBoolean(args[2]));
+                        Logger.log("Successfully updated service group '" + args[0] + "'.", LogType.INFO);
+                    }
+                } else {
+                    Logger.log("Terium could't find a service-group with name '" + args[0] + "'.", LogType.ERROR);
+                }
             }
             default -> {
-                Logger.log("Syntax: edit <group_name> <maintenance/maxPlayers/maxMemory/minimumOnlineServices/maximumOnlineServices> <value>");
+                Logger.log("Syntax: edit-group <group_name> <maintenance/maximum_players/memory/minimal_services/maximal_services> <value>", LogType.INFO);
             }
         }
     }

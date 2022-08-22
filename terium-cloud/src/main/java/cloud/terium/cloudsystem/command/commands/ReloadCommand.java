@@ -15,6 +15,10 @@ public class ReloadCommand extends Command {
         commandManager.register(this);
     }
 
+    /*
+     * TODO: Make that the service groups will reload but not overwirte
+     */
+
     @Override
     public void execute(String[] args) {
         Logger.log("Trying to reload Terium...", LogType.INFO);

@@ -34,6 +34,10 @@ public class Terium {
         new Terium();
     }
 
+    /*
+     * TODO: Look at your todos and code!
+     */
+
     public Terium() {
         terium = this;
         this.cloudUtils = new CloudUtils();

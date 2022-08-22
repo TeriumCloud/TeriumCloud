@@ -2,22 +2,32 @@ package cloud.terium.cloudsystem.service.group;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.service.ServiceType;
+import com.google.gson.JsonParser;
+import lombok.Setter;
+import lombok.SneakyThrows;
 
+import javax.print.attribute.standard.MediaSize;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
+@Setter
 public class DefaultServiceGroup implements IServiceGroup {
 
     private final String name;
     private final String groupTitle;
     private final ServiceType serviceType;
-    private final boolean maintenance;
-    private final int port;
-    private final int maximumPlayers;
-    private final int memory;
-    private final int minimalServices;
-    private final int maximalServices;
+    private boolean maintenance;
+    private int port;
+    private int maximumPlayers;
+    private int memory;
+    private int minimalServices;
+    private int maximalServices;
 
-    public DefaultServiceGroup(String name, String groupTitle, ServiceType serviceType, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultServiceGroup(String name, String groupTitle, ServiceType serviceType, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.serviceType = serviceType;
@@ -26,11 +36,11 @@ public class DefaultServiceGroup implements IServiceGroup {
         this.memory = memory;
         this.minimalServices = minimalServices;
         this.maximalServices = maximalServices;
-        this.maintenance = false;
+        this.maintenance = maintenance;
         new File("templates//" + name).mkdirs();
     }
 
-    public DefaultServiceGroup(String name, String groupTitle, ServiceType serviceType, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultServiceGroup(String name, String groupTitle, ServiceType serviceType, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.serviceType = serviceType;
@@ -39,7 +49,7 @@ public class DefaultServiceGroup implements IServiceGroup {
         this.memory = memory;
         this.minimalServices = minimalServices;
         this.maximalServices = maximalServices;
-        this.maintenance = true;
+        this.maintenance = maintenance;
         new File("templates//" + name).mkdirs();
     }
 
@@ -94,5 +104,15 @@ public class DefaultServiceGroup implements IServiceGroup {
     @Override
     public int maximalServices() {
         return maximalServices;
+    }
+
+    @SneakyThrows
+    public String toString() {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(new File("groups/" + serviceType + "/" + name + ".json").toPath()), StandardCharsets.UTF_8)) {
+            return JsonParser.parseReader(reader).getAsJsonObject().toString().replace("{", "{\n    ").replace(":", ": ").replace("}", "\n}").replace(",", ",\n    ");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "Error while getting information of " + name + ".";
     }
 }

@@ -17,10 +17,10 @@ public class CreateGroupCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args.length == 5) {
-            new DefaultServiceGroup(args[0], args[1], ServiceType.valueOf(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), 1, 1).createGroup();
+            new DefaultServiceGroup(args[0], args[1], ServiceType.valueOf(args[2]), false, Integer.parseInt(args[3]), Integer.parseInt(args[4]), 1, 1).createGroup();
             Logger.log("Creating new server-group named '" + args[0] + "'.", LogType.INFO);
         } else if (args.length == 6) {
-            new DefaultServiceGroup(args[0], args[1], ServiceType.valueOf(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), 1, 1).createGroup();
+            new DefaultServiceGroup(args[0], args[1], ServiceType.valueOf(args[2]), false, Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]), 1, 1).createGroup();
             Logger.log("Creating new server-group named '" + args[0] + "' with port " + args[3] + ".", LogType.INFO);
         } else {
             Logger.log("Syntax: create-group <name> <group_title> <servicetype> <is proxy: port> <max_players> <memory>", LogType.INFO);
