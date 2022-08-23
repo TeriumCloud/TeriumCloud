@@ -94,6 +94,39 @@ public class ServiceGroupManager {
         }
     }
 
+    @SneakyThrows
+    public void reloadGroups(boolean bridge) {
+        this.file = bridge ? new File("../../groups/Proxy") : new File("groups/Proxy");
+        for (File groupFile : file.listFiles()) {
+            reloadGroup(groupFile);
+        }
+
+        this.file = bridge ? new File("../../groups/Lobby") : new File("groups/Lobby");
+        for (File groupFile : file.listFiles()) {
+            reloadGroup(groupFile);
+        }
+
+        this.file = bridge ? new File("../../groups/Server") : new File("groups/Server");
+        for (File groupFile : file.listFiles()) {
+            reloadGroup(groupFile);
+        }
+
+        if(!bridge) Logger.log("Successfully reloaded all service groups.", LogType.INFO);
+    }
+
+    @SneakyThrows
+    public void reloadGroup(File file) {
+        JsonObject jsonObject = new JsonParser().parse(new FileReader(file)).getAsJsonObject();
+        DefaultServiceGroup serviceGroup = getServiceGroupByName(file.getName().replace(".json", ""));
+        serviceGroup.setName(jsonObject.get("group_name").getAsString());
+        serviceGroup.setGroupTitle(jsonObject.get("group_title").getAsString());
+        serviceGroup.setMaintenance(jsonObject.get("maintenance").getAsBoolean());
+        if(serviceGroup.port() != -1) serviceGroup.setPort(jsonObject.get("port").getAsInt());
+        serviceGroup.setMaximumPlayers(jsonObject.get("maximum_players").getAsInt());
+        serviceGroup.setMinimalServices(jsonObject.get("minimal_services").getAsInt());
+        serviceGroup.setMaximalServices(jsonObject.get("maximal_services").getAsInt());
+    }
+
     public void createServiceGroup(DefaultServiceGroup defaultServiceGroup) {
         this.file = new File("groups/" + defaultServiceGroup.serviceType() + "/" + defaultServiceGroup.name() + ".json");
 
@@ -108,6 +141,34 @@ public class ServiceGroupManager {
     }
 
     private void initFile(File file, DefaultServiceGroup defaultServiceGroup, boolean port) {
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.pool = Executors.newFixedThreadPool(2);
+
+        if (!file.exists()) {
+            try (final PrintWriter writer = new PrintWriter(file)) {
+                writer.print(gson.toJson(json = new JsonObject()));
+                json.addProperty("group_name", defaultServiceGroup.name());
+                json.addProperty("group_title", defaultServiceGroup.groupTitle());
+                json.addProperty("servicetype", defaultServiceGroup.serviceType().toString());
+                if (port) json.addProperty("port", defaultServiceGroup.port());
+                json.addProperty("maintenance", port);
+                json.addProperty("maximum_players", defaultServiceGroup.maximumPlayers());
+                json.addProperty("memory", defaultServiceGroup.memory());
+                json.addProperty("minimal_services", defaultServiceGroup.minimalServices());
+                json.addProperty("maximal_services", defaultServiceGroup.maximalServices());
+
+                save();
+            } catch (FileNotFoundException ignored) {
+            }
+        } else {
+            try {
+                json = new JsonParser().parse(new FileReader(file)).getAsJsonObject();
+            } catch (FileNotFoundException ignored) {
+            }
+        }
+    }
+
+    private void reloadServiceGroup(File file, DefaultServiceGroup defaultServiceGroup, boolean port) {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.pool = Executors.newFixedThreadPool(2);
 

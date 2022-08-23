@@ -10,7 +10,7 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 public class ShutdownGroupCommand extends Command {
 
     public ShutdownGroupCommand(CommandManager commandManager) {
-        super("shutdowngroup");
+        super("shutdown-group");
         commandManager.register(this);
     }
 
@@ -24,7 +24,7 @@ public class ShutdownGroupCommand extends Command {
                 Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
             }
         }else {
-            Logger.log("Syntax: shutdown <service_name>", LogType.INFO);
+            Logger.log("Syntax: shutdown-group <service_group>", LogType.INFO);
         }
     }
 }

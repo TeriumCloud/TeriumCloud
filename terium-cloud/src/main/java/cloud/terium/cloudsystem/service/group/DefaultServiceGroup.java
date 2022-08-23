@@ -17,8 +17,8 @@ import java.nio.file.Files;
 @Setter
 public class DefaultServiceGroup implements IServiceGroup {
 
-    private final String name;
-    private final String groupTitle;
+    private String name;
+    private String groupTitle;
     private final ServiceType serviceType;
     private boolean maintenance;
     private int port;

@@ -15,16 +15,27 @@ public class ReloadCommand extends Command {
         commandManager.register(this);
     }
 
-    /*
-     * TODO: Make that the service groups will reload but not overwirte
-     */
-
     @Override
     public void execute(String[] args) {
-        Logger.log("Trying to reload Terium...", LogType.INFO);
-        Terium.getTerium().setConfigManager(new ConfigManager());
-        Terium.getTerium().getServiceGroupManager().loadGroups(false);
-        Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());
-        Logger.log("Successfully reloaded Terium.", LogType.INFO);
+        if(args.length == 1) {
+            if(args[0].equalsIgnoreCase("groups")) {
+                Logger.log("Terium is trying to reload all service groups...", LogType.INFO);
+                Terium.getTerium().getServiceGroupManager().reloadGroups(false);
+            } else if(args[0].equalsIgnoreCase("config")) {
+                Logger.log("Terium is trying to reload the config.json...", LogType.INFO);
+                Terium.getTerium().setConfigManager(new ConfigManager());
+                Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());
+                Logger.log("Successfully reloaded config.json.", LogType.INFO);
+            } else if(args[0].equalsIgnoreCase("all")) {
+                Logger.log("Trying to reload Terium...", LogType.INFO);
+                Terium.getTerium().setConfigManager(new ConfigManager());
+                Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());
+                Logger.log("Successfully reloaded config.json.", LogType.INFO);
+                Terium.getTerium().getServiceGroupManager().reloadGroups(false);
+                Logger.log("Successfully reloaded Terium.", LogType.INFO);
+            }
+        } else {
+            Logger.log("Syntax: reload <groups/config/all>", LogType.INFO);
+        }
     }
 }
