@@ -48,7 +48,7 @@ public class PacketRegistry {
     public Packet readPacket(int id, ByteBuf byteBuf) {
         Function<ByteBuf, Packet> packetFunction = this.packets.get(id);
         if (packetFunction == null)
-            throw new IllegalStateException("Packet with id " + id + " not registered");
+            throw new IllegalStateException("Packet with id #" + id + " not registered.");
         return packetFunction.apply(byteBuf);
     }
 
@@ -56,6 +56,6 @@ public class PacketRegistry {
         if (packetIds.containsKey(packetClass))
             return packetIds.get(packetClass);
 
-        throw new IllegalStateException("Packet no registered");
+        throw new IllegalStateException("Packet no registered.");
     }
 }
