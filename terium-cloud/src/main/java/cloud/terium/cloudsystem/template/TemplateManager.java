@@ -43,11 +43,11 @@ public class TemplateManager {
             Files.copy(cloudbridge, Paths.get("data//versions//teriumbridge.jar"), StandardCopyOption.REPLACE_EXISTING);
 
             // Velocity
-            InputStream velocity = new URL("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/172/downloads/velocity-3.1.2-SNAPSHOT-172.jar").openStream();
+            InputStream velocity = new URL("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/172/downloads/velocity-3.1.2-SNAPSHOT-177.jar").openStream();
             Files.copy(velocity, Paths.get("data//versions//velocity.jar"), StandardCopyOption.REPLACE_EXISTING);
 
             // Spigot
-            InputStream spigot = new URL("https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/123/downloads/paper-1.19.2-123.jar").openStream();
+            InputStream spigot = new URL("https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/123/downloads/paper-1.19.2-132.jar").openStream();
             Files.copy(spigot, Paths.get("data//versions//server.jar"), StandardCopyOption.REPLACE_EXISTING);
         }
     }

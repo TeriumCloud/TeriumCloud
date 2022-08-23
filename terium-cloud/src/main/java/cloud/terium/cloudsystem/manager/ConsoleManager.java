@@ -13,7 +13,6 @@ import org.jline.reader.impl.completer.StringsCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -41,6 +40,7 @@ public class ConsoleManager {
         commandManager.getCommandList().forEach(command -> {
             autoComplete.add(command.getName());
         });
+
         this.lineReader = LineReaderBuilder.builder().terminal(terminal).completer(new ArgumentCompleter(new StringsCompleter(autoComplete))).build();
 
         this.thread = new Thread(() -> {

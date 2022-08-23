@@ -1,7 +1,7 @@
 package cloud.terium.networking;
 
 import cloud.terium.networking.client.TeriumClient;
-import cloud.terium.networking.packet.protocol.PacketRegistry;
+import cloud.terium.networking.packet.PacketRegistry;
 import lombok.SneakyThrows;
 
 public class TeriumFramework {

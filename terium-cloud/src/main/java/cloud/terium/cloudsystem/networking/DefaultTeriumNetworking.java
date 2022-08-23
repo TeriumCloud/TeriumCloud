@@ -4,7 +4,7 @@ import cloud.terium.cloudsystem.manager.ConfigManager;
 import cloud.terium.cloudsystem.networking.server.TeriumServer;
 import cloud.terium.networking.TeriumFramework;
 import cloud.terium.networking.client.TeriumClient;
-import cloud.terium.networking.packet.protocol.Packet;
+import cloud.terium.networking.packet.Packet;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import lombok.Getter;

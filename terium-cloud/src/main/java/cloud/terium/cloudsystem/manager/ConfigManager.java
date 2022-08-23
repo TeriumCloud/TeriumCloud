@@ -56,6 +56,7 @@ public class ConfigManager {
             json.add("terium-bridge", cloudbridge);
 
             save();
+            Terium.getTerium().getCloudUtils().startSetup();
         } else {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();

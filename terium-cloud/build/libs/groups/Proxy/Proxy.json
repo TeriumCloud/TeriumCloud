@@ -1,9 +1,0 @@
-{
-  "group_name": "Proxy",
-  "parent_group": "PROXY-SERVERS",
-  "servicetype": "Proxy",
-  "maximum_players": 10,
-  "memory": 128,
-  "minimal_services": 1,
-  "maximal_services": 1
-}

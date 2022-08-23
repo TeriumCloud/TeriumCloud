@@ -1,7 +1,7 @@
 package cloud.terium.networking.packet.codec;
 
-import cloud.terium.networking.packet.protocol.Packet;
-import cloud.terium.networking.packet.protocol.PacketRegistry;
+import cloud.terium.networking.packet.Packet;
+import cloud.terium.networking.packet.PacketRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

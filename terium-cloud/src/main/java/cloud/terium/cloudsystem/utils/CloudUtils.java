@@ -4,6 +4,8 @@ import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.service.MinecraftService;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.cloudsystem.utils.setup.SetupState;
+import cloud.terium.cloudsystem.utils.setup.SetupStorage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -23,6 +25,8 @@ public class CloudUtils {
 
     private final String startMessage;
     private boolean running;
+    private boolean setup;
+    private SetupState setupState;
 
     public CloudUtils() {
         this.startMessage =
@@ -35,6 +39,13 @@ public class CloudUtils {
                         \u001B[0m> Discord: terium.cloud/discord | Twitter: \u001B[36m@teriumservice \u001B[0m
                         """;
         this.running = true;
+        this.setup = false;
+        this.setupState = SetupState.DONE;
+    }
+
+    public void startSetup() {
+        this.setup = true;
+        this.setupState = SetupState.EULA;
     }
 
     @SneakyThrows

@@ -1,9 +1,0 @@
-{
-  "group_name": "Challenge",
-  "parent_group": "CHALLENGES",
-  "servicetype": "Server",
-  "maximum_players": 5,
-  "memory": 1024,
-  "minimal_services": 1,
-  "maximal_services": 1
-}

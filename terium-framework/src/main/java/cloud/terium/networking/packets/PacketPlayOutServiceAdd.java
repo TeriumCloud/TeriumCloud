@@ -1,6 +1,6 @@
 package cloud.terium.networking.packets;
 
-import cloud.terium.networking.packet.protocol.Packet;
+import cloud.terium.networking.packet.Packet;
 import io.netty.buffer.ByteBuf;
 
 public class PacketPlayOutServiceAdd extends Packet {
