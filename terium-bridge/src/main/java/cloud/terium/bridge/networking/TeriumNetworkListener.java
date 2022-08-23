@@ -15,10 +15,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.Getter;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import java.io.File;
 import java.net.InetSocketAddress;
 
 @Getter
-public class TeriumNetworkListener {
+public final class TeriumNetworkListener {
 
     private final DefaultTeriumNetworking defaultTeriumNetworking;
 
@@ -31,6 +32,14 @@ public class TeriumNetworkListener {
                 System.out.println(packet.getClass().getSimpleName());
                 if (packet instanceof PacketPlayOutServiceOnline packetOnline) {
                     TeriumBridge.getInstance().getServiceManager().getServiceByName(packetOnline.minecraftService()).online(packetOnline.online());
+                }
+
+                if(packet instanceof PacketPlayOutGroupsReload) {
+                    TeriumBridge.getInstance().getServiceGroupManager().reloadGroups(true);
+                }
+
+                if(packet instanceof PacketPlayOutGroupReload groupReload) {
+                    TeriumBridge.getInstance().getServiceGroupManager().reloadGroup(new File("../../" + TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(groupReload.serviceGroup()) + "/" + groupReload.serviceGroup() + ".json"));
                 }
 
                 if (packet instanceof PacketPlayOutServiceForceShutdown packetPlayOutServiceShutdown) {

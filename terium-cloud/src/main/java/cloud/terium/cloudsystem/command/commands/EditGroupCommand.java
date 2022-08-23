@@ -7,6 +7,8 @@ import cloud.terium.cloudsystem.service.ServiceType;
 import cloud.terium.cloudsystem.service.group.DefaultServiceGroup;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.networking.packets.PacketPlayOutGroupReload;
+import cloud.terium.networking.packets.PacketPlayOutGroupsReload;
 import org.jline.utils.Log;
 
 public class EditGroupCommand  extends Command {
@@ -16,11 +18,6 @@ public class EditGroupCommand  extends Command {
         commandManager.register(this);
     }
 
-    /*
-     * TODO: Create update packet and send it to the servers.
-     * TODO: And let the servers do something with the packet :)
-     */
-
     @Override
     public void execute(String[] args) {
         switch (args.length) {
@@ -28,6 +25,8 @@ public class EditGroupCommand  extends Command {
                 if(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
                     Logger.log("Information of service group '" + args[0] + "':", LogType.INFO);
                     Logger.log(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]).toString());
+
+                    Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutGroupReload(args[0]));
                 } else {
                     Logger.log("Terium could't find a service-group with name '" + args[0] + "'.", LogType.ERROR);
                 }
@@ -44,6 +43,8 @@ public class EditGroupCommand  extends Command {
                         Terium.getTerium().getServiceGroupManager().updateServiceGroup(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]), args[1], Boolean.parseBoolean(args[2]));
                         Logger.log("Successfully updated service group '" + args[0] + "'.", LogType.INFO);
                     }
+
+                    Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutGroupReload(args[0]));
                 } else {
                     Logger.log("Terium could't find a service-group with name '" + args[0] + "'.", LogType.ERROR);
                 }
