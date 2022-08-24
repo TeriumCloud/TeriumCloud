@@ -1,5 +1,6 @@
 package cloud.terium.cloudsystem.template;
 
+import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import lombok.SneakyThrows;
@@ -13,6 +14,10 @@ import java.nio.file.StandardCopyOption;
 
 public class TemplateManager {
 
+    /*
+     * individual download -> if velocity = download velocity stuff / if paperspigot = download paper etc.
+     */
+
     @SneakyThrows
     public TemplateManager() {
         new File("data//cache//servers//").mkdirs();
@@ -22,15 +27,14 @@ public class TemplateManager {
             new File("templates//Global//Proxy").mkdirs();
 
             Logger.log("Successfully init template folder.", LogType.INFO);
-            Logger.log("Starting of download velocity.toml and spigot.yml", LogType.INFO);
+            Logger.log("Starting of download velocity.toml and spigot.yml", LogType.DOWNLOAD);
 
             // velocity.toml
-            InputStream velocity = new URL("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmNoYuMwDrf1cXrroVr1g87fb9GUv61dCzZfZwSCc4YGrp").openStream();
-            Files.copy(velocity, Paths.get("templates//Global//Proxy//velocity.toml"), StandardCopyOption.REPLACE_EXISTING);
+            downloadFile("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmNoYuMwDrf1cXrroVr1g87fb9GUv61dCzZfZwSCc4YGrp", "velocity.toml", "templates//Global//Proxy");
 
             // spigot.yml
-            InputStream spigot = new URL("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmQDWghUiH6fs2SqabSZWuceE3GPAjD7bhEeBk6aEiXFbH").openStream();
-            Files.copy(spigot, Paths.get("templates//Global//Server//spigot.yml"), StandardCopyOption.REPLACE_EXISTING);
+            downloadFile("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmQDWghUiH6fs2SqabSZWuceE3GPAjD7bhEeBk6aEiXFbH", "spigot.yml", "templates//Global//Server");
+            Logger.log("Successfully downloaded velocity.toml and spigot.yml", LogType.DOWNLOAD);
         }
 
         File versions = new File("data//versions");
@@ -38,17 +42,32 @@ public class TemplateManager {
         if (!versions.exists()) {
             versions.mkdirs();
 
-            // CloudBridge
-            InputStream cloudbridge = new URL("https://workupload.com/start/Z77vYd7dahf").openStream();
-            Files.copy(cloudbridge, Paths.get("data//versions//teriumbridge.jar"), StandardCopyOption.REPLACE_EXISTING);
+            // TeriumBridge
+            Logger.log("Starting download of terium-bridge...", LogType.DOWNLOAD);
+            downloadFile("https://workupload.com/start/Z77vYd7dahf", "teriumbridge.jar", "data//versions");
+            Logger.log("Successfully downloaded terium-bridge.", LogType.DOWNLOAD);
 
             // Velocity
-            InputStream velocity = new URL("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/172/downloads/velocity-3.1.2-SNAPSHOT-177.jar").openStream();
-            Files.copy(velocity, Paths.get("data//versions//velocity.jar"), StandardCopyOption.REPLACE_EXISTING);
+            Logger.log("Starting download of velocity...", LogType.DOWNLOAD);
+            downloadFile("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/177/downloads/velocity-3.1.2-SNAPSHOT-177.jar", "velocity.jar", "data//versions");
+            Logger.log("Successfully downloaded velocity.", LogType.DOWNLOAD);
 
             // Spigot
-            InputStream spigot = new URL("https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/123/downloads/paper-1.19.2-132.jar").openStream();
-            Files.copy(spigot, Paths.get("data//versions//server.jar"), StandardCopyOption.REPLACE_EXISTING);
+            Logger.log("Starting download of spigot...", LogType.DOWNLOAD);
+            downloadFile("https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/132/downloads/paper-1.19.2-132.jar", "server.jar", "data//versions");
+            Logger.log("Successfully downloaded spigot.", LogType.DOWNLOAD);
+
+            Logger.log(" ", LogType.INFO);
+            Logger.log("To complete the setup, you need to restart terium. The cloud will shutdown in 3 secound.", LogType.INFO);
+            Logger.log(" ", LogType.INFO);
+            Thread.sleep(3000);
+            Terium.getTerium().getCloudUtils().shutdownCloud();
         }
+    }
+
+    @SneakyThrows
+    private void downloadFile(String url, String fileName, String path) {
+        InputStream cloudbridge = new URL(url).openStream();
+        Files.copy(cloudbridge, Paths.get(path + "//" + fileName), StandardCopyOption.REPLACE_EXISTING);
     }
 }

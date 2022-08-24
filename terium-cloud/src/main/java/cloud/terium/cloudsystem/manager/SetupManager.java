@@ -14,15 +14,15 @@ public class SetupManager {
 
     private final SetupStorage setupStorage;
 
+    /*
+     * TODO: Make that this is not looking like CloudNet-v3
+     */
+
     public SetupManager() {
         this.setupStorage = new SetupStorage();
         Logger.log("Welcome to \u001B[0mTerium\u001B[36mCloud\u001B[0m! Please agree the minecraft eula to continue. (type: yes if you agree)", LogType.SETUP);
         readConsole();
     }
-
-    /*
-     * TODO: Make that this is not looking like CloudNet-v3
-     */
 
     private void readConsole() {
         final Scanner scanner = new Scanner(System.in);
@@ -104,6 +104,7 @@ public class SetupManager {
 
                             Logger.log("You successfully set the service-server version to '" + input + "'.", LogType.SETUP);
                             Logger.log("Please wait a small while. Terium is starting soon...", LogType.SETUP);
+                            new Terium();
                         }
                     }
                 }
