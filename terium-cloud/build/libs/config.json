@@ -1,5 +1,6 @@
 {
   "ip": "127.0.0.1",
+  "web_port": 5124,
   "port": "12345 (don't change)",
   "maxMemory": 10000,
   "license": "put your license here.",

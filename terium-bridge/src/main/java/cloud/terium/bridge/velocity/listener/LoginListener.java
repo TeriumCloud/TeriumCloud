@@ -33,7 +33,7 @@ public class LoginListener {
                 player.disconnect(Component.text("§cThe terium-cloud is starting a lobby service. Please wait a moment."));
             }
         } else {
-            player.disconnect(Component.text("§cThe cloudsystem can't find a lobby service. Please try again later or contact an admin."));
+            player.disconnect(Component.text("§cThe terium-cloud can't find a lobby service. Please try again later or contact an admin."));
             return;
         }
 
@@ -41,7 +41,7 @@ public class LoginListener {
             player.sendMessage(MiniMessage.miniMessage().deserialize("This server is running <gradient:#245dec:#00d4ff>Terium</gradient><white>."));
         }
 
-        if (TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("maintenance").getAsBoolean()) {
+        if (TeriumBridge.getInstance().getThisService().defaultServiceGroup().maintenance()) {
             if (!player.hasPermission("terium.maintenancejoin")) {
                 player.disconnect(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("maintenance.message").getAsString()));
             }

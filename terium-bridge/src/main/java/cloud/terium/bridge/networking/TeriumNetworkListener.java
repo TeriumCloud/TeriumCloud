@@ -7,7 +7,7 @@ import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.cloudsystem.networking.DefaultTeriumNetworking;
 import cloud.terium.cloudsystem.service.MinecraftService;
 import cloud.terium.cloudsystem.service.ServiceType;
-import cloud.terium.networking.packet.protocol.Packet;
+import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.netty.channel.ChannelHandlerContext;
@@ -39,7 +39,7 @@ public final class TeriumNetworkListener {
                 }
 
                 if(packet instanceof PacketPlayOutGroupReload groupReload) {
-                    TeriumBridge.getInstance().getServiceGroupManager().reloadGroup(new File("../../" + TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(groupReload.serviceGroup()) + "/" + groupReload.serviceGroup() + ".json"));
+                    TeriumBridge.getInstance().getServiceGroupManager().reloadGroup(new File("../../groups/" + TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(groupReload.serviceGroup()).serviceType() + "/" + groupReload.serviceGroup() + ".json"));
                 }
 
                 if (packet instanceof PacketPlayOutServiceForceShutdown packetPlayOutServiceShutdown) {

@@ -1,6 +1,8 @@
 package cloud.terium.cloudsystem.manager;
 
 import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.service.ServiceType;
+import cloud.terium.cloudsystem.service.group.DefaultServiceGroup;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
@@ -48,12 +50,6 @@ public class SetupManager {
                             Logger.log("You agreed the minecraft eula! Please type now the port for your webserver. (default: 5124) (important for multi-root)", LogType.SETUP);
                         } else {
                             Logger.log("You need to agree the minecraft eula to use Terium!", LogType.SETUP);
-                            try {
-                                FileUtils.forceDelete(new File("config.json"));
-                                Thread.sleep(2000);
-                            } catch (Exception ignored) {
-                            }
-                            System.exit(0);
                         }
                     }
                     case WEB_PORT -> {
@@ -99,10 +95,15 @@ public class SetupManager {
                                 || input.equalsIgnoreCase("paperspigot-1.14.2") || input.equalsIgnoreCase("paperspigot-1.15.2")
                                 || input.equalsIgnoreCase("paperspigot-1.16.5") || input.equalsIgnoreCase("paperspigot-1.17.1")
                                 || input.equalsIgnoreCase("paperspigot-1.18.2") || input.equalsIgnoreCase("paperspigot-1.19.2")) {
-                            Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
                             setupStorage.setSpigotVersion(input);
 
                             Logger.log("You successfully set the service-server version to '" + input + "'.", LogType.SETUP);
+                            Terium.getTerium().getConfigManager().getJson().addProperty("web_port", setupStorage.getWebPort());
+                            Terium.getTerium().getConfigManager().save();
+                            new DefaultServiceGroup("Proxy", "PROXY", ServiceType.Proxy, true, setupStorage.getProxyPort(), 10, 128, 1, 1).createGroup();
+                            new DefaultServiceGroup("Lobby", "LOBBY", ServiceType.Lobby, true, 20, 512, 1, 1).createGroup();
+
+                            Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
                             Logger.log("Please wait a small while. Terium is starting soon...", LogType.SETUP);
                             new Terium();
                         }

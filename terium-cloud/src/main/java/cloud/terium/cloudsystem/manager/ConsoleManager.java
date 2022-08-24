@@ -28,7 +28,7 @@ public class ConsoleManager {
 
     @SneakyThrows
     public ConsoleManager(CommandManager commandManager) {
-        this.terminal = TerminalBuilder.terminal();
+        this.terminal = TerminalBuilder.builder().dumb(true).build();
         this.username = username();
 
         readConsole(commandManager);

@@ -40,7 +40,6 @@ public class CloudUtils {
                         """;
         this.running = true;
         this.setup = false;
-        this.setupState = SetupState.DONE;
     }
 
     public void startSetup() {

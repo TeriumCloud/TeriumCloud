@@ -46,7 +46,7 @@ public class Terium {
         System.out.println(cloudUtils.getStartMessage());
         // this.cloudUtils.checkLicense();
 
-        if (cloudUtils.getSetupState() == SetupState.DONE) {
+        if (cloudUtils.getSetupState() == null) {
             System.out.println(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
 
             this.commandManager = new CommandManager();
@@ -66,7 +66,7 @@ public class Terium {
         this.consoleManager = null;
         this.commandManager = null;
         this.serviceManager = null;
-        this.serviceGroupManager = null;
+        this.serviceGroupManager = new ServiceGroupManager();
         this.defaultTeriumNetworking = null;
 
         new SetupManager();

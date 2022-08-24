@@ -1,8 +1,10 @@
 package cloud.terium.cloudsystem.service.group;
 
+import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.service.ServiceType;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.cloudsystem.utils.setup.SetupState;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -132,8 +134,11 @@ public class ServiceGroupManager {
 
         if (defaultServiceGroup.port() == -1) initFile(file, defaultServiceGroup);
         else initFile(file, defaultServiceGroup, true);
-        serviceGroups.add(defaultServiceGroup);
-        registedServerGroups.put(defaultServiceGroup.name(), defaultServiceGroup);
+
+        if(Terium.getTerium().getCloudUtils().getSetupState() == SetupState.DONE) {
+            serviceGroups.add(defaultServiceGroup);
+            registedServerGroups.put(defaultServiceGroup.name(), defaultServiceGroup);
+        }
     }
 
     private void initFile(File file, DefaultServiceGroup defaultServiceGroup) {

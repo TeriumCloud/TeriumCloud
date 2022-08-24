@@ -41,6 +41,7 @@ public class ConfigManager {
         if (!file.exists()) {
             this.json = new JsonObject();
             json.addProperty("ip", "127.0.0.1");
+            json.addProperty("web_port", 5124);
             json.addProperty("port", "12345 (don't change)");
             json.addProperty("maxMemory", 10000);
             json.addProperty("license", "put your license here.");
@@ -74,6 +75,10 @@ public class ConfigManager {
                 ex.printStackTrace();
             }
         });
+    }
+
+    public JsonObject getJson() {
+        return json;
     }
 
     public void setTeriumPort(int port) {
