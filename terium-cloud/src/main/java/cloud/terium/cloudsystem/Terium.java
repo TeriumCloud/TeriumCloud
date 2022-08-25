@@ -39,6 +39,8 @@ public class Terium {
     }
 
     public Terium() {
+        System.setProperty("org.jline.terminal.dumb", "true");
+
         terium = this;
         this.cloudUtils = new CloudUtils();
         this.configManager = new ConfigManager();
@@ -56,7 +58,10 @@ public class Terium {
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
 
             new TemplateManager();
-            Signal.handle(new Signal("INT"), signal -> cloudUtils.shutdownCloud());
+            Signal.handle(new Signal("INT"), signal -> {
+                cloudUtils.setRunning(false);
+                cloudUtils.shutdownCloud();
+            });
 
             Logger.log("Successfully started Terium.", LogType.INFO);
             serviceManager.startServiceCheck();

@@ -232,31 +232,43 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     public void initServiceGroup(File groupFile) {
         JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupFile)).getAsJsonObject();
         switch (CloudServiceType.valueOf(serviceGroup.get("servicetype").getAsString())) {
-            case Proxy -> this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
-                    serviceGroup.get("group_title").getAsString(),
-                    serviceGroup.get("node").getAsString(),
-                    serviceGroup.get("maintenance").getAsBoolean(),
-                    serviceGroup.get("port").getAsInt(),
-                    serviceGroup.get("maximum_players").getAsInt(),
-                    serviceGroup.get("memory").getAsInt(),
-                    serviceGroup.get("minimal_services").getAsInt(),
-                    serviceGroup.get("maximal_services").getAsInt()));
-            case Server -> this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
-                    serviceGroup.get("group_title").getAsString(),
-                    serviceGroup.get("node").getAsString(),
-                    serviceGroup.get("maintenance").getAsBoolean(),
-                    serviceGroup.get("maximum_players").getAsInt(),
-                    serviceGroup.get("memory").getAsInt(),
-                    serviceGroup.get("minimal_services").getAsInt(),
-                    serviceGroup.get("maximal_services").getAsInt()));
-            case Lobby -> this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
-                    serviceGroup.get("group_title").getAsString(),
-                    serviceGroup.get("node").getAsString(),
-                    serviceGroup.get("maintenance").getAsBoolean(),
-                    serviceGroup.get("maximum_players").getAsInt(),
-                    serviceGroup.get("memory").getAsInt(),
-                    serviceGroup.get("minimal_services").getAsInt(),
-                    serviceGroup.get("maximal_services").getAsInt()));
+            case Proxy -> {
+                ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
+                        serviceGroup.get("group_title").getAsString(),
+                        serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("maintenance").getAsBoolean(),
+                        serviceGroup.get("port").getAsInt(),
+                        serviceGroup.get("maximum_players").getAsInt(),
+                        serviceGroup.get("memory").getAsInt(),
+                        serviceGroup.get("minimal_services").getAsInt(),
+                        serviceGroup.get("maximal_services").getAsInt());
+                this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
+                this.serviceGroups.add(iCloudServiceGroup);
+            }
+            case Server -> {
+                ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
+                        serviceGroup.get("group_title").getAsString(),
+                        serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("maintenance").getAsBoolean(),
+                        serviceGroup.get("maximum_players").getAsInt(),
+                        serviceGroup.get("memory").getAsInt(),
+                        serviceGroup.get("minimal_services").getAsInt(),
+                        serviceGroup.get("maximal_services").getAsInt());
+                this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
+                this.serviceGroups.add(iCloudServiceGroup);
+            }
+            case Lobby -> {
+                ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
+                        serviceGroup.get("group_title").getAsString(),
+                        serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("maintenance").getAsBoolean(),
+                        serviceGroup.get("maximum_players").getAsInt(),
+                        serviceGroup.get("memory").getAsInt(),
+                        serviceGroup.get("minimal_services").getAsInt(),
+                        serviceGroup.get("maximal_services").getAsInt());
+                this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
+                this.serviceGroups.add(iCloudServiceGroup);
+            }
         }
 
         if (!bridge)
@@ -348,6 +360,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
 
     @Override
     public List<ICloudServiceGroup> getAllServiceGroups() {
-        return null;
+        return serviceGroups;
     }
 }

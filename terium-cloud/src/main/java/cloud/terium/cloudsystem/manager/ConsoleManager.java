@@ -6,6 +6,7 @@ import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.completer.ArgumentCompleter;
@@ -28,7 +29,7 @@ public class ConsoleManager {
 
     @SneakyThrows
     public ConsoleManager(CommandManager commandManager) {
-        this.terminal = TerminalBuilder.builder().dumb(true).build();
+        this.terminal = TerminalBuilder.terminal();
         this.username = username();
 
         readConsole(commandManager);
@@ -40,7 +41,6 @@ public class ConsoleManager {
         commandManager.getCommandList().forEach(command -> {
             autoComplete.add(command.getName());
         });
-
         this.lineReader = LineReaderBuilder.builder().terminal(terminal).completer(new ArgumentCompleter(new StringsCompleter(autoComplete))).build();
 
         this.thread = new Thread(() -> {
@@ -48,7 +48,11 @@ public class ConsoleManager {
                 String input = null;
                 final Command command;
                 if (Terium.getTerium().getCloudUtils().isRunning()) {
-                    input = lineReader.readLine("\u001B[36m" + username + "\u001B[0m@terium => ");
+                    try {
+                        input = lineReader.readLine("\u001B[36m" + username + "\u001B[0m@terium => ");
+                    } catch (EndOfFileException exception) {
+                        input = lineReader.readLine("");
+                    }
                 } else {
                     input = lineReader.readLine("");
                 }

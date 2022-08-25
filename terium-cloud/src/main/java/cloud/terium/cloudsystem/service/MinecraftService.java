@@ -206,7 +206,7 @@ public class MinecraftService implements ICloudService {
 
     @Override
     public ICloudServiceGroup getServiceGroup() {
-        return null;
+        return serviceGroup;
     }
 
     @Override
