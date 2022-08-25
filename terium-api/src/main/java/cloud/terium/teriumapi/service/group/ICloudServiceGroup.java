@@ -14,6 +14,8 @@ public interface ICloudServiceGroup {
 
     boolean isMaintenance();
 
+    boolean hasPort();
+
     int getPort();
 
     int getMaximumPlayers();

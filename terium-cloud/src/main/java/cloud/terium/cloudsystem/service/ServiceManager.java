@@ -2,12 +2,12 @@ package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.networking.json.DefaultJsonService;
-import cloud.terium.cloudsystem.service.group.DefaultServiceGroup;
-import lombok.Getter;
-import lombok.SneakyThrows;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ICloudServiceManager;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -16,10 +16,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
-public class ServiceManager {
+public class ServiceManager implements ICloudServiceManager {
 
-    private final List<MinecraftService> minecraftServices;
-    private final HashMap<String, MinecraftService> minecraftServiceCache;
+    private final List<ICloudService> minecraftServices;
+    private final HashMap<String, ICloudService> minecraftServiceCache;
 
     public ServiceManager() {
         this.minecraftServices = new CopyOnWriteArrayList<>();
@@ -32,7 +32,7 @@ public class ServiceManager {
             public void run() {
                 if (Terium.getTerium().getCloudUtils().isRunning()) {
                     Terium.getTerium().getServiceGroupManager().getServiceGroups().forEach(group -> {
-                        if (getServicesByGroupName(group.name()).size() <= group.maximalServices() && getServicesByGroupName(group.name()).size() < group.minimalServices()) {
+                        if (getCloudServicesByGroupName(group.getServiceGroupName()).size() <= group.getMaximalServices() && getCloudServicesByGroupName(group.getServiceGroupName()).size() < group.getMinimalServices()) {
                             new MinecraftService(group).start();
                         }
                     });
@@ -43,55 +43,39 @@ public class ServiceManager {
 
     public void startCloudServices() {
         Terium.getTerium().getServiceGroupManager().getServiceGroups().forEach(group -> {
-            System.out.println(getServicesByGroupName(group.name()).size());
-            if (group.maximalServices() <= getServicesByGroupName(group.name()).size()) {
-                for (int i = 0; i < group.minimalServices(); i++) new MinecraftService(group).start();
+            System.out.println(getCloudServicesByGroupName(group.getServiceGroupName()).size());
+            if (group.getMaximalServices() <= getCloudServicesByGroupName(group.getServiceGroupName()).size()) {
+                for (int i = 0; i < group.getMinimalServices(); i++) new MinecraftService(group).start();
             }
         });
     }
 
-    public MinecraftService getServiceByName(String servicename) {
-        return minecraftServiceCache.get(servicename);
-    }
-
-    public List<MinecraftService> getServicesByGroupName(String groupname) {
-        return minecraftServices.stream().filter(service -> service.getDefaultServiceGroup().name().equals(groupname)).toList();
-    }
-
-    public List<MinecraftService> getServicesByGroupTitle(String groupTitle) {
-        return minecraftServices.stream().filter(service -> service.getDefaultServiceGroup().groupTitle().equals(groupTitle)).toList();
-    }
-
-    public List<MinecraftService> getLobbyServices() {
-        return minecraftServices.stream().filter(service -> service.getDefaultServiceGroup().serviceType().equals(ServiceType.Lobby)).toList();
-    }
-
     public void addService(MinecraftService minecraftService) {
         minecraftServices.add(minecraftService);
-        minecraftServiceCache.put(minecraftService.serviceName(), minecraftService);
+        minecraftServiceCache.put(minecraftService.getServiceName(), minecraftService);
         new DefaultJsonService(minecraftService);
     }
 
     public void removeService(MinecraftService minecraftService) {
         minecraftServices.remove(minecraftService);
-        minecraftServiceCache.remove(minecraftService.serviceName(), minecraftService);
+        minecraftServiceCache.remove(minecraftService.getServiceName(), minecraftService);
         new DefaultJsonService(minecraftService).delete();
     }
 
     public void addService(MinecraftService minecraftService, boolean bridge) {
         minecraftServices.add(minecraftService);
-        minecraftServiceCache.put(minecraftService.serviceName(), minecraftService);
+        minecraftServiceCache.put(minecraftService.getServiceName(), minecraftService);
     }
 
     public void removeService(MinecraftService minecraftService, boolean bridge) {
         minecraftServices.remove(minecraftService);
-        minecraftServiceCache.remove(minecraftService.serviceName(), minecraftService);
+        minecraftServiceCache.remove(minecraftService.getServiceName(), minecraftService);
     }
 
-    public int getFreeServiceId(DefaultServiceGroup defaultServiceGroup) {
+    public int getFreeServiceId(ICloudServiceGroup defaultServiceGroup) {
         AtomicInteger count = new AtomicInteger(1);
         minecraftServices.forEach(service -> {
-            if (service.getDefaultServiceGroup() == defaultServiceGroup && service.getServiceId() == count.get()) {
+            if (service.getServiceGroup() == defaultServiceGroup && service.getServiceId() == count.get()) {
                 count.getAndIncrement();
             }
         });
@@ -99,11 +83,23 @@ public class ServiceManager {
         return count.get();
     }
 
-    @SneakyThrows
-    public byte[] getByteArray(MinecraftService minecraftService) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream os = new ObjectOutputStream(out);
-        os.writeObject(minecraftService);
-        return out.toByteArray();
+    @Override
+    public ICloudService getCloudServiceByName(String s) {
+        return minecraftServiceCache.get(s);
+    }
+
+    @Override
+    public List<ICloudService> getCloudServicesByGroupName(String s) {
+        return minecraftServices.stream().filter(iCloudService -> iCloudService.getServiceGroup().getServiceGroupName().equals(s)).toList();
+    }
+
+    @Override
+    public List<ICloudService> getCloudServicesByGroupTitle(String s) {
+        return minecraftServices.stream().filter(iCloudService -> iCloudService.getServiceGroup().getGroupTitle().equals(s)).toList();
+    }
+
+    @Override
+    public List<ICloudService> getAllCloudServices() {
+        return minecraftServices;
     }
 }

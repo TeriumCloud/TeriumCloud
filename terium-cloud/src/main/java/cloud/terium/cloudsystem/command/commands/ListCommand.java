@@ -21,13 +21,13 @@ public class ListCommand extends Command {
         System.out.println(" ");
         Terium.getTerium().getServiceGroupManager().getServiceGroups().forEach(group -> {
             AtomicInteger i = new AtomicInteger();
-            Logger.log(group.name() + " (Title: " + group.groupTitle() + " / Type: " + group.serviceType() + ")", LogType.INFO);
+            Logger.log(group.getServiceGroupName() + " (Title: " + group.getGroupTitle() + " / Type: " + group.getServiceType() + ")", LogType.INFO);
 
             Terium.getTerium().getServiceManager().getMinecraftServices().forEach(service -> {
-                if (service.getDefaultServiceGroup().equals(group)) {
+                if (service.getServiceGroup().equals(group)) {
                     i.getAndIncrement();
 
-                    Logger.log(i.get() + ". " + service.serviceName() + " / Port: " + service.getPort() + " / Online: " + service.online(), LogType.INFO);
+                    Logger.log(i.get() + ". " + service.getServiceName() + " / Port: " + service.getPort() + " / Online: " + service.isOnline(), LogType.INFO);
                 }
             });
             Logger.log(" ", LogType.INFO);

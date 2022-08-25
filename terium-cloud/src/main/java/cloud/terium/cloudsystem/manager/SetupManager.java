@@ -1,14 +1,16 @@
 package cloud.terium.cloudsystem.manager;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.service.ServiceType;
-import cloud.terium.cloudsystem.service.group.DefaultServiceGroup;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.cloudsystem.utils.setup.SetupStorage;
+import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
+import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import org.apache.commons.io.FileUtils;
 
+import javax.swing.plaf.TableHeaderUI;
 import java.io.File;
 import java.util.Scanner;
 
@@ -100,11 +102,16 @@ public class SetupManager {
                             Logger.log("You successfully set the service-server version to '" + input + "'.", LogType.SETUP);
                             Terium.getTerium().getConfigManager().getJson().addProperty("web_port", setupStorage.getWebPort());
                             Terium.getTerium().getConfigManager().save();
-                            new DefaultServiceGroup("Proxy", "PROXY", ServiceType.Proxy, true, setupStorage.getProxyPort(), 10, 128, 1, 1).createGroup();
-                            new DefaultServiceGroup("Lobby", "LOBBY", ServiceType.Lobby, true, 20, 512, 1, 1).createGroup();
+                            new DefaultProxyGroup("Proxy", "PROXY", "Node-01", true, setupStorage.getProxyPort(), 10, 128, 1, 1);
+                            new DefaultLobbyGroup("Lobby", "LOBBY", "Node-01", true, 20, 512, 1, 1);
 
                             Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
                             Logger.log("Please wait a small while. Terium is starting soon...", LogType.SETUP);
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException exception) {
+                                exception.printStackTrace();
+                            }
                             new Terium();
                         }
                     }

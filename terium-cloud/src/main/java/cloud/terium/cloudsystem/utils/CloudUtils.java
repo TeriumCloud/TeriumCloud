@@ -6,6 +6,7 @@ import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.cloudsystem.utils.setup.SetupStorage;
+import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -55,7 +56,7 @@ public class CloudUtils {
         Terium.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
         Logger.log("Successfully stopped terium-server.", LogType.INFO);
         Thread.sleep(1000);
-        Terium.getTerium().getServiceManager().getMinecraftServices().forEach(MinecraftService::forceShutdown);
+        Terium.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::forceShutdown);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Terium.getTerium().getConfigManager().resetPort();
         Logger.log("Successfully reset terium-port.", LogType.INFO);

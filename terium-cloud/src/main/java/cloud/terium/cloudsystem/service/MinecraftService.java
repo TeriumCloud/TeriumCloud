@@ -5,9 +5,11 @@ import cloud.terium.cloudsystem.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceForceShutdown;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
-import cloud.terium.cloudsystem.service.group.DefaultServiceGroup;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
@@ -22,9 +24,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Getter
-public class MinecraftService implements IService {
+public class MinecraftService implements ICloudService {
 
-    private final DefaultServiceGroup defaultServiceGroup;
+    private final ICloudServiceGroup serviceGroup;
     private final File template;
     private final File folder;
     private final int port;
@@ -35,19 +37,19 @@ public class MinecraftService implements IService {
     private Process process;
     private Thread thread;
 
-    public MinecraftService(DefaultServiceGroup defaultServiceGroup) {
-        this(defaultServiceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(defaultServiceGroup), defaultServiceGroup.hasPort() ? defaultServiceGroup.port() : new Random().nextInt(20000, 50000));
+    public MinecraftService(ICloudServiceGroup serviceGroup) {
+        this(serviceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : new Random().nextInt(20000, 50000));
     }
 
-    public MinecraftService(DefaultServiceGroup defaultServiceGroup, int serviceId) {
-        this(defaultServiceGroup, serviceId, defaultServiceGroup.hasPort() ? defaultServiceGroup.port() : new Random().nextInt(20000, 50000));
+    public MinecraftService(ICloudServiceGroup serviceGroup, int serviceId) {
+        this(serviceGroup, serviceId, serviceGroup.hasPort() ? serviceGroup.getPort() : new Random().nextInt(20000, 50000));
     }
 
-    public MinecraftService(DefaultServiceGroup defaultServiceGroup, int serviceId, int port) {
-        this.defaultServiceGroup = defaultServiceGroup;
+    public MinecraftService(ICloudServiceGroup defaultServiceGroup, int serviceId, int port) {
+        this.serviceGroup = defaultServiceGroup;
         this.serviceId = serviceId;
-        this.template = new File("templates//" + defaultServiceGroup.name() + "//");
-        this.folder = new File("servers//" + serviceName());
+        this.template = new File("templates//" + serviceGroup.getServiceGroupName() + "//");
+        this.folder = new File("servers//" + getServiceName());
         this.port = port;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
@@ -57,18 +59,18 @@ public class MinecraftService implements IService {
     @SneakyThrows
     public void start() {
         this.folder.mkdirs();
-        FileUtils.copyFileToDirectory(new File("data//versions//" + (defaultServiceGroup.serviceType() == ServiceType.Lobby || defaultServiceGroup.serviceType() == ServiceType.Server ? "server.jar" : "velocity.jar")), folder);
-        FileUtils.copyDirectory(new File(defaultServiceGroup.serviceType() == ServiceType.Lobby || defaultServiceGroup.serviceType() == ServiceType.Server ? "templates//Global//Server" : "templates//Global//Proxy"), folder);
+        FileUtils.copyFileToDirectory(new File("data//versions//" + (serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "server.jar" : "velocity.jar")), folder);
+        FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "templates//Global//Server" : "templates//Global//Proxy"), folder);
         FileUtils.copyDirectory(template, folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//teriumbridge.jar"), new File("servers//" + serviceName() + "//plugins//"));
+        FileUtils.copyFileToDirectory(new File("data//versions//teriumbridge.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         Terium.getTerium().getServiceManager().addService(this);
 
-        if (defaultServiceGroup.serviceType() == ServiceType.Lobby || defaultServiceGroup.serviceType() == ServiceType.Server) {
-            Logger.log("The service '" + serviceName() + "' is starting on port " + port + ".", LogType.INFO);
+        if (serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server) {
+            Logger.log("The service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
 
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
-            properties.setProperty("server-name", serviceName());
+            properties.setProperty("server-name", getServiceName());
             properties.setProperty("server-port", getPort() + "");
             properties.setProperty("server-ip", "127.0.0.1");
             properties.setProperty("online-mode", "false");
@@ -89,17 +91,17 @@ public class MinecraftService implements IService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by Terium.");
             }
         } else {
-            Logger.log("The service '" + serviceName() + "' is starting on port " + port + ".", LogType.INFO);
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", serviceName());
+            Logger.log("The service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
+            this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", defaultServiceGroup.maximumPlayers() + "");
+            this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaximumPlayers() + "");
         }
 
-        if (!defaultServiceGroup.serviceType().equals(ServiceType.Proxy))
-            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(serviceName(), defaultServiceGroup().name(), serviceId(), port()));
+        if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
+            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), getServiceGroup().getServiceGroupName(), getServiceId(), getPort()));
 
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + defaultServiceGroup.memory() + "m", defaultServiceGroup.serviceType() == ServiceType.Lobby || defaultServiceGroup.serviceType() == ServiceType.Server ? "server.jar" : "velocity.jar", "nogui"};
+            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "server.jar" : "velocity.jar", "nogui"};
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
             processBuilder.directory(this.folder);
@@ -117,13 +119,13 @@ public class MinecraftService implements IService {
             }
 
             Terium.getTerium().getServiceManager().removeService(this);
-            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(serviceName()));
+            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
             try {
                 FileUtils.deleteDirectory(this.folder);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Logger.log("Successfully stopped service '" + serviceName() + "'.", LogType.INFO);
+            Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
         });
         this.thread.start();
     }
@@ -134,16 +136,17 @@ public class MinecraftService implements IService {
             return;
         }
 
-        Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(serviceName()));
-        Logger.log("Trying to stop service '" + serviceName() + "'.", LogType.INFO);
+        Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(getServiceName()));
+        Logger.log("Trying to stop service '" + getServiceName() + "'.", LogType.INFO);
     }
 
     @SneakyThrows
+    @Override
     public void forceShutdown() {
         MinecraftService minecraftService = this;
-        Logger.log("Trying to stop service '" + serviceName() + "'.", LogType.INFO);
-        if (!defaultServiceGroup.serviceType().equals(ServiceType.Proxy))
-            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(serviceName()));
+        Logger.log("Trying to stop service '" + getServiceName() + "'.", LogType.INFO);
+        if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
+            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
         thread.stop();
         process.destroyForcibly();
@@ -153,7 +156,7 @@ public class MinecraftService implements IService {
             public void run() {
                 FileUtils.deleteDirectory(folder);
                 Terium.getTerium().getServiceManager().removeService(minecraftService);
-                Logger.log("Successfully stopped service '" + serviceName() + "'.", LogType.INFO);
+                Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
             }
         }, 5000);
     }
@@ -187,52 +190,27 @@ public class MinecraftService implements IService {
     }
 
     @Override
-    public String serviceName() {
-        return getServiceId() > 9 ? defaultServiceGroup.name() + "-" + getServiceId() : defaultServiceGroup.name() + "-0" + getServiceId();
+    public String getServiceName() {
+        return getServiceId() > 9 ? getServiceGroup().getServiceGroupName() + "-" + getServiceId() : getServiceGroup().getServiceGroupName() + "-0" + getServiceId();
     }
 
     @Override
-    public boolean online() {
-        return online;
+    public int getMaxPlayers() {
+        return ICloudService.super.getMaxPlayers();
     }
 
     @Override
-    public int serviceId() {
-        return serviceId;
+    public int getMaxMemory() {
+        return ICloudService.super.getMaxMemory();
     }
 
     @Override
-    public int port() {
-        return port;
+    public ICloudServiceGroup getServiceGroup() {
+        return null;
     }
 
     @Override
-    public int maxPlayers() {
-        return defaultServiceGroup.maximalServices();
-    }
-
-    @Override
-    public int onlinePlayers() {
-        return onlinePlayers;
-    }
-
-    @Override
-    public int usedMemory() {
-        return usedMemory;
-    }
-
-    @Override
-    public int maxMemory() {
-        return defaultServiceGroup.memory();
-    }
-
-    @Override
-    public DefaultServiceGroup defaultServiceGroup() {
-        return defaultServiceGroup;
-    }
-
-    @Override
-    public ServiceType serviceType() {
-        return defaultServiceGroup.serviceType();
+    public CloudServiceType getServiceType() {
+        return ICloudService.super.getServiceType();
     }
 }

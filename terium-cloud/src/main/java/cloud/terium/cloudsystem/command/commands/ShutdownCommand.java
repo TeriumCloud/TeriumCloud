@@ -16,8 +16,8 @@ public class ShutdownCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args.length == 1) {
-            if (Terium.getTerium().getServiceManager().getServiceByName(args[0]) != null) {
-                Terium.getTerium().getServiceManager().getServiceByName(args[0]).shutdown();
+            if (Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]) != null) {
+                Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]).shutdown();
             } else {
                 Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
             }

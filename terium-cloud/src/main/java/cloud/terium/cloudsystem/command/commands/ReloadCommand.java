@@ -16,12 +16,15 @@ public class ReloadCommand extends Command {
         commandManager.register(this);
     }
 
+    /*
+     * TODO: Fix #reloadGroups() in ServiceGroupManager.
+     */
     @Override
     public void execute(String[] args) {
         if(args.length == 1) {
             if(args[0].equalsIgnoreCase("groups")) {
                 Logger.log("Terium is trying to reload all service groups...", LogType.INFO);
-                Terium.getTerium().getServiceGroupManager().reloadGroups(false);
+                // Terium.getTerium().getServiceGroupManager().reloadGroups(false);
                 Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutGroupsReload());
             } else if(args[0].equalsIgnoreCase("config")) {
                 Logger.log("Terium is trying to reload the config.json...", LogType.INFO);
@@ -33,7 +36,7 @@ public class ReloadCommand extends Command {
                 Terium.getTerium().setConfigManager(new ConfigManager());
                 Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());
                 Logger.log("Successfully reloaded config.json.", LogType.INFO);
-                Terium.getTerium().getServiceGroupManager().reloadGroups(false);
+                // Terium.getTerium().getServiceGroupManager().reloadGroups(false);
                 Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutGroupsReload());
                 Logger.log("Successfully reloaded Terium.", LogType.INFO);
             }

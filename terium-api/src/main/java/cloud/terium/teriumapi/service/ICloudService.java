@@ -12,15 +12,27 @@ public interface ICloudService {
 
     int getPort();
 
-    int getMaxPlayers();
+    default int getMaxPlayers() {
+        return getServiceGroup().getMaximumPlayers();
+    }
 
     int getOnlinePlayers();
 
     int getUsedMemory();
 
-    int getMaxMemory();
+    default int getMaxMemory() {
+        return getServiceGroup().getMemory();
+    }
 
     ICloudServiceGroup getServiceGroup();
 
-    CloudServiceType getServiceType();
+    default CloudServiceType getServiceType() {
+        return getServiceGroup().getServiceType();
+    }
+
+    default void shutdown() {}
+
+    default void forceShutdown() {}
+
+    default void online(boolean online) {}
 }

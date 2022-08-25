@@ -1,9 +1,8 @@
 package cloud.terium.cloudsystem.networking.json;
 
-import cloud.terium.cloudsystem.service.IService;
 import cloud.terium.cloudsystem.service.MinecraftService;
-import cloud.terium.cloudsystem.service.ServiceType;
-import cloud.terium.cloudsystem.service.group.DefaultServiceGroup;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -21,7 +20,7 @@ import java.nio.file.Files;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DefaultJsonService implements IService {
+public class DefaultJsonService implements ICloudService {
 
     private final File file;
     private final Gson gson;
@@ -35,9 +34,9 @@ public class DefaultJsonService implements IService {
 
     public DefaultJsonService(MinecraftService minecraftService, boolean bridge) {
         if (!bridge) {
-            this.file = new File("data/cache/servers/", minecraftService.serviceName() + ".json");
+            this.file = new File("data/cache/servers/", minecraftService.getServiceName() + ".json");
         } else {
-            this.file = new File("../../data/cache/servers/", minecraftService.serviceName() + ".json");
+            this.file = new File("../../data/cache/servers/", minecraftService.getServiceName() + ".json");
         }
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
@@ -56,12 +55,12 @@ public class DefaultJsonService implements IService {
     private void initFile() {
         if (!file.exists()) {
             this.json = new JsonObject();
-            json.addProperty("service_name", minecraftService.serviceName());
+            json.addProperty("service_name", minecraftService.getServiceName());
             json.addProperty("serviceid", minecraftService.getServiceId());
             json.addProperty("port", minecraftService.getPort());
             json.addProperty("online", false);
             json.addProperty("online_players", 0);
-            json.addProperty("service_group", minecraftService.getDefaultServiceGroup().name());
+            json.addProperty("service_group", minecraftService.getServiceGroup().getServiceGroupName());
             json.addProperty("used_memory", 0);
 
             save();
@@ -110,52 +109,37 @@ public class DefaultJsonService implements IService {
     }
 
     @Override
-    public String serviceName() {
-        return minecraftService.serviceName();
+    public String getServiceName() {
+        return minecraftService.getServiceName();
     }
 
     @Override
-    public boolean online() {
+    public boolean isOnline() {
         return json.get("online").getAsBoolean();
     }
 
     @Override
-    public int serviceId() {
-        return minecraftService.serviceId();
+    public int getServiceId() {
+        return minecraftService.getServiceId();
     }
 
     @Override
-    public int port() {
-        return minecraftService.port();
+    public int getPort() {
+        return minecraftService.getPort();
     }
 
     @Override
-    public int maxPlayers() {
-        return minecraftService.maxPlayers();
-    }
-
-    @Override
-    public int onlinePlayers() {
+    public int getOnlinePlayers() {
         return json.get("online_players").getAsInt();
     }
 
     @Override
-    public int usedMemory() {
+    public int getUsedMemory() {
         return json.get("used_memory").getAsInt();
     }
 
     @Override
-    public int maxMemory() {
-        return minecraftService.defaultServiceGroup().memory();
-    }
-
-    @Override
-    public DefaultServiceGroup defaultServiceGroup() {
-        return minecraftService.defaultServiceGroup();
-    }
-
-    @Override
-    public ServiceType serviceType() {
-        return defaultServiceGroup().serviceType();
+    public ICloudServiceGroup getServiceGroup() {
+        return minecraftService.getServiceGroup();
     }
 }

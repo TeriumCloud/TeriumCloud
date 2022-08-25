@@ -48,13 +48,13 @@ public class TeriumServer {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
                                             if (packet instanceof PacketPlayOutServiceOnline packetPlayOutServiceOnline) {
-                                                Terium.getTerium().getServiceManager().getServiceByName(packetPlayOutServiceOnline.minecraftService()).online(packetPlayOutServiceOnline.online());
-                                                Logger.log("The service '" + packetPlayOutServiceOnline.minecraftService() + "' successfully started on port " + Terium.getTerium().getServiceManager().getServiceByName(packetPlayOutServiceOnline.minecraftService()).getPort() + ".", LogType.INFO);
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).online(packetPlayOutServiceOnline.online());
+                                                Logger.log("The service '" + packetPlayOutServiceOnline.minecraftService() + "' successfully started on port " + Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).getPort() + ".", LogType.INFO);
                                             }
 
                                             if (packet instanceof PacketPlayOutServiceForceShutdown packetForce) {
                                                 Logger.log("Trying to stop service '" + packetForce.serviceName() + "'...", LogType.INFO);
-                                                Terium.getTerium().getServiceManager().getServiceByName(packetForce.serviceName()).forceShutdown();
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetForce.serviceName()).forceShutdown();
                                                 return;
                                             }
 
@@ -64,7 +64,7 @@ public class TeriumServer {
                                             }
 
                                             if (packet instanceof PacketPlayOutServiceShutdown packetPlayOutServiceShutdown) {
-                                                Terium.getTerium().getServiceManager().getServiceByName(packetPlayOutServiceShutdown.minecraftService()).shutdown();
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceShutdown.minecraftService()).shutdown();
                                                 return;
                                             }
 
