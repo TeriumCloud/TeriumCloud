@@ -21,5 +21,15 @@
       <option name="name" value="maven" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigotmc-repo" />
+      <option name="name" value="spigotmc-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="sonatype" />
+      <option name="name" value="sonatype" />
+      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
+    </remote-repository>
   </component>
 </project>

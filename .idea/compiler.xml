@@ -10,5 +10,10 @@
         <module name="terium-cloud.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="TeriumAPI" target="17" />
+      <module name="TeriumAPI.main" target="17" />
+      <module name="TeriumAPI.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

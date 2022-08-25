@@ -5,6 +5,11 @@ import cloud.terium.cloudsystem.service.ServiceType;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
+import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
+import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -23,14 +28,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Getter
-public class ServiceGroupManager {
+public class ServiceGroupManager implements ICloudServiceGroupManager {
 
     private File file;
     private Gson gson;
     private ExecutorService pool;
     private JsonObject json;
-    private final List<DefaultServiceGroup> serviceGroups;
-    private final HashMap<String, DefaultServiceGroup> registedServerGroups;
+    private final List<ICloudServiceGroup> serviceGroups;
+    private final HashMap<String, ICloudServiceGroup> registedServerGroups;
     private final boolean bridge;
 
     public ServiceGroupManager() {
@@ -217,29 +222,25 @@ public class ServiceGroupManager {
     }
 
     @SneakyThrows
-    public void initServiceGroup(File groupFile, boolean port) {
+    public void initServiceGroup(File groupFile, CloudServiceType cloudServiceType, boolean port) {
         JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupFile)).getAsJsonObject();
-        this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), port ? new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
-                serviceGroup.get("group_title").getAsString(),
-                ServiceType.valueOf(serviceGroup.get("servicetype").getAsString()),
-                serviceGroup.get("maintenance").getAsBoolean(),
-                serviceGroup.get("port").getAsInt(),
-                serviceGroup.get("maximum_players").getAsInt(),
-                serviceGroup.get("memory").getAsInt(),
-                serviceGroup.get("minimal_services").getAsInt(),
-                serviceGroup.get("maximal_services").getAsInt()) : new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
-                serviceGroup.get("group_title").getAsString(),
-                ServiceType.valueOf(serviceGroup.get("servicetype").getAsString()),
-                serviceGroup.get("maintenance").getAsBoolean(),
-                serviceGroup.get("maximum_players").getAsInt(),
-                serviceGroup.get("memory").getAsInt(),
-                serviceGroup.get("minimal_services").getAsInt(),
-                serviceGroup.get("maximal_services").getAsInt()));
+        if(cloudServiceType == CloudServiceType.Proxy) {
+            this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
+                    serviceGroup.get("group_title").getAsString(),
+                    serviceGroup.get("node").getAsString(),
+                    serviceGroup.get("maintenance").getAsBoolean(),
+                    serviceGroup.get("port").getAsInt(),
+                    serviceGroup.get("maximum_players").getAsInt(),
+                    serviceGroup.get("memory").getAsInt(),
+                    serviceGroup.get("minimal_services").getAsInt(),
+                    serviceGroup.get("maximal_services").getAsInt()));
+        }
+
         if (!bridge)
             Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
     }
 
-    @SneakyThrows
+    /*@SneakyThrows
     public void registerServiceGroup(String groupName) {
         JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupName)).getAsJsonObject();
         this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
@@ -252,11 +253,11 @@ public class ServiceGroupManager {
                 serviceGroup.get("maximal_services").getAsInt()));
         if (!bridge)
             Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
-    }
+    }*/
 
     @SneakyThrows
-    public void updateServiceGroup(DefaultServiceGroup defaultServiceGroup, String update_key, Object update_value) {
-        File groupFile = new File("groups/" + defaultServiceGroup.serviceType() + "/" + defaultServiceGroup.name() + ".json");
+    public void updateServiceGroup(ICloudServiceGroup iCloudServiceGroup, String update_key, Object update_value) {
+        File groupFile = new File("groups/" + iCloudServiceGroup.getServiceType() + "/" + iCloudServiceGroup.getServiceGroupName() + ".json");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
@@ -279,24 +280,47 @@ public class ServiceGroupManager {
         }
 
         switch (update_key) {
-            case "memory" -> defaultServiceGroup.setMemory((Integer) update_value);
-            case "maximum_players" -> defaultServiceGroup.setMaximumPlayers((Integer) update_value);
-            case "minimal_services" -> defaultServiceGroup.setMinimalServices((Integer) update_value);
-            case "maximal_services" -> defaultServiceGroup.setMaximalServices((Integer) update_value);
-            case "port" -> defaultServiceGroup.setPort((Integer) update_value);
-            case "maintenance" -> defaultServiceGroup.setMaintenance((Boolean) update_value);
+            case "memory" -> iCloudServiceGroup.setMemory((Integer) update_value);
+            case "maximum_players" -> iCloudServiceGroup.setMaximumPlayers((Integer) update_value);
+            case "minimal_services" -> iCloudServiceGroup.setMinimalServices((Integer) update_value);
+            case "maximal_services" -> iCloudServiceGroup.setMaximalServices((Integer) update_value);
+            case "port" -> iCloudServiceGroup.setPort((Integer) update_value);
+            case "maintenance" -> iCloudServiceGroup.setMaintenance((Boolean) update_value);
         }
     }
 
-    public DefaultServiceGroup getServiceGroupByName(String name) {
-        return this.registedServerGroups.get(name);
+    @Override
+    public ICloudServiceGroup getServiceGroupByName(String s) {
+        return registedServerGroups.get(s);
     }
 
-    public List<DefaultServiceGroup> getServiceGroupsByGroupTitle(String title) {
-        return this.registedServerGroups.values().stream().filter(group -> group.groupTitle().equals(title)).toList();
+    @Override
+    public List<ICloudServiceGroup> getServiceGroupsByGroupTitle(String s) {
+        return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getGroupTitle().equals(s)).toList();
     }
 
-    public List<DefaultServiceGroup> getServiceGroups() {
-        return registedServerGroups.values().stream().toList();
+    @Override
+    public List<ICloudServiceGroup> getServiceGroupsByWrapper(String s) {
+        return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceGroupNode().equals(s)).toList();
+    }
+
+    @Override
+    public List<ICloudServiceGroup> getLobbyGroups() {
+        return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceType().equals(CloudServiceType.Lobby)).toList();
+    }
+
+    @Override
+    public List<ICloudServiceGroup> getProxyGroups() {
+        return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceType().equals(CloudServiceType.Proxy)).toList();
+    }
+
+    @Override
+    public List<ICloudServiceGroup> getServerGroups() {
+        return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceType().equals(CloudServiceType.Server)).toList();
+    }
+
+    @Override
+    public List<ICloudServiceGroup> getAllServiceGroups() {
+        return null;
     }
 }
