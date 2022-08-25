@@ -1,6 +1,5 @@
-package cloud.terium.cloudsystem.networking.json;
+package cloud.terium.networking.json;
 
-import cloud.terium.cloudsystem.service.MinecraftService;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import com.google.gson.Gson;
@@ -26,21 +25,21 @@ public class DefaultJsonService implements ICloudService {
     private final Gson gson;
     private final ExecutorService pool;
     private JsonObject json;
-    private final MinecraftService minecraftService;
+    private final ICloudService iCloudService;
 
-    public DefaultJsonService(MinecraftService minecraftService) {
-        this(minecraftService, false);
+    public DefaultJsonService(ICloudService iCloudService) {
+        this(iCloudService, false);
     }
 
-    public DefaultJsonService(MinecraftService minecraftService, boolean bridge) {
+    public DefaultJsonService(ICloudService iCloudService, boolean bridge) {
         if (!bridge) {
-            this.file = new File("data/cache/servers/", minecraftService.getServiceName() + ".json");
+            this.file = new File("data/cache/servers/", iCloudService.getServiceName() + ".json");
         } else {
-            this.file = new File("../../data/cache/servers/", minecraftService.getServiceName() + ".json");
+            this.file = new File("../../data/cache/servers/", iCloudService.getServiceName() + ".json");
         }
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
-        this.minecraftService = minecraftService;
+        this.iCloudService = iCloudService;
         this.initFile();
     }
 
@@ -48,19 +47,19 @@ public class DefaultJsonService implements ICloudService {
         this.file = new File("../../data/cache/servers/", servicename + ".json");
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
-        this.minecraftService = null;
+        this.iCloudService = null;
         this.initFile();
     }
 
     private void initFile() {
         if (!file.exists()) {
             this.json = new JsonObject();
-            json.addProperty("service_name", minecraftService.getServiceName());
-            json.addProperty("serviceid", minecraftService.getServiceId());
-            json.addProperty("port", minecraftService.getPort());
+            json.addProperty("service_name", iCloudService.getServiceName());
+            json.addProperty("serviceid", iCloudService.getServiceId());
+            json.addProperty("port", iCloudService.getPort());
             json.addProperty("online", false);
             json.addProperty("online_players", 0);
-            json.addProperty("service_group", minecraftService.getServiceGroup().getServiceGroupName());
+            json.addProperty("service_group", iCloudService.getServiceGroup().getServiceGroupName());
             json.addProperty("used_memory", 0);
 
             save();
@@ -94,6 +93,10 @@ public class DefaultJsonService implements ICloudService {
         return json.get(key).getAsString();
     }
 
+    public boolean getBoolean(String key) {
+        return json.get(key).getAsBoolean();
+    }
+
     public int getInt(String key) {
         return json.get(key).getAsInt();
     }
@@ -110,7 +113,7 @@ public class DefaultJsonService implements ICloudService {
 
     @Override
     public String getServiceName() {
-        return minecraftService.getServiceName();
+        return iCloudService.getServiceName();
     }
 
     @Override
@@ -120,12 +123,12 @@ public class DefaultJsonService implements ICloudService {
 
     @Override
     public int getServiceId() {
-        return minecraftService.getServiceId();
+        return iCloudService.getServiceId();
     }
 
     @Override
     public int getPort() {
-        return minecraftService.getPort();
+        return iCloudService.getPort();
     }
 
     @Override
@@ -140,6 +143,6 @@ public class DefaultJsonService implements ICloudService {
 
     @Override
     public ICloudServiceGroup getServiceGroup() {
-        return minecraftService.getServiceGroup();
+        return iCloudService.getServiceGroup();
     }
 }

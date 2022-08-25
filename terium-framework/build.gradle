@@ -14,6 +14,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
+    compileOnly fileTree(dir: '../terium-api/build/libs', include: '*.jar')
+    compileOnly group: 'commons-io', name: 'commons-io', version: '2.6'
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.79.Final'
 }
 

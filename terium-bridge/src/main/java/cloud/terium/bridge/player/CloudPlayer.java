@@ -1,8 +1,8 @@
 package cloud.terium.bridge.player;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.cloudsystem.service.MinecraftService;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerConnect;
+import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,10 +16,10 @@ public class CloudPlayer {
     private String username;
     private String title;
     private CloudRank rank;
-    private MinecraftService connectedService;
+    private ICloudService connectedService;
 
-    public void connectWithService(MinecraftService minecraftService) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(username, uniqueId, minecraftService.serviceName()));
+    public void connectWithService(ICloudService iCloudService) {
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(username, uniqueId, iCloudService.getServiceName()));
     }
 
     public boolean hasRankOrHigher(CloudRank cloudRank) {
