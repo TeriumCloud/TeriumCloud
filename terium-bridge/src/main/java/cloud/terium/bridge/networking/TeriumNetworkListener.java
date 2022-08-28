@@ -31,7 +31,8 @@ public final class TeriumNetworkListener {
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
                 System.out.println(packet.getClass().getSimpleName());
                 if (packet instanceof PacketPlayOutServiceOnline packetOnline) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).online(packetOnline.online());
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).online(true);
+                    System.out.println(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).isOnline());
                 }
 
                 /*

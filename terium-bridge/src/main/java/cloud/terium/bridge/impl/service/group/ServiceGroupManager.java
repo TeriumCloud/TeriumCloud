@@ -31,31 +31,25 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     private JsonObject json;
     private final List<ICloudServiceGroup> serviceGroups;
     private final HashMap<String, ICloudServiceGroup> registedServerGroups;
-    private final boolean bridge;
 
     public ServiceGroupManager() {
-        this(false);
-    }
-
-    public ServiceGroupManager(boolean bridge) {
-        this.bridge = bridge;
         this.serviceGroups = new ArrayList<>();
         this.registedServerGroups = new HashMap<>();
-        loadGroups(bridge);
+        loadGroups();
     }
 
-    public void loadGroups(boolean bridge) {
-        this.file = bridge ? new File("../../groups/Proxy") : new File("groups/Proxy");
+    public void loadGroups() {
+        this.file = new File("../../groups/Proxy");
         for (File groupFile : file.listFiles()) {
             initServiceGroup(groupFile);
         }
 
-        this.file = bridge ? new File("../../groups/Lobby") : new File("groups/Lobby");
+        this.file = new File("../../groups/Lobby");
         for (File groupFile : file.listFiles()) {
             initServiceGroup(groupFile);
         }
 
-        this.file = bridge ? new File("../../groups/Server") : new File("groups/Server");
+        this.file = new File("../../groups/Server");
         for (File groupFile : file.listFiles()) {
             initServiceGroup(groupFile);
         }

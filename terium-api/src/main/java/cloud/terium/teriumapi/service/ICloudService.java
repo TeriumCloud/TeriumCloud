@@ -6,7 +6,9 @@ public interface ICloudService {
 
     String getServiceName();
 
-    boolean isOnline();
+    default boolean isOnline() {
+        return getServiceState() == CloudServiceState.ONLINE;
+    }
 
     int getServiceId();
 
@@ -26,6 +28,8 @@ public interface ICloudService {
 
     ICloudServiceGroup getServiceGroup();
 
+    CloudServiceState getServiceState();
+
     default CloudServiceType getServiceType() {
         return getServiceGroup().getServiceType();
     }
@@ -33,6 +37,4 @@ public interface ICloudService {
     default void shutdown() {}
 
     default void forceShutdown() {}
-
-    default void online(boolean online) {}
 }

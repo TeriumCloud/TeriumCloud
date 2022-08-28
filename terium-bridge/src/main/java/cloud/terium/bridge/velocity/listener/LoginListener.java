@@ -2,6 +2,7 @@ package cloud.terium.bridge.velocity.listener;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.player.CloudPlayer;
+import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
@@ -42,7 +43,7 @@ public class LoginListener {
         }
 
         if (TeriumBridge.getInstance().getThisService().getServiceGroup().isMaintenance()) {
-            if (!player.hasPermission("terium.maintenancejoin")) {
+            if (!player.hasPermission("terium.maintenancejoin") || TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).hasRankOrHigher(CloudRank.Admin)) {
                 player.disconnect(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("maintenance.message").getAsString()));
             }
         }

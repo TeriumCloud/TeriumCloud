@@ -10,6 +10,7 @@ import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnline;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -45,11 +46,15 @@ public class TeriumBridge {
         new TeriumBridge();
     }
 
+    /*
+     * TODO: Init implementation for ICloudService or something else to set the ServiceState
+     */
+
     public TeriumBridge() {
         instance = this;
         this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
         this.serviceManager = new ServiceManager();
-        this.serviceGroupManager = new ServiceGroupManager(true);
+        this.serviceGroupManager = new ServiceGroupManager();
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
         this.cloudPlayerManager = new CloudPlayerManager();
@@ -120,7 +125,12 @@ public class TeriumBridge {
 
                     @Override
                     public ICloudServiceGroup getServiceGroup() {
-                        return serviceGroupManager.getServiceGroupByName("service_group");
+                        return serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"));
+                    }
+
+                    @Override
+                    public CloudServiceState getServiceState() {
+                        return CloudServiceState.PREPARING;
                     }
                 });
 
@@ -134,7 +144,7 @@ public class TeriumBridge {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getThisService().online(true);
+                getThisService().getServiceState();
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnline(getThisService().getServiceName(), true));
             }
         }, 500);
@@ -184,6 +194,11 @@ public class TeriumBridge {
                     public ICloudServiceGroup getServiceGroup() {
                         return serviceGroupManager.getServiceGroupByName("service_group");
                     }
+
+                    @Override
+                    public CloudServiceState getServiceState() {
+                        return CloudServiceState.PREPARING;
+                    }
                 });
             }
         }
@@ -191,7 +206,7 @@ public class TeriumBridge {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getThisService().online(true);
+                getThisService().getServiceState();
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnline(getThisService().getServiceName(), true));
             }
         }, 500);
