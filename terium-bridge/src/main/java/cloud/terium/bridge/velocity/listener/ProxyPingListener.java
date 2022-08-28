@@ -14,7 +14,7 @@ public class ProxyPingListener {
 
         builder.description(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("motd.line1").getAsString() + "\n" +
                 TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("motd.line2").getAsString()));
-        if (TeriumBridge.getInstance().getThisService().getDefaultServiceGroup().maintenance())
+        if (TeriumBridge.getInstance().getThisService().getServiceGroup().isMaintenance())
             builder.description(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("motd.maintenance.line1").getAsString() + "\n" +
                     TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("motd.maintenance.line2").getAsString()));
 

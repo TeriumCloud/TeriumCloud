@@ -43,9 +43,9 @@ public class BridgeVelocityStartup {
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
 
         proxyServer.getScheduler().buildTask(this, () -> {
-            if(!teriumBridge.getServiceManager().getLobbyServices().isEmpty()) {
+            if(!teriumBridge.getServiceManager().getAllLobbyServices().isEmpty()) {
                 proxyServer.unregisterServer(proxyServer.getServer("fallback").get().getServerInfo());
-                proxyServer.registerServer(new ServerInfo("fallback", new InetSocketAddress("127.0.0.1", teriumBridge.getServiceManager().getLobbyServices().get(0).port())));
+                proxyServer.registerServer(new ServerInfo("fallback", new InetSocketAddress("127.0.0.1", teriumBridge.getServiceManager().getAllLobbyServices().get(0).getPort())));
             }
         }).repeat(2, TimeUnit.SECONDS).schedule();
     }

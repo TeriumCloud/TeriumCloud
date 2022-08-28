@@ -8,13 +8,14 @@ import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
 import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.Getter;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.io.File;
 import java.net.InetSocketAddress;
 
 @Getter
@@ -64,7 +65,42 @@ public final class TeriumNetworkListener {
                  */
                 if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceManager().addService(new MinecraftService(TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup()), packetAdd.serviceId(), packetAdd.port()), true);
+                        TeriumBridge.getInstance().getServiceManager().addService(new ICloudService() {
+                            @Override
+                            public String getServiceName() {
+                                return packetAdd.serviceName();
+                            }
+
+                            @Override
+                            public boolean isOnline() {
+                                return true;
+                            }
+
+                            @Override
+                            public int getServiceId() {
+                                return packetAdd.serviceId();
+                            }
+
+                            @Override
+                            public int getPort() {
+                                return packetAdd.port();
+                            }
+
+                            @Override
+                            public int getOnlinePlayers() {
+                                return 0;
+                            }
+
+                            @Override
+                            public int getUsedMemory() {
+                                return 0;
+                            }
+
+                            @Override
+                            public ICloudServiceGroup getServiceGroup() {
+                                return TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup());
+                            }
+                        });
                         if (BridgeVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
                             return;
                         }
@@ -74,8 +110,8 @@ public final class TeriumNetworkListener {
                     }
 
                     if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                        if (TeriumBridge.getInstance().getServiceManager().getServiceByName(packetRemove.serviceName()) != null) {
-                            TeriumBridge.getInstance().getServiceManager().removeService(TeriumBridge.getInstance().getServiceManager().getServiceByName(packetRemove.serviceName()), true);
+                        if (TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()) != null) {
+                            TeriumBridge.getInstance().getServiceManager().removeService(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()));
 
                             BridgeVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).getRank().equals(CloudRank.Admin)).forEach(player -> player.sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + "The service <dark_gray>'<#37b4b4>" + packetRemove.serviceName() + "<dark_gray>' <white>is successfully shutting down.")));
                             BridgeVelocityStartup.getInstance().getProxyServer().unregisterServer(BridgeVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).orElse(null).getServerInfo());
@@ -89,12 +125,47 @@ public final class TeriumNetworkListener {
                     }
                 } else {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceManager().addService(new MinecraftService(TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup()), packetAdd.serviceId(), packetAdd.port()), true);
+                        TeriumBridge.getInstance().getServiceManager().addService(new ICloudService() {
+                            @Override
+                            public String getServiceName() {
+                                return packetAdd.serviceName();
+                            }
+
+                            @Override
+                            public boolean isOnline() {
+                                return true;
+                            }
+
+                            @Override
+                            public int getServiceId() {
+                                return packetAdd.serviceId();
+                            }
+
+                            @Override
+                            public int getPort() {
+                                return packetAdd.port();
+                            }
+
+                            @Override
+                            public int getOnlinePlayers() {
+                                return 0;
+                            }
+
+                            @Override
+                            public int getUsedMemory() {
+                                return 0;
+                            }
+
+                            @Override
+                            public ICloudServiceGroup getServiceGroup() {
+                                return TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup());
+                            }
+                        });
                     }
 
                     if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                        if (TeriumBridge.getInstance().getServiceManager().getServiceByName(packetRemove.serviceName()) != null) {
-                            TeriumBridge.getInstance().getServiceManager().removeService(TeriumBridge.getInstance().getServiceManager().getServiceByName(packetRemove.serviceName()), true);
+                        if (TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()) != null) {
+                            TeriumBridge.getInstance().getServiceManager().removeService(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()));
                         } else {
                             System.out.println("This service isn't connected with the proxy service.");
                         }

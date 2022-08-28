@@ -1,9 +1,5 @@
 package cloud.terium.bridge.impl.service.group;
 
-import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.utils.logger.LogType;
-import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
@@ -42,41 +38,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     }
 
     public ServiceGroupManager(boolean bridge) {
-        if (bridge) {
-            this.file = new File("../../groups/Proxy/");
-
-            if (file.mkdirs()) {
-                Logger.log("Successfully init proxy-group folder.", LogType.INFO);
-            }
-
-            this.file = new File("../../groups/Lobby/");
-
-            if (file.mkdirs()) {
-                Logger.log("Successfully init lobby-group folder.", LogType.INFO);
-            }
-
-            this.file = new File("../../groups/Server/");
-
-        } else {
-            this.file = new File("groups/Proxy/");
-
-            if (file.mkdirs()) {
-                Logger.log("Successfully init proxy-group folder.", LogType.INFO);
-            }
-
-            this.file = new File("groups/Lobby/");
-
-            if (file.mkdirs()) {
-                Logger.log("Successfully init lobby-group folder.", LogType.INFO);
-            }
-
-            this.file = new File("groups/Server/");
-
-        }
-        if (file.mkdirs()) {
-            Logger.log("Successfully init server-group folder.", LogType.INFO);
-        }
-
         this.bridge = bridge;
         this.serviceGroups = new ArrayList<>();
         this.registedServerGroups = new HashMap<>();
@@ -97,59 +58,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         this.file = bridge ? new File("../../groups/Server") : new File("groups/Server");
         for (File groupFile : file.listFiles()) {
             initServiceGroup(groupFile);
-        }
-    }
-
-    /*
-     * TODO: Recode reloadGroups(File file);
-     * TODO: Important to use this methode.
-     */
-    /*@SneakyThrows
-    public void reloadGroups(boolean bridge) {
-        this.file = bridge ? new File("../../groups/Proxy") : new File("groups/Proxy");
-        for (File groupFile : file.listFiles()) {
-            reloadGroup(groupFile);
-        }
-
-        this.file = bridge ? new File("../../groups/Lobby") : new File("groups/Lobby");
-        for (File groupFile : file.listFiles()) {
-            reloadGroup(groupFile);
-        }
-
-        this.file = bridge ? new File("../../groups/Server") : new File("groups/Server");
-        for (File groupFile : file.listFiles()) {
-            reloadGroup(groupFile);
-        }
-
-        if(!bridge) Logger.log("Successfully reloaded all service groups.", LogType.INFO);
-    }*/
-
-
-    /*
-     * TODO: Recode reloadGroups(File file);
-     */
-    /*@SneakyThrows
-    public void reloadGroup(File file) {
-        JsonObject jsonObject = new JsonParser().parse(new FileReader(file)).getAsJsonObject();
-        ICloudServiceGroup serviceGroup = getServiceGroupByName(file.getName().replace(".json", ""));
-        serviceGroup.setName(jsonObject.get("group_name").getAsString());
-        serviceGroup.setGroupTitle(jsonObject.get("group_title").getAsString());
-        serviceGroup.setMaintenance(jsonObject.get("maintenance").getAsBoolean());
-        if(serviceGroup.port() != -1) serviceGroup.setPort(jsonObject.get("port").getAsInt());
-        serviceGroup.setMaximumPlayers(jsonObject.get("maximum_players").getAsInt());
-        serviceGroup.setMinimalServices(jsonObject.get("minimal_services").getAsInt());
-        serviceGroup.setMaximalServices(jsonObject.get("maximal_services").getAsInt());
-    }*/
-
-    public void createServiceGroup(ICloudServiceGroup defaultServiceGroup) {
-        this.file = new File("groups/" + defaultServiceGroup.getServiceType() + "/" + defaultServiceGroup.getServiceGroupName() + ".json");
-
-        if (defaultServiceGroup.getPort() == -1) initFile(file, defaultServiceGroup);
-        else initFile(file, defaultServiceGroup, true);
-
-        if(Terium.getTerium().getCloudUtils().getSetupState() == SetupState.DONE) {
-            serviceGroups.add(defaultServiceGroup);
-            registedServerGroups.put(defaultServiceGroup.getServiceGroupName(), defaultServiceGroup);
         }
     }
 
@@ -270,9 +178,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                 this.serviceGroups.add(iCloudServiceGroup);
             }
         }
-
-        if (!bridge)
-            Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
     }
 
     /*@SneakyThrows

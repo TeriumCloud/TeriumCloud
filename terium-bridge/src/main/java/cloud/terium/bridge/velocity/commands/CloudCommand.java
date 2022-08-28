@@ -49,10 +49,10 @@ public class CloudCommand {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" "));
         TeriumBridge.getInstance().getServiceGroupManager().getServiceGroups().forEach(group -> {
             AtomicInteger i = new AtomicInteger();
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + group.name() + " (Parent: " + group.groupTitle() + " / Type: " + group.serviceType() + ")"));
-            TeriumBridge.getInstance().getServiceManager().getMinecraftServices().stream().filter(service -> service.getDefaultServiceGroup().equals(group)).forEach(service -> {
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + group.getServiceGroupName() + " (Parent: " + group.getGroupTitle() + " / Type: " + group.getServiceType() + ")"));
+            TeriumBridge.getInstance().getServiceManager().getMinecraftServices().stream().filter(service -> service.getServiceGroup().equals(group)).forEach(service -> {
                 i.getAndIncrement();
-                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + i.get() + ". <gradient:#245dec:#00d4ff>" + service.serviceName() + "</gradient> / Port: " + service.getPort() + " / State: " + service.online()));
+                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + i.get() + ". <gradient:#245dec:#00d4ff>" + service.getServiceName() + "</gradient> / Port: " + service.getPort() + " / State: " + service.isOnline()));
             });
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" "));
         });
@@ -60,25 +60,25 @@ public class CloudCommand {
     }
 
     private int startService(CommandContext<CommandSource> context) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceStart(TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(context.getArgument("servicegroup", String.class)).name()));
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceStart(TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(context.getArgument("servicegroup", String.class)).getServiceGroupName()));
         return 1;
     }
 
     private int shutdownService(CommandContext<CommandSource> context) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceShutdown(TeriumBridge.getInstance().getServiceManager().getServiceByName(context.getArgument("service", String.class)).serviceName()));
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceShutdown(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(context.getArgument("service", String.class)).getServiceName()));
         return 1;
     }
 
     private CompletableFuture<Suggestions> suggestServiceGroups(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
         TeriumBridge.getInstance().getServiceGroupManager().getServiceGroups().forEach(group -> {
-            suggestionsBuilder.suggest(group.name());
+            suggestionsBuilder.suggest(group.getServiceGroupName());
         });
         return suggestionsBuilder.buildFuture();
     }
 
     private CompletableFuture<Suggestions> suggestOnlineServices(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
         TeriumBridge.getInstance().getServiceManager().getMinecraftServices().forEach(service -> {
-            suggestionsBuilder.suggest(service.serviceName());
+            suggestionsBuilder.suggest(service.getServiceName());
         });
         return suggestionsBuilder.buildFuture();
     }
