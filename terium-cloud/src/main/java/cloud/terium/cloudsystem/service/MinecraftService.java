@@ -1,12 +1,13 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.networking.json.DefaultJsonService;
+import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceForceShutdown;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -27,7 +28,7 @@ import java.util.TimerTask;
 public class MinecraftService implements ICloudService {
 
     private final ICloudServiceGroup serviceGroup;
-    private final File template;
+    private CloudServiceState serviceState;
     private final File folder;
     private final int port;
     private final int serviceId;
@@ -35,6 +36,7 @@ public class MinecraftService implements ICloudService {
     private int usedMemory;
     private int onlinePlayers;
     private Process process;
+    private final File template;
     private Thread thread;
 
     public MinecraftService(ICloudServiceGroup serviceGroup) {
@@ -210,7 +212,27 @@ public class MinecraftService implements ICloudService {
     }
 
     @Override
+    public CloudServiceState getServiceState() {
+        return serviceState;
+    }
+
+    @Override
     public CloudServiceType getServiceType() {
-        return ICloudService.super.getServiceType();
+        return serviceGroup.getServiceType();
+    }
+
+    @Override
+    public void setOnlinePlayers(int i) {
+        this.onlinePlayers = i;
+    }
+
+    @Override
+    public void setUsedMemory(int i) {
+        this.usedMemory = i;
+    }
+
+    @Override
+    public void setServiceState(CloudServiceState cloudServiceState) {
+        this.serviceState = serviceState;
     }
 }

@@ -1,7 +1,7 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.networking.json.DefaultJsonService;
+import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceManager;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;

@@ -11,7 +11,6 @@ public class DefaultTeriumNetworking {
 
     private final TeriumClient client;
     private final ConfigManager configManager;
-    private int port;
 
     public DefaultTeriumNetworking(ConfigManager configManager) {
         this.configManager = configManager;

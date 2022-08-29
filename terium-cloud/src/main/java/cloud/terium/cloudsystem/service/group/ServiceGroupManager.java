@@ -10,6 +10,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
+import cloud.terium.teriumapi.service.impl.CloudServiceGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -100,11 +101,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         }
     }
 
-    /*
-     * TODO: Recode reloadGroups(File file);
-     * TODO: Important to use this methode.
-     */
-    /*@SneakyThrows
+    @SneakyThrows
     public void reloadGroups(boolean bridge) {
         this.file = bridge ? new File("../../groups/Proxy") : new File("groups/Proxy");
         for (File groupFile : file.listFiles()) {
@@ -122,24 +119,23 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         }
 
         if(!bridge) Logger.log("Successfully reloaded all service groups.", LogType.INFO);
-    }*/
-
+    }
 
     /*
-     * TODO: Recode reloadGroups(File file);
+     * Implement the #set Methodes in ICloudServiceGroup
      */
-    /*@SneakyThrows
+    @SneakyThrows
     public void reloadGroup(File file) {
         JsonObject jsonObject = new JsonParser().parse(new FileReader(file)).getAsJsonObject();
         ICloudServiceGroup serviceGroup = getServiceGroupByName(file.getName().replace(".json", ""));
-        serviceGroup.setName(jsonObject.get("group_name").getAsString());
+        serviceGroup.setGroupName(jsonObject.get("group_name").getAsString());
         serviceGroup.setGroupTitle(jsonObject.get("group_title").getAsString());
         serviceGroup.setMaintenance(jsonObject.get("maintenance").getAsBoolean());
-        if(serviceGroup.port() != -1) serviceGroup.setPort(jsonObject.get("port").getAsInt());
+        if(serviceGroup.getPort() != -1) serviceGroup.setPort(jsonObject.get("port").getAsInt());
         serviceGroup.setMaximumPlayers(jsonObject.get("maximum_players").getAsInt());
-        serviceGroup.setMinimalServices(jsonObject.get("minimal_services").getAsInt());
+        serviceGroup.setMinimumServices(jsonObject.get("minimal_services").getAsInt());
         serviceGroup.setMaximalServices(jsonObject.get("maximal_services").getAsInt());
-    }*/
+    }
 
     public void createServiceGroup(ICloudServiceGroup defaultServiceGroup) {
         this.file = new File("groups/" + defaultServiceGroup.getServiceType() + "/" + defaultServiceGroup.getServiceGroupName() + ".json");
@@ -186,7 +182,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         }
     }
 
-    private void reloadServiceGroup(File file, ICloudServiceGroup defaultServiceGroup, boolean port) {
+    /*private void reloadServiceGroup(File file, ICloudServiceGroup defaultServiceGroup, boolean port) {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.pool = Executors.newFixedThreadPool(2);
 
@@ -213,7 +209,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
             } catch (FileNotFoundException ignored) {
             }
         }
-    }
+    }*/
 
     public void save() {
         pool.execute(() -> {
@@ -225,9 +221,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         });
     }
 
-    /*
-     * TODO: Find out why the jsons arent exist(full / filled)
-     */
     @SneakyThrows
     public void initServiceGroup(File groupFile) {
         JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupFile)).getAsJsonObject();
@@ -316,7 +309,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
 
 
         /*
-         * TODO: Code this into terium-api and fix that
+         * TODO: fix that (possibly code this into terium-api)
          */
         /*switch (update_key) {
             case "memory" -> iCloudServiceGroup.setMemory((Integer) update_value);

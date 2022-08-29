@@ -43,7 +43,8 @@ public class LoginListener {
         }
 
         if (TeriumBridge.getInstance().getThisService().getServiceGroup().isMaintenance()) {
-            if (!player.hasPermission("terium.maintenancejoin") || TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).hasRankOrHigher(CloudRank.Admin)) {
+            System.out.println(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).isAdmin());
+            if (!TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).isAdmin()) {
                 player.disconnect(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("maintenance.message").getAsString()));
             }
         }

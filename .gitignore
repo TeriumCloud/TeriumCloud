@@ -13,9 +13,7 @@
 /terium-framework/.idea/
 /terium-framework/build/
 /terium-framework/gradle/
-/terium-bridge/gradle/
-/terium-bridge/build/
-/terium-bridge/.gradle/
+/terium-bridge/
 
 # Log file
 *.log

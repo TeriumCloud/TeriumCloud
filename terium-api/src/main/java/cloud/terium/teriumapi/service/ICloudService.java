@@ -34,6 +34,12 @@ public interface ICloudService {
         return getServiceGroup().getServiceType();
     }
 
+    void setOnlinePlayers(int onlinePlayers);
+
+    void setUsedMemory(int usedMemory);
+
+    void setServiceState(CloudServiceState serviceState);
+
     default void shutdown() {}
 
     default void forceShutdown() {}

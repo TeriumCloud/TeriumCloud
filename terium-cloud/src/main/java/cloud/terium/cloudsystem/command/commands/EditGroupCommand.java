@@ -20,7 +20,7 @@ public class EditGroupCommand  extends Command {
             case 1 -> {
                 if(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
                     Logger.log("Information of service group '" + args[0] + "':", LogType.INFO);
-                    Logger.log(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]).toString());
+                    Logger.log(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]).getInformations());
 
                     Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutGroupReload(args[0]));
                 } else {

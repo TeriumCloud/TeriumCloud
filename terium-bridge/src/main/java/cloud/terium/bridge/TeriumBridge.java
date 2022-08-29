@@ -14,6 +14,7 @@ import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.service.impl.CloudService;
 import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
@@ -47,7 +48,8 @@ public class TeriumBridge {
     }
 
     /*
-     * TODO: Init implementation for ICloudService or something else to set the ServiceState
+     * FINISHED: Init implementation for ICloudService or something else to set the ServiceState
+     *  TODO: Test this implementation
      */
 
     public TeriumBridge() {
@@ -92,47 +94,7 @@ public class TeriumBridge {
             DefaultJsonService jsonService = new DefaultJsonService(file.getName().replace(".json", ""));
 
             if (serviceManager.getCloudServiceByName(jsonService.getString("service_name")) == null) {
-                serviceManager.addService(new ICloudService() {
-                    @Override
-                    public String getServiceName() {
-                        return jsonService.getString("service_name");
-                    }
-
-                    @Override
-                    public boolean isOnline() {
-                        return jsonService.getBoolean("online");
-                    }
-
-                    @Override
-                    public int getServiceId() {
-                        return jsonService.getInt("serviceid");
-                    }
-
-                    @Override
-                    public int getPort() {
-                        return jsonService.getInt("port");
-                    }
-
-                    @Override
-                    public int getOnlinePlayers() {
-                        return jsonService.getInt("online_players");
-                    }
-
-                    @Override
-                    public int getUsedMemory() {
-                        return jsonService.getInt("used_memory");
-                    }
-
-                    @Override
-                    public ICloudServiceGroup getServiceGroup() {
-                        return serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"));
-                    }
-
-                    @Override
-                    public CloudServiceState getServiceState() {
-                        return CloudServiceState.PREPARING;
-                    }
-                });
+                serviceManager.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"))));
 
                 if (!jsonService.getString("service_group").equals("Proxy"))
                     server.registerServer(new ServerInfo(jsonService.getString("service_name"), new InetSocketAddress("127.0.0.1", jsonService.getInt("port"))));
@@ -144,7 +106,7 @@ public class TeriumBridge {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getThisService().getServiceState();
+                getThisService().setServiceState(CloudServiceState.ONLINE);
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnline(getThisService().getServiceName(), true));
             }
         }, 500);
@@ -159,54 +121,14 @@ public class TeriumBridge {
             DefaultJsonService jsonService = new DefaultJsonService(file.getName().replace(".json", ""));
 
             if (serviceManager.getCloudServiceByName(jsonService.getString("service_name")) == null) {
-                serviceManager.addService(new ICloudService() {
-                    @Override
-                    public String getServiceName() {
-                        return jsonService.getString("service_name");
-                    }
-
-                    @Override
-                    public boolean isOnline() {
-                        return jsonService.getBoolean("online");
-                    }
-
-                    @Override
-                    public int getServiceId() {
-                        return jsonService.getInt("serviceid");
-                    }
-
-                    @Override
-                    public int getPort() {
-                        return jsonService.getInt("port");
-                    }
-
-                    @Override
-                    public int getOnlinePlayers() {
-                        return jsonService.getInt("online_players");
-                    }
-
-                    @Override
-                    public int getUsedMemory() {
-                        return jsonService.getInt("used_memory");
-                    }
-
-                    @Override
-                    public ICloudServiceGroup getServiceGroup() {
-                        return serviceGroupManager.getServiceGroupByName("service_group");
-                    }
-
-                    @Override
-                    public CloudServiceState getServiceState() {
-                        return CloudServiceState.PREPARING;
-                    }
-                });
+                serviceManager.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"))));
             }
         }
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getThisService().getServiceState();
+                getThisService().setServiceState(CloudServiceState.ONLINE);
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnline(getThisService().getServiceName(), true));
             }
         }, 500);

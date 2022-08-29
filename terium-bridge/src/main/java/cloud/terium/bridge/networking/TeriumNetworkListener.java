@@ -7,9 +7,11 @@ import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.service.impl.CloudService;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -31,8 +33,7 @@ public final class TeriumNetworkListener {
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
                 System.out.println(packet.getClass().getSimpleName());
                 if (packet instanceof PacketPlayOutServiceOnline packetOnline) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).online(true);
-                    System.out.println(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).isOnline());
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).setServiceState(CloudServiceState.ONLINE);
                 }
 
                 /*
@@ -61,47 +62,9 @@ public final class TeriumNetworkListener {
                     }
                 }
 
-                /*
-                 * TODO: Code a easier way to add ICloudServices
-                 */
                 if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceManager().addService(new ICloudService() {
-                            @Override
-                            public String getServiceName() {
-                                return packetAdd.serviceName();
-                            }
-
-                            @Override
-                            public boolean isOnline() {
-                                return true;
-                            }
-
-                            @Override
-                            public int getServiceId() {
-                                return packetAdd.serviceId();
-                            }
-
-                            @Override
-                            public int getPort() {
-                                return packetAdd.port();
-                            }
-
-                            @Override
-                            public int getOnlinePlayers() {
-                                return 0;
-                            }
-
-                            @Override
-                            public int getUsedMemory() {
-                                return 0;
-                            }
-
-                            @Override
-                            public ICloudServiceGroup getServiceGroup() {
-                                return TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup());
-                            }
-                        });
+                        TeriumBridge.getInstance().getServiceManager().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup()), false));
                         if (BridgeVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
                             return;
                         }
@@ -126,42 +89,7 @@ public final class TeriumNetworkListener {
                     }
                 } else {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceManager().addService(new ICloudService() {
-                            @Override
-                            public String getServiceName() {
-                                return packetAdd.serviceName();
-                            }
-
-                            @Override
-                            public boolean isOnline() {
-                                return true;
-                            }
-
-                            @Override
-                            public int getServiceId() {
-                                return packetAdd.serviceId();
-                            }
-
-                            @Override
-                            public int getPort() {
-                                return packetAdd.port();
-                            }
-
-                            @Override
-                            public int getOnlinePlayers() {
-                                return 0;
-                            }
-
-                            @Override
-                            public int getUsedMemory() {
-                                return 0;
-                            }
-
-                            @Override
-                            public ICloudServiceGroup getServiceGroup() {
-                                return TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup());
-                            }
-                        });
+                        TeriumBridge.getInstance().getServiceManager().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup()), false));
                     }
 
                     if (packet instanceof PacketPlayOutServiceRemove packetRemove) {

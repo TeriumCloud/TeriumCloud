@@ -9,6 +9,7 @@ import cloud.terium.networking.packet.codec.PacketDecoder;
 import cloud.terium.networking.packet.codec.PacketEncoder;
 import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -48,7 +49,7 @@ public class TeriumServer {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
                                             if (packet instanceof PacketPlayOutServiceOnline packetPlayOutServiceOnline) {
-                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).online(packetPlayOutServiceOnline.online());
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).setServiceState(CloudServiceState.ONLINE);
                                                 Logger.log("The service '" + packetPlayOutServiceOnline.minecraftService() + "' successfully started on port " + Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).getPort() + ".", LogType.INFO);
                                             }
 

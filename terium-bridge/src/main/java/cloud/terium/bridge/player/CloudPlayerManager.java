@@ -36,8 +36,7 @@ public class CloudPlayerManager {
         CloudPlayer cloudPlayer = new CloudPlayer();
         cloudPlayer.setUsername(playerName);
         cloudPlayer.setUniqueId(uniqueId);
-        if (playerName.equals("Jxnnik")) cloudPlayer.setRank(CloudRank.Admin);
-        else cloudPlayer.setRank(CloudRank.VIP);
+        if (playerName.equals("Jxnnik")) cloudPlayer.setRank(CloudRank.Admin); else cloudPlayer.setRank(CloudRank.VIP);
         cloudPlayer.setTitle(null);
         cloudPlayer.setConnectedService(null);
         // TeriumBridge.getInstance().getMySQLManager().updateDatabase("INSERT INTO playerData (player_uuid, player_name, cloud_rank, connected_server) VALUES ('" + uniqueId + "', '" + playerName + "', 'Default', 'null')");

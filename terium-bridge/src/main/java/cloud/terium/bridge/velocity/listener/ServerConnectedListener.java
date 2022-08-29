@@ -28,8 +28,6 @@ public class ServerConnectedListener {
         Player player = event.getPlayer();
         ICloudService minecraftService = TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().size() > 0 ? TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().get(0) : null;
 
-        player.sendMessage(MiniMessage.miniMessage().deserialize(minecraftService + " / " + event.getResult().getServer().get().getServerInfo().getName()));
-
         if(event.getResult().getServer().get().getServerInfo().getName().equals("fallback") && minecraftService != null)
             player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(minecraftService.getServiceName()).get()).connect();
     }
@@ -38,8 +36,6 @@ public class ServerConnectedListener {
     public void handleServerConnected(KickedFromServerEvent event) {
         Player player = event.getPlayer();
         ICloudService minecraftService = TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().size() > 0 ? TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().get(0) : null;
-
-        player.sendMessage(MiniMessage.miniMessage().deserialize("KICKED SERVER: " + minecraftService + " / "));
 
         if(minecraftService != null)
             player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(minecraftService.getServiceName()).get()).connect();
