@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public interface ICloudPlayerManager {
 
-    ICloudPlayer getCloudPlayerByName(String username);
+    ICloudPlayer getCloudPlayer(String username);
 
-    ICloudPlayer getCloudPlayerByUniqueId(UUID uniqueId);
+    ICloudPlayer getCloudPlayer(UUID uniqueId);
 
     List<ICloudPlayer> getRegisteredPlayers();
 
