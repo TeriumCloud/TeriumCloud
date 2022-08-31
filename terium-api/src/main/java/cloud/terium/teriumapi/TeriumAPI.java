@@ -13,8 +13,7 @@ public abstract class TeriumAPI {
         instance = this;
     }
 
-    public static
-    TeriumAPI getInstance() {
+    public static TeriumAPI getInstance() {
         return instance;
     }
 
