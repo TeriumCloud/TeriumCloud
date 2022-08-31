@@ -127,9 +127,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         });
     }
 
-    /*
-     * TODO: Find out why the jsons arent exist(full / filled)
-     */
     @SneakyThrows
     public void initServiceGroup(File groupFile) {
         JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupFile)).getAsJsonObject();
