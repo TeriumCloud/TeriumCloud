@@ -12,6 +12,10 @@ import java.nio.file.Files;
 
 public interface ICloudServiceGroup {
 
+    /*
+     * TODO: Write documentation
+     */
+
     String getServiceGroupName();
 
     String getGroupTitle();
