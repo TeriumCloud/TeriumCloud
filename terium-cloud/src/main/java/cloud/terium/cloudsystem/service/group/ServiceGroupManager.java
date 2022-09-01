@@ -101,42 +101,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         }
     }
 
-    @SneakyThrows
-    public void reloadGroups(boolean bridge) {
-        this.file = bridge ? new File("../../groups/Proxy") : new File("groups/Proxy");
-        for (File groupFile : file.listFiles()) {
-            reloadGroup(groupFile);
-        }
-
-        this.file = bridge ? new File("../../groups/Lobby") : new File("groups/Lobby");
-        for (File groupFile : file.listFiles()) {
-            reloadGroup(groupFile);
-        }
-
-        this.file = bridge ? new File("../../groups/Server") : new File("groups/Server");
-        for (File groupFile : file.listFiles()) {
-            reloadGroup(groupFile);
-        }
-
-        if(!bridge) Logger.log("Successfully reloaded all service groups.", LogType.INFO);
-    }
-
-    /*
-     * Implement the #set Methodes in ICloudServiceGroup
-     */
-    @SneakyThrows
-    public void reloadGroup(File file) {
-        JsonObject jsonObject = new JsonParser().parse(new FileReader(file)).getAsJsonObject();
-        ICloudServiceGroup serviceGroup = getServiceGroupByName(file.getName().replace(".json", ""));
-        serviceGroup.setGroupName(jsonObject.get("group_name").getAsString());
-        serviceGroup.setGroupTitle(jsonObject.get("group_title").getAsString());
-        serviceGroup.setMaintenance(jsonObject.get("maintenance").getAsBoolean());
-        if(serviceGroup.getPort() != -1) serviceGroup.setPort(jsonObject.get("port").getAsInt());
-        serviceGroup.setMaximumPlayers(jsonObject.get("maximum_players").getAsInt());
-        serviceGroup.setMinimumServices(jsonObject.get("minimal_services").getAsInt());
-        serviceGroup.setMaximalServices(jsonObject.get("maximal_services").getAsInt());
-    }
-
     public void createServiceGroup(ICloudServiceGroup defaultServiceGroup) {
         this.file = new File("groups/" + defaultServiceGroup.getServiceType() + "/" + defaultServiceGroup.getServiceGroupName() + ".json");
 
@@ -181,35 +145,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
             }
         }
     }
-
-    /*private void reloadServiceGroup(File file, ICloudServiceGroup defaultServiceGroup, boolean port) {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
-        this.pool = Executors.newFixedThreadPool(2);
-
-        if (!file.exists()) {
-            try (final PrintWriter writer = new PrintWriter(file)) {
-                writer.print(gson.toJson(json = new JsonObject()));
-                json.addProperty("group_name", defaultServiceGroup.getServiceGroupName());
-                json.addProperty("group_title", defaultServiceGroup.getGroupTitle());
-                json.addProperty("node", defaultServiceGroup.getServiceGroupNode());
-                json.addProperty("servicetype", defaultServiceGroup.getServiceType().toString());
-                if (port) json.addProperty("port", defaultServiceGroup.getPort());
-                json.addProperty("maintenance", defaultServiceGroup.isMaintenance());
-                json.addProperty("maximum_players", defaultServiceGroup.getMaximumPlayers());
-                json.addProperty("memory", defaultServiceGroup.getMemory());
-                json.addProperty("minimal_services", defaultServiceGroup.getMinimalServices());
-                json.addProperty("maximal_services", defaultServiceGroup.getMaximalServices());
-
-                save();
-            } catch (FileNotFoundException ignored) {
-            }
-        } else {
-            try {
-                json = new JsonParser().parse(new FileReader(file)).getAsJsonObject();
-            } catch (FileNotFoundException ignored) {
-            }
-        }
-    }*/
 
     public void save() {
         pool.execute(() -> {
@@ -267,21 +202,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         if (!bridge)
             Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
     }
-
-    /*@SneakyThrows
-    public void registerServiceGroup(String groupName) {
-        JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupName)).getAsJsonObject();
-        this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), new DefaultServiceGroup(serviceGroup.get("group_name").getAsString(),
-                serviceGroup.get("group_title").getAsString(),
-                ServiceType.valueOf(serviceGroup.get("servicetype").getAsString()),
-                serviceGroup.get("maintenance").getAsBoolean(),
-                serviceGroup.get("maximum_players").getAsInt(),
-                serviceGroup.get("memory").getAsInt(),
-                serviceGroup.get("minimal_services").getAsInt(),
-                serviceGroup.get("maximal_services").getAsInt()));
-        if (!bridge)
-            Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
-    }*/
 
     @SneakyThrows
     public void updateServiceGroup(ICloudServiceGroup iCloudServiceGroup, String update_key, Object update_value) {
