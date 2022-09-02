@@ -7,23 +7,26 @@ import cloud.terium.teriumapi.service.ICloudServiceManager;
 
 public abstract class TeriumAPI {
 
+
+    public abstract TeriumAPI getTeriumAPI();
+
     /*
      * Use this methode to get the current server as ICloudService
      */
-    abstract ICloudService getThisService();
+    public abstract ICloudService getThisService();
 
     /*
      * Use this methode to get the ICloudServiceManager
      */
-    abstract ICloudServiceManager getServiceManager();
+    public abstract ICloudServiceManager getServiceManager();
 
     /*
      * Use this methode to get the ICloudServiceGroupManager
      */
-    abstract ICloudServiceGroupManager getServiceGroupManager();
+    public abstract ICloudServiceGroupManager getServiceGroupManager();
 
     /*
      * Use this methode to get the ICloudPlayerManager
      */
-    abstract ICloudPlayerManager getCloudPlayerManager();
+    public abstract ICloudPlayerManager getCloudPlayerManager();
 }

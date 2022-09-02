@@ -10,6 +10,7 @@ import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnline;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -32,7 +33,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Getter
-public class TeriumBridge {
+public class TeriumBridge extends TeriumAPI {
 
     private static TeriumBridge instance;
     private final ServiceManager serviceManager;
@@ -60,6 +61,11 @@ public class TeriumBridge {
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
         this.cloudPlayerManager = new CloudPlayerManager();
+    }
+
+    @Override
+    public TeriumAPI getTeriumAPI() {
+        return this;
     }
 
     public static TeriumBridge getInstance() {
