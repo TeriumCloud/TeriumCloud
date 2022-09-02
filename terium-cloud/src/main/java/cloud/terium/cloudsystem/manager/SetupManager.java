@@ -81,7 +81,33 @@ public class SetupManager {
                                 new Terium();
                             }
                             case "semi-automatic" -> {
+                                setupStorage.setSetupType(SetupType.AUTOMATIC);
 
+                                Logger.log("The terium-cloud is setting up semi-automatic. Please wait a moment...", LogType.SETUP);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException exception) {
+                                    exception.printStackTrace();
+                                }
+                                Logger.log("Terium is trying to set the web server port.", LogType.SETUP);
+                                Terium.getTerium().getConfigManager().getJson().addProperty("web_port", 5124);
+                                Terium.getTerium().getConfigManager().save();
+                                Logger.log("Successfully set the web server port(5124).", LogType.SETUP);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException exception) {
+                                    exception.printStackTrace();
+                                }
+                                Logger.log("Please type a version for your proxy server.");
+                                Logger.log("Available versions: bungeecord, waterfall or velocity-latest");
+                                switch (input) {
+                                    case "bungeecord" -> {
+                                        Logger.log("You choosed 'bungeecord' as proxy version.");
+                                        /*
+                                         * TODO: Code the installing of bungeecord and init "version" in ICloudServiceGroup and in group file.
+                                         */
+                                    }
+                                }
                             }
                             case "manual" -> {
 
