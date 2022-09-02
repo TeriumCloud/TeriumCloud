@@ -5,12 +5,11 @@ import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.cloudsystem.utils.setup.SetupStorage;
-import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.cloudsystem.utils.setup.SetupType;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import org.apache.commons.io.FileUtils;
 
-import javax.swing.plaf.TableHeaderUI;
 import java.io.File;
 import java.util.Scanner;
 
@@ -24,7 +23,7 @@ public class SetupManager {
 
     public SetupManager() {
         this.setupStorage = new SetupStorage();
-        Logger.log("Welcome to \u001B[0mTerium\u001B[36mCloud\u001B[0m! Please agree the minecraft eula to continue. (type: yes if you agree)", LogType.SETUP);
+        Logger.log("Welcome to \u001B[0mTerium\u001B[36mCloud\u001B[0m! Please choose one of three setup types. (automatic, semi-automatic or manual)", LogType.SETUP);
         readConsole();
     }
 
@@ -44,7 +43,51 @@ public class SetupManager {
                     }
                     System.exit(0);
                 }
+
                 switch (Terium.getTerium().getCloudUtils().getSetupState()) {
+                    case STARTING -> {
+                        switch (input) {
+                            case "automatic" -> {
+                                setupStorage.setSetupType(SetupType.AUTOMATIC);
+
+                                Logger.log("The terium-cloud is setting up automatic. Please wait a moment...", LogType.SETUP);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException exception) {
+                                    exception.printStackTrace();
+                                }
+                                Logger.log("Terium is trying to set the web server port.", LogType.SETUP);
+                                Terium.getTerium().getConfigManager().getJson().addProperty("web_port", 5124);
+                                Terium.getTerium().getConfigManager().save();
+                                Logger.log("Successfully set the web server port(5124).", LogType.SETUP);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException exception) {
+                                    exception.printStackTrace();
+                                }
+                                Logger.log("Terium is trying to create a lobby and a porxy group...", LogType.SETUP);
+                                new DefaultProxyGroup("Proxy", "PROXY", "Node-01", true, 25565, 10, 128, 1, 1);
+                                Logger.log("Successfully created Proxy(proxy group | Node-01, 10 players, 128 memory, velocity-latest).", LogType.SETUP);
+                                new DefaultLobbyGroup("Lobby", "LOBBY", "Node-01", true, 20, 512, 1, 1);
+                                Logger.log("Successfully created Lobby(lobby group | Node-01, 20 players, 512 memory, paperspigot-1.19.2).", LogType.SETUP);
+
+                                Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
+                                Logger.log("Please wait a small while. Terium is starting soon...", LogType.SETUP);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException exception) {
+                                    exception.printStackTrace();
+                                }
+                                new Terium();
+                            }
+                            case "semi-automatic" -> {
+
+                            }
+                            case "manual" -> {
+
+                            }
+                        }
+                    }
                     case EULA -> {
                         if (input.equalsIgnoreCase("yes")) {
                             Terium.getTerium().getCloudUtils().setSetupState(SetupState.WEB_PORT);

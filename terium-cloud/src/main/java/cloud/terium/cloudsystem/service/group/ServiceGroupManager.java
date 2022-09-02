@@ -252,7 +252,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     }
 
     @Override
-    public List<ICloudServiceGroup> getServiceGroupsByWrapper(String s) {
+    public List<ICloudServiceGroup> getServiceGroupsByNode(String s) {
         return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceGroupNode().equals(s)).toList();
     }
 

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class SetupStorage {
 
+    private SetupType setupType;
     private boolean eula;
     private int webPort;
     private int proxyPort;

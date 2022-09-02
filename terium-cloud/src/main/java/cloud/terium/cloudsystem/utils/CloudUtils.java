@@ -45,7 +45,7 @@ public class CloudUtils {
 
     public void startSetup() {
         this.setup = true;
-        this.setupState = SetupState.EULA;
+        this.setupState = SetupState.STARTING;
     }
 
     @SneakyThrows
