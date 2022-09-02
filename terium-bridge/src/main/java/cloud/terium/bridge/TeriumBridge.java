@@ -14,7 +14,6 @@ import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
-import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.impl.CloudService;
 import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -54,6 +53,7 @@ public class TeriumBridge extends TeriumAPI {
      */
 
     public TeriumBridge() {
+        super(instance);
         instance = this;
         this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
         this.serviceManager = new ServiceManager();
@@ -61,11 +61,6 @@ public class TeriumBridge extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
         this.cloudPlayerManager = new CloudPlayerManager();
-    }
-
-    @Override
-    public TeriumAPI getTeriumAPI() {
-        return this;
     }
 
     public static TeriumBridge getInstance() {
