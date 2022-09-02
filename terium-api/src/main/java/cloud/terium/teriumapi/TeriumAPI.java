@@ -7,7 +7,9 @@ import cloud.terium.teriumapi.service.ICloudServiceManager;
 
 public abstract class TeriumAPI {
 
-
+    /*
+     * Use this methode to get the terium-api instance
+     */
     public abstract TeriumAPI getTeriumAPI();
 
     /*
