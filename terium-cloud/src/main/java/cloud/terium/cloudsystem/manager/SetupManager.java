@@ -17,10 +17,6 @@ public class SetupManager {
 
     private final SetupStorage setupStorage;
 
-    /*
-     * TODO: Make that this is not looking like CloudNet-v3
-     */
-
     public SetupManager() {
         this.setupStorage = new SetupStorage();
         Logger.log("Welcome to \u001B[0mTerium\u001B[36mCloud\u001B[0m! Please choose one of three setup types. (automatic, semi-automatic or manual)", LogType.SETUP);
@@ -81,7 +77,7 @@ public class SetupManager {
                                 new Terium();
                             }
                             case "semi-automatic" -> {
-                                setupStorage.setSetupType(SetupType.AUTOMATIC);
+                                setupStorage.setSetupType(SetupType.SEMI_AUTOMATIC);
 
                                 Logger.log("The terium-cloud is setting up semi-automatic. Please wait a moment...", LogType.SETUP);
                                 try {
@@ -98,19 +94,22 @@ public class SetupManager {
                                 } catch (InterruptedException exception) {
                                     exception.printStackTrace();
                                 }
-                                Logger.log("Please type a version for your proxy server.");
-                                Logger.log("Available versions: bungeecord, waterfall or velocity-latest");
-                                switch (input) {
-                                    case "bungeecord" -> {
-                                        Logger.log("You choosed 'bungeecord' as proxy version.");
-                                        /*
-                                         * TODO: Code the installing of bungeecord and init "version" in ICloudServiceGroup and in group file.
-                                         */
-                                    }
-                                }
+                                Logger.log("Please type a version for your proxy server.", LogType.SETUP);
+                                Logger.log("Available versions: bungeecord, waterfall or velocity-latest", LogType.SETUP);
                             }
                             case "manual" -> {
 
+                            }
+                        }
+
+                        switch (setupStorage.getSetupType()) {
+                            case SEMI_AUTOMATIC -> {
+                                switch (input) {
+                                    case "bungeecord" -> {
+                                        Logger.log("You choosed 'bungeecord' as proxy version.", LogType.SETUP);
+                                        Logger.log("Terium is trying to download 'bungeecord.jar'. Please wait a moment...", LogType.DOWNLOAD);
+                                    }
+                                }
                             }
                         }
                     }
