@@ -22,6 +22,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private String groupTitle;
     private String node;
     private final CloudServiceType cloudServiceType = CloudServiceType.Lobby;
+    private String version;
     private boolean maintenance;
     private int maximumPlayers;
     private int memory;
@@ -29,10 +30,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, String node, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, String node, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
+        this.version = version;
         this.maintenance = maintenance;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
@@ -47,6 +49,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node);
         json.addProperty("servicetype", CloudServiceType.Lobby.name());
+        json.addProperty("version", version);
         json.addProperty("maintenance", maintenance);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);

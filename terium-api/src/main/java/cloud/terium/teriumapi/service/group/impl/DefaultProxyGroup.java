@@ -22,6 +22,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private String groupTitle;
     private String node;
     private final CloudServiceType cloudServiceType = CloudServiceType.Proxy;
+    private String version;
     private boolean maintenance;
     private int port;
     private int maximumPlayers;
@@ -30,10 +31,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultProxyGroup(String name, String groupTitle, String node, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultProxyGroup(String name, String groupTitle, String node, String version, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
+        this.version = version;
         this.maintenance = maintenance;
         this.port = port;
         this.maximumPlayers = maximumPlayers;
@@ -50,6 +52,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         json.addProperty("node", node);
         json.addProperty("servicetype", CloudServiceType.Proxy.name());
         json.addProperty("port", port);
+        json.addProperty("version", version);
         json.addProperty("maintenance", maintenance);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
