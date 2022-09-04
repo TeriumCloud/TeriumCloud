@@ -20,18 +20,20 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     private String name;
     private String groupTitle;
     private String node;
+    private String version;
     private final CloudServiceType cloudServiceType = CloudServiceType.Server;
-    private boolean maintenance;
     private int maximumPlayers;
+    private boolean maintenance;
     private int memory;
     private int minimalServices;
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultServerGroup(String name, String groupTitle, String node, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultServerGroup(String name, String groupTitle, String node, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
+        this.version = version;
         this.maintenance = maintenance;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
@@ -45,6 +47,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node);
+        json.addProperty("version", version);
         json.addProperty("servicetype", CloudServiceType.Lobby.name());
         json.addProperty("maintenance", maintenance);
         json.addProperty("maximum_players", maximumPlayers);

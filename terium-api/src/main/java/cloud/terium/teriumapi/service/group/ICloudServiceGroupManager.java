@@ -6,20 +6,17 @@ import java.util.List;
 
 public interface ICloudServiceGroupManager {
 
-    /*
-     * TODO: look if this is usefull (if not: remove)
-     */
-    /*default void createLobbyGroup(String name, String groupTitle, String node, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultLobbyGroup(name, groupTitle, node, false, maximumPlayers, memory, minimalServices, maximalServices);
+    default void createLobbyGroup(String name, String groupTitle, String node, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        new DefaultLobbyGroup(name, groupTitle, node, version, false, maximumPlayers, memory, minimalServices, maximalServices);
     }
 
-    default void createProxyGroup(String name, String groupTitle, String node, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultProxyGroup(name, groupTitle, node, false, port,  maximumPlayers, memory, minimalServices, maximalServices);
+    default void createProxyGroup(String name, String groupTitle, String node, String version, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        new DefaultProxyGroup(name, groupTitle, node, version, false, port,  maximumPlayers, memory, minimalServices, maximalServices);
     }
 
-    default void createServerGroup(String name, String groupTitle, String node, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultServerGroup(name, groupTitle, node, false, maximumPlayers, memory, minimalServices, maximalServices);
-    }*/
+    default void createServerGroup(String name, String groupTitle, String node, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        new DefaultServerGroup(name, groupTitle, node, version, false, maximumPlayers, memory, minimalServices, maximalServices);
+    }
 
     /**
      * Get a ICloudServiceGroup by group name

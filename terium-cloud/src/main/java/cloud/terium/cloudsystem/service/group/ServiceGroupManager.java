@@ -10,7 +10,6 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
-import cloud.terium.teriumapi.service.impl.CloudServiceGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -178,6 +177,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("maximum_players").getAsInt(),
                         serviceGroup.get("memory").getAsInt(),

@@ -128,7 +128,7 @@ public class SetupManager {
                             } catch (InterruptedException exception) {
                                 exception.printStackTrace();
                             }
-                            new DefaultLobbyGroup("Lobby", "MAIN-LOBBY", "Node-01", input, true, 20, 512, 1, 1);
+                            Terium.getTerium().getServiceGroupManager().createLobbyGroup("Lobby", "MAIN-LOBBY", "Node-01", input, 20, 512, 1, 1);
                             Logger.log("Terium successfully created a lobby group with " + input + ".", LogType.SETUP);
                             Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
                             Logger.log("Please wait a small while. Terium is starting soon...", LogType.INFO);
