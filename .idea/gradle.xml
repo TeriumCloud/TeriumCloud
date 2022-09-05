@@ -39,6 +39,24 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/terium-modules" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/terium-modules" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/terium-modules/proxy-module" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/terium-modules/proxy-module" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>

@@ -4,6 +4,7 @@ import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.manager.ConfigManager;
 import cloud.terium.cloudsystem.manager.ConsoleManager;
 import cloud.terium.cloudsystem.manager.SetupManager;
+import cloud.terium.cloudsystem.module.ModuleManager;
 import cloud.terium.cloudsystem.networking.DefaultTeriumNetworking;
 import cloud.terium.cloudsystem.service.ServiceManager;
 import cloud.terium.cloudsystem.service.group.ServiceGroupManager;
@@ -56,6 +57,7 @@ public class Terium {
             this.serviceManager = new ServiceManager();
             this.serviceGroupManager = new ServiceGroupManager();
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
+            new ModuleManager();
 
             new TemplateManager();
             Signal.handle(new Signal("INT"), signal -> {

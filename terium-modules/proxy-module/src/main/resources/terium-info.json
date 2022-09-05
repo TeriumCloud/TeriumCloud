@@ -1,0 +1,6 @@
+{
+  "name": "Test-Module",
+  "author": "Jxnnik",
+  "version": "1.0.0-SNAPSHOT",
+  "services": "Lobby"
+}

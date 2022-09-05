@@ -14,6 +14,14 @@
 /terium-framework/build/
 /terium-framework/gradle/
 /terium-bridge/
+/terium-modules/proxy-module/gradle.properties
+/terium-modules/proxy-module/gradlew
+/terium-modules/proxy-module/gradlew.bat
+/terium-modules/proxy-module/settings.gradle
+/terium-modules/proxy-module/.gitignore
+/terium-modules/proxy-module/gradle/
+/terium-modules/proxy-module/.gradle/
+/terium-modules/proxy-module/build/
 
 # Log file
 *.log
