@@ -45,14 +45,15 @@ public class ConfigManager {
             json.addProperty("port", "12345 (don't change)");
             json.addProperty("maxMemory", 10000);
             json.addProperty("license", "put your license here.");
+            json.addProperty("Node", "Node-01");
             JsonObject cloudbridge = new JsonObject();
             cloudbridge.addProperty("full_kick.message", "<gradient:#245dec:#00d4ff><bold>ᴡᴡᴡ.ᴛᴇʀɪᴜᴍ.ᴄʟᴏᴜᴅ</bold></gradient> \n \n <red>This service is full. \n <red>You can't join without permission.");
-            cloudbridge.addProperty("maintenance.message", "<gradient:#245dec:#00d4ff><bold>ᴡᴡᴡ.ᴛᴇʀɪᴜᴍ.ᴄʟᴏᴜᴅ</bold></gradient> \n \n <red>This service is under maintenance. \n <red>More information: https://dsc.gg/jxnnik");
+            cloudbridge.addProperty("maintenance.message", "<gradient:#245dec:#00d4ff><bold>ᴡᴡᴡ.ᴛᴇʀɪᴜᴍ.ᴄʟᴏᴜᴅ</bold></gradient> \n \n <red>This service is under maintenance. \n <red>More information: https://terium.cloud/discord");
             cloudbridge.addProperty("tablist_header", "\n <gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>a modern cloudsystem <gray>[<white>1.0.0-SNAPSHOT<gray>] \n <white>You're connected with <#e2adf7>%server% \n");
             cloudbridge.addProperty("tablist_footer", "\n <white>Terium by <#41dbfa>Jxnnik <white>and <#69e2fa>contributors <red>❤ \n <gradient:#245dec:#00d4ff>ᴡᴡᴡ.ᴛᴇʀɪᴜᴍ.ᴄʟᴏᴜᴅ</gradient> \n");
             cloudbridge.addProperty("motd.line1", "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>a modern cloudsystem <gray>[<white>1.0.0-SNAPSHOT<gray>]");
             cloudbridge.addProperty("motd.line2", "<gray>› <white>Terium by <#41dbfa>Jxnnik <white>and <#69e2fa>contributors <red>❤");
-            cloudbridge.addProperty("motd.maintenance.line1", "<gradient:#b7ffff:#37b4b4>Terium</gradient> <dark_gray>⇨ <white>a modern cloudsystem <gray>[<white>1.0.0-SNAPSHOT<gray>]");
+            cloudbridge.addProperty("motd.maintenance.line1", "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>a modern cloudsystem <gray>[<white>1.0.0-SNAPSHOT<gray>]");
             cloudbridge.addProperty("motd.maintenance.line2", "<gray>› <red>This service is under maintenance.");
             json.add("terium-bridge", cloudbridge);
 
