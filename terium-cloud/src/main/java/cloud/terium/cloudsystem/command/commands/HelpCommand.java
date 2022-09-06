@@ -23,6 +23,7 @@ public class HelpCommand extends Command {
         Logger.log("shutdown | stop a service", LogType.INFO);
         Logger.log("shutdown-group | stop a service group", LogType.INFO);
         Logger.log("list | list all online services", LogType.INFO);
+        Logger.log("list-modules | list all loaded modules", LogType.INFO);
         Logger.log("reload | reload the cloud or a part of the cloud", LogType.INFO);
         Logger.log("stop | stop the cloudsystem", LogType.INFO);
     }

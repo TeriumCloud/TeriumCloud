@@ -24,7 +24,11 @@ public class ModuleManager {
     @SneakyThrows
     public ModuleManager() {
         this.modules = new HashMap<>();
-        loadModule("modules//terium-proxy.jar");
+        Logger.log("Trying to load all modules in modules directory...", LogType.INFO);
+        for (File file : new File("modules//").listFiles()) {
+            loadModule(file.getPath());
+        }
+        Logger.log("Successfully load all modules in modules directory.", LogType.INFO);
     }
 
     public void loadModule(String path) {
@@ -35,12 +39,22 @@ public class ModuleManager {
                 if (entry.getName().equals("terium-info.json")) {
                     try (Reader pluginInfoReader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
                         JsonObject jsonObject = JsonParser.parseReader(pluginInfoReader).getAsJsonObject();
-                        modules.put(jsonObject.get("name").getAsString(), new Module(jsonObject.get("name").getAsString(), jsonObject.get("author").getAsString(), jsonObject.get("version").getAsString(), CloudServiceType.valueOf(jsonObject.get("services").getAsString())));
-                        Logger.log("Successfully loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
-                        pluginInfoReader.close();
+
+                        if(modules.get(jsonObject.get("name").getAsString()) == null) {
+                            modules.put(jsonObject.get("name").getAsString(), new Module(jsonObject.get("name").getAsString(), jsonObject.get("author").getAsString(), jsonObject.get("version").getAsString(), CloudServiceType.valueOf(jsonObject.get("services").getAsString())));
+                            Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
+                        }
                     }
                 }
             }
         } catch (IOException ignored) {}
+    }
+
+    public Module getModuleByName(String name) {
+        return modules.get(name);
+    }
+
+    public List<Module> getAllModules() {
+        return modules.values().stream().toList();
     }
 }

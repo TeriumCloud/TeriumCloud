@@ -31,6 +31,7 @@ public class CommandManager {
             new ShutdownGroupCommand(this);
             new ListCommand(this);
             new ReloadCommand(this);
+            new ListModulesCommand(this);
         }
     }
 

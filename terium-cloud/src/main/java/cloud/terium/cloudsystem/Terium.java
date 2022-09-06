@@ -31,6 +31,7 @@ public class Terium {
     private ConfigManager configManager;
     private final CommandManager commandManager;
     private final ConsoleManager consoleManager;
+    private final ModuleManager moduleManager;
     private final ServiceManager serviceManager;
     private final ServiceGroupManager serviceGroupManager;
     private final DefaultTeriumNetworking defaultTeriumNetworking;
@@ -56,8 +57,8 @@ public class Terium {
             this.consoleManager = new ConsoleManager(commandManager);
             this.serviceManager = new ServiceManager();
             this.serviceGroupManager = new ServiceGroupManager();
+            this.moduleManager = new ModuleManager();
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
-            new ModuleManager();
 
             new TemplateManager();
             Signal.handle(new Signal("INT"), signal -> {
@@ -72,6 +73,7 @@ public class Terium {
 
         this.consoleManager = null;
         this.commandManager = null;
+        this.moduleManager = null;
         this.serviceManager = null;
         this.serviceGroupManager = new ServiceGroupManager();
         this.defaultTeriumNetworking = null;
