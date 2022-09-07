@@ -38,9 +38,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Terium" target="11" />
-      <module name="Terium.main" target="11" />
-      <module name="Terium.test" target="11" />
       <module name="TeriumAPI" target="17" />
       <module name="TeriumAPI.main" target="17" />
       <module name="TeriumAPI.test" target="17" />
