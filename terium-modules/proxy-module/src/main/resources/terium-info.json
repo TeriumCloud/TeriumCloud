@@ -1,6 +1,6 @@
 {
-  "name": "Test-Module-1",
+  "name": "teriumproxy",
   "author": "Jxnnik",
   "version": "1.0.0-SNAPSHOT",
-  "services": "Lobby"
+  "services": "Proxy"
 }

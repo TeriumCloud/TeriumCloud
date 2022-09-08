@@ -31,7 +31,7 @@ public class ModuleManager {
         Logger.log("Successfully load all modules in modules directory.", LogType.INFO);
     }
 
-    public void loadModule(String path) {
+    private void loadModule(String path) {
         try (JarInputStream in = new JarInputStream(
                 new BufferedInputStream(Files.newInputStream(new File(path).toPath())))) {
             JarEntry entry;
@@ -41,7 +41,7 @@ public class ModuleManager {
                         JsonObject jsonObject = JsonParser.parseReader(pluginInfoReader).getAsJsonObject();
 
                         if(modules.get(jsonObject.get("name").getAsString()) == null) {
-                            modules.put(jsonObject.get("name").getAsString(), new Module(jsonObject.get("name").getAsString(), jsonObject.get("author").getAsString(), jsonObject.get("version").getAsString(), CloudServiceType.valueOf(jsonObject.get("services").getAsString())));
+                            modules.put(jsonObject.get("name").getAsString(), new Module(jsonObject.get("name").getAsString(), jsonObject.get("author").getAsString(), jsonObject.get("version").getAsString(), new File(path), CloudServiceType.valueOf(jsonObject.get("services").getAsString())));
                             Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
                         }
                     }

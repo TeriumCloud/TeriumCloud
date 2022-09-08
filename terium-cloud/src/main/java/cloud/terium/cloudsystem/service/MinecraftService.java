@@ -39,6 +39,9 @@ public class MinecraftService implements ICloudService {
     private final File template;
     private Thread thread;
 
+    /*
+     TODO: Looking and debug why the template folder is copied in proxy servers.
+     */
     public MinecraftService(ICloudServiceGroup serviceGroup) {
         this(serviceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : new Random().nextInt(20000, 50000));
     }
@@ -66,6 +69,15 @@ public class MinecraftService implements ICloudService {
         FileUtils.copyDirectory(template, folder);
         FileUtils.copyFileToDirectory(new File("data//versions//teriumbridge.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         Terium.getTerium().getServiceManager().addService(this);
+        Terium.getTerium().getModuleManager().getAllModules().forEach(module -> {
+            if (module.getServiceType().equals(this.getServiceType())) {
+                try {
+                    FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
 
         if (serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server) {
             Logger.log("The service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
@@ -133,7 +145,7 @@ public class MinecraftService implements ICloudService {
     }
 
     public void shutdown() {
-        if(!this.online) {
+        if (!this.online) {
             forceShutdown();
             return;
         }
