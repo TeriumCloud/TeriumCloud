@@ -49,7 +49,7 @@ public class TeriumBridge extends TeriumAPI {
 
     /*
      * FINISHED: Init implementation for ICloudService or something else to set the ServiceState
-     *  TODO: Test this implementation
+     *  TODO: Test this implementation with terium-api in test plugin or module
      */
 
     public TeriumBridge() {

@@ -135,6 +135,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("port").getAsInt(),
                         serviceGroup.get("maximum_players").getAsInt(),
@@ -148,6 +149,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("maximum_players").getAsInt(),
                         serviceGroup.get("memory").getAsInt(),
@@ -160,6 +162,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("maximum_players").getAsInt(),
                         serviceGroup.get("memory").getAsInt(),
@@ -235,7 +238,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     }
 
     @Override
-    public List<ICloudServiceGroup> getServiceGroupsByWrapper(String s) {
+    public List<ICloudServiceGroup> getServiceGroupsByNode(String s) {
         return registedServerGroups.values().stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceGroupNode().equals(s)).toList();
     }
 
