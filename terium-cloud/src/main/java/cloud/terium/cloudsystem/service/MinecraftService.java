@@ -53,6 +53,7 @@ public class MinecraftService implements ICloudService {
     public MinecraftService(ICloudServiceGroup defaultServiceGroup, int serviceId, int port) {
         this.serviceGroup = defaultServiceGroup;
         this.serviceId = serviceId;
+        this.serviceState = CloudServiceState.PREPARING;
         this.template = new File("templates//" + serviceGroup.getServiceGroupName() + "//");
         this.folder = new File("servers//" + getServiceName());
         this.port = port;
@@ -245,6 +246,6 @@ public class MinecraftService implements ICloudService {
 
     @Override
     public void setServiceState(CloudServiceState cloudServiceState) {
-        this.serviceState = serviceState;
+        this.serviceState = cloudServiceState;
     }
 }

@@ -27,7 +27,7 @@ public class ListCommand extends Command {
                 if (service.getServiceGroup().equals(group)) {
                     i.getAndIncrement();
 
-                    Logger.log(i.get() + ". " + service.getServiceName() + " / Port: " + service.getPort() + " / Online: " + service.isOnline(), LogType.INFO);
+                    Logger.log(i.get() + ". " + service.getServiceName() + " / Port: " + service.getPort() + " / State: " + service.getServiceState(), LogType.INFO);
                 }
             });
             Logger.log(" ", LogType.INFO);
