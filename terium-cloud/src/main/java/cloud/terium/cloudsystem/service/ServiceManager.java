@@ -41,15 +41,6 @@ public class ServiceManager implements ICloudServiceManager {
         }, 0, 1000);
     }
 
-    public void startCloudServices() {
-        Terium.getTerium().getServiceGroupManager().getServiceGroups().forEach(group -> {
-            System.out.println(getCloudServicesByGroupName(group.getServiceGroupName()).size());
-            if (group.getMaximalServices() <= getCloudServicesByGroupName(group.getServiceGroupName()).size()) {
-                for (int i = 0; i < group.getMinimalServices(); i++) new MinecraftService(group).start();
-            }
-        });
-    }
-
     public void addService(MinecraftService minecraftService) {
         minecraftServices.add(minecraftService);
         minecraftServiceCache.put(minecraftService.getServiceName(), minecraftService);

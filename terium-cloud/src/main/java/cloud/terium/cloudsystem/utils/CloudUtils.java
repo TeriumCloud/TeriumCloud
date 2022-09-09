@@ -87,7 +87,7 @@ public class CloudUtils {
 
     @SneakyThrows
     public String getHttpResponse(String parameta) {
-        HttpURLConnection httpURLConnection = (HttpURLConnection) new URL("http://80.91.223.153:8080/" + parameta).openConnection();
+        HttpURLConnection httpURLConnection = (HttpURLConnection) new URL("http://45.142.114.48:8080/" + parameta).openConnection();
         httpURLConnection.setRequestMethod("GET");
 
         try {
