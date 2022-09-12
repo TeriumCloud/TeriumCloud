@@ -1,12 +1,12 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceForceShutdown;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
-import cloud.terium.cloudsystem.utils.logger.LogType;
-import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -71,12 +71,21 @@ public class MinecraftService implements ICloudService {
         FileUtils.copyDirectory(template, folder);
         Terium.getTerium().getServiceManager().addService(this);
         Terium.getTerium().getModuleManager().getAllModules().forEach(module -> {
-            if (module.getServiceType().equals(this.getServiceType())) {
-                try {
-                    FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
-                } catch (IOException exception) {
-                    exception.printStackTrace();
+            try {
+                switch (module.getModuleType()) {
+                    case Server -> {
+                        if(getServiceType() == CloudServiceType.Server || getServiceType() == CloudServiceType.Lobby) FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                    }
+                    case Proxy -> {
+                        if(getServiceType() == CloudServiceType.Proxy) FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                    }
+                    case Lobby -> {
+                        if(getServiceType() == CloudServiceType.Lobby) FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                    }
+                    case ALL -> FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
                 }
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         });
 
