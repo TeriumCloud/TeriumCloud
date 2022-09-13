@@ -47,11 +47,6 @@ public class TeriumBridge extends TeriumAPI {
         new TeriumBridge();
     }
 
-    /*
-     * FINISHED: Init implementation for ICloudService or something else to set the ServiceState
-     *  TODO: Test this implementation with terium-api in test plugin or module
-     */
-
     public TeriumBridge() {
         super(instance);
         instance = this;

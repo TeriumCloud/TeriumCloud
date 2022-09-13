@@ -37,6 +37,12 @@ public interface ICloudServiceGroup {
     CloudServiceType getServiceType();
 
     /**
+     * Get the version of the service group
+     * @return String This returns the version as string.
+     */
+    String getVersion();
+
+    /**
      * Get if the service group is in maintenance
      * @return boolean This returns if the serivce group is in maintenance as boolean. (true if yes else false)
      */

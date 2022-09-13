@@ -87,6 +87,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public String getVersion() {
+        return version;
+    }
+
+    @Override
     public boolean isMaintenance() {
         return maintenance;
     }

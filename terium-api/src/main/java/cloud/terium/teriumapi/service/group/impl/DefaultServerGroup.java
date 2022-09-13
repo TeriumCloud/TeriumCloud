@@ -83,6 +83,11 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public String getVersion() {
+        return version;
+    }
+
+    @Override
     public boolean isMaintenance() {
         return maintenance;
     }
