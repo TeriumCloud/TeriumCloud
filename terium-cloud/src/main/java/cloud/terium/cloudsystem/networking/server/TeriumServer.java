@@ -5,9 +5,9 @@ import cloud.terium.cloudsystem.service.MinecraftService;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.TeriumFramework;
+import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packet.codec.PacketDecoder;
 import cloud.terium.networking.packet.codec.PacketEncoder;
-import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import io.netty.bootstrap.ServerBootstrap;
@@ -53,9 +53,12 @@ public class TeriumServer {
                                                 Logger.log("The service '" + packetPlayOutServiceOnline.minecraftService() + "' successfully started on port " + Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).getPort() + ".", LogType.INFO);
                                             }
 
+                                            if (packet instanceof PacketPlayOutServiceMemoryUpdatePacket packetPlayOutServiceMemoryUpdatePacket) {
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceMemoryUpdatePacket.minecraftService()).setUsedMemory(packetPlayOutServiceMemoryUpdatePacket.memory());
+                                            }
+
                                             if (packet instanceof PacketPlayOutServiceForceShutdown packetForce) {
-                                                Logger.log("Trying to stop service '" + packetForce.serviceName() + "'...", LogType.INFO);
-                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetForce.serviceName()).forceShutdown();
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetForce.serviceName()).shutdown();
                                                 return;
                                             }
 

@@ -46,9 +46,9 @@ public interface ICloudService {
 
     /**
      * Get the used memory from the service
-     * @return int This returns the used memory from the service as int.
+     * @return int This returns the used memory from the service as long.
      */
-    int getUsedMemory();
+    long getUsedMemory();
 
     /**
      * Get the max memory of the service
@@ -80,7 +80,7 @@ public interface ICloudService {
 
     void setOnlinePlayers(int onlinePlayers);
 
-    void setUsedMemory(int usedMemory);
+    void setUsedMemory(long usedMemory);
 
     void setServiceState(CloudServiceState serviceState);
 

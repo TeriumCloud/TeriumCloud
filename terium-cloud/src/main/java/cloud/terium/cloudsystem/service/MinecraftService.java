@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.service;
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceForceShutdown;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
@@ -24,7 +23,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-@Getter
 public class MinecraftService implements ICloudService {
 
     private final ICloudServiceGroup serviceGroup;
@@ -32,8 +30,7 @@ public class MinecraftService implements ICloudService {
     private final File folder;
     private final int port;
     private final int serviceId;
-    private boolean online;
-    private int usedMemory;
+    private long usedMemory;
     private int onlinePlayers;
     private Process process;
     private final File template;
@@ -59,7 +56,6 @@ public class MinecraftService implements ICloudService {
         this.port = port;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
-        this.online = false;
     }
 
     @SneakyThrows
@@ -155,20 +151,9 @@ public class MinecraftService implements ICloudService {
     }
 
     public void shutdown() {
-        if (!this.online) {
-            forceShutdown();
-            return;
-        }
-
         Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(getServiceName()));
-        Logger.log("Trying to stop service '" + getServiceName() + "'.", LogType.INFO);
-    }
-
-    @SneakyThrows
-    @Override
-    public void forceShutdown() {
         MinecraftService minecraftService = this;
-        Logger.log("Trying to stop service '" + getServiceName() + "'.", LogType.INFO);
+        Logger.log("Trying to stop service '" + getServiceName() + "'... [MinecraftService#forceShutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
             Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
@@ -185,6 +170,27 @@ public class MinecraftService implements ICloudService {
         }, 5000);
     }
 
+    /*@SneakyThrows
+    @Override
+    public void forceShutdown() {
+        MinecraftService minecraftService = this;
+        Logger.log("Trying to stop service '" + getServiceName() + "'. [MinecraftService#forceShutdown]", LogType.INFO);
+        if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
+            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
+
+        thread.stop();
+        process.destroyForcibly();
+        new Timer().schedule(new TimerTask() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                FileUtils.deleteDirectory(folder);
+                Terium.getTerium().getServiceManager().removeService(minecraftService);
+                Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
+            }
+        }, 5000);
+    }*/
+
     private void replaceInFile(File file, String placeHolder, String replacedWith) {
         String content;
         try {
@@ -199,28 +205,34 @@ public class MinecraftService implements ICloudService {
         }
     }
 
-    public void updateUsedMemory(int memory) {
-        this.usedMemory = memory;
-        new DefaultJsonService(this, true).updateUsedMemory(memory);
-    }
-
-    public void updateOnlinePlayers(int onlinePlayers) {
-        this.onlinePlayers = onlinePlayers;
-        new DefaultJsonService(this, true).updateOnlinePlayers(onlinePlayers);
-    }
-
-    public void online(boolean online) {
-        this.online = online;
-    }
-
     @Override
     public String getServiceName() {
         return getServiceId() > 9 ? getServiceGroup().getServiceGroupName() + "-" + getServiceId() : getServiceGroup().getServiceGroupName() + "-0" + getServiceId();
     }
 
     @Override
+    public int getServiceId() {
+        return serviceId;
+    }
+
+    @Override
+    public int getPort() {
+        return port;
+    }
+
+    @Override
     public int getMaxPlayers() {
         return ICloudService.super.getMaxPlayers();
+    }
+
+    @Override
+    public int getOnlinePlayers() {
+        return onlinePlayers;
+    }
+
+    @Override
+    public long getUsedMemory() {
+        return usedMemory;
     }
 
     @Override
@@ -249,7 +261,7 @@ public class MinecraftService implements ICloudService {
     }
 
     @Override
-    public void setUsedMemory(int i) {
+    public void setUsedMemory(long i) {
         this.usedMemory = i;
     }
 

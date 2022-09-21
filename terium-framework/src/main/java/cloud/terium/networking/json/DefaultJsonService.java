@@ -1,5 +1,6 @@
 package cloud.terium.networking.json;
 
+import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import com.google.gson.Gson;
@@ -57,7 +58,7 @@ public class DefaultJsonService implements ICloudService {
             json.addProperty("service_name", iCloudService.getServiceName());
             json.addProperty("serviceid", iCloudService.getServiceId());
             json.addProperty("port", iCloudService.getPort());
-            json.addProperty("online", false);
+            json.addProperty("state", iCloudService.getServiceState().name());
             json.addProperty("online_players", 0);
             json.addProperty("service_group", iCloudService.getServiceGroup().getServiceGroupName());
             json.addProperty("used_memory", 0);
@@ -101,16 +102,6 @@ public class DefaultJsonService implements ICloudService {
         return json.get(key).getAsInt();
     }
 
-    public void updateUsedMemory(int memory) {
-        json.addProperty("used_memory", memory);
-        save();
-    }
-
-    public void updateOnlinePlayers(int onlinePlayers) {
-        json.addProperty("online_players", onlinePlayers);
-        save();
-    }
-
     @Override
     public String getServiceName() {
         return iCloudService.getServiceName();
@@ -137,12 +128,35 @@ public class DefaultJsonService implements ICloudService {
     }
 
     @Override
-    public int getUsedMemory() {
+    public long getUsedMemory() {
         return json.get("used_memory").getAsInt();
     }
 
     @Override
     public ICloudServiceGroup getServiceGroup() {
         return iCloudService.getServiceGroup();
+    }
+
+    @Override
+    public CloudServiceState getServiceState() {
+        return CloudServiceState.valueOf(json.get("state").getAsString());
+    }
+
+    @Override
+    public void setOnlinePlayers(int i) {
+        json.addProperty("online_players", i);
+        save();
+    }
+
+    @Override
+    public void setUsedMemory(long i) {
+        json.addProperty("used_memory", i);
+        save();
+    }
+
+    @Override
+    public void setServiceState(CloudServiceState cloudServiceState) {
+        json.addProperty("state", cloudServiceState.name());
+        save();
     }
 }

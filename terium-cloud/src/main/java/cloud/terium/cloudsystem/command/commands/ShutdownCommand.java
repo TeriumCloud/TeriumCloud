@@ -21,7 +21,7 @@ public class ShutdownCommand extends Command {
             } else {
                 Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
             }
-        }else {
+        } else {
             Logger.log("Syntax: shutdown <service_name>", LogType.INFO);
         }
     }

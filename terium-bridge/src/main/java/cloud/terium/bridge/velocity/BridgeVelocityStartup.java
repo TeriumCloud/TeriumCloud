@@ -35,6 +35,7 @@ public class BridgeVelocityStartup {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         teriumBridge.initServices(proxyServer);
+        teriumBridge.startSendingUsedMemory();
 
         proxyServer.getCommandManager().register(new CloudCommand().build());
         proxyServer.getCommandManager().register("hub", new HubCommand(), "l", "lobby");

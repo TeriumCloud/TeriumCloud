@@ -11,7 +11,7 @@ public class CloudService implements ICloudService {
     private final int port;
     private final ICloudServiceGroup iCloudServiceGroup;
     private int onlinePlayers;
-    private int usedMemory;
+    private long usedMemory;
     private CloudServiceState serviceState;
 
     public CloudService(String serviceName, int serviceId, int port, ICloudServiceGroup iCloudServiceGroup) {
@@ -49,7 +49,7 @@ public class CloudService implements ICloudService {
     }
 
     @Override
-    public int getUsedMemory() {
+    public long getUsedMemory() {
         return usedMemory;
     }
 
@@ -69,7 +69,7 @@ public class CloudService implements ICloudService {
     }
 
     @Override
-    public void setUsedMemory(int usedMemory) {
+    public void setUsedMemory(long usedMemory) {
         this.usedMemory = usedMemory;
     }
 

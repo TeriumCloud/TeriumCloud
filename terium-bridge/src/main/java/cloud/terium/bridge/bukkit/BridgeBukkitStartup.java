@@ -25,6 +25,7 @@ public class BridgeBukkitStartup extends JavaPlugin {
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         teriumBridge.initServices(this);
+        teriumBridge.startSendingUsedMemory();
 
         getCommand("stop").setExecutor(new StopCommand());
     }

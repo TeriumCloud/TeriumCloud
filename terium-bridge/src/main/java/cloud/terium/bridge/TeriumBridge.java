@@ -9,6 +9,7 @@ import cloud.terium.bridge.player.CloudPlayerManager;
 import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.json.DefaultJsonService;
+import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnline;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
@@ -30,6 +31,8 @@ import java.net.InetSocketAddress;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class TeriumBridge extends TeriumAPI {
@@ -81,6 +84,14 @@ public class TeriumBridge extends TeriumAPI {
 
     public long maxMemory() {
         return (Runtime.getRuntime().maxMemory()) / (1024 * 1024);
+    }
+
+    public void startSendingUsedMemory() {
+        Runnable task = () -> {
+            teriumNetworkListener.getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceMemoryUpdatePacket(thisName, usedMemory()));
+        };
+
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 2, TimeUnit.SECONDS);
     }
 
     @SneakyThrows
