@@ -102,6 +102,7 @@ public class TeriumBridge extends TeriumAPI {
 
             if (serviceManager.getCloudServiceByName(jsonService.getString("service_name")) == null) {
                 serviceManager.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"))));
+                serviceManager.getCloudServiceByName(jsonService.getString("service_name")).setServiceState(CloudServiceState.valueOf(jsonService.getString("state")));
 
                 if (!jsonService.getString("service_group").equals("Proxy"))
                     server.registerServer(new ServerInfo(jsonService.getString("service_name"), new InetSocketAddress("127.0.0.1", jsonService.getInt("port"))));

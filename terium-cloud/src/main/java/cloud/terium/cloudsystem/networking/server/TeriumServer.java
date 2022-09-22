@@ -57,6 +57,10 @@ public class TeriumServer {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceMemoryUpdatePacket.minecraftService()).setUsedMemory(packetPlayOutServiceMemoryUpdatePacket.memory());
                                             }
 
+                                            if(packet instanceof PacketPlayOutServiceOnlinePlayersUpdatePacket packetPlayOutServiceOnlinePlayersUpdatePacket) {
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
+                                            }
+
                                             if (packet instanceof PacketPlayOutServiceForceShutdown packetForce) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetForce.serviceName()).shutdown();
                                                 return;

@@ -6,7 +6,9 @@ import cloud.terium.bridge.velocity.commands.HubCommand;
 import cloud.terium.bridge.velocity.listener.LoginListener;
 import cloud.terium.bridge.velocity.listener.ProxyPingListener;
 import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
+import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -49,6 +51,7 @@ public class BridgeVelocityStartup {
                 proxyServer.registerServer(new ServerInfo("fallback", new InetSocketAddress("127.0.0.1", teriumBridge.getServiceManager().getAllLobbyServices().get(0).getPort())));
             }
         }).repeat(2, TimeUnit.SECONDS).schedule();
+        new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
     }
 
     @Subscribe

@@ -4,7 +4,9 @@ import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.bukkit.commands.StopCommand;
 import cloud.terium.bridge.bukkit.listener.PlayerJoinListener;
 import cloud.terium.bridge.bukkit.listener.PlayerQuitListener;
+import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -28,6 +30,8 @@ public class BridgeBukkitStartup extends JavaPlugin {
         teriumBridge.startSendingUsedMemory();
 
         getCommand("stop").setExecutor(new StopCommand());
+
+        new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
     }
 
     @Override

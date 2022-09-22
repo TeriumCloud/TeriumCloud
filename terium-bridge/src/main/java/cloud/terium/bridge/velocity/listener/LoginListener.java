@@ -1,11 +1,13 @@
 package cloud.terium.bridge.velocity.listener;
 
 import cloud.terium.bridge.TeriumBridge;
+import cloud.terium.bridge.bukkit.BridgeBukkitStartup;
 import cloud.terium.bridge.player.CloudPlayer;
 import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
+import cloud.terium.networking.packets.PacketPlayOutServiceOnlinePlayersUpdatePacket;
 import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
@@ -30,6 +32,7 @@ public class LoginListener {
             if (minecraftService != null) {
                 player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().get(0).getServiceName()).get()).connect();
                 cloudPlayer.setConnectedService(minecraftService);
+                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount() + 1));
             } else {
                 player.disconnect(Component.text("§cThe terium-cloud is starting a lobby service. Please wait a moment."));
             }
@@ -43,7 +46,6 @@ public class LoginListener {
         }
 
         if (TeriumBridge.getInstance().getThisService().getServiceGroup().isMaintenance()) {
-            System.out.println(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).isAdmin());
             if (!TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).isAdmin()) {
                 player.disconnect(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("maintenance.message").getAsString()));
             }
@@ -52,11 +54,13 @@ public class LoginListener {
         if (BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount() >= TeriumBridge.getInstance().getThisService().getServiceGroup().getMaximumPlayers() && player.hasPermission("terium.full_kick")) {
             player.disconnect(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getConfigManager().getCloudBridgeConfig().get("full_kick.message").getAsString()));
         }
+
     }
 
     @Subscribe
     public void handleDisconnect(DisconnectEvent event) {
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(event.getPlayer().getUsername(), event.getPlayer().getUniqueId()));
         TeriumBridge.getInstance().getCloudPlayerManager().updateCloudPlayer(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(event.getPlayer().getUsername(), event.getPlayer().getUniqueId()), true);
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount()));
     }
 }
