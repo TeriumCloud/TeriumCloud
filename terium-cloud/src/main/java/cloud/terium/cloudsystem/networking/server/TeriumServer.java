@@ -48,9 +48,9 @@ public class TeriumServer {
                                     .addLast(new SimpleChannelInboundHandler<Packet>() {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
-                                            if (packet instanceof PacketPlayOutServiceOnline packetPlayOutServiceOnline) {
-                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).setServiceState(CloudServiceState.ONLINE);
-                                                Logger.log("The service '" + packetPlayOutServiceOnline.minecraftService() + "' successfully started on port " + Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnline.minecraftService()).getPort() + ".", LogType.INFO);
+                                            if (packet instanceof PacketPlayOutServiceChangeState packetPlayOutServiceChangeState) {
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceChangeState.minecraftService()).setServiceState(packetPlayOutServiceChangeState.serviceState());
+                                                Logger.log("The service '" + packetPlayOutServiceChangeState.minecraftService() + "' successfully started on port " + Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceChangeState.minecraftService()).getPort() + ".", LogType.INFO);
                                             }
 
                                             if (packet instanceof PacketPlayOutServiceMemoryUpdatePacket packetPlayOutServiceMemoryUpdatePacket) {
@@ -61,10 +61,13 @@ public class TeriumServer {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
                                             }
 
-                                            if (packet instanceof PacketPlayOutServiceForceShutdown packetForce) {
+                                            /*
+                                             * TODO: RECODE SERVICE STOPPING
+                                             */
+                                            /*if (packet instanceof PacketPlayOutServiceForceShutdown packetForce) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetForce.serviceName()).shutdown();
                                                 return;
-                                            }
+                                            }*/
 
                                             if (packet instanceof PacketPlayOutServiceStart packetPlayOutServiceStart) {
                                                 new MinecraftService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(packetPlayOutServiceStart.defaultServiceGroup())).start();

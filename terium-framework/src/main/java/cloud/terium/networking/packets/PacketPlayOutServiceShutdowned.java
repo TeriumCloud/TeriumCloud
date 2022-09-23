@@ -3,32 +3,24 @@ package cloud.terium.networking.packets;
 import cloud.terium.networking.packet.Packet;
 import io.netty.buffer.ByteBuf;
 
-public class PacketPlayOutServiceOnline extends Packet {
+public class PacketPlayOutServiceShutdowned extends Packet {
 
     private final String minecraftService;
-    private final boolean online;
 
-    public PacketPlayOutServiceOnline(String minecraftService, boolean online) {
+    public PacketPlayOutServiceShutdowned(String minecraftService) {
         this.minecraftService = minecraftService;
-        this.online = online;
     }
 
-    public PacketPlayOutServiceOnline(ByteBuf message) {
+    public PacketPlayOutServiceShutdowned(ByteBuf message) {
         this.minecraftService = readString(message);
-        this.online = Boolean.parseBoolean(readString(message));
     }
 
     public String minecraftService() {
         return minecraftService;
     }
 
-    public boolean online() {
-        return online;
-    }
-
     @Override
     public void write(ByteBuf byteBuf) {
         writeString(minecraftService, byteBuf);
-        writeString(online + "", byteBuf);
     }
 }

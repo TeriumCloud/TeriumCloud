@@ -9,8 +9,8 @@ import cloud.terium.bridge.player.CloudPlayerManager;
 import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.json.DefaultJsonService;
+import cloud.terium.networking.packets.PacketPlayOutServiceChangeState;
 import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
-import cloud.terium.networking.packets.PacketPlayOutServiceOnline;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
@@ -115,7 +115,7 @@ public class TeriumBridge extends TeriumAPI {
             @Override
             public void run() {
                 getThisService().setServiceState(CloudServiceState.ONLINE);
-                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnline(getThisService().getServiceName(), true));
+                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getThisService().getServiceName(), CloudServiceState.ONLINE));
             }
         }, 500);
     }
@@ -137,7 +137,7 @@ public class TeriumBridge extends TeriumAPI {
             @Override
             public void run() {
                 getThisService().setServiceState(CloudServiceState.ONLINE);
-                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnline(getThisService().getServiceName(), true));
+                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getThisService().getServiceName(), CloudServiceState.ONLINE));
             }
         }, 500);
     }

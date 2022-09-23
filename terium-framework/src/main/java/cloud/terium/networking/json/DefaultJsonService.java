@@ -44,6 +44,14 @@ public class DefaultJsonService implements ICloudService {
         this.initFile();
     }
 
+    public DefaultJsonService(String servicename) {
+        this.file = new File("../../data/cache/servers/", servicename + ".json");
+        this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        this.pool = Executors.newFixedThreadPool(2);
+        this.iCloudService = null;
+        this.initFile();
+    }
+
     private void initFile() {
         if (!file.exists()) {
             this.json = new JsonObject();

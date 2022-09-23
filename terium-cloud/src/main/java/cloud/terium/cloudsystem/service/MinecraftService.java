@@ -4,7 +4,6 @@ import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
-import cloud.terium.networking.packets.PacketPlayOutServiceForceShutdown;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
@@ -150,7 +149,7 @@ public class MinecraftService implements ICloudService {
     }
 
     public void shutdown() {
-        Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(getServiceName()));
+        // Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(getServiceName()));
         MinecraftService minecraftService = this;
         Logger.log("Trying to stop service '" + getServiceName() + "'... [MinecraftService#forceShutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))

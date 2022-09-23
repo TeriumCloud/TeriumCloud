@@ -1,7 +1,6 @@
 package cloud.terium.bridge.bukkit.commands;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.networking.packets.PacketPlayOutServiceForceShutdown;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -22,7 +21,7 @@ public class StopCommand implements CommandExecutor {
             }
 
             Bukkit.getOnlinePlayers().forEach(player -> player.kick(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + "<#ef7b7b>The service you are connected with is shutting down.")));
-            TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(TeriumBridge.getInstance().getThisName()));
+            // TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(TeriumBridge.getInstance().getThisName()));
         }
         return false;
     }

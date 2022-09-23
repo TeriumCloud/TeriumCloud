@@ -32,8 +32,8 @@ public final class TeriumNetworkListener {
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
                 System.out.println(packet.getClass().getSimpleName());
-                if (packet instanceof PacketPlayOutServiceOnline packetOnline) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).setServiceState(CloudServiceState.ONLINE);
+                if (packet instanceof PacketPlayOutServiceChangeState packetOnline) {
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).setServiceState(packetOnline.serviceState());
                 }
 
                 /*
@@ -58,7 +58,7 @@ public final class TeriumNetworkListener {
                     TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
                 }
 
-                if (packet instanceof PacketPlayOutServiceForceShutdown packetPlayOutServiceShutdown) {
+                /*if (packet instanceof PacketPlayOutServiceForceShutdown packetPlayOutServiceShutdown) {
                     if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
                         BridgeVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).getRank().equals(CloudRank.Admin)).forEach(player -> player.sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + "The service <dark_gray>'<#37b4b4>" + packetPlayOutServiceShutdown.serviceName() + "<dark_gray>' <white>is shutting down...")));
                     }
@@ -68,7 +68,7 @@ public final class TeriumNetworkListener {
                             BridgeVelocityStartup.getInstance().getProxyServer().shutdown();
                         else BridgeBukkitStartup.getInstance().getServer().shutdown();
                     }
-                }
+                }*/
 
                 if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
