@@ -72,6 +72,9 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
 
             this.file = new File("groups/Server/");
 
+            if (file.mkdirs()) {
+                Logger.log("Successfully init server-group folder.", LogType.INFO);
+            }
         }
         if (file.mkdirs()) {
             Logger.log("Successfully init server-group folder.", LogType.INFO);
@@ -103,8 +106,34 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     public void createServiceGroup(ICloudServiceGroup defaultServiceGroup) {
         this.file = new File("groups/" + defaultServiceGroup.getServiceType() + "/" + defaultServiceGroup.getServiceGroupName() + ".json");
 
-        if (defaultServiceGroup.getPort() == -1) initFile(file, defaultServiceGroup);
-        else initFile(file, defaultServiceGroup, true);
+        if (defaultServiceGroup.getServiceType().equals(CloudServiceType.Proxy)) new DefaultProxyGroup(defaultServiceGroup.getServiceGroupName(),
+                defaultServiceGroup.getGroupTitle(),
+                defaultServiceGroup.getServiceGroupNode(),
+                defaultServiceGroup.getVersion(),
+                defaultServiceGroup.isMaintenance(),
+                defaultServiceGroup.getPort(),
+                defaultServiceGroup.getMaximumPlayers(),
+                defaultServiceGroup.getMemory(),
+                defaultServiceGroup.getMinimalServices(),
+                defaultServiceGroup.getMaximalServices());
+        else if(defaultServiceGroup.getServiceType().equals(CloudServiceType.Lobby)) new DefaultLobbyGroup(defaultServiceGroup.getServiceGroupName(),
+                defaultServiceGroup.getGroupTitle(),
+                defaultServiceGroup.getServiceGroupNode(),
+                defaultServiceGroup.getVersion(),
+                defaultServiceGroup.isMaintenance(),
+                defaultServiceGroup.getMaximumPlayers(),
+                defaultServiceGroup.getMemory(),
+                defaultServiceGroup.getMinimalServices(),
+                defaultServiceGroup.getMaximalServices());
+        else new DefaultServerGroup(defaultServiceGroup.getServiceGroupName(),
+                    defaultServiceGroup.getGroupTitle(),
+                    defaultServiceGroup.getServiceGroupNode(),
+                    defaultServiceGroup.getVersion(),
+                    defaultServiceGroup.isMaintenance(),
+                    defaultServiceGroup.getMaximumPlayers(),
+                    defaultServiceGroup.getMemory(),
+                    defaultServiceGroup.getMinimalServices(),
+                    defaultServiceGroup.getMaximalServices());
 
         if(Terium.getTerium().getCloudUtils().getSetupState() == SetupState.DONE) {
             serviceGroups.add(defaultServiceGroup);
@@ -196,7 +225,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                         serviceGroup.get("memory").getAsInt(),
                         serviceGroup.get("minimal_services").getAsInt(),
                         serviceGroup.get("maximal_services").getAsInt());
-                this.registedServerGroups.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
+                this.registedServerGroups.put(iCloudServiceGroup.getServiceGroupName(), iCloudServiceGroup);
                 this.serviceGroups.add(iCloudServiceGroup);
             }
         }

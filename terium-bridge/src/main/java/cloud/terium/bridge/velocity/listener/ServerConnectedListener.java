@@ -9,12 +9,14 @@ import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.proxy.Player;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.NotNull;
 
 public class ServerConnectedListener {
 
     @Subscribe
-    public void handleServerConnected(ServerConnectedEvent event) {
+    public void handleServerConnected(final @NotNull ServerConnectedEvent event) {
         Player player = event.getPlayer();
         CloudPlayer cloudPlayer = TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId());
 
@@ -24,20 +26,25 @@ public class ServerConnectedListener {
     }
 
     @Subscribe
-    public void handleServerConnected(ServerPreConnectEvent event) {
+    public void handleServerConnected(final @NotNull ServerPreConnectEvent event) {
         Player player = event.getPlayer();
         ICloudService minecraftService = TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().size() > 0 ? TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().get(0) : null;
 
-        if(event.getResult().getServer().get().getServerInfo().getName().equals("fallback") && minecraftService != null)
+        if (event.getResult().getServer().get().getServerInfo().getName().equals("fallback") && minecraftService != null)
             player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(minecraftService.getServiceName()).get()).connect();
     }
 
     @Subscribe
-    public void handleServerConnected(KickedFromServerEvent event) {
-        Player player = event.getPlayer();
-        ICloudService minecraftService = TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().size() > 0 ? TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().get(0) : null;
-
-        if(minecraftService != null)
-            player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(minecraftService.getServiceName()).get()).connect();
+    public void handleKickedFromServer(final @NotNull KickedFromServerEvent event) {
+        if (event.getPlayer().isActive()) {
+            TeriumBridge.getInstance().getFallback(event.getPlayer()).flatMap(service -> BridgeVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
+                    .ifPresent(registeredServer -> {
+                        if (event.getServer() != null && event.getServer().getServerInfo().getName().equals(registeredServer.getServerInfo().getName())) {
+                            event.setResult(KickedFromServerEvent.Notify.create(event.getServerKickReason().orElse(Component.empty())));
+                        } else {
+                            event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer));
+                        }
+                    });
+        }
     }
 }

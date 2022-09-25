@@ -109,7 +109,7 @@ public class DefaultJsonService implements ICloudService {
 
     @Override
     public boolean isOnline() {
-        return json.get("online").getAsBoolean();
+        return getServiceState().equals(CloudServiceState.ONLINE);
     }
 
     @Override

@@ -12,7 +12,6 @@ import cloud.terium.cloudsystem.template.TemplateManager;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.cloudsystem.utils.setup.SetupState;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
@@ -92,5 +91,9 @@ public class Terium {
 
     public static Terium getTerium() {
         return terium;
+    }
+
+    public String getVersion() {
+        return "1.0-SNAPSHOT";
     }
 }

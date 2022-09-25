@@ -1,8 +1,6 @@
 package cloud.terium.bridge.velocity;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.bridge.velocity.commands.CloudCommand;
-import cloud.terium.bridge.velocity.commands.HubCommand;
 import cloud.terium.bridge.velocity.listener.LoginListener;
 import cloud.terium.bridge.velocity.listener.ProxyPingListener;
 import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
@@ -39,8 +37,6 @@ public class BridgeVelocityStartup {
         teriumBridge.initServices(proxyServer);
         teriumBridge.startSendingUsedMemory();
 
-        proxyServer.getCommandManager().register(new CloudCommand().build());
-        proxyServer.getCommandManager().register("hub", new HubCommand(), "l", "lobby");
         proxyServer.getEventManager().register(this, new LoginListener());
         proxyServer.getEventManager().register(this, new ProxyPingListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());

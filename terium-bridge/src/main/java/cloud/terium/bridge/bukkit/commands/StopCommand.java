@@ -18,6 +18,7 @@ public class StopCommand implements CommandExecutor {
         if (sender.isOp()) {
             if (sender instanceof Player player) {
                 player.sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + "Trying to stop this service..."));
+                Bukkit.shutdown();
             }
 
             Bukkit.getOnlinePlayers().forEach(player -> player.kick(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + "<#ef7b7b>The service you are connected with is shutting down.")));

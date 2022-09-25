@@ -17,20 +17,20 @@ import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.impl.CloudService;
 import com.moandjiezana.toml.Toml;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.net.InetSocketAddress;
-import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -46,12 +46,8 @@ public class TeriumBridge extends TeriumAPI {
     private String thisName;
     private final String prefix;
 
-    public static void main(String[] args) {
-        new TeriumBridge();
-    }
-
     public TeriumBridge() {
-        super(instance);
+        super();
         instance = this;
         this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
         this.serviceManager = new ServiceManager();
@@ -80,10 +76,6 @@ public class TeriumBridge extends TeriumAPI {
 
     public long usedMemory() {
         return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-    }
-
-    public long maxMemory() {
-        return (Runtime.getRuntime().maxMemory()) / (1024 * 1024);
     }
 
     public void startSendingUsedMemory() {
@@ -140,5 +132,15 @@ public class TeriumBridge extends TeriumAPI {
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getThisService().getServiceName(), CloudServiceState.ONLINE));
             }
         }, 500);
+    }
+
+    public @NotNull Optional<ICloudService> getFallback(final Player player) {
+        return TeriumAPI.getTeriumAPI().getServiceManager().getAllCloudServices().stream()
+                .filter(service -> service.getServiceState().equals(CloudServiceState.ONLINE))
+                .filter(service -> !service.getServiceGroup().getServiceType().equals(CloudServiceType.Proxy))
+                .filter(service -> service.getServiceGroup().getServiceType().equals(CloudServiceType.Lobby))
+                .filter(service -> (player.getCurrentServer().isEmpty()
+                        || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
+                .min(Comparator.comparing(ICloudService::getOnlinePlayers));
     }
 }

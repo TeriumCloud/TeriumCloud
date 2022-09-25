@@ -4,21 +4,16 @@ import cloud.terium.teriumapi.player.ICloudPlayerManager;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
 import cloud.terium.teriumapi.service.ICloudServiceManager;
+import lombok.Getter;
 
 public abstract class TeriumAPI {
 
-    static TeriumAPI instance;
+    @Getter
+    protected static TeriumAPI teriumAPI;
 
-    public TeriumAPI(TeriumAPI teriumAPI) {
-        instance = teriumAPI;
+    protected TeriumAPI() {
+        teriumAPI = this;
     }
-
-    /*
-     * Use this methode to get the terium-api instance
-     */
-     public static TeriumAPI getTeriumAPI() {
-         return instance;
-     }
 
     /*
      * Use this methode to get the current server as ICloudService

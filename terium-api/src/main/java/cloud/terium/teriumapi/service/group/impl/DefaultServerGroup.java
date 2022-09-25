@@ -39,6 +39,9 @@ public class DefaultServerGroup implements ICloudServiceGroup {
         this.memory = memory;
         this.minimalServices = minimalServices;
         this.maximalServices = maximalServices;
+    }
+
+    public void initFile() {
         new File("templates//" + name).mkdirs();
 
         JsonObject json = new JsonObject();
@@ -48,7 +51,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node);
         json.addProperty("version", version);
-        json.addProperty("servicetype", CloudServiceType.Lobby.name());
+        json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);

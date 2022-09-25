@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +39,9 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         this.memory = memory;
         this.minimalServices = minimalServices;
         this.maximalServices = maximalServices;
+    }
+
+    public void initFile() {
         new File("templates//" + name).mkdirs();
 
         JsonObject json = new JsonObject();

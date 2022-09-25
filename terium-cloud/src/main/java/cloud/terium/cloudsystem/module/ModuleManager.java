@@ -8,10 +8,12 @@ import cloud.terium.teriumapi.module.ModuleType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -24,11 +26,22 @@ public class ModuleManager implements IModuleManager {
     @SneakyThrows
     public ModuleManager() {
         this.modules = new HashMap<>();
-        Logger.log("Trying to load all modules in modules directory...", LogType.INFO);
-        for (File file : new File("modules//").listFiles()) {
-            loadModule(file.getPath());
+        final File file = new File("modules//");
+        if(file.exists()) {
+            if(Arrays.stream(file.listFiles()).toList().isEmpty()) {
+                FileUtils.forceDelete(file);
+                Logger.log("Modules directory is empty. Terium deleted the emtpy folder.", LogType.WARINING);
+                return;
+            }
+
+            Logger.log("Trying to load all modules in modules directory...", LogType.INFO);
+            for (File modules : file.listFiles()) {
+                loadModule(modules.getPath());
+            }
+            Logger.log("Successfully load all modules in modules directory.", LogType.INFO);
+        } else {
+            Logger.log("Modules directory is empty or not exist. Terium can't load any modules.", LogType.WARINING);
         }
-        Logger.log("Successfully load all modules in modules directory.", LogType.INFO);
     }
 
     @Override

@@ -17,9 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MinecraftService implements ICloudService {
 
@@ -38,11 +38,11 @@ public class MinecraftService implements ICloudService {
      TODO: Looking and debug why the template folder is copied in proxy servers.
      */
     public MinecraftService(ICloudServiceGroup serviceGroup) {
-        this(serviceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : new Random().nextInt(20000, 50000));
+        this(serviceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
     }
 
     public MinecraftService(ICloudServiceGroup serviceGroup, int serviceId) {
-        this(serviceGroup, serviceId, serviceGroup.hasPort() ? serviceGroup.getPort() : new Random().nextInt(20000, 50000));
+        this(serviceGroup, serviceId, serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
     }
 
     public MinecraftService(ICloudServiceGroup defaultServiceGroup, int serviceId, int port) {

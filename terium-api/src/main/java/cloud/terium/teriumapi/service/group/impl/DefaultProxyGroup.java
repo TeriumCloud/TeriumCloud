@@ -42,6 +42,9 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         this.memory = memory;
         this.minimalServices = minimalServices;
         this.maximalServices = maximalServices;
+    }
+
+    public void initFile() {
         new File("templates//" + name).mkdirs();
 
         final JsonObject json = new JsonObject();
