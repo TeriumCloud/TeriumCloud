@@ -1,25 +1,26 @@
 package cloud.terium.teriumproxy;
 
-import com.google.inject.Inject;
+import cloud.terium.teriumproxy.manager.ConfigManager;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
 import lombok.Getter;
-import org.slf4j.Logger;
 
 @Plugin(
         id = "terium-proxy",
-        name = "TeriumProxy",
-        version = "1.0.0-SNAPSHOT",
-        authors = {"Jxnnik"}
+        name = "teriumproxy",
+        version = "1.0.0-DEVELOPMENT",
+        authors = {"ByRaudy"}
 )
 @Getter
 public class TeriumProxy {
 
     private static TeriumProxy instance;
+    private final ConfigManager configManager;
 
     public TeriumProxy() {
         instance = this;
+        configManager = new ConfigManager();
     }
 
     @Subscribe
