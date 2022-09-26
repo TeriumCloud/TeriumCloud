@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'eclipse'
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
 }
 
 group = 'cloud.terium'
 version = '1.0-SNAPSHOT'
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
@@ -19,11 +19,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
+    compileOnly fileTree(dir: '../../terium-api/build/libs', include: '*.jar')
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
+    compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
     annotationProcessor 'com.velocitypowered:velocity-api:3.1.1'
 }
 
-def targetJavaVersion = 11
+def targetJavaVersion = 16
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -53,6 +55,3 @@ def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
 }
 
 sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
-
-rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
-project.eclipse.synchronizationTasks(generateTemplates)

@@ -2,7 +2,6 @@ package cloud.terium.bridge.velocity;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.velocity.listener.LoginListener;
-import cloud.terium.bridge.velocity.listener.ProxyPingListener;
 import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
@@ -38,15 +37,8 @@ public class BridgeVelocityStartup {
         teriumBridge.startSendingUsedMemory();
 
         proxyServer.getEventManager().register(this, new LoginListener());
-        proxyServer.getEventManager().register(this, new ProxyPingListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
 
-        proxyServer.getScheduler().buildTask(this, () -> {
-            if(!teriumBridge.getServiceManager().getAllLobbyServices().isEmpty()) {
-                proxyServer.unregisterServer(proxyServer.getServer("fallback").get().getServerInfo());
-                proxyServer.registerServer(new ServerInfo("fallback", new InetSocketAddress("127.0.0.1", teriumBridge.getServiceManager().getAllLobbyServices().get(0).getPort())));
-            }
-        }).repeat(2, TimeUnit.SECONDS).schedule();
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
     }
 

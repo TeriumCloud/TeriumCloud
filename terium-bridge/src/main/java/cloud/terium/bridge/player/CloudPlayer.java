@@ -19,6 +19,9 @@ public class CloudPlayer implements ICloudPlayer {
     private CloudRank rank;
     private ICloudService connectedService;
 
+    /*
+     * TODO: CODE CLOUDPLAYER! NOW!
+     */
     @Override
     public long firstLogin() {
         return 0;

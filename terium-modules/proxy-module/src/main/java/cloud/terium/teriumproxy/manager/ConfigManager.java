@@ -19,21 +19,17 @@ public class ConfigManager {
     private JsonObject json;
 
     public ConfigManager() {
-        this(false);
-    }
-
-    public ConfigManager(boolean bridge) {
-        if (!bridge) {
-            this.file = new File("config.json");
-        } else {
-            this.file = new File("../../config.json");
-        }
+        this.file = new File("../../modules/terium-proxy/config.json");
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.initFile();
     }
 
     private void initFile() {
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+
         if (!file.exists()) {
             this.json = new JsonObject();
             json.addProperty("full_kick.message", "<gradient:#245dec:#00d4ff><bold>ᴡᴡᴡ.ᴛᴇʀɪᴜᴍ.ᴄʟᴏᴜᴅ</bold></gradient> \n \n <red>This service is full. \n <red>You can't join without permission.");
