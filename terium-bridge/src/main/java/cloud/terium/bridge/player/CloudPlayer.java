@@ -9,32 +9,39 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
 @Setter
 public class CloudPlayer implements ICloudPlayer {
 
     private UUID uniqueId;
     private String username;
-    private String title;
-    private CloudRank rank;
+    private long firstLogin;
+    private long lastLogin;
+    private String addresse;
     private ICloudService connectedService;
 
-    /*
-     * TODO: CODE CLOUDPLAYER! NOW!
-     */
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return uniqueId;
+    }
+
     @Override
     public long firstLogin() {
-        return 0;
+        return firstLogin;
     }
 
     @Override
     public long lastLogin() {
-        return 0;
+        return lastLogin;
     }
 
     @Override
     public String getAddress() {
-        return null;
+        return addresse;
     }
 
     @Override
@@ -50,13 +57,5 @@ public class CloudPlayer implements ICloudPlayer {
     @Override
     public void connectWithService(ICloudService iCloudService) {
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(username, uniqueId, iCloudService.getServiceName()));
-    }
-
-    public boolean hasRankOrHigher(CloudRank cloudRank) {
-        return rank.getPower() >= cloudRank.getPower();
-    }
-
-    public boolean isAdmin() {
-        return rank.equals(CloudRank.Admin);
     }
 }

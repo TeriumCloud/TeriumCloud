@@ -13,7 +13,7 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void handlePlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        TeriumBridge.getInstance().getCloudPlayerManager().updateCloudPlayer(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getName(), player.getUniqueId()), true);
+        TeriumBridge.getInstance().getCloudPlayerManager().updateCloudPlayer(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUniqueId()));
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeBukkitStartup.getInstance().getServer().getOnlinePlayers().size() - 1));
     }
 }
