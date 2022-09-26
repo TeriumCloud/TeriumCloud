@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 
 @Plugin(
         id = "terium-proxy",
-        name = "TeriumProxy",
-        version = "1.0.0-SNAPSHOT",
-        authors = {"Jxnnik"}
+        name = "teriumproxy",
+        version = "1.0.0-DEVELOPMENT",
+        authors = {"ByRaudy"}
 )
 @Getter
 public class TeriumProxy {
