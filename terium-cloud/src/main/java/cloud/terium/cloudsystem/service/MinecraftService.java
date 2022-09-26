@@ -32,6 +32,7 @@ public class MinecraftService implements ICloudService {
     private int onlinePlayers;
     private Process process;
     private final File template;
+    private Thread outputThread;
     private Thread thread;
 
     /*
@@ -188,6 +189,30 @@ public class MinecraftService implements ICloudService {
             }
         }, 5000);
     }*/
+
+    public void showScreen() {
+        /*
+         * TODO: Recode that methode (with toggle system)
+         */
+        outputThread = new Thread(() -> {
+            String line = null;
+            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while (true) {
+                try {
+                    if ((line = input.readLine()) == null) break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Logger.log(line, LogType.INFO);
+            }
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        outputThread.start();
+    }
 
     private void replaceInFile(File file, String placeHolder, String replacedWith) {
         String content;
