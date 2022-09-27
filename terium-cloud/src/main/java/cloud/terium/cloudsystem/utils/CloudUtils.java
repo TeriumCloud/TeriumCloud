@@ -6,6 +6,7 @@ import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.cloudsystem.utils.setup.SetupStorage;
+import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,8 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +31,7 @@ public class CloudUtils {
     private boolean running;
     private boolean setup;
     private SetupState setupState;
+    private final List<String> playerList;
 
     public CloudUtils() {
         this.startMessage =
@@ -36,11 +40,12 @@ public class CloudUtils {
                         \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
                         \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/
                                                                                                     \s
-                        \u001B[0m> Terium by Jannik Hegemann aka. Jxnnik\s
-                        \u001B[0m> Discord: terium.cloud/discord | Twitter: \u001B[36m@teriumservice \u001B[0m
+                        \u001B[0m> Terium by Jannik Hegemann aka. ByRauy\s
+                        \u001B[0m> Discord: terium.cloud/discord | Twitter: \u001B[36m@teriumcloud \u001B[0m
                         """;
         this.running = true;
         this.setup = false;
+        this.playerList = new ArrayList<>();
     }
 
     public void startSetup() {

@@ -22,6 +22,5 @@ public class DefaultTeriumNetworking {
 
     public void sendPacket(Packet packet) {
         this.client.getChannel().writeAndFlush(packet);
-        System.out.println("Sending packet: " + packet.getClass().getSimpleName());
     }
 }

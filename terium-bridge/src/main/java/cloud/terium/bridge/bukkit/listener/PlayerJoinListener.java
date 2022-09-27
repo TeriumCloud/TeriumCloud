@@ -14,10 +14,6 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void handlePlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        CloudPlayer cloudPlayer = TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getName(), player.getUniqueId());
-        cloudPlayer.setConnectedService(TeriumBridge.getInstance().getThisService());
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeBukkitStartup.getInstance().getServer().getOnlinePlayers().size()));
     }
 }

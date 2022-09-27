@@ -11,10 +11,9 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -38,6 +37,10 @@ public class BridgeVelocityStartup {
 
         proxyServer.getEventManager().register(this, new LoginListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
+
+        proxyServer.getScheduler().buildTask(this, () -> {
+            TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> proxyServer.sendMessage(MiniMessage.miniMessage().deserialize("PROXY: " + iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName())));
+        }).repeat(1, TimeUnit.SECONDS).schedule();
 
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
     }

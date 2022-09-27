@@ -6,12 +6,12 @@ import cloud.terium.bridge.impl.service.ServiceManager;
 import cloud.terium.bridge.impl.service.group.ServiceGroupManager;
 import cloud.terium.bridge.networking.TeriumNetworkListener;
 import cloud.terium.bridge.player.CloudPlayerManager;
-import cloud.terium.bridge.player.CloudRank;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceChangeState;
 import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
 import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -44,6 +44,7 @@ public class TeriumBridge extends TeriumAPI {
     private final CloudPlayerManager cloudPlayerManager;
     private ConfigManager configManager;
     private String thisName;
+    private final List<ICloudPlayer> playerList;
     private final String prefix;
 
     public TeriumBridge() {
@@ -55,6 +56,7 @@ public class TeriumBridge extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
         this.cloudPlayerManager = new CloudPlayerManager();
+        this.playerList = new ArrayList<>();
     }
 
     public static TeriumBridge getInstance() {
@@ -69,7 +71,7 @@ public class TeriumBridge extends TeriumAPI {
         this.configManager = new ConfigManager();
 
         if (getThisService().getServiceGroup().getServiceType().equals(CloudServiceType.Proxy)) {
-            BridgeVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> cloudPlayerManager.getCloudPlayer(player.getUsername(), player.getUniqueId()).hasRankOrHigher(CloudRank.Admin)).forEach(player ->
+            BridgeVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> player.hasPermission("terium.config.reload")).forEach(player ->
                     player.sendMessage(MiniMessage.miniMessage().deserialize(prefix + "Successfully reloaded cloudbridge-velocity.")));
         }
     }

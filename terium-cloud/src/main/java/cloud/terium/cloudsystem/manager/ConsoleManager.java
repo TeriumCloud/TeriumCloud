@@ -39,7 +39,7 @@ public class ConsoleManager {
         this.commandManager = commandManager;
         List<String> autoComplete = new Vector<String>();
         commandManager.getCommandList().forEach(command -> {
-            autoComplete.add(command.getName());
+            autoComplete.add(command.getCommand());
         });
         this.lineReader = LineReaderBuilder.builder().terminal(terminal).completer(new ArgumentCompleter(new StringsCompleter(autoComplete))).build();
 

@@ -22,13 +22,13 @@ public interface ICloudPlayer {
      * Get the first login from the cloud player as long
      * @return long This returns the first login of the cloud player.
      */
-    long firstLogin();
+    long getFirstLogin();
 
     /**
      * Get the last login from the cloud player as long
      * @return long This returns the last login of the cloud player.
      */
-    long lastLogin();
+    long getLastLogin();
 
     /**
      * Get the IP Address from the cloud player

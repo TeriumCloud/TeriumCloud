@@ -5,26 +5,19 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
 
-public class PacketPlayOutCloudPlayerConnect extends Packet {
+public class PacketPlayOutCloudPlayerConnectedService  extends Packet {
 
-    private final String name;
     private final UUID uniqueId;
     private final String minecraftService;
 
-    public PacketPlayOutCloudPlayerConnect(String name, UUID uniqueId, String service) {
-        this.name = name;
+    public PacketPlayOutCloudPlayerConnectedService(UUID uniqueId, String service) {
         this.uniqueId = uniqueId;
         this.minecraftService = service;
     }
 
-    public PacketPlayOutCloudPlayerConnect(ByteBuf message) {
-        this.name = readString(message);
+    public PacketPlayOutCloudPlayerConnectedService(ByteBuf message) {
         this.uniqueId = UUID.fromString(readString(message));
         this.minecraftService = readString(message);
-    }
-
-    public String name() {
-        return name;
     }
 
     public UUID uniqueId() {
@@ -37,7 +30,6 @@ public class PacketPlayOutCloudPlayerConnect extends Packet {
 
     @Override
     public void write(ByteBuf byteBuf) {
-        writeString(name, byteBuf);
         writeString(uniqueId.toString(), byteBuf);
         writeString(minecraftService, byteBuf);
     }

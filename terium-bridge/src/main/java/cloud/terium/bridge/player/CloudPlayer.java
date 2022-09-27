@@ -2,6 +2,7 @@ package cloud.terium.bridge.player;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerConnect;
+import cloud.terium.networking.packets.PacketPlayOutCloudPlayerConnectedService;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
@@ -16,8 +17,16 @@ public class CloudPlayer implements ICloudPlayer {
     private String username;
     private long firstLogin;
     private long lastLogin;
-    private String addresse;
+    private String address;
     private ICloudService connectedService;
+
+    public CloudPlayer(String username, UUID uniqueId, long firstLogin, long lastLogin, String address) {
+        this.username = username;
+        this.uniqueId = uniqueId;
+        this.firstLogin = firstLogin;
+        this.lastLogin = lastLogin;
+        this.address = address;
+    }
 
     @Override
     public String getUsername() {
@@ -30,18 +39,18 @@ public class CloudPlayer implements ICloudPlayer {
     }
 
     @Override
-    public long firstLogin() {
+    public long getFirstLogin() {
         return firstLogin;
     }
 
     @Override
-    public long lastLogin() {
+    public long getLastLogin() {
         return lastLogin;
     }
 
     @Override
     public String getAddress() {
-        return addresse;
+        return address;
     }
 
     @Override

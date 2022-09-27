@@ -81,28 +81,29 @@ public class TeriumServer {
 
                                             if (packet instanceof PacketPlayOutCloudPlayerJoin packetJoin) {
                                                 Logger.log("The player [" + packetJoin.name() + "/" + packetJoin.uniqueId() + "] trying to connect with the network.", LogType.INFO);
-                                                return;
+                                                channelHandlerContext.channel().writeAndFlush(packet);
                                             }
 
                                             if (packet instanceof PacketPlayOutCloudPlayerQuit packetQuit) {
                                                 Logger.log("The player [" + packetQuit.name() + "/" + packetQuit.uniqueId() + "] disconnected from the the network.", LogType.INFO);
+                                                channelHandlerContext.channel().writeAndFlush(packet);
                                             }
 
-                                            for (Channel channel : channels) {
-                                                if (channel != channelHandlerContext.channel()) {
-                                                    channel.writeAndFlush(packet);
+                                            channels.forEach(targetChannel -> {
+                                                if (targetChannel != channelHandlerContext.channel()) {
+                                                    targetChannel.writeAndFlush(packet);
                                                 }
-                                            }
+                                            });
                                         }
 
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
-                                            channels.add(channel);
+                                            channels.add(channelHandlerContext.channel());
                                         }
 
                                         @Override
                                         public void channelUnregistered(ChannelHandlerContext channelHandlerContext) throws Exception {
-                                            channels.remove(channel);
+                                            channels.remove(channelHandlerContext.channel());
                                         }
 
                                         @Override

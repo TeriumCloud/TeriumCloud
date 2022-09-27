@@ -32,6 +32,7 @@ public class CommandManager {
             new ListCommand(this);
             new ReloadCommand(this);
             new ListModulesCommand(this);
+            new ScreenCommand(this);
         }
     }
 
@@ -41,7 +42,7 @@ public class CommandManager {
 
     public Command getCommand(String name) {
         for (Command command : commandList) {
-            if (command.getName().equalsIgnoreCase(name)) {
+            if (command.getCommand().equalsIgnoreCase(name)) {
                 return command;
             }
         }

@@ -1,9 +1,9 @@
 {
-  "id": "cloudbridge-velocity",
-  "name": "CloudBridge",
+  "id": "teriumbridge-velocity",
+  "name": "TeriumBridge",
   "version": "1.0.0-SNAPSHOT",
   "authors": [
-    "Jxnnik"
+    "JannishDev"
   ],
   "dependencies": [],
   "main": "cloud.terium.bridge.velocity.BridgeVelocityStartup"

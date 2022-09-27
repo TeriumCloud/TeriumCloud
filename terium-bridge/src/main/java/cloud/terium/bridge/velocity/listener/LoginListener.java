@@ -6,6 +6,7 @@ import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnlinePlayersUpdatePacket;
+import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
@@ -21,7 +22,11 @@ public class LoginListener {
     @Subscribe
     public void handleLogin(LoginEvent event) {
         Player player = event.getPlayer();
-        CloudPlayer cloudPlayer = TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId());
+        CloudPlayer cloudPlayer = (CloudPlayer) TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
+        if(cloudPlayer == null) {
+            TeriumBridge.getInstance().getCloudPlayerManager().createPlayerJson(player);
+            cloudPlayer = (CloudPlayer) TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
+        }
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(player.getUsername(), player.getUniqueId()));
 
         if (!TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().isEmpty()) {
@@ -47,7 +52,7 @@ public class LoginListener {
     @Subscribe
     public void handleDisconnect(DisconnectEvent event) {
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(event.getPlayer().getUsername(), event.getPlayer().getUniqueId()));
-        TeriumBridge.getInstance().getCloudPlayerManager().updateCloudPlayer(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(event.getPlayer().getUsername(), event.getPlayer().getUniqueId()));
+        TeriumBridge.getInstance().getCloudPlayerManager().updateCloudPlayer(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(event.getPlayer().getUsername()));
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount()));
     }
 }
