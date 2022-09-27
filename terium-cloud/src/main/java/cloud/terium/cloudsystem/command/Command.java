@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public abstract class Command {
 
-    private final String name;
+    private final String command;
 
     public abstract void execute(String[] args);
 }
