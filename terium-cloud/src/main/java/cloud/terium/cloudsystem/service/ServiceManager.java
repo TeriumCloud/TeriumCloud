@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ServiceManager implements ICloudServiceManager {
 
     private final List<ICloudService> minecraftServices;
-    private final HashMap<String, ICloudService> minecraftServiceCache;
+    private final HashMap<String, MinecraftService> minecraftServiceCache;
 
     public ServiceManager() {
         this.minecraftServices = new CopyOnWriteArrayList<>();
@@ -75,7 +75,7 @@ public class ServiceManager implements ICloudServiceManager {
     }
 
     @Override
-    public ICloudService getCloudServiceByName(String s) {
+    public MinecraftService getCloudServiceByName(String s) {
         return minecraftServiceCache.get(s);
     }
 

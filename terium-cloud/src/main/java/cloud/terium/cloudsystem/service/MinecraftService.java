@@ -190,28 +190,34 @@ public class MinecraftService implements ICloudService {
         }, 5000);
     }*/
 
-    public void showScreen() {
-        /*
-         * TODO: Recode that methode (with toggle system)
-         */
-        outputThread = new Thread(() -> {
-            String line = null;
-            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            while (true) {
+    public void toggleScreen() {
+        if(!Terium.getTerium().getCloudUtils().isInScreen()) {
+            outputThread = new Thread(() -> {
+                String line = null;
+                BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                while (true) {
+                    try {
+                        if ((line = input.readLine()) == null) break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Logger.log(line, LogType.SCREEN);
+                }
                 try {
-                    if ((line = input.readLine()) == null) break;
+                    input.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Logger.log(line, LogType.INFO);
-            }
-            try {
-                input.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        outputThread.start();
+            });
+            outputThread.start();
+            Logger.log("You're now inside of " + getServiceName() + ".", LogType.INFO);
+            Terium.getTerium().getCloudUtils().setInScreen(true);
+        } else {
+            outputThread.stop();
+            Terium.getTerium().getCloudUtils().setInScreen(false);
+            Logger.log("You left the screen from " + getServiceName() + ".", LogType.INFO);
+            Logger.logAllCachedLogs();
+        }
     }
 
     private void replaceInFile(File file, String placeHolder, String replacedWith) {

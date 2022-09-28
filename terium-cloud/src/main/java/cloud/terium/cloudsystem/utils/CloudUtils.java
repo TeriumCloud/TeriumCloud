@@ -28,10 +28,11 @@ import java.util.List;
 public class CloudUtils {
 
     private final String startMessage;
+    private final List<ICloudPlayer> playerList;
     private boolean running;
     private boolean setup;
     private SetupState setupState;
-    private final List<String> playerList;
+    private boolean isInScreen;
 
     public CloudUtils() {
         this.startMessage =
@@ -40,11 +41,12 @@ public class CloudUtils {
                         \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
                         \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/
                                                                                                     \s
-                        \u001B[0m> Terium by Jannik Hegemann aka. ByRauy\s
+                        \u001B[0m> Terium by Jannik Hegemann aka. ByRaudy\s
                         \u001B[0m> Discord: terium.cloud/discord | Twitter: \u001B[36m@teriumcloud \u001B[0m
                         """;
         this.running = true;
         this.setup = false;
+        this.isInScreen = false;
         this.playerList = new ArrayList<>();
     }
 
