@@ -1,9 +1,6 @@
 package cloud.terium.cloudsystem;
 
-import cloud.terium.cloudsystem.manager.CommandManager;
-import cloud.terium.cloudsystem.manager.ConfigManager;
-import cloud.terium.cloudsystem.manager.ConsoleManager;
-import cloud.terium.cloudsystem.manager.SetupManager;
+import cloud.terium.cloudsystem.manager.*;
 import cloud.terium.cloudsystem.module.ModuleManager;
 import cloud.terium.cloudsystem.networking.DefaultTeriumNetworking;
 import cloud.terium.cloudsystem.service.ServiceManager;
@@ -33,6 +30,7 @@ public class Terium {
     private final ModuleManager moduleManager;
     private final ServiceManager serviceManager;
     private final ServiceGroupManager serviceGroupManager;
+    private final ScreenManager screenManager;
     private final DefaultTeriumNetworking defaultTeriumNetworking;
 
     public static void main(String[] args) {
@@ -56,6 +54,7 @@ public class Terium {
             this.consoleManager = new ConsoleManager(commandManager);
             this.serviceManager = new ServiceManager();
             this.serviceGroupManager = new ServiceGroupManager();
+            this.screenManager = new ScreenManager();
             this.moduleManager = new ModuleManager();
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
 
@@ -75,6 +74,7 @@ public class Terium {
         this.moduleManager = null;
         this.serviceManager = null;
         this.serviceGroupManager = new ServiceGroupManager();
+        this.screenManager = null;
         this.defaultTeriumNetworking = null;
 
         new SetupManager();

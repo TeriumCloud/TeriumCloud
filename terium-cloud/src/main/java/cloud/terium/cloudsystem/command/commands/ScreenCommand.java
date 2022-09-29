@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import org.jline.reader.LineReader;
 
 public class ScreenCommand extends Command {
 
