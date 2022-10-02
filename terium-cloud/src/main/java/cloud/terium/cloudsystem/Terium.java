@@ -27,10 +27,10 @@ public class Terium {
     private ConfigManager configManager;
     private final CommandManager commandManager;
     private final ConsoleManager consoleManager;
-    private final ModuleManager moduleManager;
+    private final ScreenManager screenManager;
     private final ServiceManager serviceManager;
     private final ServiceGroupManager serviceGroupManager;
-    private final ScreenManager screenManager;
+    private final ModuleManager moduleManager;
     private final DefaultTeriumNetworking defaultTeriumNetworking;
 
     public static void main(String[] args) {
@@ -44,7 +44,7 @@ public class Terium {
         this.cloudUtils = new CloudUtils();
         this.configManager = new ConfigManager();
 
-        System.out.println(cloudUtils.getStartMessage());
+        Logger.log(cloudUtils.getStartMessage());
         // this.cloudUtils.checkLicense();
 
         if (cloudUtils.getSetupState() == null) {
@@ -52,9 +52,9 @@ public class Terium {
 
             this.commandManager = new CommandManager();
             this.consoleManager = new ConsoleManager(commandManager);
+            this.screenManager = new ScreenManager();
             this.serviceManager = new ServiceManager();
             this.serviceGroupManager = new ServiceGroupManager();
-            this.screenManager = new ScreenManager();
             this.moduleManager = new ModuleManager();
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
 

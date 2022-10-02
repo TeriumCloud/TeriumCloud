@@ -59,15 +59,6 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/terium-modules/terium-command" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/terium-modules/terium-command" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/../other/Discord-BOT" />
         <option name="modules">
           <set>

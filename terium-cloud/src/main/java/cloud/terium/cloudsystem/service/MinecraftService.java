@@ -16,6 +16,8 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,6 +57,7 @@ public class MinecraftService implements ICloudService {
         this.port = port;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
+        Terium.getTerium().getScreenManager().addCloudService(this);
     }
 
     @SneakyThrows
@@ -202,6 +205,7 @@ public class MinecraftService implements ICloudService {
                         e.printStackTrace();
                     }
                     Logger.log(line, LogType.SCREEN);
+                    Terium.getTerium().getScreenManager().addLogToScreen(this, "[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.SCREEN.getPrefix() + line);
                 }
                 try {
                     input.close();
@@ -209,11 +213,14 @@ public class MinecraftService implements ICloudService {
                     e.printStackTrace();
                 }
             });
-            outputThread.start();
             Logger.log("You're now inside of " + getServiceName() + ".", LogType.INFO);
             Terium.getTerium().getCloudUtils().setInScreen(true);
+            Terium.getTerium().getScreenManager().setCurrentScreen(this);
+            if(Terium.getTerium().getScreenManager().getLogsFromService(this) != null) Terium.getTerium().getScreenManager().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
+            outputThread.start();
         } else {
             outputThread.stop();
+            Terium.getTerium().getScreenManager().setCurrentScreen(null);
             Terium.getTerium().getCloudUtils().setInScreen(false);
             Logger.log("You left the screen from " + getServiceName() + ".", LogType.INFO);
             Logger.logAllCachedLogs();

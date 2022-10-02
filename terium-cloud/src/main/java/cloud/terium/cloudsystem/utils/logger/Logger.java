@@ -20,6 +20,7 @@ public class Logger {
 
         if(Terium.getTerium().getConsoleManager() != null) Terium.getTerium().getConsoleManager().getLineReader().printAbove(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
         else System.out.println(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
+        Terium.getTerium().getScreenManager().getCloudLogs().add(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
     }
 
     public static void log(String message) {
@@ -36,5 +37,6 @@ public class Logger {
             if(Terium.getTerium().getConsoleManager() != null) Terium.getTerium().getConsoleManager().getLineReader().printAbove(log);
             else System.out.println(log);
         });
+        savedLogs.clear();
     }
 }
