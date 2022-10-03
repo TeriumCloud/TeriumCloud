@@ -48,7 +48,7 @@ public class Terium {
         // this.cloudUtils.checkLicense();
 
         if (cloudUtils.getSetupState() == null) {
-            System.out.println(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
+            Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
 
             this.commandManager = new CommandManager();
             this.consoleManager = new ConsoleManager(commandManager);

@@ -32,7 +32,7 @@ public class ServiceManager implements ICloudServiceManager {
             public void run() {
                 if (Terium.getTerium().getCloudUtils().isRunning()) {
                     Terium.getTerium().getServiceGroupManager().getAllServiceGroups().forEach(group -> {
-                        if (getCloudServicesByGroupName(group.getServiceGroupName()).size() <= group.getMaximalServices() && getCloudServicesByGroupName(group.getServiceGroupName()).size() < group.getMinimalServices()) {
+                        if (getCloudServicesByGroupName(group.getServiceGroupName()).stream().filter(ICloudService::isOnline).toList().size() <= group.getMaximalServices() && getCloudServicesByGroupName(group.getServiceGroupName()).size() < group.getMinimalServices()) {
                             new MinecraftService(group).start();
                         }
                     });

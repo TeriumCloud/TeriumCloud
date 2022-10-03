@@ -7,21 +7,10 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
-        <module name="terium-bridge.main" />
+        <module name="terium-framework.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Cloud-Rest-API" target="17" />
-      <module name="Cloud-Rest-API.main" target="17" />
-      <module name="Cloud-Rest-API.test" target="17" />
-      <module name="cloudcommand-module.main" target="11" />
-      <module name="cloudcommand-module.test" target="11" />
-      <module name="Terium" target="11" />
-      <module name="terium-command" target="16" />
-      <module name="terium-command.main" target="16" />
-      <module name="terium-command.test" target="16" />
-      <module name="Terium.main" target="11" />
-      <module name="Terium.test" target="11" />
       <module name="TeriumAPI" target="17" />
       <module name="TeriumAPI.main" target="17" />
       <module name="TeriumAPI.test" target="17" />
