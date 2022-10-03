@@ -26,7 +26,9 @@ public class CommandManager {
             new CreateGroupCommand(this);
             new EditGroupCommand(this);
             new StartCommand(this);
+
             new DebugStartCommand(this);
+
             new ShutdownCommand(this);
             new ShutdownGroupCommand(this);
             new ListCommand(this);

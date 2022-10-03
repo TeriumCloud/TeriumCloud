@@ -1,7 +1,10 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.json.DefaultJsonService;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceManager;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -32,7 +35,7 @@ public class ServiceManager implements ICloudServiceManager {
             public void run() {
                 if (Terium.getTerium().getCloudUtils().isRunning()) {
                     Terium.getTerium().getServiceGroupManager().getAllServiceGroups().forEach(group -> {
-                        if (getCloudServicesByGroupName(group.getServiceGroupName()).stream().filter(ICloudService::isOnline).toList().size() <= group.getMaximalServices() && getCloudServicesByGroupName(group.getServiceGroupName()).size() < group.getMinimalServices()) {
+                        if (getCloudServicesByGroupName(group.getServiceGroupName()).size() < group.getMaximalServices() && getCloudServicesByGroupName(group.getServiceGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(CloudServiceState.ONLINE) || iCloudService.getServiceState().equals(CloudServiceState.PREPARING)).toList().size() < group.getMinimalServices()) {
                             new MinecraftService(group).start();
                         }
                     });

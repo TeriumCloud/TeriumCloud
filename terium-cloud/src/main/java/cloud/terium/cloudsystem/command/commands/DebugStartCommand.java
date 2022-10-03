@@ -18,8 +18,9 @@ public class DebugStartCommand extends Command {
     public void execute(String[] args) {
         if (args.length == 1) {
             String[] command = args[0].split("-");
+            int id = Integer.parseInt(command[1]);
 
-            if (Terium.getTerium().getServiceManager().getMinecraftServiceCache().get(args[0]) != null) {
+            if (Terium.getTerium().getServiceManager().getMinecraftServiceCache().get(command[0] + (id > 9 ? "" + id : "-0" + id)) != null) {
                 Logger.log("A service with this name already exist!", LogType.ERROR);
                 return;
             }

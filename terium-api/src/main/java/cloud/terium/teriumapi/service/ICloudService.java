@@ -19,6 +19,14 @@ public interface ICloudService {
     }
 
     /**
+     * Get if the service is preparing
+     * @return boolean This returns if the serivce is preparing. (true if yes else false)
+     */
+    default boolean isPreparing() {
+        return getServiceState() == CloudServiceState.PREPARING;
+    }
+
+    /**
      * Get the service id of a service
      * @return int This returns the service of the service.
      */

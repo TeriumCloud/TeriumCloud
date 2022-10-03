@@ -257,19 +257,6 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-
-        /*
-         * TODO: fix that (possibly code this into terium-api)
-         */
-        /*switch (update_key) {
-            case "memory" -> iCloudServiceGroup.setMemory((Integer) update_value);
-            case "maximum_players" -> iCloudServiceGroup.setMaximumPlayers((Integer) update_value);
-            case "minimal_services" -> iCloudServiceGroup.setMinimalServices((Integer) update_value);
-            case "maximal_services" -> iCloudServiceGroup.setMaximalServices((Integer) update_value);
-            case "port" -> iCloudServiceGroup.setPort((Integer) update_value);
-            case "maintenance" -> iCloudServiceGroup.setMaintenance((Boolean) update_value);
-        }*/
     }
 
     @Override
