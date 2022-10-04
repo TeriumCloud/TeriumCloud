@@ -1,6 +1,7 @@
 package cloud.terium.bridge.velocity;
 
 import cloud.terium.bridge.TeriumBridge;
+import cloud.terium.bridge.velocity.commands.CloudCommand;
 import cloud.terium.bridge.velocity.listener.LoginListener;
 import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
 import cloud.terium.networking.json.DefaultJsonService;
@@ -37,6 +38,7 @@ public class BridgeVelocityStartup {
 
         proxyServer.getEventManager().register(this, new LoginListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
+        proxyServer.getCommandManager().register(new CloudCommand().build());
 
         proxyServer.getScheduler().buildTask(this, () -> {
             TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> proxyServer.sendMessage(MiniMessage.miniMessage().deserialize("PROXY: " + iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName())));

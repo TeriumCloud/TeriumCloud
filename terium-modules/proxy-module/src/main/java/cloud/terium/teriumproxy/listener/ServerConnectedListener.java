@@ -16,7 +16,12 @@ public class ServerConnectedListener {
         Player player = event.getPlayer();
         ICloudPlayer cloudPlayer = TeriumAPI.getTeriumAPI().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
 
-        TeriumProxy.getInstance().getProxyServer().getAllPlayers().forEach(players -> player.sendPlayerListHeaderAndFooter(MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("tablist_header").replace("%server%", cloudPlayer.getConnectedCloudService().getServiceName()).replace("%group_title%", cloudPlayer.getConnectedCloudService().getServiceGroup().getGroupTitle())),
-                MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("tablist_footer").replace("%server%", cloudPlayer.getConnectedCloudService().getServiceName()).replace("%group_title%", cloudPlayer.getConnectedCloudService().getServiceGroup().getGroupTitle()))));
+        TeriumProxy.getInstance().getProxyServer().getAllPlayers().forEach(players -> player.sendPlayerListHeaderAndFooter(
+                MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("tablist_header")
+                        .replace("%server%", cloudPlayer.getConnectedCloudService().getServiceName())
+                        .replace("%group_title%", cloudPlayer.getConnectedCloudService().getServiceGroup().getGroupTitle())),
+                MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("tablist_footer")
+                        .replace("%server%", cloudPlayer.getConnectedCloudService().getServiceName())
+                        .replace("%group_title%", cloudPlayer.getConnectedCloudService().getServiceGroup().getGroupTitle()))));
     }
 }
