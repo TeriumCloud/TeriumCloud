@@ -32,6 +32,7 @@ public class MinecraftService implements ICloudService {
     private final int serviceId;
     private long usedMemory;
     private int onlinePlayers;
+    private boolean locked;
     private Process process;
     private final File template;
     private Thread outputThread;
@@ -287,8 +288,18 @@ public class MinecraftService implements ICloudService {
     }
 
     @Override
+    public boolean isLocked() {
+        return locked;
+    }
+
+    @Override
     public CloudServiceType getServiceType() {
         return serviceGroup.getServiceType();
+    }
+
+    @Override
+    public void setLocked(boolean b) {
+        this.locked = b;
     }
 
     @Override

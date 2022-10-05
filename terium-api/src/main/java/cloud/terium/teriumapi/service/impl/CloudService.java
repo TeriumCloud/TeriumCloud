@@ -12,6 +12,7 @@ public class CloudService implements ICloudService {
     private final ICloudServiceGroup iCloudServiceGroup;
     private int onlinePlayers;
     private long usedMemory;
+    private boolean locked;
     private CloudServiceState serviceState;
 
     public CloudService(String serviceName, int serviceId, int port, ICloudServiceGroup iCloudServiceGroup) {
@@ -61,6 +62,16 @@ public class CloudService implements ICloudService {
     @Override
     public CloudServiceState getServiceState() {
         return serviceState;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return locked;
+    }
+
+    @Override
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     @Override

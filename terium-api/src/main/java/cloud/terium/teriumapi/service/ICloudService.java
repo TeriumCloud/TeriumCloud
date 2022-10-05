@@ -11,22 +11,6 @@ public interface ICloudService {
     String getServiceName();
 
     /**
-     * Get if the service is online
-     * @return boolean This returns if the serivce is online. (true if yes else false)
-     */
-    default boolean isOnline() {
-        return getServiceState() == CloudServiceState.ONLINE;
-    }
-
-    /**
-     * Get if the service is preparing
-     * @return boolean This returns if the serivce is preparing. (true if yes else false)
-     */
-    default boolean isPreparing() {
-        return getServiceState() == CloudServiceState.PREPARING;
-    }
-
-    /**
      * Get the service id of a service
      * @return int This returns the service of the service.
      */
@@ -79,12 +63,36 @@ public interface ICloudService {
     CloudServiceState getServiceState();
 
     /**
+     * Get if the service is locked
+     * @return boolean This returns if the serivce is locked. (true if yes else false)
+     */
+    boolean isLocked();
+
+    /**
      * Get the service type of the service
      * @return CloudServiceType this returns the service type of the service
      */
     default CloudServiceType getServiceType() {
         return getServiceGroup().getServiceType();
     }
+
+    /**
+     * Get if the service is online
+     * @return boolean This returns if the serivce is online. (true if yes else false)
+     */
+    default boolean isOnline() {
+        return getServiceState() == CloudServiceState.ONLINE;
+    }
+
+    /**
+     * Get if the service is preparing
+     * @return boolean This returns if the serivce is preparing. (true if yes else false)
+     */
+    default boolean isPreparing() {
+        return getServiceState() == CloudServiceState.PREPARING;
+    }
+
+    void setLocked(boolean locked);
 
     void setOnlinePlayers(int onlinePlayers);
 

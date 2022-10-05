@@ -14,6 +14,7 @@ import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.checkerframework.checker.index.qual.SubstringIndexBottom;
 import org.jetbrains.annotations.NotNull;
 
 public class ServerConnectedListener {
@@ -22,6 +23,7 @@ public class ServerConnectedListener {
     public void handleServerConnected(final @NotNull ServerConnectedEvent event) {
         Player player = event.getPlayer();
         CloudPlayer cloudPlayer = (CloudPlayer) TeriumAPI.getTeriumAPI().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
+
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnectedService(player.getUniqueId(), event.getServer().getServerInfo().getName()));
         cloudPlayer.setConnectedService(TeriumAPI.getTeriumAPI().getServiceManager().getCloudServiceByName(event.getServer().getServerInfo().getName()));
     }

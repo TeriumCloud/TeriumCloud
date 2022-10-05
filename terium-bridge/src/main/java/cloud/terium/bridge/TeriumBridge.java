@@ -141,6 +141,7 @@ public class TeriumBridge extends TeriumAPI {
                 .filter(service -> service.getServiceState().equals(CloudServiceState.ONLINE))
                 .filter(service -> !service.getServiceGroup().getServiceType().equals(CloudServiceType.Proxy))
                 .filter(service -> service.getServiceGroup().getServiceType().equals(CloudServiceType.Lobby))
+                .filter(service -> !service.isLocked())
                 .filter(service -> (player.getCurrentServer().isEmpty()
                         || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers));

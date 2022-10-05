@@ -33,7 +33,7 @@ public class BridgeBukkitStartup extends JavaPlugin {
 
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> Bukkit.broadcastMessage(iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName()));
-        }, 10, 0);
+        }, 0, 20);
 
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
     }

@@ -62,6 +62,7 @@ public class DefaultJsonService implements ICloudService {
             json.addProperty("online_players", 0);
             json.addProperty("service_group", iCloudService.getServiceGroup().getServiceGroupName());
             json.addProperty("used_memory", 0);
+            json.addProperty("locked", false);
 
             save();
         } else {
@@ -113,6 +114,12 @@ public class DefaultJsonService implements ICloudService {
     }
 
     @Override
+    public void setLocked(boolean b) {
+        json.addProperty("locked", b);
+        save();
+    }
+
+    @Override
     public int getServiceId() {
         return iCloudService.getServiceId();
     }
@@ -140,6 +147,11 @@ public class DefaultJsonService implements ICloudService {
     @Override
     public CloudServiceState getServiceState() {
         return CloudServiceState.valueOf(json.get("state").getAsString());
+    }
+
+    @Override
+    public boolean isLocked() {
+        return json.get("locked").getAsBoolean();
     }
 
     @Override

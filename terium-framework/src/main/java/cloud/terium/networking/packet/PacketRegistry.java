@@ -35,9 +35,11 @@ public class PacketRegistry {
         registerPacket(PacketPlayOutServiceMemoryUpdatePacket.class, 12, PacketPlayOutServiceMemoryUpdatePacket::new);
         registerPacket(PacketPlayOutServiceOnlinePlayersUpdatePacket.class, 13, PacketPlayOutServiceOnlinePlayersUpdatePacket::new);
         registerPacket(PacketPlayOutServiceChangeState.class, 14, PacketPlayOutServiceChangeState::new);
+        registerPacket(PacketPlayOutServiceLock.class, 15, PacketPlayOutServiceLock::new);
+        registerPacket(PacketPlayOutServiceUnlock.class, 16, PacketPlayOutServiceUnlock::new);
 
         // Util packets
-        registerPacket(PacketPlayOutReloadConfig.class, 15, PacketPlayOutReloadConfig::new);
+        registerPacket(PacketPlayOutReloadConfig.class, 17, PacketPlayOutReloadConfig::new);
     }
 
     private <T extends Packet> void registerPacket(Class<T> packetClass, int packetId, Function<ByteBuf, Packet> function) {
