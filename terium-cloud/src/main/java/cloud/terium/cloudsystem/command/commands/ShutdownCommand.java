@@ -13,6 +13,10 @@ public class ShutdownCommand extends Command {
         commandManager.register(this);
     }
 
+    /*
+     * TODO: Like /cloud ingame -> service & group command for everything
+     */
+
     @Override
     public void execute(String[] args) {
         if (args.length == 1) {
