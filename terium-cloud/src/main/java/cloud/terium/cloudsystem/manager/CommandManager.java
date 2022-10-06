@@ -29,6 +29,7 @@ public class CommandManager {
 
             new DebugStartCommand(this);
 
+            new ServiceCommand(this);
             new ShutdownCommand(this);
             new ShutdownGroupCommand(this);
             new ListCommand(this);
