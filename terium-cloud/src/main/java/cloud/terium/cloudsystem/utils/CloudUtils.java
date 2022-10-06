@@ -60,11 +60,11 @@ public class CloudUtils {
         Logger.log("Trying to stop Terium...", LogType.INFO);
 
         running = false;
-        Terium.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
-        Logger.log("Successfully stopped terium-server.", LogType.INFO);
-        Thread.sleep(1000);
         Terium.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
         Logger.log("Successfully stopped all services.", LogType.INFO);
+        Thread.sleep(1000);
+        Terium.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
+        Logger.log("Successfully stopped terium-server.", LogType.INFO);
         Terium.getTerium().getConfigManager().resetPort();
         Logger.log("Successfully reset terium-port.", LogType.INFO);
 

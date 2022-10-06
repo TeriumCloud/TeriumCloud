@@ -154,8 +154,8 @@ public class MinecraftService implements ICloudService {
     }
 
     public void shutdown() {
-        // Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceForceShutdown(getServiceName()));
         MinecraftService minecraftService = this;
+        if(Terium.getTerium().getCloudUtils().isInScreen() && Terium.getTerium().getScreenManager().getCurrentScreen().equals(this)) toggleScreen();
         Logger.log("Trying to stop service '" + getServiceName() + "'... [MinecraftService#forceShutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
             Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
