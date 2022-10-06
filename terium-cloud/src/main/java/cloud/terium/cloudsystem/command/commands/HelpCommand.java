@@ -20,7 +20,7 @@ public class HelpCommand extends Command {
         Logger.log("edit-group | Edit a service group", LogType.INFO);
         Logger.log("delete-group | delete a service group", LogType.INFO);
         Logger.log("start | start a service by service group", LogType.INFO);
-        Logger.log("shutdown | stop a service", LogType.INFO);
+        Logger.log("service | stop a service", LogType.INFO);
         Logger.log("shutdown-group | stop a service group", LogType.INFO);
         Logger.log("list | list all online services", LogType.INFO);
         Logger.log("list-modules | list all loaded modules", LogType.INFO);

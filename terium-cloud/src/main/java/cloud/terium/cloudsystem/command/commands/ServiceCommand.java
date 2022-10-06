@@ -7,6 +7,7 @@ import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutServiceLock;
 import cloud.terium.networking.packets.PacketPlayOutServiceUnlock;
+import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.ICloudService;
 
 public class ServiceCommand extends Command {
@@ -24,7 +25,7 @@ public class ServiceCommand extends Command {
 
                 switch (args[1]) {
                     case "info" -> {
-                        Logger.log("Information of service '" + iCloudService.getServiceName() +  "':", LogType.INFO);
+                        Logger.log("Information of service '" + iCloudService.getServiceName() + "':", LogType.INFO);
                         Logger.log("{   ");
                         Logger.log("    Name: " + iCloudService.getServiceName());
                         Logger.log("    Id: #" + (iCloudService.getServiceId() < 10 ? "0" + iCloudService.getServiceId() : iCloudService.getServiceId()));
@@ -40,7 +41,7 @@ public class ServiceCommand extends Command {
                     }
                     case "shutdown" -> iCloudService.shutdown();
                     case "lock" -> {
-                        if(iCloudService.isLocked()) {
+                        if (iCloudService.isLocked()) {
                             Logger.log("This service is already locked!", LogType.ERROR);
                             return;
                         }
@@ -50,7 +51,7 @@ public class ServiceCommand extends Command {
                         Logger.log("Successfully locked service " + iCloudService.getServiceName(), LogType.INFO);
                     }
                     case "unlock" -> {
-                        if(!iCloudService.isLocked()) {
+                        if (!iCloudService.isLocked()) {
                             Logger.log("This service isn't locked yet!", LogType.ERROR);
                             return;
                         }
@@ -59,6 +60,8 @@ public class ServiceCommand extends Command {
                         Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceUnlock(iCloudService.getServiceName()));
                         Logger.log("Successfully unlocked service " + iCloudService.getServiceName(), LogType.INFO);
                     }
+                    case "state" ->
+                            Logger.log("Syntax: service <service> info|shutdown|state<state>|lock|unlock", LogType.INFO);
                 }
             } else {
                 Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
@@ -66,8 +69,19 @@ public class ServiceCommand extends Command {
             return;
         }
 
-        if(args.length < 2) {
-            Logger.log("Syntax: service <service> info|shutdown|lock|unlock", LogType.INFO);
+        if (args.length == 3) {
+            if (args[1].equals("state"))
+                if (Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]) != null) {
+                    ICloudService iCloudService = Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]);
+
+
+                }
+        } else {
+            Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
+        }
+
+        if (args.length < 2) {
+            Logger.log("Syntax: service <service> info|shutdown|state<state>|lock|unlock", LogType.INFO);
         }
     }
 }
