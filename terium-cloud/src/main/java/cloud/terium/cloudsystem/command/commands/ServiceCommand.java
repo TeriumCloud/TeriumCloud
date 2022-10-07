@@ -72,9 +72,17 @@ public class ServiceCommand extends Command {
         if (args.length == 3) {
             if (args[1].equals("state"))
                 if (Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]) != null) {
-                    ICloudService iCloudService = Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]);
+                    if(Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]).getServiceState().equals(CloudServiceState.PREPARING) || Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]).getServiceState().equals(CloudServiceState.STARTING)) {
+                        Logger.log("The service you want to edit is in starting. Please wait until the service is started successfully.", LogType.ERROR);
+                        return;
+                    }
 
-
+                    try {
+                        Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]).setServiceState(CloudServiceState.valueOf(args[2]));
+                    } catch (IllegalArgumentException exception) {
+                        Logger.log("No service-state with name '" + args[0] + "' available.", LogType.ERROR);
+                        Logger.log("Available service-states: ONLINE, INVISIBLE, PREPARING, STARTING", LogType.ERROR);
+                    }
                 }
         } else {
             Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
