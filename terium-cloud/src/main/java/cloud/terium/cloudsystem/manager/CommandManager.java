@@ -25,14 +25,10 @@ public class CommandManager {
             new StopCommand(this);
             new CreateGroupCommand(this);
             new EditGroupCommand(this);
-            new StartCommand(this);
 
             new DebugStartCommand(this);
 
-            new ServiceCommand(this);
             new GroupCommand(this);
-            new ShutdownCommand(this);
-            new ShutdownGroupCommand(this);
             new ListCommand(this);
             new ReloadCommand(this);
             new ListModulesCommand(this);
