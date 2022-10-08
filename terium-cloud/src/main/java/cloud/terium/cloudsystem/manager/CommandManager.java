@@ -28,11 +28,11 @@ public class CommandManager {
 
             new DebugStartCommand(this);
 
+            new ServiceCommand(this);
             new GroupCommand(this);
             new ListCommand(this);
             new ReloadCommand(this);
             new ListModulesCommand(this);
-            new ScreenCommand(this);
         }
     }
 
