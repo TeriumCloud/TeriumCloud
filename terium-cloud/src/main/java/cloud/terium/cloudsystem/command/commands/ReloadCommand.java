@@ -6,7 +6,6 @@ import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.manager.ConfigManager;
 import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.packets.PacketPlayOutGroupsReload;
 import cloud.terium.networking.packets.PacketPlayOutReloadConfig;
 
 public class ReloadCommand extends Command {
@@ -21,15 +20,15 @@ public class ReloadCommand extends Command {
      */
     @Override
     public void execute(String[] args) {
-        if(args.length == 1) {
-            if(args[0].equalsIgnoreCase("groups")) {
+        if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("groups")) {
                 Logger.log("Terium is trying to reload all service groups...", LogType.INFO);
-            } else if(args[0].equalsIgnoreCase("config")) {
+            } else if (args[0].equalsIgnoreCase("config")) {
                 Logger.log("Terium is trying to reload the config.json...", LogType.INFO);
                 Terium.getTerium().setConfigManager(new ConfigManager());
                 Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());
                 Logger.log("Successfully reloaded config.json.", LogType.INFO);
-            } else if(args[0].equalsIgnoreCase("all")) {
+            } else if (args[0].equalsIgnoreCase("all")) {
                 Logger.log("Trying to reload Terium...", LogType.INFO);
                 Terium.getTerium().setConfigManager(new ConfigManager());
                 Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());

@@ -106,25 +106,27 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     public void createServiceGroup(ICloudServiceGroup defaultServiceGroup) {
         this.file = new File("groups/" + defaultServiceGroup.getServiceType() + "/" + defaultServiceGroup.getServiceGroupName() + ".json");
 
-        if (defaultServiceGroup.getServiceType().equals(CloudServiceType.Proxy)) new DefaultProxyGroup(defaultServiceGroup.getServiceGroupName(),
-                defaultServiceGroup.getGroupTitle(),
-                defaultServiceGroup.getServiceGroupNode(),
-                defaultServiceGroup.getVersion(),
-                defaultServiceGroup.isMaintenance(),
-                defaultServiceGroup.getPort(),
-                defaultServiceGroup.getMaximumPlayers(),
-                defaultServiceGroup.getMemory(),
-                defaultServiceGroup.getMinimalServices(),
-                defaultServiceGroup.getMaximalServices());
-        else if(defaultServiceGroup.getServiceType().equals(CloudServiceType.Lobby)) new DefaultLobbyGroup(defaultServiceGroup.getServiceGroupName(),
-                defaultServiceGroup.getGroupTitle(),
-                defaultServiceGroup.getServiceGroupNode(),
-                defaultServiceGroup.getVersion(),
-                defaultServiceGroup.isMaintenance(),
-                defaultServiceGroup.getMaximumPlayers(),
-                defaultServiceGroup.getMemory(),
-                defaultServiceGroup.getMinimalServices(),
-                defaultServiceGroup.getMaximalServices());
+        if (defaultServiceGroup.getServiceType().equals(CloudServiceType.Proxy))
+            new DefaultProxyGroup(defaultServiceGroup.getServiceGroupName(),
+                    defaultServiceGroup.getGroupTitle(),
+                    defaultServiceGroup.getServiceGroupNode(),
+                    defaultServiceGroup.getVersion(),
+                    defaultServiceGroup.isMaintenance(),
+                    defaultServiceGroup.getPort(),
+                    defaultServiceGroup.getMaximumPlayers(),
+                    defaultServiceGroup.getMemory(),
+                    defaultServiceGroup.getMinimalServices(),
+                    defaultServiceGroup.getMaximalServices());
+        else if (defaultServiceGroup.getServiceType().equals(CloudServiceType.Lobby))
+            new DefaultLobbyGroup(defaultServiceGroup.getServiceGroupName(),
+                    defaultServiceGroup.getGroupTitle(),
+                    defaultServiceGroup.getServiceGroupNode(),
+                    defaultServiceGroup.getVersion(),
+                    defaultServiceGroup.isMaintenance(),
+                    defaultServiceGroup.getMaximumPlayers(),
+                    defaultServiceGroup.getMemory(),
+                    defaultServiceGroup.getMinimalServices(),
+                    defaultServiceGroup.getMaximalServices());
         else new DefaultServerGroup(defaultServiceGroup.getServiceGroupName(),
                     defaultServiceGroup.getGroupTitle(),
                     defaultServiceGroup.getServiceGroupNode(),
@@ -135,7 +137,7 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
                     defaultServiceGroup.getMinimalServices(),
                     defaultServiceGroup.getMaximalServices());
 
-        if(Terium.getTerium().getCloudUtils().getSetupState() == SetupState.DONE) {
+        if (Terium.getTerium().getCloudUtils().getSetupState() == SetupState.DONE) {
             serviceGroups.add(defaultServiceGroup);
             registedServerGroups.put(defaultServiceGroup.getServiceGroupName(), defaultServiceGroup);
         }
@@ -242,9 +244,9 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
 
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(groupFile.toPath()), StandardCharsets.UTF_8)) {
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-            if(update_value instanceof String value) json.addProperty(update_key, value);
-            else if(update_value instanceof Integer value) json.addProperty(update_key, value);
-            else if(update_value instanceof Boolean value) json.addProperty(update_key, value);
+            if (update_value instanceof String value) json.addProperty(update_key, value);
+            else if (update_value instanceof Integer value) json.addProperty(update_key, value);
+            else if (update_value instanceof Boolean value) json.addProperty(update_key, value);
 
             pool.execute(() -> {
                 try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(groupFile.toPath()), StandardCharsets.UTF_8)) {

@@ -65,7 +65,8 @@ public class ServiceCommand extends Command {
                     case "state" ->
                             Logger.log("Syntax: service <service> info|shutdown|state<state>|screen|lock|unlock", LogType.INFO);
                     case "screen" -> {
-                        if(Terium.getTerium().getCloudUtils().isInScreen() && !Terium.getTerium().getScreenManager().getCurrentScreen().equals(Terium.getTerium().getServiceManager().getCloudServiceByName(args[0]))) return;
+                        if (Terium.getTerium().getCloudUtils().isInScreen() && !Terium.getTerium().getScreenManager().getCurrentScreen().equals(Terium.getTerium().getServiceManager().getCloudServiceByName(args[0])))
+                            return;
 
                         iCloudService.toggleScreen();
                     }

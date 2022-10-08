@@ -73,15 +73,19 @@ public class MinecraftService implements ICloudService {
             try {
                 switch (module.getModuleType()) {
                     case Server -> {
-                        if(getServiceType() == CloudServiceType.Server || getServiceType() == CloudServiceType.Lobby) FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                        if (getServiceType() == CloudServiceType.Server || getServiceType() == CloudServiceType.Lobby)
+                            FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
                     }
                     case Proxy -> {
-                        if(getServiceType() == CloudServiceType.Proxy) FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                        if (getServiceType() == CloudServiceType.Proxy)
+                            FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
                     }
                     case Lobby -> {
-                        if(getServiceType() == CloudServiceType.Lobby) FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                        if (getServiceType() == CloudServiceType.Lobby)
+                            FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
                     }
-                    case ALL -> FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
+                    case ALL ->
+                            FileUtils.copyFileToDirectory(module.getFile(), new File("servers//" + getServiceName() + "//plugins//"));
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
@@ -155,7 +159,8 @@ public class MinecraftService implements ICloudService {
 
     public void shutdown() {
         MinecraftService minecraftService = this;
-        if(Terium.getTerium().getCloudUtils().isInScreen() && Terium.getTerium().getScreenManager().getCurrentScreen().equals(this)) toggleScreen();
+        if (Terium.getTerium().getCloudUtils().isInScreen() && Terium.getTerium().getScreenManager().getCurrentScreen().equals(this))
+            toggleScreen();
         Logger.log("Trying to stop service '" + getServiceName() + "'... [MinecraftService#forceShutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
             Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
@@ -195,7 +200,7 @@ public class MinecraftService implements ICloudService {
     }*/
 
     public void toggleScreen() {
-        if(!Terium.getTerium().getCloudUtils().isInScreen()) {
+        if (!Terium.getTerium().getCloudUtils().isInScreen()) {
             outputThread = new Thread(() -> {
                 String line = null;
                 BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -217,7 +222,8 @@ public class MinecraftService implements ICloudService {
             Logger.log("You're now inside of " + getServiceName() + ".", LogType.INFO);
             Terium.getTerium().getCloudUtils().setInScreen(true);
             Terium.getTerium().getScreenManager().setCurrentScreen(this);
-            if(Terium.getTerium().getScreenManager().getLogsFromService(this) != null) Terium.getTerium().getScreenManager().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
+            if (Terium.getTerium().getScreenManager().getLogsFromService(this) != null)
+                Terium.getTerium().getScreenManager().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
             outputThread.start();
         } else {
             outputThread.stop();

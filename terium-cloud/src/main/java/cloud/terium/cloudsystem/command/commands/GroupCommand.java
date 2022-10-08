@@ -40,7 +40,8 @@ public class GroupCommand extends Command {
                     }
                     case "shutdown" ->
                             Terium.getTerium().getServiceManager().getCloudServicesByGroupName(args[0]).forEach(ICloudService::shutdown);
-                    case "start" -> Logger.log("Syntax: group <service-group> info|shutdown|start<amout>", LogType.INFO);
+                    case "start" ->
+                            Logger.log("Syntax: group <service-group> info|shutdown|start<amout>", LogType.INFO);
                 }
             } else {
                 Logger.log("Terium could't find a service-group with name '" + args[0] + "'.", LogType.ERROR);

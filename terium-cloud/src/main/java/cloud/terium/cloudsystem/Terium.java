@@ -84,7 +84,8 @@ public class Terium {
             try {
                 FileUtils.forceDelete(new File("config.json"));
                 Thread.sleep(1000);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             System.exit(0);
         });
     }

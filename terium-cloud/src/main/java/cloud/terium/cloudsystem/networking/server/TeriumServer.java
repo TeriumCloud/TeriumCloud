@@ -9,7 +9,6 @@ import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packet.codec.PacketDecoder;
 import cloud.terium.networking.packet.codec.PacketEncoder;
 import cloud.terium.networking.packets.*;
-import cloud.terium.teriumapi.service.CloudServiceState;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -57,7 +56,7 @@ public class TeriumServer {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceMemoryUpdatePacket.minecraftService()).setUsedMemory(packetPlayOutServiceMemoryUpdatePacket.memory());
                                             }
 
-                                            if(packet instanceof PacketPlayOutServiceOnlinePlayersUpdatePacket packetPlayOutServiceOnlinePlayersUpdatePacket) {
+                                            if (packet instanceof PacketPlayOutServiceOnlinePlayersUpdatePacket packetPlayOutServiceOnlinePlayersUpdatePacket) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
                                             }
 
@@ -69,11 +68,11 @@ public class TeriumServer {
                                                 return;
                                             }*/
 
-                                            if(packet instanceof PacketPlayOutServiceLock packetPlayOutServiceLock) {
+                                            if (packet instanceof PacketPlayOutServiceLock packetPlayOutServiceLock) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceLock.minecraftService()).setLocked(true);
                                             }
 
-                                            if(packet instanceof PacketPlayOutServiceUnlock packetPlayOutServiceUnlock) {
+                                            if (packet instanceof PacketPlayOutServiceUnlock packetPlayOutServiceUnlock) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceUnlock.minecraftService()).setLocked(false);
                                             }
 

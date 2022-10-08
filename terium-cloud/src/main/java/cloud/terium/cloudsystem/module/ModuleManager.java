@@ -27,8 +27,8 @@ public class ModuleManager implements IModuleManager {
     public ModuleManager() {
         this.modules = new HashMap<>();
         final File file = new File("modules//");
-        if(file.exists()) {
-            if(Arrays.stream(file.listFiles()).toList().isEmpty()) {
+        if (file.exists()) {
+            if (Arrays.stream(file.listFiles()).toList().isEmpty()) {
                 FileUtils.forceDelete(file);
                 Logger.log("Modules directory is empty. Terium deleted the emtpy folder.", LogType.WARINING);
                 return;
@@ -54,14 +54,15 @@ public class ModuleManager implements IModuleManager {
                     try (Reader pluginInfoReader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
                         JsonObject jsonObject = JsonParser.parseReader(pluginInfoReader).getAsJsonObject();
 
-                        if(modules.get(jsonObject.get("name").getAsString()) == null) {
+                        if (modules.get(jsonObject.get("name").getAsString()) == null) {
                             modules.put(jsonObject.get("name").getAsString(), new Module(jsonObject.get("name").getAsString(), jsonObject.get("author").getAsString(), jsonObject.get("version").getAsString(), new File(path), ModuleType.valueOf(jsonObject.get("services").getAsString())));
                             Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
                         }
                     }
                 }
             }
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
