@@ -46,9 +46,6 @@ public class CloudPlayerManager implements ICloudPlayerManager {
         });
     }
 
-    /*
-     * TODO: Recode that class
-     */
     public void createPlayerJson(Player player) {
         File file = new File("../../data/players/" + player.getUniqueId() + ".json");
 

@@ -1,7 +1,6 @@
 package cloud.terium.bridge.bukkit;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.bridge.bukkit.commands.StopCommand;
 import cloud.terium.bridge.bukkit.listener.PlayerJoinListener;
 import cloud.terium.bridge.bukkit.listener.PlayerQuitListener;
 import cloud.terium.networking.json.DefaultJsonService;
@@ -28,8 +27,6 @@ public class BridgeBukkitStartup extends JavaPlugin {
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         teriumBridge.initServices(this);
         teriumBridge.startSendingUsedMemory();
-
-        getCommand("stop").setExecutor(new StopCommand());
 
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> Bukkit.broadcastMessage(iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName()));

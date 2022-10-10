@@ -14,10 +14,11 @@ repositories {
 
 dependencies {
     compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
-    compileOnly 'io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'com.velocitypowered:velocity-api:3.0.1'
     compileOnly 'org.projectlombok:lombok:1.18.24'
 
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
@@ -25,7 +26,7 @@ dependencies {
     implementation fileTree(dir: '../terium-framework/build/libs/', include: '*.jar')
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 16
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

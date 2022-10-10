@@ -60,11 +60,11 @@ public class CloudPlayer implements ICloudPlayer {
 
     @Override
     public void connectCloudPlayerToCloudPlayerService(ICloudPlayer iCloudPlayer) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(username, uniqueId, iCloudPlayer.getConnectedCloudService().getServiceName()));
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(uniqueId, iCloudPlayer.getConnectedCloudService().getServiceName()));
     }
 
     @Override
     public void connectWithService(ICloudService iCloudService) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(username, uniqueId, iCloudService.getServiceName()));
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(uniqueId, iCloudService.getServiceName()));
     }
 }
