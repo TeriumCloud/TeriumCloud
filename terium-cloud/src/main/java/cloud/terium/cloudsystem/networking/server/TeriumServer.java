@@ -68,6 +68,11 @@ public class TeriumServer {
                                                 return;
                                             }*/
 
+                                            if(packet instanceof PacketPlayOutSendConsole console) {
+                                                Logger.log(console.message(), console.logType());
+                                                return;
+                                            }
+
                                             if (packet instanceof PacketPlayOutServiceLock packetPlayOutServiceLock) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceLock.minecraftService()).setLocked(true);
                                             }
