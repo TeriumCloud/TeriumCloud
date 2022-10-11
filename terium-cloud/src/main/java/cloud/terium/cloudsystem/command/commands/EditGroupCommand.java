@@ -3,7 +3,7 @@ package cloud.terium.cloudsystem.command.commands;
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
-import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutGroupReload;
 

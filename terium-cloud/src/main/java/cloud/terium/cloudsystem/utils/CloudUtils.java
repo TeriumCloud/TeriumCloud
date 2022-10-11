@@ -1,9 +1,9 @@
 package cloud.terium.cloudsystem.utils;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.utils.logger.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;

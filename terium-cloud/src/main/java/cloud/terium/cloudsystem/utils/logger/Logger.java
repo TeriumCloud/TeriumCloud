@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.utils.logger;
 
 import cloud.terium.cloudsystem.Terium;
+import cloud.terium.teriumapi.console.LogType;
 import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;

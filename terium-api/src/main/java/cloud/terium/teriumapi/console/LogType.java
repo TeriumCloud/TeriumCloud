@@ -1,4 +1,4 @@
-package cloud.terium.cloudsystem.utils.logger;
+package cloud.terium.teriumapi.console;
 
 import lombok.Getter;
 

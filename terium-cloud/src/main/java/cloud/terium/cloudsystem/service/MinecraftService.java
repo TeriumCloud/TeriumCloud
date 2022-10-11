@@ -1,7 +1,7 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;

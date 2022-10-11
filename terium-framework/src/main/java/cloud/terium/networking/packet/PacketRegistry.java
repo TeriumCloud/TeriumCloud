@@ -25,18 +25,21 @@ public class PacketRegistry {
         registerPacket(PacketPlayOutGroupsReload.class, 4, PacketPlayOutGroupsReload::new);
         registerPacket(PacketPlayOutGroupReload.class, 5, PacketPlayOutGroupReload::new);
 
+        // Console packets
+        registerPacket(PacketPlayOutSendConsole.class, 6, PacketPlayOutSendConsole::new);
+
         // Service packets
-        registerPacket(PacketPlayOutServiceStart.class, 6, PacketPlayOutServiceStart::new);
-        registerPacket(PacketPlayOutServiceShutdown.class, 7, PacketPlayOutServiceShutdown::new);
-        registerPacket(PacketPlayOutServiceAdd.class, 8, PacketPlayOutServiceAdd::new);
-        registerPacket(PacketPlayOutServiceRemove.class, 9, PacketPlayOutServiceRemove::new);
-        registerPacket(PacketPlayOutServiceShutdowned.class, 10, PacketPlayOutServiceShutdowned::new);
-        registerPacket(PacketPlayOutSuccessfullServiceShutdown.class, 11, PacketPlayOutSuccessfullServiceShutdown::new);
-        registerPacket(PacketPlayOutServiceMemoryUpdatePacket.class, 12, PacketPlayOutServiceMemoryUpdatePacket::new);
-        registerPacket(PacketPlayOutServiceOnlinePlayersUpdatePacket.class, 13, PacketPlayOutServiceOnlinePlayersUpdatePacket::new);
-        registerPacket(PacketPlayOutServiceChangeState.class, 14, PacketPlayOutServiceChangeState::new);
-        registerPacket(PacketPlayOutServiceLock.class, 15, PacketPlayOutServiceLock::new);
-        registerPacket(PacketPlayOutServiceUnlock.class, 16, PacketPlayOutServiceUnlock::new);
+        registerPacket(PacketPlayOutServiceStart.class, 7, PacketPlayOutServiceStart::new);
+        registerPacket(PacketPlayOutServiceShutdown.class, 8, PacketPlayOutServiceShutdown::new);
+        registerPacket(PacketPlayOutServiceAdd.class, 9, PacketPlayOutServiceAdd::new);
+        registerPacket(PacketPlayOutServiceRemove.class, 10, PacketPlayOutServiceRemove::new);
+        registerPacket(PacketPlayOutServiceShutdowned.class, 11, PacketPlayOutServiceShutdowned::new);
+        registerPacket(PacketPlayOutSuccessfullServiceShutdown.class, 12, PacketPlayOutSuccessfullServiceShutdown::new);
+        registerPacket(PacketPlayOutServiceMemoryUpdatePacket.class, 13, PacketPlayOutServiceMemoryUpdatePacket::new);
+        registerPacket(PacketPlayOutServiceOnlinePlayersUpdatePacket.class, 14, PacketPlayOutServiceOnlinePlayersUpdatePacket::new);
+        registerPacket(PacketPlayOutServiceChangeState.class, 15, PacketPlayOutServiceChangeState::new);
+        registerPacket(PacketPlayOutServiceLock.class, 16, PacketPlayOutServiceLock::new);
+        registerPacket(PacketPlayOutServiceUnlock.class, 17, PacketPlayOutServiceUnlock::new);
 
         // Util packets
         registerPacket(PacketPlayOutReloadConfig.class, 17, PacketPlayOutReloadConfig::new);

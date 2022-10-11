@@ -7,7 +7,7 @@ import cloud.terium.cloudsystem.service.ServiceManager;
 import cloud.terium.cloudsystem.service.group.ServiceGroupManager;
 import cloud.terium.cloudsystem.template.TemplateManager;
 import cloud.terium.cloudsystem.utils.CloudUtils;
-import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import lombok.Getter;
 import lombok.Setter;

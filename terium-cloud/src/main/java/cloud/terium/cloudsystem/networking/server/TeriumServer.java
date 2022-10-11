@@ -2,7 +2,7 @@ package cloud.terium.cloudsystem.networking.server;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.service.MinecraftService;
-import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.TeriumFramework;
 import cloud.terium.networking.packet.Packet;

@@ -1,7 +1,7 @@
 package cloud.terium.cloudsystem.manager;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.utils.logger.LogType;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.cloudsystem.utils.setup.SetupStorage;
