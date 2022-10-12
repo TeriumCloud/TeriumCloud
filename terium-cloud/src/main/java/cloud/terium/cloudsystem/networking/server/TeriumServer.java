@@ -73,6 +73,13 @@ public class TeriumServer {
                                                 return;
                                             }
 
+                                            if(packet instanceof PacketPlayOutUpdateService updateService) {
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setLocked(updateService.locked());
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setServiceState(updateService.serviceState());
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setOnlinePlayers(updateService.onlinePlayers());
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setUsedMemory(updateService.usedMemory());
+                                            }
+
                                             if (packet instanceof PacketPlayOutServiceLock packetPlayOutServiceLock) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceLock.minecraftService()).setLocked(true);
                                             }

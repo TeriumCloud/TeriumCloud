@@ -3,11 +3,12 @@ package cloud.terium.bridge.impl.networking;
 import cloud.terium.bridge.impl.config.ConfigManager;
 import cloud.terium.networking.TeriumFramework;
 import cloud.terium.networking.client.TeriumClient;
-import cloud.terium.networking.packet.Packet;
+import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
+import cloud.terium.teriumapi.network.Packet;
 import lombok.Getter;
 
 @Getter
-public class DefaultTeriumNetworking {
+public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
 
     private final TeriumClient client;
     private final ConfigManager configManager;

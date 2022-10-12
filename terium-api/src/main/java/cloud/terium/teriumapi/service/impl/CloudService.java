@@ -1,5 +1,8 @@
 package cloud.terium.teriumapi.service.impl;
 
+import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
+import cloud.terium.networking.packets.PacketPlayOutUpdateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -52,6 +55,11 @@ public class CloudService implements ICloudService {
     @Override
     public long getUsedMemory() {
         return usedMemory;
+    }
+
+    @Override
+    public void update() {
+        TeriumAPI.getTeriumAPI().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(serviceName, locked, serviceState, onlinePlayers, usedMemory));
     }
 
     @Override

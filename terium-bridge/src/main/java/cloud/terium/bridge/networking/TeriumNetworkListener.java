@@ -46,6 +46,13 @@ public final class TeriumNetworkListener {
                     // TeriumBridge.getInstance().getServiceGroupManager().reloadGroup(new File("../../groups/" + TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(groupReload.serviceGroup()).serviceType() + "/" + groupReload.serviceGroup() + ".json"));
                 }
 
+                if(packet instanceof PacketPlayOutUpdateService updateService) {
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setLocked(updateService.locked());
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setServiceState(updateService.serviceState());
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setOnlinePlayers(updateService.onlinePlayers());
+                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setUsedMemory(updateService.usedMemory());
+                }
+
                 if(packet instanceof PacketPlayOutServiceLock packetPlayOutServiceLock) {
                     TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutServiceLock.minecraftService()).setLocked(true);
                 }

@@ -276,6 +276,11 @@ public class MinecraftService implements ICloudService {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public int getMaxMemory() {
         return ICloudService.super.getMaxMemory();
     }

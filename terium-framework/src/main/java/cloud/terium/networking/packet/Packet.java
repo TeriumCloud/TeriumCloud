@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Packet {
+public abstract class Packet implements cloud.terium.teriumapi.network.Packet {
     public abstract void write(ByteBuf byteBuf);
 
     public void writeString(String string, ByteBuf byteBuf) {

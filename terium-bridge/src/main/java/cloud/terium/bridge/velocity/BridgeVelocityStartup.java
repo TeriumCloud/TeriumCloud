@@ -15,6 +15,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -34,7 +35,6 @@ public class BridgeVelocityStartup {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         teriumBridge.initServices(proxyServer);
-        teriumBridge.startSendingUsedMemory();
 
         proxyServer.getEventManager().register(this, new LoginListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
@@ -45,6 +45,14 @@ public class BridgeVelocityStartup {
         }).repeat(1, TimeUnit.SECONDS).schedule();
 
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
+
+        Runnable task = () -> {
+            teriumBridge.getThisService().setOnlinePlayers(proxyServer.getPlayerCount());
+            teriumBridge.getThisService().setUsedMemory(teriumBridge.usedMemory());
+            teriumBridge.getThisService().update();
+        };
+
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 2, TimeUnit.SECONDS);
     }
 
     @Subscribe

@@ -11,6 +11,7 @@ import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceChangeState;
 import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
 import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
@@ -67,6 +68,11 @@ public class TeriumBridge extends TeriumAPI {
         return serviceManager.getCloudServiceByName(thisName);
     }
 
+    @Override
+    public IDefaultTeriumNetworking getTeriumNetworking() {
+        return teriumNetworkListener.getDefaultTeriumNetworking();
+    }
+
     public void reloadCloudBridge() {
         this.configManager = new ConfigManager();
 
@@ -78,14 +84,6 @@ public class TeriumBridge extends TeriumAPI {
 
     public long usedMemory() {
         return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-    }
-
-    public void startSendingUsedMemory() {
-        Runnable task = () -> {
-            teriumNetworkListener.getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceMemoryUpdatePacket(thisName, usedMemory()));
-        };
-
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 2, TimeUnit.SECONDS);
     }
 
     @SneakyThrows

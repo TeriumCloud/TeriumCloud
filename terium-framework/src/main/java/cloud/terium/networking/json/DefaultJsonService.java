@@ -140,6 +140,11 @@ public class DefaultJsonService implements ICloudService {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public ICloudServiceGroup getServiceGroup() {
         return iCloudService.getServiceGroup();
     }

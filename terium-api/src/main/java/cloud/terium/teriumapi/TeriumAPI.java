@@ -1,5 +1,6 @@
 package cloud.terium.teriumapi;
 
+import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.player.ICloudPlayerManager;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
@@ -34,4 +35,9 @@ public abstract class TeriumAPI {
      * Use this methode to get the ICloudPlayerManager
      */
     public abstract ICloudPlayerManager getCloudPlayerManager();
+
+    /*
+     * Use this methode to get the IDefaultTeriumNetworking
+     */
+    public abstract IDefaultTeriumNetworking getTeriumNetworking();
 }

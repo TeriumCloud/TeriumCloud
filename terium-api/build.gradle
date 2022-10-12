@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
+    compileOnly fileTree(dir: '../terium-framework/build/libs/', include: '*.jar')
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
