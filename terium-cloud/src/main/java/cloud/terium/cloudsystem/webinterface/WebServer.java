@@ -25,7 +25,7 @@ public class WebServer {
         Spark.post("/login", new LoginPostRoute());
     }
 
-    public static String getHtmlString(String name) {
+    public static String getStringFromHTML(String name) {
         InputStream inputStream = Loader.class.getResourceAsStream(name + ".html");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String result = "";

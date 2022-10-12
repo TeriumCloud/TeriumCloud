@@ -43,6 +43,11 @@ public interface ICloudService {
     long getUsedMemory();
 
     /**
+     * Update every change by api to cloud.
+     */
+    void update();
+
+    /**
      * Get the max memory of the service
      * @return int This returns the maximal memory of the service as int.
      */
@@ -92,15 +97,37 @@ public interface ICloudService {
         return getServiceState() == CloudServiceState.PREPARING;
     }
 
+    /**
+     * Set the service lock state.
+     * @param locked
+     */
     void setLocked(boolean locked);
 
+    /**
+     * Set the online players of the service.
+     * @param onlinePlayers
+     */
     void setOnlinePlayers(int onlinePlayers);
 
+    /**
+     * Set the used memory of the service.
+     * @param usedMemory
+     */
     void setUsedMemory(long usedMemory);
 
+    /**
+     * Set the service state of the service.
+     * @param serviceState
+     */
     void setServiceState(CloudServiceState serviceState);
 
+    /**
+     * Shutdown this service.
+     */
     default void shutdown() {}
 
+    /**
+     * Force shutdown the service.
+     */
     default void forceShutdown() {}
 }
