@@ -40,19 +40,17 @@ public class BridgeVelocityStartup {
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
         proxyServer.getCommandManager().register(new CloudCommand().build());
 
-        proxyServer.getScheduler().buildTask(this, () -> {
-            TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> proxyServer.sendMessage(MiniMessage.miniMessage().deserialize("PROXY: " + iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName())));
-        }).repeat(1, TimeUnit.SECONDS).schedule();
-
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
 
         Runnable task = () -> {
             teriumBridge.getThisService().setOnlinePlayers(proxyServer.getPlayerCount());
             teriumBridge.getThisService().setUsedMemory(teriumBridge.usedMemory());
             teriumBridge.getThisService().update();
+
+            TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> proxyServer.sendMessage(MiniMessage.miniMessage().deserialize("PROXY: " + iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName())));
         };
 
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 2, TimeUnit.SECONDS);
+        proxyServer.getScheduler().buildTask(this, task).repeat(2, TimeUnit.SECONDS).schedule();
     }
 
     @Subscribe

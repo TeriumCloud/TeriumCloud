@@ -73,15 +73,6 @@ public class TeriumBridge extends TeriumAPI {
         return teriumNetworkListener.getDefaultTeriumNetworking();
     }
 
-    public void reloadCloudBridge() {
-        this.configManager = new ConfigManager();
-
-        if (getThisService().getServiceGroup().getServiceType().equals(CloudServiceType.Proxy)) {
-            BridgeVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> player.hasPermission("terium.config.reload")).forEach(player ->
-                    player.sendMessage(MiniMessage.miniMessage().deserialize(prefix + "Successfully reloaded cloudbridge-velocity.")));
-        }
-    }
-
     public long usedMemory() {
         return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
     }

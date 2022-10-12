@@ -53,6 +53,7 @@ public class CloudCommand {
                                         .executes(context -> groupShutdown(context, TeriumAPI.getTeriumAPI().getServiceGroupManager().getServiceGroupByName(context.getArgument("group", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("start")
                                         .executes(context -> startService(context, TeriumAPI.getTeriumAPI().getServiceGroupManager().getServiceGroupByName(context.getArgument("group", String.class)))))))
+                .then(LiteralArgumentBuilder.<CommandSource>literal("list"))
                 .build();
 
         return new BrigadierCommand(node);
