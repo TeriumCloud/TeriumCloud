@@ -38,9 +38,6 @@ public class MinecraftService implements ICloudService {
     private Thread outputThread;
     private Thread thread;
 
-    /*
-     TODO: Looking and debug why the template folder is copied in proxy servers.
-     */
     public MinecraftService(ICloudServiceGroup serviceGroup) {
         this(serviceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
     }

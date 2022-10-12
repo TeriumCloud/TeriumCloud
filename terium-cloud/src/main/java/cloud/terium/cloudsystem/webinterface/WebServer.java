@@ -2,8 +2,10 @@ package cloud.terium.cloudsystem.webinterface;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.webinterface.html.Loader;
+import cloud.terium.cloudsystem.webinterface.routes.LoginPostRoute;
 import com.sun.net.httpserver.HttpServer;
 import lombok.SneakyThrows;
+import spark.Spark;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,11 +15,14 @@ import java.net.InetSocketAddress;
 
 public class WebServer {
 
-    private final HttpServer httpServer;
-
     @SneakyThrows
     public WebServer() {
-        this.httpServer = HttpServer.create(new InetSocketAddress("0.0.0.0", Terium.getTerium().getConfigManager().getInt("web_port")), 0);
+        Spark.port(Terium.getTerium().getConfigManager().getInt("web_port"));
+        Spark.get("/", (request, response) -> {
+            response.redirect("/dashboard");
+            return "Test";
+        });
+        Spark.post("/login", new LoginPostRoute());
     }
 
     public static String getHtmlString(String name) {
@@ -36,11 +41,7 @@ public class WebServer {
         return result;
     }
 
-    private void startWebServer() {
-        this.httpServer.start();
-    }
-
     public void stopWebServer() {
-        this.httpServer.stop(0);
+        Spark.stop();
     }
 }
