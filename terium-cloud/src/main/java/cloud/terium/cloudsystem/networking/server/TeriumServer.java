@@ -38,9 +38,9 @@ public class TeriumServer {
                     .channel(Epoll.isAvailable() ? EpollServerSocketChannel.class : NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
-                    .childHandler(new ChannelInitializer<Channel>() {
+                    .childHandler(new ChannelInitializer<>() {
                         @Override
-                        protected void initChannel(Channel channel) throws Exception {
+                        protected void initChannel(Channel channel) {
                             channel.pipeline()
                                     .addLast(new PacketDecoder(TeriumFramework.getPacketLibary()))
                                     .addLast(new PacketEncoder(TeriumFramework.getPacketLibary()))
@@ -68,12 +68,12 @@ public class TeriumServer {
                                                 return;
                                             }*/
 
-                                            if(packet instanceof PacketPlayOutSendConsole console) {
+                                            if (packet instanceof PacketPlayOutSendConsole console) {
                                                 Logger.log(console.message(), console.logType());
                                                 return;
                                             }
 
-                                            if(packet instanceof PacketPlayOutUpdateService updateService) {
+                                            if (packet instanceof PacketPlayOutUpdateService updateService) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setLocked(updateService.locked());
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setServiceState(updateService.serviceState());
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(updateService.servicename()).setOnlinePlayers(updateService.onlinePlayers());

@@ -17,6 +17,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class LoginListener {
@@ -32,16 +33,16 @@ public class LoginListener {
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(player.getUsername(), player.getUniqueId()));
 
         if (!TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().isEmpty()) {
-            ICloudService minecraftService = TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().size() > 0 ? TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().stream().filter(ICloudService::isOnline).toList().get(0) : null;
+            Optional<ICloudService> minecraftService = TeriumBridge.getInstance().getFallback(player);
 
-            if (minecraftService != null) {
-                if(minecraftService.isLocked()) {
+            if (minecraftService.isPresent()) {
+                if(minecraftService.get().isLocked()) {
                     player.disconnect(Component.text("§cThis service is locked!"));
                     return;
                 }
 
                 player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().get(0).getServiceName()).get()).connect();
-                cloudPlayer.setConnectedService(minecraftService);
+                cloudPlayer.setConnectedService(minecraftService.get());
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount() + 1));
             } else {
                 player.disconnect(Component.text("§cThe terium-cloud is starting a lobby service. Please wait a moment."));
