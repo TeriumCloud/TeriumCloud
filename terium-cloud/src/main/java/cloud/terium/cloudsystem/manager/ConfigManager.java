@@ -23,15 +23,7 @@ public class ConfigManager {
     private JsonObject json;
 
     public ConfigManager() {
-        this(false);
-    }
-
-    public ConfigManager(boolean bridge) {
-        if (!bridge) {
-            this.file = new File("config.json");
-        } else {
-            this.file = new File("../../config.json");
-        }
+        this.file = new File("config.json");
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.initFile();
