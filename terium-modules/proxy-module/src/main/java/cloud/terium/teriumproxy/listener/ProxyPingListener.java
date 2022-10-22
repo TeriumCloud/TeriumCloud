@@ -15,7 +15,7 @@ public class ProxyPingListener {
 
         builder.description(MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("motd.line1") + "\n" +
                 TeriumProxy.getInstance().getConfigManager().getString("motd.line2")));
-        if (TeriumAPI.getTeriumAPI().getThisService().getServiceGroup().isMaintenance())
+        if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().isMaintenance())
             builder.description(MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("motd.maintenance.line1") + "\n" +
                     TeriumProxy.getInstance().getConfigManager().getString("motd.maintenance.line2")));
 

@@ -13,13 +13,13 @@ public class LoginListener {
     public void handleLogin(LoginEvent event) {
         Player player = event.getPlayer();
 
-        if (TeriumAPI.getTeriumAPI().getThisService().getServiceGroup().isMaintenance()) {
+        if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().isMaintenance()) {
             if (!TeriumProxy.getInstance().getConfigManager().getJson().get("whitelist").getAsJsonArray().toString().contains(player.getUsername())) {
                 player.disconnect(MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("maintenance.message")));
             }
         }
 
-        if (TeriumProxy.getInstance().getProxyServer().getPlayerCount() >= TeriumAPI.getTeriumAPI().getThisService().getServiceGroup().getMaximumPlayers() && player.hasPermission("terium.full_kick")) {
+        if (TeriumProxy.getInstance().getProxyServer().getPlayerCount() >= TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().getMaximumPlayers() && player.hasPermission("terium.full_kick")) {
             player.disconnect(MiniMessage.miniMessage().deserialize(TeriumProxy.getInstance().getConfigManager().getString("full_kick.message")));
         }
     }
