@@ -85,6 +85,8 @@ public class CloudUtils {
         } else {
             Logger.licenseLog("Your license isn't accessible.", LogType.ERROR);
             Logger.licenseLog("Please typ a accessible license. Or are you one of the illegal owners of the cloud? ;)", LogType.ERROR);
+            Terium.getTerium().getConfigManager().getJson().addProperty("setup", true);
+            Terium.getTerium().getConfigManager().save();
             Thread.sleep(5000);
             System.exit(0);
         }

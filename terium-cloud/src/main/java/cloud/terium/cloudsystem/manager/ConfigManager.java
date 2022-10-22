@@ -27,6 +27,11 @@ public class ConfigManager {
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.initFile();
+
+        if (json.get("setup") != null && json.get("setup").getAsBoolean()) {
+            Terium.getTerium().getCloudUtils().startSetup();
+            json.remove("setup");
+        }
     }
 
     private void initFile() {
@@ -38,6 +43,7 @@ public class ConfigManager {
             json.addProperty("maxMemory", 10000);
             json.addProperty("license", "put your license here.");
             json.addProperty("node", "Node-01");
+            json.addProperty("setup", false);
 
             save();
             Terium.getTerium().getCloudUtils().startSetup();
@@ -81,9 +87,5 @@ public class ConfigManager {
 
     public int getInt(String key) {
         return json.get(key).getAsInt();
-    }
-
-    public JsonObject getCloudBridgeConfig() {
-        return json.get("terium-bridge").getAsJsonObject();
     }
 }

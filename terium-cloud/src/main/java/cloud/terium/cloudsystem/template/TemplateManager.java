@@ -44,17 +44,17 @@ public class TemplateManager {
 
             // TeriumBridge
             Logger.log("Starting download of terium-bridge...", LogType.DOWNLOAD);
-            downloadFile("https://workupload.com/start/Z77vYd7dahf", "teriumbridge.jar", "data//versions");
+            downloadFile("https://terium.cloud/download/versions/teriumbridge.jar", "teriumbridge.jar", "data//versions");
             Logger.log("Successfully downloaded terium-bridge.", LogType.DOWNLOAD);
 
             // Velocity
             Logger.log("Starting download of velocity...", LogType.DOWNLOAD);
-            downloadFile("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/177/downloads/velocity-3.1.2-SNAPSHOT-177.jar", "velocity.jar", "data//versions");
+            downloadFile("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/184/downloads/velocity-3.1.2-SNAPSHOT-184.jar", "velocity.jar", "data//versions");
             Logger.log("Successfully downloaded velocity.", LogType.DOWNLOAD);
 
             // Spigot
             Logger.log("Starting download of spigot...", LogType.DOWNLOAD);
-            downloadFile("https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/132/downloads/paper-1.19.2-132.jar", "server.jar", "data//versions");
+            downloadFile("https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/227/downloads/paper-1.19.2-227.jar", "server.jar", "data//versions");
             Logger.log("Successfully downloaded spigot.", LogType.DOWNLOAD);
 
             Logger.log(" ", LogType.INFO);

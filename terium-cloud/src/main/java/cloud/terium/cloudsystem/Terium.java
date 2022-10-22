@@ -38,14 +38,14 @@ public class Terium {
     }
 
     public Terium() {
-        System.setProperty("org.jline.terminal.dumb", "true");
+        // System.setProperty("org.jline.terminal.dumb", "true");
 
         terium = this;
         this.cloudUtils = new CloudUtils();
         this.configManager = new ConfigManager();
 
+        this.cloudUtils.checkLicense();
         Logger.log(cloudUtils.getStartMessage());
-        // this.cloudUtils.checkLicense();
 
         if (cloudUtils.getSetupState() == null) {
             Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
