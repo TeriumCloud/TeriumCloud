@@ -3,7 +3,7 @@ package cloud.terium.teriumapi.player;
 import java.util.List;
 import java.util.UUID;
 
-public interface ICloudPlayerManager {
+public interface ICloudPlayerProvider {
 
     /**
      * Get a cloud player by name(String)

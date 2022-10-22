@@ -4,19 +4,7 @@ import cloud.terium.teriumapi.service.group.impl.*;
 
 import java.util.List;
 
-public interface ICloudServiceGroupManager {
-
-    default void createLobbyGroup(String name, String groupTitle, String node, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultLobbyGroup(name, groupTitle, node, version, false, maximumPlayers, memory, minimalServices, maximalServices);
-    }
-
-    default void createProxyGroup(String name, String groupTitle, String node, String version, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultProxyGroup(name, groupTitle, node, version, false, port,  maximumPlayers, memory, minimalServices, maximalServices);
-    }
-
-    default void createServerGroup(String name, String groupTitle, String node, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultServerGroup(name, groupTitle, node, version, false, maximumPlayers, memory, minimalServices, maximalServices);
-    }
+public interface ICloudServiceGroupProvider {
 
     /**
      * Get a ICloudServiceGroup by group name

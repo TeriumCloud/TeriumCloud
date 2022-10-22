@@ -2,7 +2,7 @@ package cloud.terium.teriumapi.service;
 
 import java.util.List;
 
-public interface ICloudServiceManager {
+public interface ICloudServiceProvider {
 
     /**
      * Get a ICloudService by serviceName
