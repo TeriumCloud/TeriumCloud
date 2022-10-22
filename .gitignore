@@ -13,7 +13,6 @@
 /terium-framework/.idea/
 /terium-framework/build/
 /terium-framework/gradle/
-/terium-bridge/
 /terium-modules/proxy-module/gradle.properties
 /terium-modules/proxy-module/gradlew
 /terium-modules/proxy-module/gradlew.bat
