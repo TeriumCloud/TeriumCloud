@@ -5,6 +5,7 @@ import cloud.terium.bridge.bukkit.BridgeBukkitStartup;
 import cloud.terium.bridge.player.CloudPlayer;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnlinePlayersUpdatePacket;
+import cloud.terium.teriumapi.TeriumAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,9 +17,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void handlePlayerJoin(PlayerJoinEvent event) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeBukkitStartup.getInstance().getServer().getOnlinePlayers().size()));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeBukkitStartup.getInstance().getServer().getOnlinePlayers().size()));
 
-        if(TeriumBridge.getInstance().getThisService().isLocked()) {
+        if(TeriumAPI.getTeriumAPI().getProvider().getThisService().isLocked()) {
             event.getPlayer().kick(Component.text("§cThis service is locked!"));
         }
     }

@@ -26,6 +26,12 @@ public interface ICloudServiceProvider {
     List<ICloudService> getCloudServicesByGroupTitle(String groupTitle);
 
     /**
+     * Get all ICloudService of type lobby they are connected with the cloud.
+     * @return List<ICloudService> This returns a list of all lobby cloud services there are connected with the cloud.
+     */
+    List<ICloudService> getAllLobbyServices();
+
+    /**
      * Get all ICloudService they are connected with the cloud.
      * @return List<ICloudService> This returns a list of all cloud services there are connected with the cloud.
      */

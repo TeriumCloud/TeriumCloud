@@ -29,7 +29,7 @@ public final class TeriumNetworkListener {
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
                 System.out.println(packet.getClass().getSimpleName());
                 if (packet instanceof PacketPlayOutServiceChangeState packetOnline) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetOnline.minecraftService()).setServiceState(packetOnline.serviceState());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetOnline.minecraftService()).setServiceState(packetOnline.serviceState());
                 }
 
                 /*
@@ -47,38 +47,38 @@ public final class TeriumNetworkListener {
                 }
 
                 if(packet instanceof PacketPlayOutUpdateService updateService) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setLocked(updateService.locked());
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setServiceState(updateService.serviceState());
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setOnlinePlayers(updateService.onlinePlayers());
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(updateService.servicename()).setUsedMemory(updateService.usedMemory());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(updateService.servicename()).setLocked(updateService.locked());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(updateService.servicename()).setServiceState(updateService.serviceState());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(updateService.servicename()).setOnlinePlayers(updateService.onlinePlayers());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(updateService.servicename()).setUsedMemory(updateService.usedMemory());
                 }
 
                 if(packet instanceof PacketPlayOutServiceLock packetPlayOutServiceLock) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutServiceLock.minecraftService()).setLocked(true);
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetPlayOutServiceLock.minecraftService()).setLocked(true);
                 }
 
                 if(packet instanceof PacketPlayOutServiceUnlock packetPlayOutServiceUnlock) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutServiceUnlock.minecraftService()).setLocked(false);
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetPlayOutServiceUnlock.minecraftService()).setLocked(false);
                 }
 
                 if (packet instanceof PacketPlayOutServiceMemoryUpdatePacket packetPlayOutServiceMemoryUpdatePacket) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutServiceMemoryUpdatePacket.minecraftService()).setUsedMemory(packetPlayOutServiceMemoryUpdatePacket.memory());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetPlayOutServiceMemoryUpdatePacket.minecraftService()).setUsedMemory(packetPlayOutServiceMemoryUpdatePacket.memory());
                 }
 
                 if(packet instanceof PacketPlayOutServiceOnlinePlayersUpdatePacket packetPlayOutServiceOnlinePlayersUpdatePacket) {
-                    TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
+                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
                 }
 
                 if (packet instanceof PacketPlayOutCloudPlayerJoin playerJoin) {
-                    TeriumBridge.getInstance().getPlayerList().add(TeriumAPI.getTeriumAPI().getCloudPlayerManager().getCloudPlayer(playerJoin.uniqueId()));
+                    TeriumBridge.getInstance().getPlayerList().add(TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(playerJoin.uniqueId()));
                 }
 
                 if (packet instanceof PacketPlayOutCloudPlayerQuit playerQuit) {
-                    TeriumBridge.getInstance().getPlayerList().remove(TeriumAPI.getTeriumAPI().getCloudPlayerManager().getCloudPlayer(playerQuit.uniqueId()));
+                    TeriumBridge.getInstance().getPlayerList().remove(TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(playerQuit.uniqueId()));
                 }
 
                 if(packet instanceof PacketPlayOutCloudPlayerConnectedService packetPlayOutCloudPlayerConnectedService) {
-                    ((CloudPlayer)TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(packetPlayOutCloudPlayerConnectedService.uniqueId())).setConnectedService(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetPlayOutCloudPlayerConnectedService.minecraftService()));
+                    ((CloudPlayer)TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(packetPlayOutCloudPlayerConnectedService.uniqueId())).setConnectedService(TeriumBridge.getInstance().getProvider().getServiceProvider().getCloudServiceByName(packetPlayOutCloudPlayerConnectedService.minecraftService()));
                 }
 
                 /*if (packet instanceof PacketPlayOutServiceForceShutdown packetPlayOutServiceShutdown) {
@@ -93,9 +93,9 @@ public final class TeriumNetworkListener {
                     }
                 }*/
 
-                if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
+                if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceManager().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup()), false));
+                        TeriumBridge.getInstance().getServiceProvider().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getProvider().getServiceGroupProvider().getServiceGroupByName(packetAdd.serviceGroup()), false));
                         if (BridgeVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
                             return;
                         }
@@ -104,8 +104,8 @@ public final class TeriumNetworkListener {
                     }
 
                     if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                        if (TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()) != null) {
-                            TeriumBridge.getInstance().getServiceManager().removeService(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()));
+                        if (TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()) != null) {
+                            TeriumBridge.getInstance().getServiceProvider().removeService(TeriumBridge.getInstance().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()));
 
                             BridgeVelocityStartup.getInstance().getProxyServer().unregisterServer(BridgeVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).orElse(null).getServerInfo());
                         } else {
@@ -118,12 +118,12 @@ public final class TeriumNetworkListener {
                     }
                 } else {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceManager().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getServiceGroupManager().getServiceGroupByName(packetAdd.serviceGroup()), false));
+                        TeriumBridge.getInstance().getServiceProvider().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(packetAdd.serviceGroup()), false));
                     }
 
                     if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                        if (TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()) != null) {
-                            TeriumBridge.getInstance().getServiceManager().removeService(TeriumBridge.getInstance().getServiceManager().getCloudServiceByName(packetRemove.serviceName()));
+                        if (TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()) != null) {
+                            TeriumBridge.getInstance().getServiceProvider().removeService(TeriumBridge.getInstance().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()));
                         } else {
                             System.out.println("This service isn't connected with the proxy service.");
                         }

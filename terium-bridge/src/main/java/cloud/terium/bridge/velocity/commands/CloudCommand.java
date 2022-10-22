@@ -35,24 +35,24 @@ public class CloudCommand {
                                 .suggests(this::suggestServices)
                                 .executes(this::sendServiceHelp)
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("info")
-                                        .executes(context -> serviceInfo(context, TeriumAPI.getTeriumAPI().getServiceManager().getCloudServiceByName(context.getArgument("service", String.class)))))
+                                        .executes(context -> serviceInfo(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("shutdown")
-                                        .executes(context -> serviceShutdown(context, TeriumAPI.getTeriumAPI().getServiceManager().getCloudServiceByName(context.getArgument("service", String.class)))))
+                                        .executes(context -> serviceShutdown(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("lock")
-                                        .executes(context -> lockService(context, TeriumAPI.getTeriumAPI().getServiceManager().getCloudServiceByName(context.getArgument("service", String.class)))))
+                                        .executes(context -> lockService(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("unlock")
-                                        .executes(context -> unlockService(context, TeriumAPI.getTeriumAPI().getServiceManager().getCloudServiceByName(context.getArgument("service", String.class)))))))
+                                        .executes(context -> unlockService(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))))
                 // Group
                 .then(LiteralArgumentBuilder.<CommandSource>literal("group")
                         .executes(this::sendGroupHelp)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("group", StringArgumentType.string())
                                 .suggests(this::suggestGroups)
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("info")
-                                        .executes(context -> groupInfo(context, TeriumAPI.getTeriumAPI().getServiceGroupManager().getServiceGroupByName(context.getArgument("group", String.class)))))
+                                        .executes(context -> groupInfo(context, TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(context.getArgument("group", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("shutdown")
-                                        .executes(context -> groupShutdown(context, TeriumAPI.getTeriumAPI().getServiceGroupManager().getServiceGroupByName(context.getArgument("group", String.class)))))
+                                        .executes(context -> groupShutdown(context, TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(context.getArgument("group", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("start")
-                                        .executes(context -> startService(context, TeriumAPI.getTeriumAPI().getServiceGroupManager().getServiceGroupByName(context.getArgument("group", String.class)))))))
+                                        .executes(context -> startService(context, TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(context.getArgument("group", String.class)))))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("list"))
                 .build();
 
@@ -75,7 +75,7 @@ public class CloudCommand {
     }
 
     private CompletableFuture<Suggestions> suggestServices(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
-        TeriumAPI.getTeriumAPI().getServiceManager().getAllCloudServices().forEach(iCloudService -> suggestionsBuilder.suggest(iCloudService.getServiceName()));
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().forEach(iCloudService -> suggestionsBuilder.suggest(iCloudService.getServiceName()));
         return suggestionsBuilder.buildFuture();
     }
 
@@ -131,7 +131,7 @@ public class CloudCommand {
     }
 
     private CompletableFuture<Suggestions> suggestGroups(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
-        TeriumAPI.getTeriumAPI().getServiceGroupManager().getAllServiceGroups().forEach(iCloudServiceGroup -> suggestionsBuilder.suggest(iCloudServiceGroup.getServiceGroupName()));
+        TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(iCloudServiceGroup -> suggestionsBuilder.suggest(iCloudServiceGroup.getServiceGroupName()));
         return suggestionsBuilder.buildFuture();
     }
 
@@ -150,7 +150,7 @@ public class CloudCommand {
     }
 
     private int groupShutdown(CommandContext<CommandSource> context, ICloudServiceGroup iCloudServiceGroup) {
-        TeriumAPI.getTeriumAPI().getServiceManager().getCloudServicesByGroupName(iCloudServiceGroup.getServiceGroupName()).forEach(iCloudService -> TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceShutdown(iCloudService.getServiceName())));
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServicesByGroupName(iCloudServiceGroup.getServiceGroupName()).forEach(iCloudService -> TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceShutdown(iCloudService.getServiceName())));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Successfully shutdowned all services from group " + iCloudServiceGroup.getServiceGroupName()));
         return 1;
     }

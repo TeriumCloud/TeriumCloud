@@ -6,6 +6,7 @@ import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnlinePlayersUpdatePacket;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.Subscribe;
@@ -25,14 +26,14 @@ public class LoginListener {
     @Subscribe
     public void handleLogin(LoginEvent event) {
         Player player = event.getPlayer();
-        CloudPlayer cloudPlayer = (CloudPlayer) TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
+        CloudPlayer cloudPlayer = (CloudPlayer) TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId());
         if(cloudPlayer == null) {
-            TeriumBridge.getInstance().getCloudPlayerManager().createPlayerJson(player);
-            cloudPlayer = (CloudPlayer) TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
+            TeriumBridge.getInstance().getCloudPlayerProvider().createPlayerJson(player);
+            cloudPlayer = (CloudPlayer) TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId());
         }
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(player.getUsername(), player.getUniqueId()));
 
-        if (!TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().isEmpty()) {
+        if (!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllLobbyServices().isEmpty()) {
             Optional<ICloudService> minecraftService = TeriumBridge.getInstance().getFallback(player);
 
             if (minecraftService.isPresent()) {
@@ -41,7 +42,7 @@ public class LoginListener {
                     return;
                 }
 
-                player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(TeriumBridge.getInstance().getServiceManager().getAllLobbyServices().get(0).getServiceName()).get()).connect();
+                player.createConnectionRequest(BridgeVelocityStartup.getInstance().getProxyServer().getServer(minecraftService.get().getServiceName()).get()).connect();
                 cloudPlayer.setConnectedService(minecraftService.get());
                 TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount() + 1));
             } else {
@@ -66,8 +67,8 @@ public class LoginListener {
 
     @Subscribe
     public void handleDisconnect(DisconnectEvent event) {
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(event.getPlayer().getUsername(), event.getPlayer().getUniqueId()));
-        TeriumBridge.getInstance().getCloudPlayerManager().updateCloudPlayer(TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(event.getPlayer().getUsername()));
-        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount()));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(event.getPlayer().getUsername(), event.getPlayer().getUniqueId()));
+        TeriumBridge.getInstance().getCloudPlayerProvider().updateCloudPlayer(TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUsername()));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeVelocityStartup.getInstance().getProxyServer().getPlayerCount()));
     }
 }

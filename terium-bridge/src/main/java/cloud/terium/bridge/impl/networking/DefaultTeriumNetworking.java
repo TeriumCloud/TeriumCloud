@@ -21,6 +21,7 @@ public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
         System.out.println("[TeriumBridge/DefaultTeriumNetworking] Successfully started terium-client...");
     }
 
+    @Override
     public void sendPacket(Packet packet) {
         this.client.getChannel().writeAndFlush(packet);
     }

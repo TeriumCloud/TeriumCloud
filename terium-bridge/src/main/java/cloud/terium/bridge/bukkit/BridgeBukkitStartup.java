@@ -5,6 +5,7 @@ import cloud.terium.bridge.bukkit.listener.PlayerJoinListener;
 import cloud.terium.bridge.bukkit.listener.PlayerQuitListener;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import com.destroystokyo.paper.ParticleBuilder;
 import lombok.Getter;
@@ -34,15 +35,15 @@ public class BridgeBukkitStartup extends JavaPlugin {
         teriumBridge.initServices(this);
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> Bukkit.broadcastMessage(iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName()));
+            TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().forEach(iCloudPlayer -> Bukkit.broadcastMessage(iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName()));
         }, 0, 20);
 
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
 
         Runnable task = () -> {
-            teriumBridge.getThisService().setOnlinePlayers(Bukkit.getOnlinePlayers().size());
-            teriumBridge.getThisService().setUsedMemory(teriumBridge.usedMemory());
-            teriumBridge.getThisService().update();
+            teriumBridge.getProvider().getThisService().setOnlinePlayers(Bukkit.getOnlinePlayers().size());
+            teriumBridge.getProvider().getThisService().setUsedMemory(teriumBridge.usedMemory());
+            teriumBridge.getProvider().getThisService().update();
         };
 
         Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);

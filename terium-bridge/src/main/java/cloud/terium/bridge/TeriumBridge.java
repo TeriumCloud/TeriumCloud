@@ -2,20 +2,22 @@ package cloud.terium.bridge;
 
 import cloud.terium.bridge.impl.config.ConfigManager;
 import cloud.terium.bridge.impl.networking.DefaultTeriumNetworking;
-import cloud.terium.bridge.impl.service.ServiceManager;
-import cloud.terium.bridge.impl.service.group.ServiceGroupManager;
+import cloud.terium.bridge.impl.service.ServiceProvider;
+import cloud.terium.bridge.impl.service.group.ServiceGroupFactory;
+import cloud.terium.bridge.impl.service.group.ServiceGroupProvider;
 import cloud.terium.bridge.networking.TeriumNetworkListener;
-import cloud.terium.bridge.player.CloudPlayerManager;
-import cloud.terium.bridge.velocity.BridgeVelocityStartup;
+import cloud.terium.bridge.player.CloudPlayerProvider;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutServiceChangeState;
-import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
 import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.api.ICloudFactory;
+import cloud.terium.teriumapi.api.ICloudProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.player.ICloudPlayer;
-import cloud.terium.teriumapi.service.CloudServiceState;
-import cloud.terium.teriumapi.service.CloudServiceType;
-import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.player.ICloudPlayerProvider;
+import cloud.terium.teriumapi.service.*;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.service.impl.CloudService;
 import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.proxy.Player;
@@ -23,7 +25,6 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,17 +33,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.InetSocketAddress;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Getter
 public class TeriumBridge extends TeriumAPI {
 
     private static TeriumBridge instance;
-    private final ServiceManager serviceManager;
-    private final ServiceGroupManager serviceGroupManager;
+    private final ServiceProvider serviceProvider;
+    private final ServiceGroupProvider serviceGroupProvider;
+    private final ServiceGroupFactory serviceGroupFactory;
     private final TeriumNetworkListener teriumNetworkListener;
-    private final CloudPlayerManager cloudPlayerManager;
+    private final CloudPlayerProvider cloudPlayerProvider;
     private ConfigManager configManager;
     private String thisName;
     private final List<ICloudPlayer> playerList;
@@ -52,11 +52,12 @@ public class TeriumBridge extends TeriumAPI {
         super();
         instance = this;
         this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
-        this.serviceManager = new ServiceManager();
-        this.serviceGroupManager = new ServiceGroupManager();
+        this.serviceProvider = new ServiceProvider();
+        this.serviceGroupProvider = new ServiceGroupProvider();
+        this.serviceGroupFactory = new ServiceGroupFactory();
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
-        this.cloudPlayerManager = new CloudPlayerManager();
+        this.cloudPlayerProvider = new CloudPlayerProvider();
         this.playerList = new ArrayList<>();
     }
 
@@ -64,13 +65,49 @@ public class TeriumBridge extends TeriumAPI {
         return instance;
     }
 
-    public ICloudService getThisService() {
-        return serviceManager.getCloudServiceByName(thisName);
+    @Override
+    public ICloudProvider getProvider() {
+        return new ICloudProvider() {
+            @Override
+            public ICloudService getThisService() {
+                return getServiceProvider().getCloudServiceByName(thisName);
+            }
+
+            @Override
+            public ICloudServiceProvider getServiceProvider() {
+                return serviceProvider;
+            }
+
+            @Override
+            public ICloudServiceGroupProvider getServiceGroupProvider() {
+                return serviceGroupProvider;
+            }
+
+            @Override
+            public ICloudPlayerProvider getCloudPlayerProvider() {
+                return cloudPlayerProvider;
+            }
+
+            @Override
+            public IDefaultTeriumNetworking getTeriumNetworking() {
+                return teriumNetworkListener.getDefaultTeriumNetworking();
+            }
+        };
     }
 
     @Override
-    public IDefaultTeriumNetworking getTeriumNetworking() {
-        return teriumNetworkListener.getDefaultTeriumNetworking();
+    public ICloudFactory getFactory() {
+        return new ICloudFactory() {
+            @Override
+            public ICloudServiceFactory getServiceFactory() {
+                return null;
+            }
+
+            @Override
+            public ICloudServiceGroupFactory getServiceGroupFactory() {
+                return serviceGroupFactory;
+            }
+        };
     }
 
     public long usedMemory() {
@@ -83,9 +120,9 @@ public class TeriumBridge extends TeriumAPI {
         for (File file : new File("../../data/cache/servers").listFiles()) {
             DefaultJsonService jsonService = new DefaultJsonService(file.getName().replace(".json", ""));
 
-            if (serviceManager.getCloudServiceByName(jsonService.getString("service_name")) == null) {
-                serviceManager.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"))));
-                serviceManager.getCloudServiceByName(jsonService.getString("service_name")).setServiceState(CloudServiceState.valueOf(jsonService.getString("state")));
+            if (serviceProvider.getCloudServiceByName(jsonService.getString("service_name")) == null) {
+                serviceProvider.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupProvider.getServiceGroupByName(jsonService.getString("service_group"))));
+                serviceProvider.getCloudServiceByName(jsonService.getString("service_name")).setServiceState(CloudServiceState.valueOf(jsonService.getString("state")));
 
                 if (!jsonService.getString("service_group").equals("Proxy"))
                     server.registerServer(new ServerInfo(jsonService.getString("service_name"), new InetSocketAddress("127.0.0.1", jsonService.getInt("port"))));
@@ -97,8 +134,8 @@ public class TeriumBridge extends TeriumAPI {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getThisService().setServiceState(CloudServiceState.ONLINE);
-                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getThisService().getServiceName(), CloudServiceState.ONLINE));
+                getProvider().getThisService().setServiceState(CloudServiceState.ONLINE);
+                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getProvider().getThisService().getServiceName(), CloudServiceState.ONLINE));
             }
         }, 500);
     }
@@ -111,22 +148,22 @@ public class TeriumBridge extends TeriumAPI {
         for (File file : new File("../../data/cache/servers").listFiles()) {
             DefaultJsonService jsonService = new DefaultJsonService(file.getName().replace(".json", ""));
 
-            if (serviceManager.getCloudServiceByName(jsonService.getString("service_name")) == null) {
-                serviceManager.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupManager.getServiceGroupByName(jsonService.getString("service_group"))));
+            if (serviceProvider.getCloudServiceByName(jsonService.getString("service_name")) == null) {
+                serviceProvider.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupProvider.getServiceGroupByName(jsonService.getString("service_group"))));
             }
         }
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                getThisService().setServiceState(CloudServiceState.ONLINE);
-                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getThisService().getServiceName(), CloudServiceState.ONLINE));
+                getProvider().getThisService().setServiceState(CloudServiceState.ONLINE);
+                TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceChangeState(getProvider().getThisService().getServiceName(), CloudServiceState.ONLINE));
             }
         }, 500);
     }
 
     public @NotNull Optional<ICloudService> getFallback(final Player player) {
-        return TeriumAPI.getTeriumAPI().getServiceManager().getAllCloudServices().stream()
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().stream()
                 .filter(service -> service.getServiceState().equals(CloudServiceState.ONLINE))
                 .filter(service -> !service.getServiceGroup().getServiceType().equals(CloudServiceType.Proxy))
                 .filter(service -> service.getServiceGroup().getServiceType().equals(CloudServiceType.Lobby))

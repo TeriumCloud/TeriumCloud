@@ -2,9 +2,7 @@ package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.networking.json.DefaultJsonService;
-import cloud.terium.teriumapi.service.CloudServiceState;
-import cloud.terium.teriumapi.service.ICloudService;
-import cloud.terium.teriumapi.service.ICloudServiceManager;
+import cloud.terium.teriumapi.service.*;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import lombok.Getter;
 
@@ -16,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
-public class ServiceManager implements ICloudServiceManager {
+public class ServiceManager implements ICloudServiceProvider, ICloudServiceFactory {
 
     private final List<ICloudService> minecraftServices;
     private final HashMap<String, MinecraftService> minecraftServiceCache;
@@ -87,6 +85,11 @@ public class ServiceManager implements ICloudServiceManager {
     @Override
     public List<ICloudService> getCloudServicesByGroupTitle(String s) {
         return minecraftServices.stream().filter(iCloudService -> iCloudService.getServiceGroup().getGroupTitle().equals(s)).toList();
+    }
+
+    @Override
+    public List<ICloudService> getAllLobbyServices() {
+        return minecraftServices.stream().filter(iCloudService -> iCloudService.getServiceType().equals(CloudServiceType.Lobby)).toList();
     }
 
     @Override

@@ -22,10 +22,10 @@ public class ServerConnectedListener {
     @Subscribe
     public void handleServerConnected(final @NotNull ServerConnectedEvent event) {
         Player player = event.getPlayer();
-        CloudPlayer cloudPlayer = (CloudPlayer) TeriumAPI.getTeriumAPI().getCloudPlayerManager().getCloudPlayer(player.getUniqueId());
+        CloudPlayer cloudPlayer = (CloudPlayer) TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId());
 
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnectedService(player.getUniqueId(), event.getServer().getServerInfo().getName()));
-        cloudPlayer.setConnectedService(TeriumAPI.getTeriumAPI().getServiceManager().getCloudServiceByName(event.getServer().getServerInfo().getName()));
+        cloudPlayer.setConnectedService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(event.getServer().getServerInfo().getName()));
     }
 
     @Subscribe

@@ -6,6 +6,7 @@ import cloud.terium.bridge.velocity.listener.LoginListener;
 import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -43,11 +44,11 @@ public class BridgeVelocityStartup {
         new DefaultJsonService(teriumBridge.getThisName()).setServiceState(CloudServiceState.ONLINE);
 
         Runnable task = () -> {
-            teriumBridge.getThisService().setOnlinePlayers(proxyServer.getPlayerCount());
-            teriumBridge.getThisService().setUsedMemory(teriumBridge.usedMemory());
-            teriumBridge.getThisService().update();
+            teriumBridge.getProvider().getThisService().setOnlinePlayers(proxyServer.getPlayerCount());
+            teriumBridge.getProvider().getThisService().setUsedMemory(teriumBridge.usedMemory());
+            teriumBridge.getProvider().getThisService().update();
 
-            TeriumBridge.getInstance().getCloudPlayerManager().getOnlinePlayers().forEach(iCloudPlayer -> proxyServer.sendMessage(MiniMessage.miniMessage().deserialize("PROXY: " + iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName())));
+            TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().forEach(iCloudPlayer -> proxyServer.sendMessage(MiniMessage.miniMessage().deserialize("PROXY: " + iCloudPlayer.getUsername() + " / " + iCloudPlayer.getUniqueId() + " / " + iCloudPlayer.getConnectedCloudService().getServiceName())));
         };
 
         proxyServer.getScheduler().buildTask(this, task).repeat(2, TimeUnit.SECONDS).schedule();

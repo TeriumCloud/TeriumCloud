@@ -5,8 +5,10 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
-import cloud.terium.teriumapi.service.group.ICloudServiceGroupManager;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
@@ -27,7 +29,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Getter
-public class ServiceGroupManager implements ICloudServiceGroupManager {
+public class ServiceGroupManager implements ICloudServiceGroupProvider, ICloudServiceGroupFactory {
 
     private File file;
     private Gson gson;
@@ -294,5 +296,10 @@ public class ServiceGroupManager implements ICloudServiceGroupManager {
     @Override
     public List<ICloudServiceGroup> getAllServiceGroups() {
         return serviceGroups;
+    }
+
+    @Override
+    public void deleteServiceGroup(ICloudServiceGroup iCloudServiceGroup) {
+        // TODO: Write that methode
     }
 }
