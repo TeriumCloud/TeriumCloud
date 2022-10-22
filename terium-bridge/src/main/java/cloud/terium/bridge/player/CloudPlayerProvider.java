@@ -24,11 +24,17 @@ import java.util.concurrent.Executors;
 public class CloudPlayerProvider implements ICloudPlayerProvider {
 
     private final List<ICloudPlayer> registeredPlayers;
+    private final File file;
     Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     public CloudPlayerProvider() {
         this.registeredPlayers = new ArrayList<>();
+        this.file = new File("../../data/players");
+
+        if(file.getParentFile().exists()) {
+            file.mkdirs();
+        }
 
         Arrays.stream(new File("../../data/players").listFiles()).forEach(file -> {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(new File("../../data/players/" + file.getName()).toPath()), StandardCharsets.UTF_8)) {
