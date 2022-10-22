@@ -9,12 +9,10 @@ import java.util.List;
 public class ScreenManager {
 
     private final HashMap<ICloudService, List<String>> cachedScreens;
-    private final List<String> cloudLogs;
     private ICloudService currentScreen;
 
     public ScreenManager() {
         this.cachedScreens = new HashMap<>();
-        this.cloudLogs = new ArrayList<>();
         this.currentScreen = null;
     }
 
@@ -24,10 +22,6 @@ public class ScreenManager {
 
     public ICloudService getCurrentScreen() {
         return currentScreen;
-    }
-
-    public List<String> getCloudLogs() {
-        return cloudLogs;
     }
 
     public void addCloudService(ICloudService iCloudService) {
