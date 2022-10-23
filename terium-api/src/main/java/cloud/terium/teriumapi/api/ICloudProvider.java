@@ -6,6 +6,7 @@ import cloud.terium.teriumapi.player.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
+import cloud.terium.teriumapi.template.ITemplateProvider;
 
 public abstract class ICloudProvider {
 
@@ -37,6 +38,12 @@ public abstract class ICloudProvider {
      * The ICloudConsoleProvider is usefull to interact with cloud console
      */
     public abstract ICloudConsoleProvider getConsoleProvider();
+
+    /**
+     * Use this methode to get the ITemplateProvider
+     * The ITemplateProvider is usefull to interact with templates
+     */
+    public abstract ITemplateProvider getTemplateProvider();
 
     /**
      * Use this methode to get the IDefaultTeriumNetworking
