@@ -1,5 +1,6 @@
 package cloud.terium.bridge;
 
+import cloud.terium.bridge.impl.ConsoleProvider;
 import cloud.terium.bridge.impl.config.ConfigManager;
 import cloud.terium.bridge.impl.networking.DefaultTeriumNetworking;
 import cloud.terium.bridge.impl.service.ServiceProvider;
@@ -12,6 +13,7 @@ import cloud.terium.networking.packets.PacketPlayOutServiceChangeState;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
+import cloud.terium.teriumapi.console.ICloudConsoleProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
@@ -43,6 +45,7 @@ public class TeriumBridge extends TeriumAPI {
     private final ServiceGroupFactory serviceGroupFactory;
     private final TeriumNetworkListener teriumNetworkListener;
     private final CloudPlayerProvider cloudPlayerProvider;
+    private final ConsoleProvider consoleProvider;
     private ConfigManager configManager;
     private String thisName;
     private final List<ICloudPlayer> playerList;
@@ -55,9 +58,10 @@ public class TeriumBridge extends TeriumAPI {
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
+        this.cloudPlayerProvider = new CloudPlayerProvider();
+        this.consoleProvider = new ConsoleProvider();
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
-        this.cloudPlayerProvider = new CloudPlayerProvider();
         this.playerList = new ArrayList<>();
     }
 
@@ -86,6 +90,11 @@ public class TeriumBridge extends TeriumAPI {
             @Override
             public ICloudPlayerProvider getCloudPlayerProvider() {
                 return cloudPlayerProvider;
+            }
+
+            @Override
+            public ICloudConsoleProvider getConsoleProvider() {
+                return consoleProvider;
             }
 
             @Override
