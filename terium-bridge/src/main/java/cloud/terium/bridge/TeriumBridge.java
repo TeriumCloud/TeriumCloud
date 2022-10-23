@@ -3,9 +3,12 @@ package cloud.terium.bridge;
 import cloud.terium.bridge.impl.ConsoleProvider;
 import cloud.terium.bridge.impl.config.ConfigManager;
 import cloud.terium.bridge.impl.networking.DefaultTeriumNetworking;
+import cloud.terium.bridge.impl.service.ServiceFactory;
 import cloud.terium.bridge.impl.service.ServiceProvider;
 import cloud.terium.bridge.impl.service.group.ServiceGroupFactory;
 import cloud.terium.bridge.impl.service.group.ServiceGroupProvider;
+import cloud.terium.bridge.impl.template.TemplateFactory;
+import cloud.terium.bridge.impl.template.TemplateProvider;
 import cloud.terium.bridge.networking.TeriumNetworkListener;
 import cloud.terium.bridge.player.CloudPlayerProvider;
 import cloud.terium.networking.json.DefaultJsonService;
@@ -21,6 +24,8 @@ import cloud.terium.teriumapi.service.*;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.service.impl.CloudService;
+import cloud.terium.teriumapi.template.ITemplateFactory;
+import cloud.terium.teriumapi.template.ITemplateProvider;
 import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -40,12 +45,15 @@ import java.util.*;
 public class TeriumBridge extends TeriumAPI {
 
     private static TeriumBridge instance;
-    private final ServiceProvider serviceProvider;
-    private final ServiceGroupProvider serviceGroupProvider;
-    private final ServiceGroupFactory serviceGroupFactory;
     private final TeriumNetworkListener teriumNetworkListener;
-    private final CloudPlayerProvider cloudPlayerProvider;
+    private final ServiceProvider serviceProvider;
     private final ConsoleProvider consoleProvider;
+    private final CloudPlayerProvider cloudPlayerProvider;
+    private final TemplateProvider templateProvider;
+    private final ServiceGroupProvider serviceGroupProvider;
+    private final ServiceFactory serviceFactory;
+    private final ServiceGroupFactory serviceGroupFactory;
+    private final TemplateFactory templateFactory;
     private ConfigManager configManager;
     private String thisName;
     private final List<ICloudPlayer> playerList;
@@ -57,9 +65,12 @@ public class TeriumBridge extends TeriumAPI {
         this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupProvider = new ServiceGroupProvider();
-        this.serviceGroupFactory = new ServiceGroupFactory();
         this.cloudPlayerProvider = new CloudPlayerProvider();
         this.consoleProvider = new ConsoleProvider();
+        this.templateProvider = new TemplateProvider();
+        this.serviceFactory = new ServiceFactory();
+        this.serviceGroupFactory = new ServiceGroupFactory();
+        this.templateFactory = new TemplateFactory();
         this.configManager = new ConfigManager();
         this.teriumNetworkListener = new TeriumNetworkListener(new DefaultTeriumNetworking(configManager));
         this.playerList = new ArrayList<>();
@@ -98,6 +109,11 @@ public class TeriumBridge extends TeriumAPI {
             }
 
             @Override
+            public ITemplateProvider getTemplateProvider() {
+                return templateProvider;
+            }
+
+            @Override
             public IDefaultTeriumNetworking getTeriumNetworking() {
                 return teriumNetworkListener.getDefaultTeriumNetworking();
             }
@@ -109,12 +125,17 @@ public class TeriumBridge extends TeriumAPI {
         return new ICloudFactory() {
             @Override
             public ICloudServiceFactory getServiceFactory() {
-                return null;
+                return serviceFactory;
             }
 
             @Override
             public ICloudServiceGroupFactory getServiceGroupFactory() {
                 return serviceGroupFactory;
+            }
+
+            @Override
+            public ITemplateFactory getTemplateFactory() {
+                return templateFactory;
             }
         };
     }
