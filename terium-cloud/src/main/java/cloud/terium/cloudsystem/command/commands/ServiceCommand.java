@@ -17,8 +17,6 @@ public class ServiceCommand extends Command {
         commandManager.register(this);
     }
 
-    // TODO: Clear console after toggle screen and insert all cached logs.
-
     @Override
     public void execute(String[] args) {
         if (args.length == 2) {
