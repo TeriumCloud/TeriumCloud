@@ -62,7 +62,7 @@ public class MinecraftService implements ICloudService {
     public void start() {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File("data//versions//" + (serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "server.jar" : "velocity.jar")), folder);
-        FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "templates//Global//Server" : "templates//Global//Proxy"), folder);
+        FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
         FileUtils.copyFileToDirectory(new File("data//versions//teriumbridge.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         FileUtils.copyDirectory(template, folder);
         Terium.getTerium().getServiceManager().addService(this);

@@ -4,6 +4,7 @@ import cloud.terium.cloudsystem.Terium;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.teriumapi.service.*;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -95,5 +96,35 @@ public class ServiceManager implements ICloudServiceProvider, ICloudServiceFacto
     @Override
     public List<ICloudService> getAllCloudServices() {
         return minecraftServices;
+    }
+
+    @Override
+    public void createService(ICloudServiceGroup iCloudServiceGroup) {
+
+    }
+
+    @Override
+    public void createService(ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate) {
+
+    }
+
+    @Override
+    public void createService(ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate, int i, int i1) {
+
+    }
+
+    @Override
+    public void createService(String s, ITemplate iTemplate) {
+
+    }
+
+    @Override
+    public void createService(String s, ICloudServiceGroup iCloudServiceGroup) {
+
+    }
+
+    @Override
+    public void startService(ICloudService iCloudService) {
+
     }
 }

@@ -1,16 +1,20 @@
 package cloud.terium.cloudsystem.template;
 
 import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.module.Module;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.module.ModuleType;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 public class TemplateManager {
 
@@ -23,17 +27,17 @@ public class TemplateManager {
         new File("data//cache//servers//").mkdirs();
 
         if (new File("templates//Global").mkdirs()) {
-            new File("templates//Global//Server").mkdirs();
-            new File("templates//Global//Proxy").mkdirs();
+            new File("templates//Global//server").mkdirs();
+            new File("templates//Global//proxy").mkdirs();
 
             Logger.log("Successfully init template folder.", LogType.INFO);
             Logger.log("Starting of download velocity.toml and spigot.yml", LogType.DOWNLOAD);
 
             // velocity.toml
-            downloadFile("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmNoYuMwDrf1cXrroVr1g87fb9GUv61dCzZfZwSCc4YGrp", "velocity.toml", "templates//Global//Proxy");
+            downloadFile("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmNoYuMwDrf1cXrroVr1g87fb9GUv61dCzZfZwSCc4YGrp", "velocity.toml", "templates//Global//proxy");
 
             // spigot.yml
-            downloadFile("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmQDWghUiH6fs2SqabSZWuceE3GPAjD7bhEeBk6aEiXFbH", "spigot.yml", "templates//Global//Server");
+            downloadFile("https://api.ipfsbrowser.com/ipfs/download.php?hash=QmQDWghUiH6fs2SqabSZWuceE3GPAjD7bhEeBk6aEiXFbH", "spigot.yml", "templates//Global//server");
             Logger.log("Successfully downloaded velocity.toml and spigot.yml", LogType.DOWNLOAD);
         }
 
