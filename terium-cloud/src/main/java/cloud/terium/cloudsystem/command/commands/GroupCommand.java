@@ -3,7 +3,7 @@ package cloud.terium.cloudsystem.command.commands;
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
-import cloud.terium.cloudsystem.service.MinecraftService;
+import cloud.terium.cloudsystem.service.CloudService;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -54,7 +54,7 @@ public class GroupCommand extends Command {
                 if (Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
                     Logger.log("Trying to start " + args[2] + " new services of group '" + args[0] + "'", LogType.INFO);
                     for (int i = 0; i < Integer.parseInt(args[2]); i++) {
-                        new MinecraftService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0])).start();
+                        new CloudService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0])).start();
                     }
                     return;
                 } else {

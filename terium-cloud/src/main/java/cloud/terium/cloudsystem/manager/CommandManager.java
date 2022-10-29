@@ -26,8 +26,6 @@ public class CommandManager {
             new CreateGroupCommand(this);
             new EditGroupCommand(this);
 
-            new DebugStartCommand(this);
-
             new ServiceCommand(this);
             new GroupCommand(this);
             new ListCommand(this);

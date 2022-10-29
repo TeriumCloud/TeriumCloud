@@ -1,7 +1,7 @@
 package cloud.terium.cloudsystem.networking.server;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.service.MinecraftService;
+import cloud.terium.cloudsystem.service.CloudService;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.TeriumFramework;
@@ -89,7 +89,7 @@ public class TeriumServer {
                                             }
 
                                             if (packet instanceof PacketPlayOutServiceStart packetPlayOutServiceStart) {
-                                                new MinecraftService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(packetPlayOutServiceStart.defaultServiceGroup())).start();
+                                                new CloudService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(packetPlayOutServiceStart.defaultServiceGroup())).start();
                                                 return;
                                             }
 

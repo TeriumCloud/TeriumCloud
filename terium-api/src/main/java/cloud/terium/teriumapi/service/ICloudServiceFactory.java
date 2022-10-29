@@ -28,11 +28,26 @@ public interface ICloudServiceFactory {
     void createService(ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate, int port, int maxPlayers);
 
     /**
-     * Create a service with defined service name and cloud template
+     * Create a service with defined service name, cloud template, cloud type and serviceId
+     * Max players will be 20 as default
      * @param serviceName
      * @param iTemplate
+     * @param cloudServiceType
+     * @param serviceId
+     * @param memory
      */
-    void createService(String serviceName, ITemplate iTemplate);
+    void createService(String serviceName, ITemplate iTemplate, CloudServiceType cloudServiceType, int serviceId, int memory);
+
+    /**
+     * Create a service with defined service name, cloud template, service type, service id and port
+     * @param serviceName
+     * @param iTemplate
+     * @param cloudServiceType
+     * @param serviceId
+     * @param maxPlayers
+     * @param memory
+     */
+    void createService(String serviceName, ITemplate iTemplate, CloudServiceType cloudServiceType, int serviceId, int maxPlayers, int memory);
 
     /**
      * Create a service with defined service name and service group
@@ -40,6 +55,33 @@ public interface ICloudServiceFactory {
      * @param iCloudServiceGroup
      */
     void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup);
+
+    /**
+     * Create a service with defined service name, service group, serviceId and maxPlayers
+     * @param serviceName
+     * @param iCloudServiceGroup
+     * @param serviceId
+     * @param maxPlayers
+     */
+    void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup, int serviceId, int maxPlayers);
+
+    /**
+     * Create a service with defined service name, service group and template
+     * @param serviceName
+     * @param iCloudServiceGroup
+     * @param iTemplate
+     */
+    void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate);
+
+    /**
+     * Create a service with defined service name, service group, template, port and maximum players
+     * @param serviceName
+     * @param iCloudServiceGroup
+     * @param iTemplate
+     * @param port
+     * @param maxplayers
+     */
+    void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate, int port, int maxplayers);
 
     /**
      * Start the defined cloud service

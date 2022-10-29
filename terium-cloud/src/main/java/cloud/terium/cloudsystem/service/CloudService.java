@@ -1,14 +1,18 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
+import cloud.terium.networking.packets.PacketPlayOutServiceUnlock;
+import cloud.terium.networking.packets.PacketPlayOutUpdateService;
+import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
@@ -23,39 +27,52 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MinecraftService implements ICloudService {
+public class CloudService implements ICloudService {
 
     private final ICloudServiceGroup serviceGroup;
     private CloudServiceState serviceState;
+    private CloudServiceType serviceType;
+    private final String name;
     private final File folder;
     private final int port;
     private final int serviceId;
+    private final int maxPlayers;
+    private final int maxMemory;
     private long usedMemory;
     private int onlinePlayers;
     private boolean locked;
     private Process process;
-    private final File template;
+    private final ITemplate template;
     private Thread outputThread;
     private Thread thread;
 
-    public MinecraftService(ICloudServiceGroup serviceGroup) {
-        this(serviceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
+    public CloudService(ICloudServiceGroup iCloudServiceGroup) {
+        this(iCloudServiceGroup.getTemplate(), iCloudServiceGroup, Terium.getTerium().getServiceManager().getFreeServiceId(iCloudServiceGroup), iCloudServiceGroup.getPort());
     }
 
-    public MinecraftService(ICloudServiceGroup serviceGroup, int serviceId) {
-        this(serviceGroup, serviceId, serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
+    public CloudService(ITemplate template, ICloudServiceGroup iCloudServiceGroup, int serviceId, int port) {
+        this(template, iCloudServiceGroup, serviceId, port, iCloudServiceGroup.getMaximumPlayers());
     }
 
-    public MinecraftService(ICloudServiceGroup defaultServiceGroup, int serviceId, int port) {
-        this.serviceGroup = defaultServiceGroup;
+    public CloudService(ITemplate template, ICloudServiceGroup iCloudServiceGroup, int serviceId, int port, int maxPlayers) {
+        this(iCloudServiceGroup.getServiceGroupName(), template, iCloudServiceGroup, iCloudServiceGroup.getServiceType(), serviceId, port, maxPlayers, iCloudServiceGroup.getMemory());
+    }
+
+    public CloudService(String serviceName, ITemplate template, ICloudServiceGroup iCloudServiceGroup, CloudServiceType serviceType, int serviceId, int port, int maxPlayers, int maxMemory) {
+        this.serviceGroup = iCloudServiceGroup;
         this.serviceId = serviceId;
+        this.name = serviceName;
+        this.serviceType = serviceType;
         this.serviceState = CloudServiceState.PREPARING;
-        this.template = new File("templates//" + serviceGroup.getServiceGroupName() + "//");
+        this.template = template;
         this.folder = new File("servers//" + getServiceName());
         this.port = port;
+        this.maxPlayers = maxPlayers;
+        this.maxMemory = maxMemory;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
         Terium.getTerium().getScreenManager().addCloudService(this);
+        Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
     }
 
     @SneakyThrows
@@ -64,7 +81,7 @@ public class MinecraftService implements ICloudService {
         FileUtils.copyFileToDirectory(new File("data//versions//" + (serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "server.jar" : "velocity.jar")), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
         FileUtils.copyFileToDirectory(new File("data//versions//teriumbridge.jar"), new File("servers//" + getServiceName() + "//plugins//"));
-        FileUtils.copyDirectory(template, folder);
+        FileUtils.copyDirectory(template.getPath().toFile(), folder);
         Terium.getTerium().getServiceManager().addService(this);
         Terium.getTerium().getModuleManager().getAllModules().forEach(module -> {
             try {
@@ -155,7 +172,7 @@ public class MinecraftService implements ICloudService {
     }
 
     public void shutdown() {
-        MinecraftService minecraftService = this;
+        CloudService cloudService = this;
         if (Terium.getTerium().getCloudUtils().isInScreen() && Terium.getTerium().getScreenManager().getCurrentScreen().equals(this))
             toggleScreen();
         Logger.log("Trying to stop service '" + getServiceName() + "'... [MinecraftService#forceShutdown]", LogType.INFO);
@@ -169,7 +186,7 @@ public class MinecraftService implements ICloudService {
             @Override
             public void run() {
                 FileUtils.deleteDirectory(folder);
-                Terium.getTerium().getServiceManager().removeService(minecraftService);
+                Terium.getTerium().getServiceManager().removeService(cloudService);
                 Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
             }
         }, 5000);
@@ -247,7 +264,7 @@ public class MinecraftService implements ICloudService {
 
     @Override
     public String getServiceName() {
-        return getServiceId() > 9 ? getServiceGroup().getServiceGroupName() + "-" + getServiceId() : getServiceGroup().getServiceGroupName() + "-0" + getServiceId();
+        return getServiceId() > 9 ? name + "-" + getServiceId() : name + "-0" + getServiceId();
     }
 
     @Override
@@ -262,7 +279,7 @@ public class MinecraftService implements ICloudService {
 
     @Override
     public int getMaxPlayers() {
-        return ICloudService.super.getMaxPlayers();
+        return maxPlayers;
     }
 
     @Override
@@ -282,7 +299,7 @@ public class MinecraftService implements ICloudService {
 
     @Override
     public int getMaxMemory() {
-        return ICloudService.super.getMaxMemory();
+        return maxMemory;
     }
 
     @Override

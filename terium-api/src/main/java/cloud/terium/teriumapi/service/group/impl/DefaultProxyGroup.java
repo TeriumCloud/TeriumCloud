@@ -2,6 +2,7 @@ package cloud.terium.teriumapi.service.group.impl;
 
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -21,6 +22,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private String name;
     private String groupTitle;
     private String node;
+    private ITemplate template;
     private final CloudServiceType cloudServiceType = CloudServiceType.Proxy;
     private String version;
     private boolean maintenance;
@@ -31,10 +33,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultProxyGroup(String name, String groupTitle, String node, String version, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultProxyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
+        this.template = template;
         this.version = version;
         this.maintenance = maintenance;
         this.port = port;
@@ -45,14 +48,13 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     public void initFile() {
-        new File("templates//" + name).mkdirs();
-
         final JsonObject json = new JsonObject();
         final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node);
+        json.addProperty("template", template.getName());
         json.addProperty("servicetype", CloudServiceType.Proxy.name());
         json.addProperty("port", port);
         json.addProperty("version", version);
@@ -82,6 +84,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     @Override
     public String getServiceGroupNode() {
         return node;
+    }
+
+    @Override
+    public ITemplate getTemplate() {
+        return template;
     }
 
     @Override

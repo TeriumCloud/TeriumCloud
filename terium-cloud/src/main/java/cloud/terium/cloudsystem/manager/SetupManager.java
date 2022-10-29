@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.manager;
 
 import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.template.Template;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
@@ -62,9 +63,9 @@ public class SetupManager {
                                     exception.printStackTrace();
                                 }
                                 Logger.log("Terium is trying to create a lobby and a porxy group...", LogType.SETUP);
-                                new DefaultProxyGroup("Proxy", "PROXY", "Node-01", "velocity", true, 25565, 10, 128, 1, 1).initFile();
+                                new DefaultProxyGroup("Proxy", "PROXY", "Node-01", new Template("Proxy", new File("//templates//Proxy").toPath()), "velocity", true, 25565, 10, 128, 1, 1).initFile();
                                 Logger.log("Successfully created Proxy(proxy group | Node-01, 10 players, 128 memory, velocity).", LogType.SETUP);
-                                new DefaultLobbyGroup("Lobby", "LOBBY", "Node-01", "paperspigot-1.19.2", true, 20, 512, 1, 1).initFile();
+                                new DefaultLobbyGroup("Lobby", "LOBBY", "Node-01", new Template("Lobby", new File("//templates//Lobby").toPath()), "paperspigot-1.19.2", true, 20, 512, 1, 1).initFile();
                                 Logger.log("Successfully created Lobby(lobby group | Node-01, 20 players, 512 memory, paperspigot-1.19.2).", LogType.SETUP);
 
                                 Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
@@ -105,7 +106,7 @@ public class SetupManager {
                             setupStorage.setProxyVersion(input);
                             Logger.log("You choosed '" + input + "' as proxy version.", LogType.SETUP);
                             Logger.log("Terium is trying to create a proxy group with " + input + ". Please wait a moment...", LogType.SETUP);
-                            new DefaultProxyGroup("Proxy", "PROXY", "Node-01", input, true, 25565, 100, 128, 1, 1).initFile();
+                            new DefaultProxyGroup("Proxy", "PROXY", "Node-01", new Template("Proxy", new File("//templates//Proxy").toPath()), input, true, 25565, 100, 128, 1, 1).initFile();
                             Logger.log("Terium successfully created a proxy group with " + input + ".", LogType.SETUP);
                             try {
                                 Thread.sleep(1000);
@@ -128,7 +129,7 @@ public class SetupManager {
                             } catch (InterruptedException exception) {
                                 exception.printStackTrace();
                             }
-                            Terium.getTerium().getServiceGroupManager().createLobbyGroup("Lobby", "MAIN-LOBBY", "Node-01", input, 20, 512, 1, 1).initFile();
+                            Terium.getTerium().getServiceGroupManager().createLobbyGroup("Lobby", "MAIN-LOBBY", "Node-01", new Template("Lobby", new File("//templates//Lobby").toPath()), input, 20, 512, 1, 1).initFile();
                             Logger.log("Terium successfully created a lobby group with " + input + ".", LogType.SETUP);
                             Terium.getTerium().getCloudUtils().setSetupState(SetupState.DONE);
                             Logger.log("Please wait a small while. Terium is starting soon...", LogType.INFO);

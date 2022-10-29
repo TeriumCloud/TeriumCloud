@@ -2,6 +2,7 @@ package cloud.terium.teriumapi.service.group.impl;
 
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -20,6 +21,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     private String name;
     private String groupTitle;
     private String node;
+    private ITemplate template;
     private String version;
     private final CloudServiceType cloudServiceType = CloudServiceType.Server;
     private int maximumPlayers;
@@ -29,10 +31,11 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultServerGroup(String name, String groupTitle, String node, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultServerGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
+        this.template = template;
         this.version = version;
         this.maintenance = maintenance;
         this.maximumPlayers = maximumPlayers;
@@ -42,14 +45,13 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     }
 
     public void initFile() {
-        new File("templates//" + name).mkdirs();
-
         JsonObject json = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node);
+        json.addProperty("template", template.getName());
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
@@ -78,6 +80,11 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     @Override
     public String getServiceGroupNode() {
         return node;
+    }
+
+    @Override
+    public ITemplate getTemplate() {
+        return template;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.service.group;
 
 import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 
@@ -29,6 +30,12 @@ public interface ICloudServiceGroup {
      * @return String This returns the node name of the service group as String.
      */
     String getServiceGroupNode();
+
+    /**
+     * Get the template of the service group
+     * @return ITemplate This returns the template of the service group as ITemplate.
+     */
+    ITemplate getTemplate();
 
     /**
      * Get the service type of the service group

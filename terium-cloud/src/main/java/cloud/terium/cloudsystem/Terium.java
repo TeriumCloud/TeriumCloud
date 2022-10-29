@@ -30,6 +30,7 @@ public class Terium {
     private final ScreenManager screenManager;
     private final ServiceManager serviceManager;
     private final ServiceGroupManager serviceGroupManager;
+    private final TemplateManager templateManager;
     private final ModuleManager moduleManager;
     private final DefaultTeriumNetworking defaultTeriumNetworking;
 
@@ -55,6 +56,7 @@ public class Terium {
             this.screenManager = new ScreenManager();
             this.serviceManager = new ServiceManager();
             this.serviceGroupManager = new ServiceGroupManager();
+            this.templateManager = new TemplateManager();
             this.moduleManager = new ModuleManager();
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
 
@@ -74,6 +76,7 @@ public class Terium {
         this.moduleManager = null;
         this.serviceManager = null;
         this.serviceGroupManager = new ServiceGroupManager();
+        this.templateManager = null;
         this.screenManager = null;
         this.defaultTeriumNetworking = null;
 
