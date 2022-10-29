@@ -54,7 +54,7 @@ public class PacketPlayOutCreateService extends Packet {
     public void write(ByteBuf byteBuf) {
         writeString(name, byteBuf);
         writeString(serviceGroup.getServiceGroupName(), byteBuf);
-        writeString(template.getName(), byteBuf);
+        writeString(template.name(), byteBuf);
         byteBuf.writeInt(port);
         byteBuf.writeInt(maxPlayers);
     }

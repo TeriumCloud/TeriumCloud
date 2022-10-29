@@ -19,12 +19,12 @@ public class TemplateProvider implements ITemplateProvider {
 
     public void addTemplate(ITemplate template) {
         templateList.add(template);
-        templateCache.put(template.getName(), template);
+        templateCache.put(template.name(), template);
     }
 
     public void removeTemplate(ITemplate template) {
         templateList.remove(template);
-        templateCache.remove(template.getName());
+        templateCache.remove(template.name());
     }
 
     @Override

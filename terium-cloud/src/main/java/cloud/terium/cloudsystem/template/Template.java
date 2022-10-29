@@ -10,6 +10,8 @@ public class Template implements ITemplate {
     private final String name;
     private final Path path;
 
+    // Adding saving and loading of templates
+
     public Template(String name, Path path) {
         this.name = name;
         this.path = path;
