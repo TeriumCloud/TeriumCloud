@@ -19,7 +19,7 @@
 ## Links
 - Latest Release
 - Documentation
-- [GitHub repo](https://github.com/TeriumService/Terium)
+- [GitHub repo](https://github.com/TeriumCloud/Terium)
 - [Discord Support](https://discord.com/invite/5VrY59sffQ)
 - SpigotMC
 

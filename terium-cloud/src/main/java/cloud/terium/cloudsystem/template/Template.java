@@ -11,6 +11,7 @@ public class Template implements ITemplate {
     private final Path path;
 
     // Adding saving and loading of templates
+    // Change Default...ServiceGroup.java -> ITemplate to String
 
     public Template(String name, Path path) {
         this.name = name;
