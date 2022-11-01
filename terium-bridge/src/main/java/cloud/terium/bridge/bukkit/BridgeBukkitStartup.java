@@ -46,7 +46,7 @@ public class BridgeBukkitStartup extends JavaPlugin {
             teriumBridge.getProvider().getThisService().update();
         };
 
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(task, 0, 2, TimeUnit.SECONDS);
     }
 
     @Override

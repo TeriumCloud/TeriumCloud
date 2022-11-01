@@ -29,6 +29,7 @@ public class CommandManager {
             new ServiceCommand(this);
             new GroupCommand(this);
             new ListCommand(this);
+            new ListTemplates(this);
             new ReloadCommand(this);
             new ListModulesCommand(this);
         }

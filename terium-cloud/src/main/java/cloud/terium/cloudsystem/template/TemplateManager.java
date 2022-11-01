@@ -32,11 +32,20 @@ public class TemplateManager implements ITemplateProvider, ITemplateFactory {
     private final List<ITemplate> templateList;
     private final HashMap<String, ITemplate> templateCache;
 
+    public TemplateManager(boolean setup) {
+        templateList = new ArrayList<>();
+        templateCache = new HashMap<>();
+    }
+
     @SneakyThrows
     public TemplateManager() {
         new File("data//cache//servers//").mkdirs();
         templateList = new ArrayList<>();
         templateCache = new HashMap<>();
+
+        for (File file : new File("templates/").listFiles()) {
+            createTemplate(file.getName().replace("templates/", ""));
+        }
 
         if (new File("templates//Global").mkdirs()) {
             new File("templates//Global//server").mkdirs();
@@ -92,6 +101,14 @@ public class TemplateManager implements ITemplateProvider, ITemplateFactory {
         ITemplate template = new Template(s, new File("templates//" + s).toPath());
         templateList.add(template);
         templateCache.put(s, template);
+    }
+
+    public ITemplate createTemplate(String s, boolean withReturn) {
+        ITemplate template = new Template(s, new File("templates//" + s).toPath());
+        template.getPath().toFile().mkdirs();
+        templateList.add(template);
+        templateCache.put(s, template);
+        return template;
     }
 
     @Override

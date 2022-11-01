@@ -19,7 +19,7 @@ public interface ICloudServiceGroupFactory {
      * @param maximalServices
      */
     default DefaultLobbyGroup createLobbyGroup(String name, String groupTitle, String node, ITemplate template, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        return new DefaultLobbyGroup(name, groupTitle, node, template, version, false, maximumPlayers, memory, minimalServices, maximalServices);
+        return new DefaultLobbyGroup(name, groupTitle, node, template, version, false, true, maximumPlayers, memory, minimalServices, maximalServices);
     }
 
     /**
@@ -35,7 +35,7 @@ public interface ICloudServiceGroupFactory {
      * @param maximalServices
      */
     default DefaultProxyGroup createProxyGroup(String name, String groupTitle, String node, ITemplate template, String version, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        return new DefaultProxyGroup(name, groupTitle, node, template, version, false, port,  maximumPlayers, memory, minimalServices, maximalServices);
+        return new DefaultProxyGroup(name, groupTitle, node, template, version, false, true, port,  maximumPlayers, memory, minimalServices, maximalServices);
     }
 
     /**
@@ -50,7 +50,7 @@ public interface ICloudServiceGroupFactory {
      * @param maximalServices
      */
     default DefaultServerGroup createServerGroup(String name, String groupTitle, String node, ITemplate template, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        return new DefaultServerGroup(name, groupTitle, node, template, version, false, maximumPlayers, memory, minimalServices, maximalServices);
+        return new DefaultServerGroup(name, groupTitle, node, template, version, false, true, maximumPlayers, memory, minimalServices, maximalServices);
     }
 
     /**

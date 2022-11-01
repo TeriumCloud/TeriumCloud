@@ -56,6 +56,12 @@ public interface ICloudServiceGroup {
     boolean isMaintenance();
 
     /**
+     * Get if the service will be deleted on stop
+     * @return boolean This returns if the serivce will be delete on stop as boolean. (true if yes else false)
+     */
+    boolean deleteOnStop();
+
+    /**
      * Get if the service group has a port
      * @return boolean This returns if the service group has a defined port as boolean. (true if yes else false)
      */

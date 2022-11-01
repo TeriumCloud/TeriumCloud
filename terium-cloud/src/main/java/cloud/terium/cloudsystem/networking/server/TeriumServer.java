@@ -89,7 +89,7 @@ public class TeriumServer {
                                             }
 
                                             if (packet instanceof PacketPlayOutServiceStart packetPlayOutServiceStart) {
-                                                new CloudService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(packetPlayOutServiceStart.defaultServiceGroup())).start();
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceStart.serviceName()).start();
                                                 return;
                                             }
 

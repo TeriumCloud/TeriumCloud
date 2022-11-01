@@ -26,6 +26,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private final CloudServiceType cloudServiceType = CloudServiceType.Proxy;
     private String version;
     private boolean maintenance;
+    private boolean deleteonstop;
     private int port;
     private int maximumPlayers;
     private int memory;
@@ -33,13 +34,14 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultProxyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultProxyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, boolean deleteonstop, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
         this.template = template;
         this.version = version;
         this.maintenance = maintenance;
+        this.deleteonstop = deleteonstop;
         this.port = port;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
@@ -59,6 +61,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         json.addProperty("port", port);
         json.addProperty("version", version);
         json.addProperty("maintenance", maintenance);
+        json.addProperty("delete_on_stop", deleteonstop);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
@@ -104,6 +107,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     @Override
     public boolean isMaintenance() {
         return maintenance;
+    }
+
+    @Override
+    public boolean deleteOnStop() {
+        return deleteonstop;
     }
 
     @Override

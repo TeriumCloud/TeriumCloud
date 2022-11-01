@@ -33,7 +33,7 @@ public class ServiceManager implements ICloudServiceProvider, ICloudServiceFacto
                 if (Terium.getTerium().getCloudUtils().isRunning()) {
                     Terium.getTerium().getServiceGroupManager().getAllServiceGroups().forEach(group -> {
                         if (getCloudServicesByGroupName(group.getServiceGroupName()).size() < group.getMaximalServices() && getCloudServicesByGroupName(group.getServiceGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(CloudServiceState.ONLINE) || iCloudService.getServiceState().equals(CloudServiceState.PREPARING)).toList().size() < group.getMinimalServices()) {
-                            new CloudService(group).start();
+                            Terium.getTerium().getServiceManager().createAndStartService(group);
                         }
                     });
                 }
@@ -99,6 +99,10 @@ public class ServiceManager implements ICloudServiceProvider, ICloudServiceFacto
         return minecraftServices;
     }
 
+    public void createAndStartService(ICloudServiceGroup iCloudServiceGroup) {
+        new CloudService(iCloudServiceGroup.getTemplate(), iCloudServiceGroup, getFreeServiceId(iCloudServiceGroup), iCloudServiceGroup.hasPort() ? iCloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000)).start();
+    }
+
     @Override
     public void createService(ICloudServiceGroup iCloudServiceGroup) {
         new CloudService(iCloudServiceGroup.getTemplate(), iCloudServiceGroup, getFreeServiceId(iCloudServiceGroup), iCloudServiceGroup.hasPort() ? iCloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
@@ -107,16 +111,6 @@ public class ServiceManager implements ICloudServiceProvider, ICloudServiceFacto
     @Override
     public void createService(ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate) {
         new CloudService(iTemplate, iCloudServiceGroup, getFreeServiceId(iCloudServiceGroup), iCloudServiceGroup.hasPort() ? iCloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
-    }
-
-    @Override
-    public void createService(ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate, int i, int i1) {
-        new CloudService(iTemplate, iCloudServiceGroup, getFreeServiceId(iCloudServiceGroup), i, i1);
-    }
-
-    @Override
-    public void createService(String s, ITemplate iTemplate, CloudServiceType cloudServiceType, int i, int i1) {
-        new CloudService(s, iTemplate, null, cloudServiceType, i, ThreadLocalRandom.current().nextInt(20000, 50000), 20, i1);
     }
 
     @Override
@@ -130,20 +124,9 @@ public class ServiceManager implements ICloudServiceProvider, ICloudServiceFacto
     }
 
     @Override
-    public void createService(String s, ICloudServiceGroup iCloudServiceGroup, int i, int i1) {
-        new CloudService(s, iCloudServiceGroup.getTemplate(), iCloudServiceGroup, iCloudServiceGroup.getServiceType(), i, iCloudServiceGroup.hasPort() ? iCloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), i1, iCloudServiceGroup.getMemory());
-    }
-
-    @Override
     public void createService(String s, ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate) {
         new CloudService(s, iTemplate, iCloudServiceGroup, iCloudServiceGroup.getServiceType(), getFreeServiceId(iCloudServiceGroup), iCloudServiceGroup.hasPort() ? iCloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), iCloudServiceGroup.getMaximumPlayers(), iCloudServiceGroup.getMemory());
     }
-
-    @Override
-    public void createService(String s, ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate, int i, int i1) {
-        new CloudService(s, iTemplate, iCloudServiceGroup, iCloudServiceGroup.getServiceType(), getFreeServiceId(iCloudServiceGroup), i, i1, iCloudServiceGroup.getMemory());
-    }
-
 
     @Override
     public void startService(ICloudService iCloudService) {

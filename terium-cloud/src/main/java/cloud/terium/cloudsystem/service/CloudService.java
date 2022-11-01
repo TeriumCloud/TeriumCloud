@@ -4,10 +4,7 @@ import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
-import cloud.terium.networking.packets.PacketPlayOutServiceUnlock;
-import cloud.terium.networking.packets.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.console.LogType;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -23,9 +20,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class CloudService implements ICloudService {
 
@@ -175,21 +169,21 @@ public class CloudService implements ICloudService {
         CloudService cloudService = this;
         if (Terium.getTerium().getCloudUtils().isInScreen() && Terium.getTerium().getScreenManager().getCurrentScreen().equals(this))
             toggleScreen();
-        Logger.log("Trying to stop service '" + getServiceName() + "'... [MinecraftService#forceShutdown]", LogType.INFO);
+        Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
             Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
         thread.stop();
         process.destroyForcibly();
-        new Timer().schedule(new TimerTask() {
-            @SneakyThrows
-            @Override
-            public void run() {
-                FileUtils.deleteDirectory(folder);
-                Terium.getTerium().getServiceManager().removeService(cloudService);
-                Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
-            }
-        }, 5000);
+        Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
+        if (serviceGroup.deleteOnStop()) delete();
+    }
+
+    @SneakyThrows
+    public void delete() {
+        FileUtils.deleteDirectory(folder);
+        Terium.getTerium().getServiceManager().removeService(this);
+        Logger.log("Successfully deleted service '" + getServiceName() + "'.", LogType.INFO);
     }
 
     /*@SneakyThrows

@@ -5,22 +5,22 @@ import io.netty.buffer.ByteBuf;
 
 public class PacketPlayOutServiceStart extends Packet {
 
-    private final String defaultServiceGroup;
+    private final String serviceName;
 
     public PacketPlayOutServiceStart(String defaultServiceGroup) {
-        this.defaultServiceGroup = defaultServiceGroup;
+        this.serviceName = defaultServiceGroup;
     }
 
     public PacketPlayOutServiceStart(ByteBuf message) {
-        this.defaultServiceGroup = readString(message);
+        this.serviceName = readString(message);
     }
 
     @Override
     public void write(ByteBuf byteBuf) {
-        writeString(defaultServiceGroup, byteBuf);
+        writeString(serviceName, byteBuf);
     }
 
-    public String defaultServiceGroup() {
-        return defaultServiceGroup;
+    public String serviceName() {
+        return serviceName;
     }
 }

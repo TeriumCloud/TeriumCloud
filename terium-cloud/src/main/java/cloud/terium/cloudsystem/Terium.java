@@ -39,14 +39,14 @@ public class Terium {
     }
 
     public Terium() {
-        // System.setProperty("org.jline.terminal.dumb", "true");
+        System.setProperty("org.jline.terminal.dumb", "true");
 
         terium = this;
         this.cloudUtils = new CloudUtils();
         this.configManager = new ConfigManager();
 
-        this.cloudUtils.checkLicense();
         Logger.log(cloudUtils.getStartMessage());
+        this.cloudUtils.checkLicense();
 
         if (cloudUtils.getSetupState() == null) {
             Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
@@ -55,10 +55,10 @@ public class Terium {
             this.consoleManager = new ConsoleManager(commandManager);
             this.screenManager = new ScreenManager();
             this.serviceManager = new ServiceManager();
-            this.serviceGroupManager = new ServiceGroupManager();
-            this.templateManager = new TemplateManager();
-            this.moduleManager = new ModuleManager();
             this.defaultTeriumNetworking = new DefaultTeriumNetworking(configManager);
+            this.templateManager = new TemplateManager();
+            this.serviceGroupManager = new ServiceGroupManager();
+            this.moduleManager = new ModuleManager();
 
             new TemplateManager();
             Signal.handle(new Signal("INT"), signal -> {
@@ -76,7 +76,7 @@ public class Terium {
         this.moduleManager = null;
         this.serviceManager = null;
         this.serviceGroupManager = new ServiceGroupManager();
-        this.templateManager = null;
+        this.templateManager = new TemplateManager(true);
         this.screenManager = null;
         this.defaultTeriumNetworking = null;
 

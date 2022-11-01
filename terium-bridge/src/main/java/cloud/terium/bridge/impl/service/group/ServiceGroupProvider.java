@@ -1,5 +1,6 @@
 package cloud.terium.bridge.impl.service.group;
 
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
@@ -135,8 +136,10 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(serviceGroup.get("template").getAsString()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
+                        serviceGroup.get("delete_on_stop").getAsBoolean(),
                         serviceGroup.get("port").getAsInt(),
                         serviceGroup.get("maximum_players").getAsInt(),
                         serviceGroup.get("memory").getAsInt(),
@@ -149,8 +152,10 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(serviceGroup.get("template").getAsString()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
+                        serviceGroup.get("delete_on_stop").getAsBoolean(),
                         serviceGroup.get("maximum_players").getAsInt(),
                         serviceGroup.get("memory").getAsInt(),
                         serviceGroup.get("minimal_services").getAsInt(),
@@ -162,8 +167,10 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         serviceGroup.get("node").getAsString(),
+                        TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(serviceGroup.get("template").getAsString()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
+                        serviceGroup.get("delete_on_stop").getAsBoolean(),
                         serviceGroup.get("maximum_players").getAsInt(),
                         serviceGroup.get("memory").getAsInt(),
                         serviceGroup.get("minimal_services").getAsInt(),

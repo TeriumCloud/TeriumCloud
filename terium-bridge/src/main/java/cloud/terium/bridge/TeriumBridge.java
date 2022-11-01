@@ -63,11 +63,11 @@ public class TeriumBridge extends TeriumAPI {
         super();
         instance = this;
         this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
+        this.templateProvider = new TemplateProvider();
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.cloudPlayerProvider = new CloudPlayerProvider();
         this.consoleProvider = new ConsoleProvider();
-        this.templateProvider = new TemplateProvider();
         this.serviceFactory = new ServiceFactory();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.templateFactory = new TemplateFactory();

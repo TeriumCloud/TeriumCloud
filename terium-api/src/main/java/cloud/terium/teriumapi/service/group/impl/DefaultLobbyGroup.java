@@ -6,38 +6,40 @@ import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Setter
 public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     private String name;
     private String groupTitle;
     private String node;
     private ITemplate template;
-    private final CloudServiceType cloudServiceType = CloudServiceType.Lobby;
     private String version;
-    private boolean maintenance;
+    private final CloudServiceType cloudServiceType = CloudServiceType.Lobby;
     private int maximumPlayers;
+    private boolean maintenance;
+    private boolean deleteonstop;
     private int memory;
     private int minimalServices;
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, boolean deleteonstop, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
         this.template = template;
         this.version = version;
         this.maintenance = maintenance;
+        this.deleteonstop = deleteonstop;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
         this.minimalServices = minimalServices;
@@ -52,9 +54,10 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node);
         json.addProperty("template", template.getName());
-        json.addProperty("servicetype", CloudServiceType.Lobby.name());
         json.addProperty("version", version);
+        json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
+        json.addProperty("delete_on_stop", deleteonstop);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
@@ -100,6 +103,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     @Override
     public boolean isMaintenance() {
         return maintenance;
+    }
+
+    @Override
+    public boolean deleteOnStop() {
+        return deleteonstop;
     }
 
     @Override
