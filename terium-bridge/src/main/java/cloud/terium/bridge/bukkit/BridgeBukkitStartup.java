@@ -7,11 +7,8 @@ import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
-import com.destroystokyo.paper.ParticleBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

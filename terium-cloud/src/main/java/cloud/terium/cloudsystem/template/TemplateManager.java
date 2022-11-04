@@ -1,27 +1,23 @@
 package cloud.terium.cloudsystem.template;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.cloudsystem.module.Module;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.module.ModuleType;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
 
 public class TemplateManager implements ITemplateProvider, ITemplateFactory {
 

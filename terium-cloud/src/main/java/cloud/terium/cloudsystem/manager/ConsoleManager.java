@@ -2,8 +2,8 @@ package cloud.terium.cloudsystem.manager;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.command.Command;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.console.LogType;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.jline.reader.EndOfFileException;

@@ -2,10 +2,8 @@ package cloud.terium.bridge.player;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerConnect;
-import cloud.terium.networking.packets.PacketPlayOutCloudPlayerConnectedService;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.util.UUID;

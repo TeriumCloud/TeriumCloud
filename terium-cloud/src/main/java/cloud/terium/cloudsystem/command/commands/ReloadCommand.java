@@ -4,9 +4,9 @@ import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.manager.ConfigManager;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutReloadConfig;
+import cloud.terium.teriumapi.console.LogType;
 
 public class ReloadCommand extends Command {
 

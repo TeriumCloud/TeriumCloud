@@ -1,11 +1,10 @@
 package cloud.terium.cloudsystem.service.group;
 
 import cloud.terium.cloudsystem.Terium;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.CloudServiceType;
-import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;

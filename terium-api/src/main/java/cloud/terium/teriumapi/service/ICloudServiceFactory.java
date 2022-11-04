@@ -7,12 +7,14 @@ public interface ICloudServiceFactory {
 
     /**
      * Create a service with defined service group
+     *
      * @param iCloudServiceGroup
      */
     void createService(ICloudServiceGroup iCloudServiceGroup);
 
     /**
      * Create a service with defined service group and cloud template
+     *
      * @param iCloudServiceGroup
      * @param iTemplate
      */
@@ -20,6 +22,7 @@ public interface ICloudServiceFactory {
 
     /**
      * Create a service with defined service name, cloud template, service type, service id and port
+     *
      * @param serviceName
      * @param iTemplate
      * @param cloudServiceType
@@ -31,6 +34,7 @@ public interface ICloudServiceFactory {
 
     /**
      * Create a service with defined service name and service group
+     *
      * @param serviceName
      * @param iCloudServiceGroup
      */
@@ -38,6 +42,7 @@ public interface ICloudServiceFactory {
 
     /**
      * Create a service with defined service name, service group and template
+     *
      * @param serviceName
      * @param iCloudServiceGroup
      * @param iTemplate
@@ -46,6 +51,7 @@ public interface ICloudServiceFactory {
 
     /**
      * Start the defined cloud service
+     *
      * @param iCloudService
      */
     void startService(ICloudService iCloudService);

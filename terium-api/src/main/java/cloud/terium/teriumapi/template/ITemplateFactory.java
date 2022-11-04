@@ -6,12 +6,14 @@ public interface ITemplateFactory {
 
     /**
      * Create a template with defined name
+     *
      * @param name
      */
     void createTemplate(String name);
 
     /**
      * Create a template with defined name and node
+     *
      * @param name
      * @param node
      */
@@ -19,6 +21,7 @@ public interface ITemplateFactory {
 
     /**
      * Delete a template by name
+     *
      * @param name
      */
     void deleteTemplate(String name);

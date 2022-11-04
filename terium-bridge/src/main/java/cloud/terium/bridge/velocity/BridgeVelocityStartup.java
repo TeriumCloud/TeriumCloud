@@ -16,7 +16,6 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Getter

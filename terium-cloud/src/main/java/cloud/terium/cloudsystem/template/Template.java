@@ -13,7 +13,7 @@ public class Template implements ITemplate {
         this.name = name;
         this.path = path;
     }
-    
+
     @Override
     public String getName() {
         return name;

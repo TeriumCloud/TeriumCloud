@@ -1,6 +1,5 @@
 package cloud.terium.teriumapi.service.impl;
 
-import cloud.terium.networking.packets.PacketPlayOutServiceMemoryUpdatePacket;
 import cloud.terium.networking.packets.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;

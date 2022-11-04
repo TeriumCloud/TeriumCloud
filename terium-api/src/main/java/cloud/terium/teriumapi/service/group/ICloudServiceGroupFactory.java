@@ -9,6 +9,7 @@ public interface ICloudServiceGroupFactory {
 
     /**
      * Use this methode to create a lobby service group
+     *
      * @param name
      * @param groupTitle
      * @param node
@@ -24,6 +25,7 @@ public interface ICloudServiceGroupFactory {
 
     /**
      * Use this methode to create a proxy service group
+     *
      * @param name
      * @param groupTitle
      * @param node
@@ -35,11 +37,12 @@ public interface ICloudServiceGroupFactory {
      * @param maximalServices
      */
     default DefaultProxyGroup createProxyGroup(String name, String groupTitle, String node, ITemplate template, String version, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        return new DefaultProxyGroup(name, groupTitle, node, template, version, false, true, port,  maximumPlayers, memory, minimalServices, maximalServices);
+        return new DefaultProxyGroup(name, groupTitle, node, template, version, false, true, port, maximumPlayers, memory, minimalServices, maximalServices);
     }
 
     /**
      * Use this methode to create a server service group
+     *
      * @param name
      * @param groupTitle
      * @param node
@@ -55,6 +58,7 @@ public interface ICloudServiceGroupFactory {
 
     /**
      * Use this methode to delete a service group
+     *
      * @param iCloudServiceGroup
      */
     void deleteServiceGroup(ICloudServiceGroup iCloudServiceGroup);

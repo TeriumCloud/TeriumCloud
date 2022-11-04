@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -70,7 +69,8 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         executorService.execute(() -> {
             try (final OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(new File("groups/" + cloudServiceType + "/" + name + ".json").toPath()), StandardCharsets.UTF_8)) {
                 gson.toJson(json, writer);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         });
     }
 

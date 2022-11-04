@@ -4,10 +4,10 @@ import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.service.CloudService;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packets.PacketPlayOutServiceLock;
 import cloud.terium.networking.packets.PacketPlayOutServiceUnlock;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.CloudServiceState;
 
 public class ServiceCommand extends Command {

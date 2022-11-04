@@ -7,7 +7,6 @@ import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packets.PacketPlayOutServiceOnlinePlayersUpdatePacket;
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;

@@ -6,6 +6,7 @@ public interface ITemplateProvider {
 
     /**
      * Get template by name
+     *
      * @param name
      * @return ITemplate
      */
@@ -13,6 +14,7 @@ public interface ITemplateProvider {
 
     /**
      * Returns a list of all exist templates
+     *
      * @return List<ITemplate>
      */
     List<ITemplate> getAllTemplates();

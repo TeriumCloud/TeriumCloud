@@ -5,16 +5,11 @@ import cloud.terium.bridge.player.CloudPlayer;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerConnectedService;
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.player.ICloudPlayer;
-import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
-import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.checkerframework.checker.index.qual.SubstringIndexBottom;
 import org.jetbrains.annotations.NotNull;
 
 public class ServerConnectedListener {

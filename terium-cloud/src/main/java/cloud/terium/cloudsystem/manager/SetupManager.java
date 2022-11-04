@@ -2,13 +2,11 @@ package cloud.terium.cloudsystem.manager;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.template.Template;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.cloudsystem.utils.setup.SetupStorage;
 import cloud.terium.cloudsystem.utils.setup.SetupType;
-import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
-import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
+import cloud.terium.teriumapi.console.LogType;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
