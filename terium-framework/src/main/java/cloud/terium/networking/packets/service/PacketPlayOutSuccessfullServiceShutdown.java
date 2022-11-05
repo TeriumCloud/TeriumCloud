@@ -1,4 +1,4 @@
-package cloud.terium.networking.packets;
+package cloud.terium.networking.packets.service;
 
 import cloud.terium.networking.packet.Packet;
 import io.netty.buffer.ByteBuf;

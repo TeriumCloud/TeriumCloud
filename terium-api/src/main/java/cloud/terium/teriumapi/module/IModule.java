@@ -10,6 +10,8 @@ public interface IModule {
 
     String getVersion();
 
+    String getDescription();
+
     File getFile();
 
     ModuleType getModuleType();

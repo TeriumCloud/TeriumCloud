@@ -1,6 +1,7 @@
 package cloud.terium.networking.packet;
 
 import cloud.terium.networking.packets.*;
+import cloud.terium.networking.packets.service.*;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashMap;

@@ -1,16 +1,17 @@
-package cloud.terium.networking.packets;
+package cloud.terium.networking.packets.service;
 
 import cloud.terium.networking.packet.Packet;
 import io.netty.buffer.ByteBuf;
 
-public class PacketPlayOutServiceUnlock extends Packet {
+public class PacketPlayOutServiceShutdown extends Packet {
+
     private final String minecraftService;
 
-    public PacketPlayOutServiceUnlock(String minecraftService) {
+    public PacketPlayOutServiceShutdown(String minecraftService) {
         this.minecraftService = minecraftService;
     }
 
-    public PacketPlayOutServiceUnlock(ByteBuf message) {
+    public PacketPlayOutServiceShutdown(ByteBuf message) {
         this.minecraftService = readString(message);
     }
 

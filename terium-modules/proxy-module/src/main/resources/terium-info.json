@@ -2,5 +2,6 @@
   "name": "terium-proxy",
   "author": "ByRaudy",
   "version": "1.0.0-DEVELOPMENT",
+  "description": "A small terium module for tablist and motd",
   "services": "Proxy"
 }

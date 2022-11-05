@@ -14,6 +14,7 @@ public class Module implements IModule {
     private String name;
     private String author;
     private String version;
+    private String description;
     private File file;
     private ModuleType moduleType;
 
@@ -30,6 +31,11 @@ public class Module implements IModule {
     @Override
     public String getVersion() {
         return version;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     @Override
