@@ -1,0 +1,12 @@
+{
+  "group_name": "Proxy",
+  "group_title": "PROXY",
+  "node": "Node-01",
+  "servicetype": "Proxy",
+  "port": 25565,
+  "maintenance": true,
+  "maximum_players": 10,
+  "memory": 128,
+  "minimal_services": 1,
+  "maximal_services": 1
+}
