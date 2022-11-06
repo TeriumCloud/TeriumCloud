@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.service;
 
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 
 public interface ICloudService {
 
@@ -24,6 +25,13 @@ public interface ICloudService {
      * @return int This returns the port of the service.
      */
     int getPort();
+
+    /**
+     * Get the template of the currrent service
+     *
+     * @return int This returns the port of the service.
+     */
+    ITemplate getTemplate();
 
     /**
      * Get the maximal players who can join on the service

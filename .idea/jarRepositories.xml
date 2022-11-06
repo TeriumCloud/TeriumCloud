@@ -36,5 +36,60 @@
       <option name="name" value="maven" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="artifactory-maven-resolver" />
+      <option name="name" value="artifactory-maven-resolver" />
+      <option name="url" value="https://45.142.114.48:8082/artifactory/release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://45.142.114.48:8082/artifactory/terium-framework/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://45.142.114.48:8082" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="http://45.142.114.48:8082" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="http://45.142.114.48:8082/artifactory/local-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="artifactory-maven-resolver" />
+      <option name="name" value="artifactory-maven-resolver" />
+      <option name="url" value="https://45.142.114.48:8082/artifactory/libs-release-local/libs-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="artifactory-maven-resolver" />
+      <option name="name" value="artifactory-maven-resolver" />
+      <option name="url" value="https://45.142.114.48:8081/artifactory/libs-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="artifactory-maven-resolver" />
+      <option name="name" value="artifactory-maven-resolver" />
+      <option name="url" value="https://terium.cloud/artifactory/libs-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="http://45.142.114.48:8090/#/releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="http://45.142.114.48:8090/#/releases/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://repo.terium.cloud/releases" />
+    </remote-repository>
   </component>
 </project>

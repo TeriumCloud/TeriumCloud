@@ -44,13 +44,13 @@ public class ServiceManager implements ICloudServiceProvider, ICloudServiceFacto
     public void addService(CloudService minecraftService) {
         minecraftServices.add(minecraftService);
         minecraftServiceCache.put(minecraftService.getServiceName(), minecraftService);
-        new DefaultJsonService(minecraftService);
+        new DefaultJsonService(minecraftService, minecraftService.getTemplate());
     }
 
     public void removeService(CloudService minecraftService) {
         minecraftServices.remove(minecraftService);
         minecraftServiceCache.remove(minecraftService.getServiceName(), minecraftService);
-        new DefaultJsonService(minecraftService).delete();
+        new DefaultJsonService(minecraftService, minecraftService.getTemplate()).delete();
     }
 
     public void addService(CloudService minecraftService, boolean bridge) {

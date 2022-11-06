@@ -3,6 +3,7 @@ package cloud.terium.networking.json;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -27,12 +28,13 @@ public class DefaultJsonService implements ICloudService {
     private final ExecutorService pool;
     private JsonObject json;
     private final ICloudService iCloudService;
+    private final ITemplate template;
 
-    public DefaultJsonService(ICloudService iCloudService) {
-        this(iCloudService, false);
+    public DefaultJsonService(ICloudService iCloudService, ITemplate template) {
+        this(iCloudService, template, false);
     }
 
-    public DefaultJsonService(ICloudService iCloudService, boolean bridge) {
+    public DefaultJsonService(ICloudService iCloudService, ITemplate template, boolean bridge) {
         if (!bridge) {
             this.file = new File("data/cache/servers/", iCloudService.getServiceName() + ".json");
         } else {
@@ -41,6 +43,7 @@ public class DefaultJsonService implements ICloudService {
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.iCloudService = iCloudService;
+        this.template = template;
         this.initFile();
     }
 
@@ -49,6 +52,7 @@ public class DefaultJsonService implements ICloudService {
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.iCloudService = null;
+        this.template = null;
         this.initFile();
     }
 
@@ -58,6 +62,7 @@ public class DefaultJsonService implements ICloudService {
             json.addProperty("service_name", iCloudService.getServiceName());
             json.addProperty("serviceid", iCloudService.getServiceId());
             json.addProperty("port", iCloudService.getPort());
+            json.addProperty("template", template.getName());
             json.addProperty("state", iCloudService.getServiceState().name());
             json.addProperty("online_players", 0);
             json.addProperty("service_group", iCloudService.getServiceGroup().getServiceGroupName());
@@ -127,6 +132,11 @@ public class DefaultJsonService implements ICloudService {
     @Override
     public int getPort() {
         return iCloudService.getPort();
+    }
+
+    @Override
+    public ITemplate getTemplate() {
+        return template;
     }
 
     @Override

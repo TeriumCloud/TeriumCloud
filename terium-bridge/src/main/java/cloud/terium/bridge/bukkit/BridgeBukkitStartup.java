@@ -4,7 +4,7 @@ import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.bukkit.listener.PlayerJoinListener;
 import cloud.terium.bridge.bukkit.listener.PlayerQuitListener;
 import cloud.terium.networking.json.DefaultJsonService;
-import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
+import cloud.terium.networking.packets.service.PacketPlayOutSuccessfullServiceShutdown;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import lombok.Getter;

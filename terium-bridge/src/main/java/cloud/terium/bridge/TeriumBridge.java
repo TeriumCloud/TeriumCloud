@@ -12,7 +12,7 @@ import cloud.terium.bridge.impl.template.TemplateProvider;
 import cloud.terium.bridge.networking.TeriumNetworkListener;
 import cloud.terium.bridge.player.CloudPlayerProvider;
 import cloud.terium.networking.json.DefaultJsonService;
-import cloud.terium.networking.packets.PacketPlayOutServiceChangeState;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceChangeState;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -151,7 +151,7 @@ public class TeriumBridge extends TeriumAPI {
             DefaultJsonService jsonService = new DefaultJsonService(file.getName().replace(".json", ""));
 
             if (serviceProvider.getCloudServiceByName(jsonService.getString("service_name")) == null) {
-                serviceProvider.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupProvider.getServiceGroupByName(jsonService.getString("service_group"))));
+                serviceProvider.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupProvider.getServiceGroupByName(jsonService.getString("service_group")), templateProvider.getTemplateByName(jsonService.getString("template"))));
                 serviceProvider.getCloudServiceByName(jsonService.getString("service_name")).setServiceState(CloudServiceState.valueOf(jsonService.getString("state")));
 
                 if (!jsonService.getString("service_group").equals("Proxy"))
@@ -179,7 +179,7 @@ public class TeriumBridge extends TeriumAPI {
             DefaultJsonService jsonService = new DefaultJsonService(file.getName().replace(".json", ""));
 
             if (serviceProvider.getCloudServiceByName(jsonService.getString("service_name")) == null) {
-                serviceProvider.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupProvider.getServiceGroupByName(jsonService.getString("service_group"))));
+                serviceProvider.addService(new CloudService(jsonService.getString("service_name"), jsonService.getInt("serviceid"), jsonService.getInt("port"), serviceGroupProvider.getServiceGroupByName(jsonService.getString("service_group")), templateProvider.getTemplateByName(jsonService.getString("template"))));
             }
         }
 

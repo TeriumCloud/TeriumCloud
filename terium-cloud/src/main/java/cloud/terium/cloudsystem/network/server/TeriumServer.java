@@ -1,4 +1,4 @@
-package cloud.terium.cloudsystem.networking.server;
+package cloud.terium.cloudsystem.network.server;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.Logger;
@@ -7,6 +7,7 @@ import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packet.codec.PacketDecoder;
 import cloud.terium.networking.packet.codec.PacketEncoder;
 import cloud.terium.networking.packets.*;
+import cloud.terium.networking.packets.service.*;
 import cloud.terium.teriumapi.console.LogType;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;

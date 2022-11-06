@@ -2,8 +2,8 @@ package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.packets.PacketPlayOutServiceAdd;
-import cloud.terium.networking.packets.PacketPlayOutServiceRemove;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceAdd;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceRemove;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import cloud.terium.teriumapi.service.CloudServiceType;
@@ -133,7 +133,7 @@ public class CloudService implements ICloudService {
         }
 
         if (!serviceGroup.getServiceType().equals(CloudServiceType.Proxy))
-            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), getServiceGroup().getServiceGroupName(), getServiceId(), getPort()));
+            Terium.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), getServiceGroup().getServiceGroupName(), getTemplate().getName(), getServiceId(), getPort()));
 
         this.thread = new Thread(() -> {
             String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getServiceType() == CloudServiceType.Lobby || serviceGroup.getServiceType() == CloudServiceType.Server ? "server.jar" : "velocity.jar", "nogui"};
@@ -269,6 +269,11 @@ public class CloudService implements ICloudService {
     @Override
     public int getPort() {
         return port;
+    }
+
+    @Override
+    public ITemplate getTemplate() {
+        return template;
     }
 
     @Override

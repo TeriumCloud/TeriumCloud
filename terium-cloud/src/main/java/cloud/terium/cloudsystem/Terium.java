@@ -2,7 +2,7 @@ package cloud.terium.cloudsystem;
 
 import cloud.terium.cloudsystem.manager.*;
 import cloud.terium.cloudsystem.module.ModuleManager;
-import cloud.terium.cloudsystem.networking.DefaultTeriumNetworking;
+import cloud.terium.cloudsystem.network.DefaultTeriumNetworking;
 import cloud.terium.cloudsystem.service.ServiceManager;
 import cloud.terium.cloudsystem.service.group.ServiceGroupManager;
 import cloud.terium.cloudsystem.template.TemplateManager;

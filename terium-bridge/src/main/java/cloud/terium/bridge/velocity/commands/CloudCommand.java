@@ -1,10 +1,10 @@
 package cloud.terium.bridge.velocity.commands;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.networking.packets.PacketPlayOutServiceLock;
-import cloud.terium.networking.packets.PacketPlayOutServiceShutdown;
-import cloud.terium.networking.packets.PacketPlayOutServiceStart;
-import cloud.terium.networking.packets.PacketPlayOutServiceUnlock;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceLock;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceShutdown;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceStart;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceUnlock;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;

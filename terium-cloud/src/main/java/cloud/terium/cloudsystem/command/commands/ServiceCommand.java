@@ -5,8 +5,8 @@ import cloud.terium.cloudsystem.command.Command;
 import cloud.terium.cloudsystem.manager.CommandManager;
 import cloud.terium.cloudsystem.service.CloudService;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.packets.PacketPlayOutServiceLock;
-import cloud.terium.networking.packets.PacketPlayOutServiceUnlock;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceLock;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceUnlock;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.CloudServiceState;
 
@@ -31,6 +31,7 @@ public class ServiceCommand extends Command {
                         Logger.log("    Id: #" + (iCloudService.getServiceId() < 10 ? "0" + iCloudService.getServiceId() : iCloudService.getServiceId()));
                         Logger.log("    State: " + iCloudService.getServiceState());
                         Logger.log("    Group: " + iCloudService.getServiceGroup().getServiceGroupName());
+                        Logger.log("    Template: " + iCloudService.getTemplate().getName() + " / Path: " + iCloudService.getTemplate().getPath());
                         Logger.log("    Type: " + iCloudService.getServiceType());
                         Logger.log("    Locked: " + iCloudService.isLocked());
                         Logger.log("    Used memory: " + iCloudService.getUsedMemory());

@@ -2,7 +2,7 @@ package cloud.terium.bridge.bukkit.listener;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.bukkit.BridgeBukkitStartup;
-import cloud.terium.networking.packets.PacketPlayOutServiceOnlinePlayersUpdatePacket;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceOnlinePlayersUpdatePacket;
 import cloud.terium.teriumapi.TeriumAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;

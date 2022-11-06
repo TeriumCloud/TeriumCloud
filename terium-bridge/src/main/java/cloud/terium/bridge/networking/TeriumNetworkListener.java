@@ -6,6 +6,7 @@ import cloud.terium.bridge.player.CloudPlayer;
 import cloud.terium.bridge.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
+import cloud.terium.networking.packets.service.*;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.impl.CloudService;
@@ -81,21 +82,9 @@ public final class TeriumNetworkListener {
                     ((CloudPlayer)TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(packetPlayOutCloudPlayerConnectedService.uniqueId())).setConnectedService(TeriumBridge.getInstance().getProvider().getServiceProvider().getCloudServiceByName(packetPlayOutCloudPlayerConnectedService.minecraftService()));
                 }
 
-                /*if (packet instanceof PacketPlayOutServiceForceShutdown packetPlayOutServiceShutdown) {
-                    if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
-                        BridgeVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> TeriumBridge.getInstance().getCloudPlayerManager().getCloudPlayer(player.getUsername(), player.getUniqueId()).getRank().equals(CloudRank.Admin)).forEach(player -> player.sendMessage(MiniMessage.miniMessage().deserialize(TeriumBridge.getInstance().getPrefix() + "The service <dark_gray>'<#37b4b4>" + packetPlayOutServiceShutdown.serviceName() + "<dark_gray>' <white>is shutting down...")));
-                    }
-
-                    if (TeriumBridge.getInstance().getThisName().equals(packetPlayOutServiceShutdown.serviceName())) {
-                        if (TeriumBridge.getInstance().getThisService().getServiceType().equals(CloudServiceType.Proxy))
-                            BridgeVelocityStartup.getInstance().getProxyServer().shutdown();
-                        else BridgeBukkitStartup.getInstance().getServer().shutdown();
-                    }
-                }*/
-
                 if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceType().equals(CloudServiceType.Proxy)) {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceProvider().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getProvider().getServiceGroupProvider().getServiceGroupByName(packetAdd.serviceGroup()), false));
+                        TeriumBridge.getInstance().getServiceProvider().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumBridge.getInstance().getProvider().getServiceGroupProvider().getServiceGroupByName(packetAdd.serviceGroup()), TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(packetAdd.template()), false));
                         if (BridgeVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
                             return;
                         }
@@ -118,7 +107,7 @@ public final class TeriumNetworkListener {
                     }
                 } else {
                     if (packet instanceof PacketPlayOutServiceAdd packetAdd) {
-                        TeriumBridge.getInstance().getServiceProvider().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(packetAdd.serviceGroup()), false));
+                        TeriumBridge.getInstance().getServiceProvider().addService(new CloudService(packetAdd.serviceName(), packetAdd.serviceId(), packetAdd.port(), TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(packetAdd.serviceGroup()), TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(packetAdd.template()), false));
                     }
 
                     if (packet instanceof PacketPlayOutServiceRemove packetRemove) {

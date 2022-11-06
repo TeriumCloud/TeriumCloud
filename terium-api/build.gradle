@@ -23,7 +23,7 @@ shadowJar {
 }
 
 
-def targetJavaVersion = 17
+def targetJavaVersion = 16
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

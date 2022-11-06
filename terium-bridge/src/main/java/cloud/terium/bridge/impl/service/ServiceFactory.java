@@ -1,7 +1,7 @@
 package cloud.terium.bridge.impl.service;
 
-import cloud.terium.networking.packets.PacketPlayOutCreateService;
-import cloud.terium.networking.packets.PacketPlayOutServiceStart;
+import cloud.terium.networking.packets.service.PacketPlayOutCreateService;
+import cloud.terium.networking.packets.service.PacketPlayOutServiceStart;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceType;
 import cloud.terium.teriumapi.service.ICloudService;

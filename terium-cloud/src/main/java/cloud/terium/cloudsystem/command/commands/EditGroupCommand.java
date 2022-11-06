@@ -29,6 +29,14 @@ public class EditGroupCommand extends Command {
             }
             case 3 -> {
                 if (Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
+                    if(args[1].equalsIgnoreCase("template")) {
+                        if(Terium.getTerium().getTemplateManager().getTemplateByName(args[2]) != null) {
+                            Terium.getTerium().getServiceGroupManager().updateServiceGroup(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]), args[1], args[2]);
+                        } else {
+                            Logger.log("Terium could't find a template with name '" + args[2] + "'.", LogType.ERROR);
+                        }
+                    }
+
                     if (args[1].equalsIgnoreCase("maximum_players") || args[1].equalsIgnoreCase("memory") || args[1].equalsIgnoreCase("minimal_services") || args[1].equalsIgnoreCase("maximal_services") || args[1].equalsIgnoreCase("port")) {
                         Terium.getTerium().getServiceGroupManager().updateServiceGroup(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]), args[1], Integer.parseInt(args[2]));
                         Logger.log("Successfully updated service group '" + args[0] + "'.", LogType.INFO);

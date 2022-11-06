@@ -5,7 +5,7 @@ import cloud.terium.bridge.velocity.commands.CloudCommand;
 import cloud.terium.bridge.velocity.listener.LoginListener;
 import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
 import cloud.terium.networking.json.DefaultJsonService;
-import cloud.terium.networking.packets.PacketPlayOutSuccessfullServiceShutdown;
+import cloud.terium.networking.packets.service.PacketPlayOutSuccessfullServiceShutdown;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.CloudServiceState;
 import com.google.inject.Inject;
