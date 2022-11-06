@@ -66,8 +66,10 @@ public class ServiceCommand extends Command {
                     case "screen" -> {
                         if (Terium.getTerium().getCloudUtils().isInScreen() && !Terium.getTerium().getScreenManager().getCurrentScreen().equals(Terium.getTerium().getServiceManager().getCloudServiceByName(args[0])))
                             return;
-
                         iCloudService.toggleScreen();
+                    }
+                    case "restart" -> {
+                        iCloudService.restart();
                     }
                 }
             } else {
@@ -91,13 +93,13 @@ public class ServiceCommand extends Command {
                         Logger.log("No service-state with name '" + args[0] + "' available.", LogType.ERROR);
                         Logger.log("Available service-states: ONLINE or INVISIBLE", LogType.ERROR);
                     }
+                } else {
+                    Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
                 }
-        } else {
-            Logger.log("Terium could't find a service with name '" + args[0] + "'.", LogType.ERROR);
+
+            return;
         }
 
-        if (args.length < 2) {
-            Logger.log("Syntax: service <service> info|shutdown|state<state>|screen|lock|unlock", LogType.INFO);
-        }
+        Logger.log("Syntax: service <service> info|restart|shutdown|state<state>|screen|lock|unlock", LogType.INFO);
     }
 }

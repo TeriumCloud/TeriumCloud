@@ -28,20 +28,18 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private final CloudServiceType cloudServiceType = CloudServiceType.Lobby;
     private int maximumPlayers;
     private boolean maintenance;
-    private boolean deleteonstop;
     private int memory;
     private int minimalServices;
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, boolean deleteonstop, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
         this.template = template;
         this.version = version;
         this.maintenance = maintenance;
-        this.deleteonstop = deleteonstop;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
         this.minimalServices = minimalServices;
@@ -59,7 +57,6 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
-        json.addProperty("delete_on_stop", deleteonstop);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
@@ -106,11 +103,6 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     @Override
     public boolean isMaintenance() {
         return maintenance;
-    }
-
-    @Override
-    public boolean deleteOnStop() {
-        return deleteonstop;
     }
 
     @Override

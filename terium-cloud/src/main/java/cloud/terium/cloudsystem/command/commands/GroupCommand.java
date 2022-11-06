@@ -43,6 +43,7 @@ public class GroupCommand extends Command {
                     case "start" ->
                             Logger.log("Syntax: group <service-group> info|shutdown|start<amout>", LogType.INFO);
                 }
+                return;
             } else {
                 Logger.log("Terium could't find a service-group with name '" + args[0] + "'.", LogType.ERROR);
             }

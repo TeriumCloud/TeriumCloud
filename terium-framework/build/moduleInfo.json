@@ -1,0 +1,240 @@
+{
+  "type" : "gradle",
+  "id" : "cloud.terium:terium-framework:1.0.0",
+  "repository" : "",
+  "artifacts" : [ ],
+  "excludedArtifacts" : [ ],
+  "dependencies" : [ {
+    "type" : "jar",
+    "sha1" : "13a394eed5c4f9efb2a6d956e2086f1d81e857d9",
+    "sha256" : "d3584bc2db03f059f984fb0a9c119aac1fa0da578a448e69fc3f68b36584c749",
+    "md5" : "a1651eaa9c999c61131d32feab16fcde",
+    "id" : "org.projectlombok:lombok:1.18.24",
+    "scopes" : [ "compileClasspath", "annotationProcessor" ],
+    "requestedBy" : [ [ "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "815893df5f31da2ece4040fe0a12fd44b577afaf",
+    "sha256" : "f877d304660ac2a142f3865badfc971dec7ed73c747c7f8d5d2f5139ca736513",
+    "md5" : "467c2a1f64319c99b5faf03fc78572af",
+    "id" : "commons-io:commons-io:2.6",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "1c53cffaa14d61de523b167377843e35807292a7",
+    "sha256" : "e7bf38235cc8ce3da9027c22ca271ad198569c7edca004635a17026d9cae12d3",
+    "md5" : "c7c300a179bc070cf4c0161935ffdb52",
+    "id" : "io.netty:netty-all:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "6c014412b599489b1db27c6bc08d8a46da94e397",
+    "sha256" : "53b3c99c025f7344960d8a410df5792caba4444dd82c18606a572f7361127f98",
+    "md5" : "d8c586a7873d5b734ba9665e66fe8c3c",
+    "id" : "io.netty:netty-buffer:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "18f5b02af7ca611978bc28f2cb58cbb3b9b0f0ef",
+    "sha256" : "a80dcb79077d217a30d8c9e43c1da577b642f1e6fb1aa80bc22b3eb872b565de",
+    "md5" : "671a3bf162c2615635dd0ab683cf2699",
+    "id" : "io.netty:netty-codec:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "6c19c46f9529791964f636c93cfaca0556f0d5d0",
+    "sha256" : "ead60c9d9d0d75477009f240c2423d40430e527e5d4eb9e521993f4c682b8c1a",
+    "md5" : "8a641a98ea30771e7f322d9e5c1ed4ec",
+    "id" : "io.netty:netty-codec-dns:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "6b36a21ae4b97c4ee90f450b89f358fd36461e73",
+    "sha256" : "c021f4f82f7eb549116dd7c600c8783ed01227346dad0ff8971a210626c00f6d",
+    "md5" : "41e6532d92b0d4a3f3e96b38cf823299",
+    "id" : "io.netty:netty-codec-haproxy:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "882c70bc0a30a98bf3ce477f043e967ac026044c",
+    "sha256" : "16e785040f8d0c39e9ae5194b6527c89f5e15116bba4ad7f4fc776cdb1b92918",
+    "md5" : "79b7fcae9c7be084a04c4665fe68bb56",
+    "id" : "io.netty:netty-codec-http:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "0eeffab0cd5efb699d5e4ab9b694d32fef6694b3",
+    "sha256" : "9e767a904b0aab9c44aaac947abf0911055f341459520b2503c7014a4635c7f8",
+    "md5" : "de5ded1260e7895117e5a0ccb4c3f3f6",
+    "id" : "io.netty:netty-codec-http2:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "7f61890e918d298ee12ec36138e4fb90f1fbdc92",
+    "sha256" : "7afdacc46df387aac4fb90496656c2ce998583e0a24bb235f26d72bea3e13c47",
+    "md5" : "10aa187b00c4456decbd3ae276af29dd",
+    "id" : "io.netty:netty-codec-memcache:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "57df0490b5c4edb5901a4df52952e6c842cbba5c",
+    "sha256" : "279d375ec9b51dfd5f9eda03e96ebf84bbe50bec70eaf48367a2acfd659bdba1",
+    "md5" : "d882363be11e48623c4973761b1dd83c",
+    "id" : "io.netty:netty-codec-mqtt:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "4c675084df36fa178ee8830b026325e5629b020c",
+    "sha256" : "a67a4f98882b32fd5a266f8ba2ad0d628f0d6b9ddfe13dc8ce631f62897a653a",
+    "md5" : "53493cccfc3e8f3632320be440a50cff",
+    "id" : "io.netty:netty-codec-redis:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "e441ca6bf2e55f7bacac72053f4ecc3e5f24a8e2",
+    "sha256" : "0666bd0845d5c42809b052c875acf1039dc7498f8f1991d0cb00c0aa53f1b92b",
+    "md5" : "1c8484517470e1f2158b081776c17e90",
+    "id" : "io.netty:netty-codec-smtp:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "794a5937cdb1871c4ae350610752dec2929dc1d6",
+    "sha256" : "618fde253dda73a039b9b7ae813c34570c4ec7cd95142c2a44602a988b789f00",
+    "md5" : "16c69f406ccbaa674007adf9149db83c",
+    "id" : "io.netty:netty-codec-socks:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "01b1966d0bdad926a5afe1ea802f64b31faadcfc",
+    "sha256" : "39b445e79948aa979fd57215574ff5c48ed14539ca5dae3833146bef45e5673e",
+    "md5" : "c92e0dd025d57e9a05fff9c573716300",
+    "id" : "io.netty:netty-codec-stomp:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "d197ae5045c5e96affe8efe1e7f654540d0b6ceb",
+    "sha256" : "b854ed61f194f4ff0ec7aca0850054e8220ecb4fdb25024b159535ddd4c08930",
+    "md5" : "3012ba7e7b212b608444682b113e31de",
+    "id" : "io.netty:netty-codec-xml:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "2814bd465731355323aba0fdd22163bfce638a75",
+    "sha256" : "1a0da37e96dbc41bbe56fc11e621a1718ef2b31f6bcc3f489ba2d22c235e6a3c",
+    "md5" : "fb43be43a2697a4d0435644ac36266c7",
+    "id" : "io.netty:netty-common:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "2dc22423c8ed19906615fb936a5fcb7db14a4e6c",
+    "sha256" : "b61f5630af6b3cd4e18885c5fde2f8643a98fe03e529e05f88bfe80ae3cbd71e",
+    "md5" : "d1af07cda0c9326442dc270b22173035",
+    "id" : "io.netty:netty-handler:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "731937caec938b77b39df932a8da8aaca8d5ec05",
+    "sha256" : "5b017dd9600af65ea1746a3b52dabd81ee4bf3df9b50909db4fb49fcb3592970",
+    "md5" : "ded8c3edd05eacfb431337159cadbbf1",
+    "id" : "io.netty:netty-transport-native-unix-common:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "054aace8683de7893cf28d4aab72cd60f49b5700",
+    "sha256" : "99a6ee5ff3eb38caa5c5b215826606856b56dc040d888f69116d9c6db88709ae",
+    "md5" : "b35622afce4cf79321b58e189901a1bd",
+    "id" : "io.netty:netty-handler-proxy:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "55ecb1ff4464b56564a90824a741c3911264aaa4",
+    "sha256" : "c6c111a337bb6b3a889ceab321e9473da49a4e261dcf422fca22284064e38130",
+    "md5" : "45901d5c1835d858ae7dd7d873b6418f",
+    "id" : "io.netty:netty-resolver:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "8eb9be9b6a66a03f5f4df67fe559cb676493d167",
+    "sha256" : "3f61249861015b0cd0366783b2f5badce135f34aa3b65bf2dfb058053f31035d",
+    "md5" : "717fddcc8334f6f9ef65adeb9a49bcca",
+    "id" : "io.netty:netty-resolver-dns:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "6cc2b49749b4fbcc39c687027e04e65e857552a9",
+    "sha256" : "71cf99b6c3685b64af9b1de161b23f107d7ce8077a95921f7dc70ca25838f034",
+    "md5" : "dca471ef0f0131c5b79f9bb9f1dbce95",
+    "id" : "io.netty:netty-transport:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "10babd0f45c1e89cfe6aabcac6867097176b6b0e",
+    "sha256" : "28876fe7c6ec11f3002779fb0652f20d58aa7ecff8bc066b5b94d16aa0701f60",
+    "md5" : "c892ee61526ed9486574c1e78affef34",
+    "id" : "io.netty:netty-transport-rxtx:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "370e302958c64b2718faf02102796de27c71bed5",
+    "sha256" : "f7b9e83bc122d83b0bffccd9561a0474b2687159aa5a05c7aeb3e0ff58839f94",
+    "md5" : "69ab53f6b5511c54fcef16e46e361a5e",
+    "id" : "io.netty:netty-transport-sctp:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "d5d18bfd3647aaabf1da3eedaafd607ad4ad4b1b",
+    "sha256" : "aa9eec9bb3cc721c8dbc01d8bdc54ac8ec4be8248e14cbeac650bfc88e810c1f",
+    "md5" : "d0e752af2454f2c51f70503985d31ed2",
+    "id" : "io.netty:netty-transport-udt:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "e7d4b2a35f76ab061acc999e60ed87e8386f2fa5",
+    "sha256" : "2d1002f07c439fc370a2b19d2a0fa2d1e230b5dfd872453fe6a471e8d398d47e",
+    "md5" : "c80a7136d3787c9c1267d98ee11c0a28",
+    "id" : "io.netty:netty-transport-classes-epoll:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "1212919ce5567a4cb0fd97bf26b59e4a0105a1c3",
+    "sha256" : "b10005fbf71e84cded7fce88eebebaab723195272081f231e2f03d150a9af4e7",
+    "md5" : "88b34337a68ecd7237dddd828ac2e4ef",
+    "id" : "io.netty:netty-transport-classes-kqueue:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  }, {
+    "type" : "jar",
+    "sha1" : "221f03ba6c537e2c4ee9ec141701671571015b41",
+    "sha256" : "6a77cf3714dceb0bb4babf5fd3939f7aa38d730b20e171f955798a8d011446ab",
+    "md5" : "e823a93e8324182b7785ed8d7ac28431",
+    "id" : "io.netty:netty-resolver-dns-classes-macos:4.1.79.Final",
+    "scopes" : [ "compileClasspath" ],
+    "requestedBy" : [ [ "io.netty:netty-all:4.1.79.Final", "cloud.terium:terium-framework:1.0.0" ] ]
+  } ]
+}
