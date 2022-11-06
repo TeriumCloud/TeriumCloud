@@ -1,5 +1,0 @@
-name: TeriumBridge
-version: '1.0-SNAPSHOT'
-main: cloud.terium.bridge.bukkit.BridgeBukkitStartup
-author: ByRaudy
-description: Bridge plugin for Terium.
