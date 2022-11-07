@@ -26,7 +26,7 @@ public class PacketRegistry {
         registerPacket(PacketPlayOutGroupsReload.class, 4, PacketPlayOutGroupsReload::new);
         registerPacket(PacketPlayOutGroupReload.class, 5, PacketPlayOutGroupReload::new);
 
-        // Template
+        // Templat  e
         registerPacket(PacketPlayOutTemplateCreate.class, 6, PacketPlayOutTemplateCreate::new);
         registerPacket(PacketPlayOutTemplateDelete.class, 7, PacketPlayOutTemplateDelete::new);
 
@@ -48,9 +48,10 @@ public class PacketRegistry {
         registerPacket(PacketPlayOutServiceLock.class, 20, PacketPlayOutServiceLock::new);
         registerPacket(PacketPlayOutServiceUnlock.class, 21, PacketPlayOutServiceUnlock::new);
         registerPacket(PacketPlayOutUpdateService.class, 22, PacketPlayOutUpdateService::new);
+        registerPacket(PacketPlayOutServiceRestart.class, 23, PacketPlayOutServiceRestart::new);
 
         // Util packets
-        registerPacket(PacketPlayOutReloadConfig.class, 23, PacketPlayOutReloadConfig::new);
+        registerPacket(PacketPlayOutReloadConfig.class, 24, PacketPlayOutReloadConfig::new);
     }
 
     private <T extends Packet> void registerPacket(Class<T> packetClass, int packetId, Function<ByteBuf, Packet> function) {
