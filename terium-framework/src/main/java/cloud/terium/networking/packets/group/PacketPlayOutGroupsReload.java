@@ -1,9 +1,9 @@
-package cloud.terium.networking.packets;
+package cloud.terium.networking.packets.group;
 
 import cloud.terium.networking.packet.Packet;
 import io.netty.buffer.ByteBuf;
 
-public class PacketPlayOutGroupsReload  extends Packet {
+public class PacketPlayOutGroupsReload extends Packet {
 
     public PacketPlayOutGroupsReload() {
     }

@@ -6,7 +6,14 @@ import cloud.terium.networking.TeriumFramework;
 import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packet.codec.PacketDecoder;
 import cloud.terium.networking.packet.codec.PacketEncoder;
-import cloud.terium.networking.packets.*;
+import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
+import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
+import cloud.terium.networking.packets.PacketPlayOutSendConsole;
+import cloud.terium.networking.packets.PacketPlayOutUpdateService;
+import cloud.terium.networking.packets.group.PacketPlayOutCreateLobbyGroup;
+import cloud.terium.networking.packets.group.PacketPlayOutCreateProxyGroup;
+import cloud.terium.networking.packets.group.PacketPlayOutCreateServerGroup;
+import cloud.terium.networking.packets.group.PacketPlayOutGroupDelete;
 import cloud.terium.networking.packets.service.*;
 import cloud.terium.teriumapi.console.LogType;
 import io.netty.bootstrap.ServerBootstrap;
@@ -60,6 +67,28 @@ public class TeriumServer {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
                                             }
 
+                                            if(packet instanceof PacketPlayOutCreateProxyGroup packetPlayOutCreateProxyGroup) {
+                                                Terium.getTerium().getServiceGroupManager().createProxyGroup(packetPlayOutCreateProxyGroup.getName(), packetPlayOutCreateProxyGroup.getGroupTitle(), packetPlayOutCreateProxyGroup.getNode(),
+                                                        Terium.getTerium().getTemplateManager().getTemplateByName(packetPlayOutCreateProxyGroup.getTemplate()), packetPlayOutCreateProxyGroup.getVersion(), packetPlayOutCreateProxyGroup.getPort(),
+                                                        packetPlayOutCreateProxyGroup.getMaximumPlayers(), packetPlayOutCreateProxyGroup.getMemory(), packetPlayOutCreateProxyGroup.getMinimalServices(), packetPlayOutCreateProxyGroup.getMaximalServices());
+                                            }
+
+                                            if(packet instanceof PacketPlayOutCreateLobbyGroup packetPlayOutCreateProxyGroup) {
+                                                Terium.getTerium().getServiceGroupManager().createLobbyGroup(packetPlayOutCreateProxyGroup.getName(), packetPlayOutCreateProxyGroup.getGroupTitle(), packetPlayOutCreateProxyGroup.getNode(),
+                                                        Terium.getTerium().getTemplateManager().getTemplateByName(packetPlayOutCreateProxyGroup.getTemplate()), packetPlayOutCreateProxyGroup.getVersion(),
+                                                        packetPlayOutCreateProxyGroup.getMaximumPlayers(), packetPlayOutCreateProxyGroup.getMemory(), packetPlayOutCreateProxyGroup.getMinimalServices(), packetPlayOutCreateProxyGroup.getMaximalServices());
+                                            }
+
+                                            if(packet instanceof PacketPlayOutCreateServerGroup packetPlayOutCreateProxyGroup) {
+                                                Terium.getTerium().getServiceGroupManager().createServerGroup(packetPlayOutCreateProxyGroup.getName(), packetPlayOutCreateProxyGroup.getGroupTitle(), packetPlayOutCreateProxyGroup.getNode(),
+                                                        Terium.getTerium().getTemplateManager().getTemplateByName(packetPlayOutCreateProxyGroup.getTemplate()), packetPlayOutCreateProxyGroup.getVersion(),
+                                                        packetPlayOutCreateProxyGroup.getMaximumPlayers(), packetPlayOutCreateProxyGroup.getMemory(), packetPlayOutCreateProxyGroup.getMinimalServices(), packetPlayOutCreateProxyGroup.getMaximalServices());
+                                            }
+
+                                            if (packet instanceof PacketPlayOutGroupDelete packetPlayOutGroupDelete) {
+                                                Terium.getTerium().getServiceGroupManager().deleteServiceGroup(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(packetPlayOutGroupDelete.serviceGroup()));
+                                            }
+
                                             /*
                                              * TODO: RECODE SERVICE STOPPING
                                              */
@@ -95,6 +124,11 @@ public class TeriumServer {
 
                                             if (packet instanceof PacketPlayOutServiceShutdown packetPlayOutServiceShutdown) {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceShutdown.minecraftService()).shutdown();
+                                                return;
+                                            }
+
+                                            if (packet instanceof PacketPlayOutServiceRestart packetPlayOutServiceShutdown) {
+                                                Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceShutdown.serviceName()).restart();
                                                 return;
                                             }
 

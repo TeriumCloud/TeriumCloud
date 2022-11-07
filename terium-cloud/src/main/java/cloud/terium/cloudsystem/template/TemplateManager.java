@@ -88,8 +88,7 @@ public class TemplateManager implements ITemplateProvider, ITemplateFactory {
 
     @SneakyThrows
     private void downloadFile(String url, String fileName, String path) {
-        InputStream cloudbridge = new URL(url).openStream();
-        Files.copy(cloudbridge, Paths.get(path + "//" + fileName), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(new URL(url).openStream(), Paths.get(path + "//" + fileName), StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Override

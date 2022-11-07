@@ -1,17 +1,17 @@
-package cloud.terium.networking.packets;
+package cloud.terium.networking.packets.group;
 
 import cloud.terium.networking.packet.Packet;
 import io.netty.buffer.ByteBuf;
 
-public class PacketPlayOutGroupReload extends Packet {
+public class PacketPlayOutGroupDelete extends Packet {
 
     private final String serviceGroup;
 
-    public PacketPlayOutGroupReload(String serviceName) {
+    public PacketPlayOutGroupDelete(String serviceName) {
         this.serviceGroup = serviceName;
     }
 
-    public PacketPlayOutGroupReload(ByteBuf byteBuf) {
+    public PacketPlayOutGroupDelete(ByteBuf byteBuf) {
         this.serviceGroup = readString(byteBuf);
     }
 

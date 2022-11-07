@@ -55,7 +55,7 @@ public class GroupCommand extends Command {
                 if (Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]) != null) {
                     Logger.log("Trying to start " + args[2] + " new services of group '" + args[0] + "'", LogType.INFO);
                     for (int i = 0; i < Integer.parseInt(args[2]); i++) {
-                        new CloudService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0])).start();
+                        Terium.getTerium().getServiceManager().createAndStartService(Terium.getTerium().getServiceGroupManager().getServiceGroupByName(args[0]));
                     }
                     return;
                 } else {

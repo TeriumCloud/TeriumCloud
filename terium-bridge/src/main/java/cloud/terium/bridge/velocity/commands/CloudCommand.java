@@ -1,10 +1,7 @@
 package cloud.terium.bridge.velocity.commands;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.networking.packets.service.PacketPlayOutServiceLock;
-import cloud.terium.networking.packets.service.PacketPlayOutServiceShutdown;
-import cloud.terium.networking.packets.service.PacketPlayOutServiceStart;
-import cloud.terium.networking.packets.service.PacketPlayOutServiceUnlock;
+import cloud.terium.networking.packets.service.*;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -38,6 +35,8 @@ public class CloudCommand {
                                         .executes(context -> serviceInfo(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("shutdown")
                                         .executes(context -> serviceShutdown(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
+                                .then(LiteralArgumentBuilder.<CommandSource>literal("restart")
+                                        .executes(context -> restartService(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("lock")
                                         .executes(context -> lockService(context, TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)))))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("unlock")
@@ -96,6 +95,12 @@ public class CloudCommand {
     private int serviceShutdown(CommandContext<CommandSource> context, ICloudService iCloudService) {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Successfully stopped " + iCloudService.getServiceName()));
         TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceShutdown(iCloudService.getServiceName()));
+        return 1;
+    }
+
+    private int restartService(CommandContext<CommandSource> context, ICloudService iCloudService) {
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Successfully stopped " + iCloudService.getServiceName()));
+        TeriumBridge.getInstance().getTeriumNetworkListener().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRestart(iCloudService.getServiceName()));
         return 1;
     }
 
