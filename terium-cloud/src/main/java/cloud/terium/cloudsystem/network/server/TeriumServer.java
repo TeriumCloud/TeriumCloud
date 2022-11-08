@@ -67,6 +67,8 @@ public class TeriumServer {
                                                 Terium.getTerium().getServiceManager().getCloudServiceByName(packetPlayOutServiceOnlinePlayersUpdatePacket.minecraftService()).setOnlinePlayers(packetPlayOutServiceOnlinePlayersUpdatePacket.players());
                                             }
 
+                                            // TODO: implement createService packets
+
                                             if(packet instanceof PacketPlayOutCreateProxyGroup packetPlayOutCreateProxyGroup) {
                                                 Terium.getTerium().getServiceGroupManager().createProxyGroup(packetPlayOutCreateProxyGroup.getName(), packetPlayOutCreateProxyGroup.getGroupTitle(), packetPlayOutCreateProxyGroup.getNode(),
                                                         Terium.getTerium().getTemplateManager().getTemplateByName(packetPlayOutCreateProxyGroup.getTemplate()), packetPlayOutCreateProxyGroup.getVersion(), packetPlayOutCreateProxyGroup.getPort(),

@@ -16,7 +16,7 @@ public class PlayerJoinListener implements Listener {
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceOnlinePlayersUpdatePacket(TeriumBridge.getInstance().getThisName(), BridgeBukkitStartup.getInstance().getServer().getOnlinePlayers().size()));
 
         if(TeriumAPI.getTeriumAPI().getProvider().getThisService().isLocked()) {
-            event.getPlayer().kick(Component.text("§cThis service is locked!"));
+            event.getPlayer().kickPlayer("§cThis service is locked!");
         }
     }
 }
