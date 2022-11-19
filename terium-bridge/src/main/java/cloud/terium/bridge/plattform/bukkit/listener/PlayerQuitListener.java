@@ -1,7 +1,7 @@
-package cloud.terium.bridge.bukkit.listener;
+package cloud.terium.bridge.plattform.bukkit.listener;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.bridge.bukkit.BridgeBukkitStartup;
+import cloud.terium.bridge.plattform.bukkit.BridgeBukkitStartup;
 import cloud.terium.networking.packets.service.PacketPlayOutServiceOnlinePlayersUpdatePacket;
 import cloud.terium.teriumapi.TeriumAPI;
 import org.bukkit.entity.Player;

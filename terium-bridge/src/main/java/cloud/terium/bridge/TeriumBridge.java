@@ -57,12 +57,9 @@ public class TeriumBridge extends TeriumAPI {
     private ConfigManager configManager;
     private String thisName;
     private final List<ICloudPlayer> playerList;
-    private final String prefix;
-
     public TeriumBridge() {
         super();
         instance = this;
-        this.prefix = "<gradient:#245dec:#00d4ff>Terium</gradient> <dark_gray>⇨ <white>";
         this.templateProvider = new TemplateProvider();
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupProvider = new ServiceGroupProvider();

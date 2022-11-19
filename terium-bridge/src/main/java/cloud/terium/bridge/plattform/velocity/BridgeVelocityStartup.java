@@ -1,9 +1,9 @@
-package cloud.terium.bridge.velocity;
+package cloud.terium.bridge.plattform.velocity;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.bridge.velocity.commands.CloudCommand;
-import cloud.terium.bridge.velocity.listener.LoginListener;
-import cloud.terium.bridge.velocity.listener.ServerConnectedListener;
+import cloud.terium.bridge.plattform.velocity.commands.CloudCommand;
+import cloud.terium.bridge.plattform.velocity.listener.LoginListener;
+import cloud.terium.bridge.plattform.velocity.listener.ServerConnectedListener;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.service.PacketPlayOutSuccessfullServiceShutdown;
 import cloud.terium.teriumapi.TeriumAPI;

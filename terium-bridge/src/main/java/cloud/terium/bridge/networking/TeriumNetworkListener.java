@@ -3,7 +3,7 @@ package cloud.terium.bridge.networking;
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.impl.networking.DefaultTeriumNetworking;
 import cloud.terium.bridge.player.CloudPlayer;
-import cloud.terium.bridge.velocity.BridgeVelocityStartup;
+import cloud.terium.bridge.plattform.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packet.Packet;
 import cloud.terium.networking.packets.*;
 import cloud.terium.networking.packets.service.*;

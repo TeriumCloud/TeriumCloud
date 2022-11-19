@@ -1,4 +1,4 @@
-package cloud.terium.bridge.velocity.commands;
+package cloud.terium.bridge.plattform.velocity.commands;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.networking.packets.service.*;

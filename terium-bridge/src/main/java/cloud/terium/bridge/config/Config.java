@@ -1,4 +1,4 @@
-package cloud.terium.bridge.impl.config;
+package cloud.terium.bridge.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,15 +14,15 @@ import java.nio.file.Files;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ConfigManager {
+public class Config {
 
     private final File file;
     private final Gson gson;
     private final ExecutorService pool;
     private JsonObject json;
 
-    public ConfigManager() {
-        this.file = new File("../../config.json");
+    public Config() {
+        this.file = new File("bridge-config.json");
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.initFile();
@@ -32,6 +32,7 @@ public class ConfigManager {
         if (file.exists()) {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();
+                json.addProperty("", "");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

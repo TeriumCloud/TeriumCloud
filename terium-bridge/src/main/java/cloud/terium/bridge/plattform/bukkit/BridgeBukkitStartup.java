@@ -1,8 +1,8 @@
-package cloud.terium.bridge.bukkit;
+package cloud.terium.bridge.plattform.bukkit;
 
 import cloud.terium.bridge.TeriumBridge;
-import cloud.terium.bridge.bukkit.listener.PlayerJoinListener;
-import cloud.terium.bridge.bukkit.listener.PlayerQuitListener;
+import cloud.terium.bridge.plattform.bukkit.listener.PlayerJoinListener;
+import cloud.terium.bridge.plattform.bukkit.listener.PlayerQuitListener;
 import cloud.terium.networking.json.DefaultJsonService;
 import cloud.terium.networking.packets.service.PacketPlayOutSuccessfullServiceShutdown;
 import cloud.terium.teriumapi.TeriumAPI;

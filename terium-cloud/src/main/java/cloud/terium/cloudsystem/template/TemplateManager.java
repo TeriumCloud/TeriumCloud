@@ -68,6 +68,12 @@ public class TemplateManager implements ITemplateProvider, ITemplateFactory {
             downloadFile("https://terium.cloud/download/versions/teriumbridge.jar", "teriumbridge.jar", "data//versions");
             Logger.log("Successfully downloaded terium-bridge.", LogType.DOWNLOAD);
 
+            // TeriumBridge config
+            new File("data//versions//teriumbridge").mkdirs();
+            Logger.log("Starting download of terium-bridge config...", LogType.DOWNLOAD);
+            downloadFile("https://terium.cloud/download/versions/bridge-config.json", "bridge-config.json", "data//versions//terium-bridge");
+            Logger.log("Successfully downloaded terium-bridge config.", LogType.DOWNLOAD);
+
             // Velocity
             Logger.log("Starting download of velocity...", LogType.DOWNLOAD);
             downloadFile("https://api.papermc.io/v2/projects/velocity/versions/3.1.2-SNAPSHOT/builds/184/downloads/velocity-3.1.2-SNAPSHOT-184.jar", "velocity.jar", "data//versions");

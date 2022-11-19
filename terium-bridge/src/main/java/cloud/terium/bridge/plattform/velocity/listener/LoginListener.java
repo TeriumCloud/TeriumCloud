@@ -1,8 +1,8 @@
-package cloud.terium.bridge.velocity.listener;
+package cloud.terium.bridge.plattform.velocity.listener;
 
 import cloud.terium.bridge.TeriumBridge;
 import cloud.terium.bridge.player.CloudPlayer;
-import cloud.terium.bridge.velocity.BridgeVelocityStartup;
+import cloud.terium.bridge.plattform.velocity.BridgeVelocityStartup;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packets.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packets.service.PacketPlayOutServiceOnlinePlayersUpdatePacket;
