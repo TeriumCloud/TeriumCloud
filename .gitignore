@@ -21,7 +21,7 @@ release.properties
 ##########################
 ## Gradle
 ##########################
-.gradle
+*.gradle
 /build/
 gradle-app.setting
 !gradle-wrapper.jar
@@ -34,6 +34,7 @@ gradle-app.setting
 .idea/
 *.ipr
 *.iws
+*.bat
 out/
 .idea_modules/
 

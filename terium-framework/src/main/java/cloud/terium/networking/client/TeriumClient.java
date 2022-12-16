@@ -1,8 +1,5 @@
 package cloud.terium.networking.client;
 
-import cloud.terium.networking.TeriumFramework;
-import cloud.terium.networking.packet.codec.PacketDecoder;
-import cloud.terium.networking.packet.codec.PacketEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -13,6 +10,9 @@ import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.Getter;
 
 @Getter
@@ -33,8 +33,8 @@ public class TeriumClient {
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
                             channel.pipeline()
-                                    .addLast(new PacketDecoder(TeriumFramework.getPacketLibary()))
-                                    .addLast(new PacketEncoder(TeriumFramework.getPacketLibary()));
+                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())))
+                                    .addLast("packet-encoder", new ObjectEncoder());
                         }
                     });
             this.channelFuture = this.bootstrap.connect(host, port).sync();
