@@ -3,6 +3,8 @@ package cloud.terium.teriumapi.service;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.List;
+
 public interface ICloudService {
 
     /**
@@ -20,18 +22,18 @@ public interface ICloudService {
     int getServiceId();
 
     /**
-     * Get the port of the currrent service
+     * Get the port of the current service
      *
      * @return int This returns the port of the service.
      */
     int getPort();
 
     /**
-     * Get the template of the currrent service
+     * Get the templates of the current service
      *
-     * @return int This returns the port of the service.
+     * @return int This returns all templates of the service as list.
      */
-    ITemplate getTemplate();
+    List<ITemplate> getTemplates();
 
     /**
      * Get the maximal players who can join on the service
@@ -39,7 +41,7 @@ public interface ICloudService {
      * @return int This returns the maximal player who can join as int.
      */
     default int getMaxPlayers() {
-        return getServiceGroup().getMaximumPlayers();
+        return getServiceGroup().getMaxPlayers();
     }
 
     /**
@@ -82,7 +84,7 @@ public interface ICloudService {
      *
      * @return CloudServiceGroup This returns the current service state.
      */
-    CloudServiceState getServiceState();
+    ServiceState getServiceState();
 
     /**
      * Get if the service is locked
@@ -94,9 +96,9 @@ public interface ICloudService {
     /**
      * Get the service type of the service
      *
-     * @return CloudServiceType this returns the service type of the service
+     * @return ServiceType this returns the service type of the service
      */
-    default CloudServiceType getServiceType() {
+    default ServiceType getServiceType() {
         return getServiceGroup().getServiceType();
     }
 
@@ -106,7 +108,7 @@ public interface ICloudService {
      * @return boolean This returns if the serivce is online. (true if yes else false)
      */
     default boolean isOnline() {
-        return getServiceState() == CloudServiceState.ONLINE;
+        return getServiceState() == ServiceState.ONLINE;
     }
 
     /**
@@ -115,7 +117,7 @@ public interface ICloudService {
      * @return boolean This returns if the serivce is preparing. (true if yes else false)
      */
     default boolean isPreparing() {
-        return getServiceState() == CloudServiceState.PREPARING;
+        return getServiceState() == ServiceState.PREPARING;
     }
 
     /**
@@ -144,12 +146,13 @@ public interface ICloudService {
      *
      * @param serviceState
      */
-    void setServiceState(CloudServiceState serviceState);
+    void setServiceState(ServiceState serviceState);
 
     /**
      * Shutdown this service.
      */
     default void shutdown() {
+
     }
 
     /**

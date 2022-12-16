@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.service.group;
 
-import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.List;
 
 public interface ICloudServiceGroup {
 
@@ -28,25 +30,25 @@ public interface ICloudServiceGroup {
     String getGroupTitle();
 
     /**
-     * Get the node name of the service group
+     * Get the cluster of the service group
      *
      * @return String This returns the node name of the service group as String.
      */
-    String getServiceGroupNode();
+    ICluster getServiceGroupCluster();
 
     /**
-     * Get the template of the service group
+     * Get the templates of the service group
      *
-     * @return ITemplate This returns the template of the service group as ITemplate.
+     * @return List<ITemplate> This returns the template of the service group as ITemplate.
      */
-    ITemplate getTemplate();
+    List<ITemplate> getTemplates();
 
     /**
      * Get the service type of the service group
      *
-     * @return CloudServiceType This returns the service type of the service group as CloudServiceType.
+     * @return ServiceType This returns the service type of the service group as ServiceType.
      */
-    CloudServiceType getServiceType();
+    ServiceType getServiceType();
 
     /**
      * Get the version of the service group
@@ -81,7 +83,7 @@ public interface ICloudServiceGroup {
      *
      * @return int This returns the maximal player who can join as int.
      */
-    int getMaximumPlayers();
+    int getMaxPlayers();
 
     /**
      * Get the max memory of the service group
@@ -95,14 +97,53 @@ public interface ICloudServiceGroup {
      *
      * @return int This returns the minimal online service count from the service group as int.
      */
-    int getMinimalServices();
+    int getMinServices();
 
     /**
      * Get the maximal online service count of the service group
      *
      * @return int This returns the maximal online service count from the service group as int.
      */
-    int getMaximalServices();
+    int getMaxServices();
+
+    /**
+     * Set the maximal players who can join on the service group
+     *
+     * @param players Int
+     */
+    void setMaxPlayer(int players);
+
+    /**
+     * Set the max memory of the service group
+     *
+     * @param maintenance Boolean
+     */
+    void setMaintenance(boolean maintenance);
+
+    /**
+     * Set the max memory of the service group
+     *
+     * @param memory Int
+     */
+    void setMemory(int memory);
+
+    /**
+     * Set the minimal online service count of the service group
+     *
+     * @param services Int
+     */
+    void setMinServices(int services);
+
+    /**
+     * Set the maximal online service count of the service group
+     * @param services Int
+     */
+    void setMaxServices(int services);
+
+    /**
+     * Update every change by api to cloud.
+     */
+    void update();
 
     /**
      * Get all informations of the service group in a fancy JSON format

@@ -30,7 +30,7 @@ public interface ICloudServiceFactory {
      * @param maxPlayers
      * @param memory
      */
-    void createService(String serviceName, ITemplate iTemplate, CloudServiceType cloudServiceType, int serviceId, int maxPlayers, int memory);
+    void createService(String serviceName, ITemplate iTemplate, ServiceType cloudServiceType, int serviceId, int maxPlayers, int memory);
 
     /**
      * Create a service with defined service name and service group

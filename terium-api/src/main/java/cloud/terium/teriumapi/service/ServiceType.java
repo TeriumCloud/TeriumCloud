@@ -1,6 +1,6 @@
 package cloud.terium.teriumapi.service;
 
-public enum CloudServiceType {
+public enum ServiceType {
     Lobby,
     Proxy,
     Server;

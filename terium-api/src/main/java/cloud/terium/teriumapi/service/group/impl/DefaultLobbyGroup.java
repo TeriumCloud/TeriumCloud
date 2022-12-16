@@ -1,10 +1,14 @@
 package cloud.terium.teriumapi.service.group.impl;
 
-import cloud.terium.teriumapi.service.CloudServiceType;
+import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
+import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -14,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,10 +27,10 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     private String name;
     private String groupTitle;
-    private String node;
-    private ITemplate template;
+    private ICluster cluster;
+    private List<ITemplate> templates;
     private String version;
-    private final CloudServiceType cloudServiceType = CloudServiceType.Lobby;
+    private final ServiceType cloudServiceType = ServiceType.Lobby;
     private int maximumPlayers;
     private boolean maintenance;
     private int memory;
@@ -33,11 +38,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, String node, ITemplate template, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> template, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
-        this.node = node;
-        this.template = template;
+        this.cluster = cluster;
+        this.templates = template;
         this.version = version;
         this.maintenance = maintenance;
         this.maximumPlayers = maximumPlayers;
@@ -47,13 +52,16 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     public void initFile() {
-        JsonObject json = new JsonObject();
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        final JsonObject json = new JsonObject();
+        final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        final ExecutorService executorService = Executors.newFixedThreadPool(2);
+        final JsonArray jsonArray = new JsonArray();
+        templates.forEach(template -> jsonArray.add(template.getName()));
+
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
-        json.addProperty("node", node);
-        json.addProperty("template", template.getName());
+        json.addProperty("node", cluster.getName());
+        json.add("templates", jsonArray);
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
@@ -81,17 +89,17 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public String getServiceGroupNode() {
-        return node;
+    public ICluster getServiceGroupCluster() {
+        return cluster;
     }
 
     @Override
-    public ITemplate getTemplate() {
-        return template;
+    public List<ITemplate> getTemplates() {
+        return templates;
     }
 
     @Override
-    public CloudServiceType getServiceType() {
+    public ServiceType getServiceType() {
         return cloudServiceType;
     }
 
@@ -116,7 +124,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public int getMaximumPlayers() {
+    public int getMaxPlayers() {
         return maximumPlayers;
     }
 
@@ -126,12 +134,37 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public int getMinimalServices() {
+    public int getMinServices() {
         return minimalServices;
     }
 
     @Override
-    public int getMaximalServices() {
+    public int getMaxServices() {
         return maximalServices;
+    }
+
+    @Override
+    public void setMaxPlayer(int players) {
+        this.maximumPlayers = players;
+    }
+
+    @Override
+    public void setMaintenance(boolean maintenance) {
+        this.maintenance = maintenance;
+    }
+
+    @Override
+    public void setMinServices(int services) {
+        this.minimalServices = services;
+    }
+
+    @Override
+    public void setMaxServices(int services) {
+        this.maximalServices = services;
+    }
+
+    @Override
+    public void update() {
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, maximumPlayers, memory, minimalServices, maximalServices));
     }
 }

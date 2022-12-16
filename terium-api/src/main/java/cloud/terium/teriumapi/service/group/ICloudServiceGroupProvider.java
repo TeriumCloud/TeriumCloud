@@ -2,6 +2,9 @@ package cloud.terium.teriumapi.service.group;
 
 import java.util.List;
 
+/**
+ * If you need to 'filter' other things like all methodes here use: getAllServiceGroups().stream().filter();
+ */
 public interface ICloudServiceGroupProvider {
 
     /**
