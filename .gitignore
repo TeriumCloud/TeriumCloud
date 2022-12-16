@@ -22,8 +22,8 @@ release.properties
 ## Gradle
 ##########################
 *.gradle
-/gradle/
-/build/
+gradle/
+build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
