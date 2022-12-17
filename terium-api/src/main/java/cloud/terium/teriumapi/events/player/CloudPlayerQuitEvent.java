@@ -1,4 +1,4 @@
-package cloud.terium.teriumapi.events;
+package cloud.terium.teriumapi.events.player;
 
 import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.player.ICloudPlayer;
