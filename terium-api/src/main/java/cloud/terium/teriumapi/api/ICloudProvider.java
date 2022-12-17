@@ -1,5 +1,6 @@
 package cloud.terium.teriumapi.api;
 
+import cloud.terium.teriumapi.cluster.IClusterProvider;
 import cloud.terium.teriumapi.console.ICloudConsoleProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
@@ -45,6 +46,12 @@ public abstract class ICloudProvider {
      * The IEventProvider is usefull to call events or add register a listener.
      */
     public abstract IEventProvider getEventProvider();
+
+    /**
+     * Use this methode to get the IClusterProvider
+     * The IEventProvider is usefull to interact with clusters.
+     */
+    public abstract IClusterProvider getClusterProvider();
 
     /**
      * Use this methode to get the ITemplateProvider

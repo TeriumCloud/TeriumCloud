@@ -1,5 +1,6 @@
 package cloud.terium.teriumapi.api;
 
+import cloud.terium.teriumapi.cluster.IClusterFactory;
 import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.template.ITemplateFactory;
@@ -23,4 +24,10 @@ public abstract class ICloudFactory {
      * The ITemplateFactory is usefull to create or delete templates
      */
     public abstract ITemplateFactory getTemplateFactory();
+
+    /*
+     * Use this methode to get the IClusterFactory
+     * The IClusterFactory is usefull to create or delete clusters.
+     */
+    public abstract IClusterFactory getClusterFactory();
 }
