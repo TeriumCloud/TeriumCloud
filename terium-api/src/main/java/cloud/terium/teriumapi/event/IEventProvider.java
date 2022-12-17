@@ -1,6 +1,6 @@
 package cloud.terium.teriumapi.event;
 
-public interface IEventManager {
+public interface IEventProvider {
 
     /**
      * Use that methode to call a custom event.
@@ -11,9 +11,9 @@ public interface IEventManager {
     <T extends Event> void callEvent(T event);
 
     /**
-     * Use this methode to register a cloud listener.
+     * Use this methode to subscribe a cloud listener.
      *
      * @param listener Listener
      */
-    void registerListener(Listener listener);
+    void subscribeListener(Listener listener);
 }

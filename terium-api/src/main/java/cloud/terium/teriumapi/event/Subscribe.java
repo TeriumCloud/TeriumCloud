@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Subscribe {
 
-
     /**
      * 1 - lowest
      * 5 - highest
