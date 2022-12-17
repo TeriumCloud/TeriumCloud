@@ -1,9 +1,9 @@
 package cloud.terium.teriumapi.service.group;
 
+import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.cluster.ICluster;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
-import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.List;

@@ -21,7 +21,6 @@ release.properties
 ##########################
 ## Gradle
 ##########################
-*.gradle
 gradle/
 build/
 gradle-app.setting

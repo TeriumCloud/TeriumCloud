@@ -1,10 +1,10 @@
 package cloud.terium.teriumapi.service.group.impl;
 
-import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.cluster.ICluster;
 import cloud.terium.teriumapi.service.ServiceType;
-import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

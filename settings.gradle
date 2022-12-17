@@ -1,4 +1,5 @@
 rootProject.name = 'terium-cloud'
 
 include("terium-api")
+include("terium-cloud")
 include("terium-framework")
