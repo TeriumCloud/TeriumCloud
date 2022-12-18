@@ -4,7 +4,6 @@ import cloud.terium.cloudsystem.console.commands.HelpCommand;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import lombok.Getter;
-import org.jline.builtins.Completers;
 import org.jline.reader.Completer;
 import org.jline.reader.impl.completer.ArgumentCompleter;
 import org.jline.reader.impl.completer.NullCompleter;
