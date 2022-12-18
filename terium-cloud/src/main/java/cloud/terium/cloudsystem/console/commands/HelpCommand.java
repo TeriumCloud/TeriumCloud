@@ -1,0 +1,2 @@
+package cloud.terium.cloudsystem.console.commands;public class HelpCommand {
+}
