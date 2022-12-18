@@ -6,18 +6,15 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class HelpCommand extends Command {
 
-    public HelpCommand(List<String[]> arguments) {
-        super("help", "See all commands with description, aliases and a small help", new String[]{"?", "hu/so"}, arguments);
+    public HelpCommand() {
+        super("help", "See all commands with description and aliases.", new String[]{"?", "question"}, null);
     }
 
     @Override
     public void execute(String[] args) {
-        Terium.getTerium().getCommandManager().getCommandList().forEach(command -> {
-            Logger.log(command.getCommand() + " - " + command.getAliases().toString() + " - " + command.getDescription(), LogType.INFO);
-        });
+        Terium.getTerium().getCommandManager().getCommandList().forEach(command -> Logger.log(command.getCommand() + Arrays.toString(command.getAliases()) + " - " + command.getDescription(), LogType.INFO));
     }
 }

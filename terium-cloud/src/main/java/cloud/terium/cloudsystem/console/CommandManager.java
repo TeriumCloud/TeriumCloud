@@ -24,7 +24,7 @@ public class CommandManager implements ICommandFactory {
         this.commandList = new ArrayList<>();
         this.buildedCommands = new HashMap<>();
 
-        registerCommand(new HelpCommand(Arrays.asList(new String[]{"service"}, new String[]{"-test3", "-test4"})));
+        registerCommand(new HelpCommand());
     }
 
     public void registerCommand(Command command) {
@@ -55,17 +55,21 @@ public class CommandManager implements ICommandFactory {
 
         List<Completer> arguments = new ArrayList<>();
         arguments.add(new StringsCompleter(command.getCommand()));
-        command.getArguments().forEach(strings -> arguments.add(new StringsCompleter(strings)));
+        if (command.getArguments() != null)
+            command.getArguments().forEach(strings -> arguments.add(new StringsCompleter(strings)));
         arguments.add(NullCompleter.INSTANCE);
 
         buildedCommands.put(command.getCommand(), new ArgumentCompleter(arguments));
-        for (String alias : command.getAliases()) {
-            buildedCommands.remove(alias);
-            arguments.clear();
-            arguments.add(new StringsCompleter(alias));
-            command.getArguments().forEach(strings -> arguments.add(new StringsCompleter(strings)));
-            arguments.add(NullCompleter.INSTANCE);
-            buildedCommands.put(alias, new ArgumentCompleter(arguments));
+        if (command.getAliases() != null) {
+            for (String alias : command.getAliases()) {
+                buildedCommands.remove(alias);
+                arguments.clear();
+                arguments.add(new StringsCompleter(alias));
+                if (command.getArguments() != null)
+                    command.getArguments().forEach(strings -> arguments.add(new StringsCompleter(strings)));
+                arguments.add(NullCompleter.INSTANCE);
+                buildedCommands.put(alias, new ArgumentCompleter(arguments));
+            }
         }
     }
 }

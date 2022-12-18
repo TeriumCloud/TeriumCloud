@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import lombok.Getter;
+import sun.misc.Signal;
 
 @Getter
 public class Terium {
