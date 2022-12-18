@@ -13,7 +13,11 @@ import java.util.List;
 
 public class EventProvider implements IEventProvider {
 
-    private static final List<Listener> listeners = new ArrayList<>();
+    private final List<Listener> listeners;
+
+    public EventProvider() {
+        this.listeners = new ArrayList<>();
+    }
 
     @Override
     public <T extends Event> void callEvent(T event) {
@@ -35,8 +39,8 @@ public class EventProvider implements IEventProvider {
                 }
                 try {
                     method.invoke(listener, event);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+                } catch (IllegalAccessException | InvocationTargetException exception) {
+                    exception.printStackTrace();
                 }
             }
         }
