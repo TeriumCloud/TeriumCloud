@@ -1,2 +1,6 @@
-package cloud.terium.teriumapi.console.command;public interface ICommandProvider {
+package cloud.terium.teriumapi.console.command;
+
+public interface ICommandFactory {
+
+    void registerCommand(Command command);
 }

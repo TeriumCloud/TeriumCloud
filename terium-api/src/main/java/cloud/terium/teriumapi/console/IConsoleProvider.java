@@ -1,6 +1,6 @@
 package cloud.terium.teriumapi.console;
 
-public interface ICloudConsoleProvider {
+public interface IConsoleProvider {
 
     /**
      * Send a log message with log type to cloud instance

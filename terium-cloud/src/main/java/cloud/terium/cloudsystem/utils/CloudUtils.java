@@ -39,7 +39,7 @@ public class CloudUtils {
                         \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
                         \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/
                                                                                                     \s
-                        \u001B[0m> Terium by Jannik Hegemann aka. ByRaudy\s
+                        \u001B[0m> Terium by ByRaudy(Jannik H.)\s
                         \u001B[0m> Discord: terium.cloud/discord | Twitter: \u001B[36m@teriumcloud \u001B[0m
                         """;
         this.running = true;
@@ -58,12 +58,12 @@ public class CloudUtils {
         Logger.log("Trying to stop Terium...", LogType.INFO);
 
         running = false;
-        Terium.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
+        //Terium.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);
-        Terium.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
+        //Terium.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
         Logger.log("Successfully stopped terium-server.", LogType.INFO);
-        Terium.getTerium().getConfigManager().resetPort();
+       // Terium.getTerium().getConfigManager().resetPort();
         Logger.log("Successfully reset terium-port.", LogType.INFO);
 
         FileUtils.deleteDirectory(new File("servers//"));
@@ -79,7 +79,7 @@ public class CloudUtils {
     @SneakyThrows
     public void checkLicense() {
         Logger.licenseLog("Trying to check license...", LogType.INFO);
-        if (getHttpResponse("licence?key=" + Terium.getTerium().getConfigManager().getString("license")) != null) {
+        /*if (getHttpResponse("licence?key=" + Terium.getTerium().getConfigManager().getString("license")) != null) {
             Logger.licenseLog("License is accessible.", LogType.INFO);
             System.out.println(" ");
         } else {
@@ -89,7 +89,7 @@ public class CloudUtils {
             Terium.getTerium().getConfigManager().save();
             Thread.sleep(5000);
             System.exit(0);
-        }
+        }*/
     }
 
     @SneakyThrows

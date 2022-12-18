@@ -1,4 +1,4 @@
-package cloud.terium.cloudsystem.console.command;
+package cloud.terium.cloudsystem.console;
 
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.console.command.ICommandFactory;

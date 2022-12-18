@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.api;
 
 import cloud.terium.teriumapi.cluster.IClusterFactory;
+import cloud.terium.teriumapi.console.command.ICommandFactory;
 import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.template.ITemplateFactory;
@@ -30,4 +31,10 @@ public abstract class ICloudFactory {
      * The IClusterFactory is usefull to create or delete clusters.
      */
     public abstract IClusterFactory getClusterFactory();
+
+    /*
+     * Use this methode to get the ICommandFactory
+     * The ICommandFactory is usefull to register self-written commands.
+     */
+    public abstract ICommandFactory getCommandFactory();
 }

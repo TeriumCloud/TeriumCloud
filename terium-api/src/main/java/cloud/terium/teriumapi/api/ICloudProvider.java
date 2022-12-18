@@ -1,7 +1,7 @@
 package cloud.terium.teriumapi.api;
 
 import cloud.terium.teriumapi.cluster.IClusterProvider;
-import cloud.terium.teriumapi.console.ICloudConsoleProvider;
+import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
@@ -36,10 +36,10 @@ public abstract class ICloudProvider {
     public abstract ICloudPlayerProvider getCloudPlayerProvider();
 
     /**
-     * Use this methode to get the ICloudConsoleProvider
-     * The ICloudConsoleProvider is usefull to interact with cloud console
+     * Use this methode to get the IConsoleProvider
+     * The IConsoleProvider is usefull to interact with cloud console
      */
-    public abstract ICloudConsoleProvider getConsoleProvider();
+    public abstract IConsoleProvider getConsoleProvider();
 
     /**
      * Use this methode to get the IEventProvider
