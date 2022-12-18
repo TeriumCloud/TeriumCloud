@@ -17,11 +17,11 @@ public class EventProvider implements IEventProvider {
 
     @Override
     public <T extends Event> void callEvent(T event) {
-        for (Listener Listener : listeners) {
-            if(!Listener.isActive()) {
+        for (Listener listener : listeners) {
+            if(!listener.isActive()) {
                 continue;
             }
-            for (Method method : Listener.getClass().getDeclaredMethods()) {
+            for (Method method : listener.getClass().getDeclaredMethods()) {
                 Subscribe subscribe = method.getAnnotation(Subscribe.class);
                 if(subscribe == null) {
                     continue;
@@ -34,7 +34,7 @@ public class EventProvider implements IEventProvider {
                     continue;
                 }
                 try {
-                    method.invoke(Listener, event);
+                    method.invoke(listener, event);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
