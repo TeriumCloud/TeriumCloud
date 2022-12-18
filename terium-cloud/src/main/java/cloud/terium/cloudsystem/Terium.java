@@ -21,6 +21,14 @@ public class Terium {
 
     public Terium() {
         System.setProperty("org.jline.terminal.dumb", "true");
+        System.out.println("""
+                        \u001B[0m_______ _______  ______ _____ _     _ _______ \u001B[36m_______         _____  _     _ ______\s
+                        \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
+                        \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/
+                                                                                                    \s
+                        \u001B[0m> Terium by ByRaudy(Jannik H.)\s
+                        \u001B[0m> Discord: terium.cloud/discord | Twitter: \u001B[36m@teriumcloud \u001B[0m
+                        """);
 
         terium = this;
         this.cloudUtils = new CloudUtils();

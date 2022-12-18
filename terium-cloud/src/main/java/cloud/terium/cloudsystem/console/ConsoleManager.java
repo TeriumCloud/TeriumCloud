@@ -6,9 +6,11 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.jline.reader.Completer;
 import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -21,6 +23,7 @@ public class ConsoleManager {
     private LineReader lineReader;
     private final String username;
     private CommandManager commandManager;
+    private AggregateCompleter completer;
     private Thread thread;
 
     @SneakyThrows
@@ -32,23 +35,24 @@ public class ConsoleManager {
                 .signalHandler(Terminal.SignalHandler.SIG_IGN)
                 .build();
         this.username = username();
+        this.commandManager = commandManager;
 
-        readConsole(commandManager);
+        readConsole();
     }
 
-    public void readConsole(CommandManager commandManager) {
-        this.commandManager = commandManager;
+    public void readConsole() {
+        completer = new AggregateCompleter(commandManager.getBuildedCommands());
 
          this.lineReader = LineReaderBuilder.builder()
                 .appName("terium-console")
                 .terminal(terminal)
-                //.completer(aggregateCompleter)
+                .completer(completer)
                 .build();
 
         this.thread = new Thread(() -> {
             while (true) {
                 String input = null;
-                final Command command;
+                Command command;
                 if (Terium.getTerium().getCloudUtils().isRunning()) {
                     try {
                         input = lineReader.readLine("\u001B[36m" + username + "\u001B[0m@terium => ");
@@ -60,7 +64,7 @@ public class ConsoleManager {
                 }
 
                 try {
-                    if ((command = commandManager.getCommand(input.split(" ")[0])) != null) {
+                    if ((command = commandManager.getCommand(input.split(" ")[0])) != null || (command = commandManager.getCommandByAlias(input.split(" ")[0])) != null) {
                         final String[] args = input.split(" ");
                         command.execute(Arrays.copyOfRange(args, 1, args.length));
                     } else {
@@ -78,5 +82,9 @@ public class ConsoleManager {
     @SneakyThrows
     private String username() {
         return System.getProperty("user.name");
+    }
+
+    public void updateCompleter() {
+        this.completer = new AggregateCompleter(commandManager.getBuildedCommands());
     }
 }
