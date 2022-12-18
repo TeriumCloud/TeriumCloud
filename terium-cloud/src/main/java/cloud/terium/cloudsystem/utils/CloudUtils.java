@@ -1,11 +1,9 @@
 package cloud.terium.cloudsystem.utils;
 
-import cloud.terium.cloudsystem.Terium;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.player.ICloudPlayer;
-import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -26,6 +24,7 @@ import java.util.List;
 public class CloudUtils {
 
     private final List<ICloudPlayer> playerList;
+    private final String version;
     private boolean running;
     private boolean setup;
     private SetupState setupState;
@@ -35,6 +34,7 @@ public class CloudUtils {
         this.running = true;
         this.setup = false;
         this.isInScreen = false;
+        this.version = "1.0.0-DEVELOPMENT";
         this.playerList = new ArrayList<>();
     }
 
