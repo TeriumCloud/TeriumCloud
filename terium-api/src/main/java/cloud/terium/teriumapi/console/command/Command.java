@@ -10,7 +10,6 @@ import java.util.List;
 public abstract class Command {
 
     private final String command;
-    private final String help;
     private final String description;
     private final String[] aliases;
     private final List<String[]> arguments;
