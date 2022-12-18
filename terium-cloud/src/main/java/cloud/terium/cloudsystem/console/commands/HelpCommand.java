@@ -19,6 +19,5 @@ public class HelpCommand extends Command {
         Terium.getTerium().getCommandManager().getCommandList().forEach(command -> {
             Logger.log(command.getCommand() + " - " + command.getAliases().toString() + " - " + command.getDescription(), LogType.INFO);
         });
-        Terium.getTerium().getCommandManager().registerCommand(new HelpCommand(Arrays.asList(new String[]{"%service%"}, new String[]{"-test1", "-test7"})));
     }
 }

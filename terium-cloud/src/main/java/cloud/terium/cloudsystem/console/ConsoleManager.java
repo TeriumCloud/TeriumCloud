@@ -41,7 +41,7 @@ public class ConsoleManager {
     }
 
     public void readConsole() {
-        completer = new AggregateCompleter(commandManager.getBuildedCommands());
+        completer = new AggregateCompleter(commandManager.getBuildedCommands().values());
 
          this.lineReader = LineReaderBuilder.builder()
                 .appName("terium-console")
@@ -85,6 +85,6 @@ public class ConsoleManager {
     }
 
     public void updateCompleter() {
-        this.completer = new AggregateCompleter(commandManager.getBuildedCommands());
+        this.completer = new AggregateCompleter(commandManager.getBuildedCommands().values());
     }
 }

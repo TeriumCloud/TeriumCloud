@@ -11,17 +11,18 @@ import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
 public class CommandManager implements ICommandFactory {
 
     private final List<Command> commandList;
-    private final List<Completer> buildedCommands;
+    private final HashMap<String, Completer> buildedCommands;
 
     public CommandManager() {
         this.commandList = new ArrayList<>();
-        this.buildedCommands = new ArrayList<>();
+        this.buildedCommands = new HashMap<>();
 
         registerCommand(new HelpCommand(Arrays.asList(new String[]{"service"}, new String[]{"-test3", "-test4"})));
     }
@@ -50,18 +51,21 @@ public class CommandManager implements ICommandFactory {
     }
 
     private void buildCommand(Command command) {
+        buildedCommands.remove(command.getCommand());
+
         List<Completer> arguments = new ArrayList<>();
         arguments.add(new StringsCompleter(command.getCommand()));
         command.getArguments().forEach(strings -> arguments.add(new StringsCompleter(strings)));
         arguments.add(NullCompleter.INSTANCE);
 
-        buildedCommands.add(new ArgumentCompleter(arguments));
+        buildedCommands.put(command.getCommand(), new ArgumentCompleter(arguments));
         for (String alias : command.getAliases()) {
+            buildedCommands.remove(alias);
             arguments.clear();
             arguments.add(new StringsCompleter(alias));
             command.getArguments().forEach(strings -> arguments.add(new StringsCompleter(strings)));
             arguments.add(NullCompleter.INSTANCE);
-            buildedCommands.add(new ArgumentCompleter(arguments));
+            buildedCommands.put(alias, new ArgumentCompleter(arguments));
         }
     }
 }
