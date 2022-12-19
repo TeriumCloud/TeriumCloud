@@ -8,6 +8,7 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TemplateProvider implements ITemplateProvider {
@@ -41,5 +42,14 @@ public class TemplateProvider implements ITemplateProvider {
     @Override
     public List<ITemplate> getAllTemplates() {
         return templates;
+    }
+
+    public List<String> getAllTemplatesAsString() {
+        List<String> templateNames = new ArrayList<>();
+        templates.forEach(template -> {
+            templateNames.add(template.getName());
+        });
+
+        return templateNames;
     }
 }

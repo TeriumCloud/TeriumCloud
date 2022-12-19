@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
+import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.Logger;
@@ -29,6 +30,7 @@ public class TeriumCloud {
     private final ConsoleManager consoleManager;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
+    private final TemplateFactory templateFactory;
 
     public static void main(String[] args) {
         new TeriumCloud();
@@ -51,10 +53,11 @@ public class TeriumCloud {
 
         this.configManager = new ConfigManager();
         this.cloudConfig = configManager.toCloudConfig();
-        this.commandManager = new CommandManager();
-        this.consoleManager = new ConsoleManager(commandManager);
         this.eventProvider = new EventProvider();
         this.templateProvider = new TemplateProvider();
+        this.templateFactory = new TemplateFactory();
+        this.commandManager = new CommandManager();
+        this.consoleManager = new ConsoleManager(commandManager);
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);

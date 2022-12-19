@@ -1,7 +1,9 @@
 package cloud.terium.cloudsystem.console;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.console.commands.HelpCommand;
 import cloud.terium.cloudsystem.console.commands.StopCommand;
+import cloud.terium.cloudsystem.console.commands.TemplateCommand;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import lombok.Getter;
@@ -27,9 +29,11 @@ public class CommandManager implements ICommandFactory {
 
         registerCommand(new HelpCommand());
         registerCommand(new StopCommand());
+        registerCommand(new TemplateCommand(TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString().toArray(String[]::new)));
     }
 
     public void registerCommand(Command command) {
+        this.commandList.remove(getCommand(command.getCommand()));
         this.commandList.add(command);
         buildCommand(command);
     }
