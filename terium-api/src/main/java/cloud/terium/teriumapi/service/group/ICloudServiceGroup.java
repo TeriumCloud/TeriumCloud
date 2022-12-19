@@ -65,6 +65,13 @@ public interface ICloudServiceGroup {
     boolean isMaintenance();
 
     /**
+     * Get if the service group is statc
+     *
+     * @return boolean This returns if the serivce group is static as boolean. (true if yes else false)
+     */
+    boolean isStatic();
+
+    /**
      * Get if the service group has a port
      *
      * @return boolean This returns if the service group has a defined port as boolean. (true if yes else false)
@@ -114,11 +121,18 @@ public interface ICloudServiceGroup {
     void setMaxPlayer(int players);
 
     /**
-     * Set the max memory of the service group
+     * Set the maintenance state of the service group
      *
      * @param maintenance Boolean
      */
     void setMaintenance(boolean maintenance);
+
+    /**
+     * Set the static value of the service group
+     *
+     * @param isStatic Boolean
+     */
+    void setStatic(boolean isStatic);
 
     /**
      * Set the max memory of the service group

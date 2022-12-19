@@ -23,27 +23,29 @@ import java.util.concurrent.Executors;
 
 public class DefaultProxyGroup implements ICloudServiceGroup {
 
-    private String name;
-    private String groupTitle;
-    private ICluster cluster;
-    private List<ITemplate> templates;
+    private final String name;
+    private final String groupTitle;
+    private final ICluster cluster;
+    private final List<ITemplate> templates;
     private final ServiceType cloudServiceType = ServiceType.Proxy;
-    private String version;
+    private final String version;
     private boolean maintenance;
-    private int port;
+    private boolean isStatic;
+    private final int port;
     private int maximumPlayers;
     private int memory;
     private int minimalServices;
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultProxyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean maintenance, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultProxyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean maintenance, boolean isStatic, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.cluster = cluster;
         this.templates = templates;
         this.version = version;
         this.maintenance = maintenance;
+        this.isStatic = isStatic;
         this.port = port;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
@@ -67,6 +69,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         json.addProperty("port", port);
         json.addProperty("version", version);
         json.addProperty("maintenance", maintenance);
+        json.addProperty("static", isStatic);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
@@ -116,6 +119,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    @Override
     public boolean hasPort() {
         return true;
     }
@@ -156,6 +164,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
+
+    @Override
     public void setMemory(int memory) {
         this.memory = memory;
     }
@@ -172,6 +185,6 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
 
     @Override
     public void update() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, maximumPlayers, memory, minimalServices, maximalServices));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
     }
 }

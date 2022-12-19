@@ -33,18 +33,20 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private final ServiceType cloudServiceType = ServiceType.Lobby;
     private int maximumPlayers;
     private boolean maintenance;
+    private boolean isStatic;
     private int memory;
     private int minimalServices;
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> template, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.cluster = cluster;
         this.templates = template;
         this.version = version;
         this.maintenance = maintenance;
+        this.isStatic = isStatic;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
         this.minimalServices = minimalServices;
@@ -65,6 +67,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
+        json.addProperty("static", isStatic);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
@@ -114,6 +117,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    @Override
     public boolean hasPort() {
         return false;
     }
@@ -154,6 +162,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
+
+    @Override
     public void setMinServices(int services) {
         this.minimalServices = services;
     }
@@ -165,6 +178,6 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     @Override
     public void update() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, maximumPlayers, memory, minimalServices, maximalServices));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
     }
 }

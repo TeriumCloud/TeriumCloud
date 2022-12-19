@@ -22,29 +22,30 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Setter
 public class DefaultServerGroup implements ICloudServiceGroup {
 
-    private String name;
-    private String groupTitle;
-    private ICluster cluster;
-    private List<ITemplate> templates;
-    private String version;
+    private final String name;
+    private final String groupTitle;
+    private final ICluster cluster;
+    private final List<ITemplate> templates;
+    private final String version;
     private final ServiceType cloudServiceType = ServiceType.Server;
     private int maximumPlayers;
     private boolean maintenance;
+    private boolean isStatic;
     private int memory;
     private int minimalServices;
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultServerGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean maintenance, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultServerGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.templates = templates;
         this.cluster = cluster;
         this.version = version;
         this.maintenance = maintenance;
+        this.isStatic = isStatic;
         this.maximumPlayers = maximumPlayers;
         this.memory = memory;
         this.minimalServices = minimalServices;
@@ -65,6 +66,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
+        json.addProperty("static", isStatic);
         json.addProperty("maximum_players", maximumPlayers);
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
@@ -114,6 +116,11 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    @Override
     public boolean hasPort() {
         return false;
     }
@@ -153,6 +160,16 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
+
+    @Override
+    public void setMemory(int memory) {
+        this.memory = memory;
+    }
+
+    @Override
     public void setMinServices(int services) {
         this.minimalServices = services;
     }
@@ -164,6 +181,6 @@ public class DefaultServerGroup implements ICloudServiceGroup {
 
     @Override
     public void update() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, maximumPlayers, memory, minimalServices, maximalServices));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(name, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
     }
 }

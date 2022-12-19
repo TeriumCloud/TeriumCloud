@@ -23,8 +23,8 @@ public interface ICloudServiceGroupFactory {
      * @param minimalServices Int
      * @param maximalServices Int
      */
-    default void createLobbyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultLobbyGroup(name, groupTitle, cluster, templates, version, false, maximumPlayers, memory, minimalServices, maximalServices).initFile();
+    default void createLobbyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        new DefaultLobbyGroup(name, groupTitle, cluster, templates, version, false, isStatic, maximumPlayers, memory, minimalServices, maximalServices).initFile();
     }
 
     /**
@@ -40,8 +40,8 @@ public interface ICloudServiceGroupFactory {
      * @param minimalServices Int
      * @param maximalServices Int
      */
-    default void createProxyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultProxyGroup(name, groupTitle, cluster, templates, version, false, port, maximumPlayers, memory, minimalServices, maximalServices).initFile();
+    default void createProxyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean isStatic, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        new DefaultProxyGroup(name, groupTitle, cluster, templates, version, false, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices).initFile();
     }
 
     /**
@@ -57,8 +57,8 @@ public interface ICloudServiceGroupFactory {
      * @param minimalServices Int
      * @param maximalServices Int
      */
-    default void createServerGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultServerGroup(name, groupTitle, cluster, templates, version, false, maximumPlayers, memory, minimalServices, maximalServices).initFile();
+    default void createServerGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        new DefaultServerGroup(name, groupTitle, cluster, templates, version, false, isStatic, maximumPlayers, memory, minimalServices, maximalServices).initFile();
     }
 
     /**
