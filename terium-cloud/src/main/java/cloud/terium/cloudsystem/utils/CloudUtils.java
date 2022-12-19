@@ -1,5 +1,6 @@
 package cloud.terium.cloudsystem.utils;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.setup.SetupState;
 import cloud.terium.teriumapi.console.LogType;
@@ -44,29 +45,6 @@ public class CloudUtils {
     }
 
     @SneakyThrows
-    public void shutdownCloud() {
-        Logger.log("Trying to stop terium-cloud...", LogType.INFO);
-
-        running = false;
-        //TeriumCloud.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
-        Logger.log("Successfully stopped all services.", LogType.INFO);
-        Thread.sleep(1000);
-        //TeriumCloud.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
-        Logger.log("Successfully stopped terium-server.", LogType.INFO);
-       // TeriumCloud.getTerium().getConfigManager().resetPort();
-        Logger.log("Successfully reset terium-port.", LogType.INFO);
-
-        FileUtils.deleteDirectory(new File("servers//"));
-        Logger.log("Successfully deleted server folder.", LogType.INFO);
-        FileUtils.deleteDirectory(new File("data//cache//"));
-        Logger.log("Successfully deleted data/cache folder.", LogType.INFO);
-        Thread.sleep(300);
-        Logger.log("Successfully stopped terium-cloud. Goodbye!", LogType.INFO);
-        Thread.sleep(1000);
-        System.exit(0);
-    }
-
-    @SneakyThrows
     public void checkLicense() {
         Logger.licenseLog("Trying to check license...", LogType.INFO);
         /*if (getHttpResponse("licence?key=" + TeriumCloud.getTerium().getConfigManager().getString("license")) != null) {
@@ -93,7 +71,7 @@ public class CloudUtils {
             Logger.licenseLog("The cloudrestapi is not available.", LogType.ERROR);
             Logger.licenseLog("Please contact Jannik#9708 on discord.", LogType.ERROR);
             Thread.sleep(5000);
-            shutdownCloud();
+            TeriumCloud.getTerium().shutdownCloud();
             return null;
         }
 

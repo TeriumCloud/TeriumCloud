@@ -1,14 +1,20 @@
 package cloud.terium.cloudsystem;
 
+import cloud.terium.cloudsystem.config.CloudConfig;
+import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
+import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import lombok.Getter;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
 import sun.misc.Signal;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -18,8 +24,11 @@ public class TeriumCloud {
     private static TeriumCloud terium;
     private final CloudUtils cloudUtils;
     private final CommandManager commandManager;
+    private final CloudConfig cloudConfig;
+    private final ConfigManager configManager;
     private final ConsoleManager consoleManager;
     private final EventProvider eventProvider;
+    private final TemplateProvider templateProvider;
 
     public static void main(String[] args) {
         new TeriumCloud();
@@ -40,17 +49,43 @@ public class TeriumCloud {
                         """.replace("%version%", getCloudUtils().getVersion()));
         Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
 
+        this.configManager = new ConfigManager();
+        this.cloudConfig = configManager.toCloudConfig();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
         this.eventProvider = new EventProvider();
+        this.templateProvider = new TemplateProvider();
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
-            cloudUtils.shutdownCloud();
+            shutdownCloud();
         });
     }
 
     public static TeriumCloud getTerium() {
         return terium;
+    }
+
+    @SneakyThrows
+    public void shutdownCloud() {
+        Logger.log("Trying to stop terium-cloud...", LogType.INFO);
+
+        TeriumCloud.getTerium().getCloudUtils().setRunning(false);
+        //TeriumCloud.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
+        Logger.log("Successfully stopped all services.", LogType.INFO);
+        Thread.sleep(1000);
+        //TeriumCloud.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
+        Logger.log("Successfully stopped terium-server.", LogType.INFO);
+        // TeriumCloud.getTerium().getConfigManager().resetPort();
+        Logger.log("Successfully reset terium-port.", LogType.INFO);
+
+        FileUtils.deleteDirectory(new File("servers//"));
+        Logger.log("Successfully deleted server folder.", LogType.INFO);
+        FileUtils.deleteDirectory(new File("data//cache//"));
+        Logger.log("Successfully deleted data/cache folder.", LogType.INFO);
+        Thread.sleep(300);
+        Logger.log("Successfully stopped terium-cloud. Goodbye!", LogType.INFO);
+        Thread.sleep(1000);
+        System.exit(0);
     }
 }

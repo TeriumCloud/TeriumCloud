@@ -71,7 +71,7 @@ public class ConsoleManager {
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
-                    Logger.log("TeriumCloud found a error: " + exception.getMessage(), LogType.ERROR);
+                    Logger.log("terium-cloud found a error: " + exception.getMessage(), LogType.ERROR);
                 }
             }
         });

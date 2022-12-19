@@ -17,7 +17,7 @@ public interface ITemplateFactory {
      * @param name
      * @param node
      */
-    void createTemplate(String name, ICluster node);
+    void createTemplate(String name, ICluster cluster);
 
     /**
      * Delete a template by name
