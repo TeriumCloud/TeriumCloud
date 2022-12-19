@@ -1,6 +1,6 @@
 package cloud.terium.cloudsystem.utils.logger;
 
-import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.teriumapi.console.LogType;
 import lombok.SneakyThrows;
 
@@ -14,13 +14,13 @@ public class Logger {
     private static final List<String> savedLogs = new ArrayList<>();
 
     public static void log(String message, LogType logType) {
-        if (Terium.getTerium().getCloudUtils().isInScreen() && !logType.equals(LogType.SCREEN)) {
+        if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && !logType.equals(LogType.SCREEN)) {
             savedLogs.add(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
             return;
         }
 
-        if (Terium.getTerium().getConsoleManager() != null)
-            Terium.getTerium().getConsoleManager().getLineReader().printAbove(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
+        if (TeriumCloud.getTerium().getConsoleManager() != null)
+            TeriumCloud.getTerium().getConsoleManager().getLineReader().printAbove(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
         else
             System.out.println(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + logType.getPrefix() + message));
     }
@@ -36,8 +36,8 @@ public class Logger {
 
     public static void logAllCachedLogs() {
         savedLogs.forEach(log -> {
-            if (Terium.getTerium().getConsoleManager() != null)
-                Terium.getTerium().getConsoleManager().getLineReader().printAbove(log);
+            if (TeriumCloud.getTerium().getConsoleManager() != null)
+                TeriumCloud.getTerium().getConsoleManager().getLineReader().printAbove(log);
             else System.out.println(log);
         });
         savedLogs.clear();

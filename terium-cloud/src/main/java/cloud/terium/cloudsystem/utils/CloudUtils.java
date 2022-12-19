@@ -45,15 +45,15 @@ public class CloudUtils {
 
     @SneakyThrows
     public void shutdownCloud() {
-        Logger.log("Trying to stop Terium...", LogType.INFO);
+        Logger.log("Trying to stop terium-cloud...", LogType.INFO);
 
         running = false;
-        //Terium.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
+        //TeriumCloud.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);
-        //Terium.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
+        //TeriumCloud.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
         Logger.log("Successfully stopped terium-server.", LogType.INFO);
-       // Terium.getTerium().getConfigManager().resetPort();
+       // TeriumCloud.getTerium().getConfigManager().resetPort();
         Logger.log("Successfully reset terium-port.", LogType.INFO);
 
         FileUtils.deleteDirectory(new File("servers//"));
@@ -61,7 +61,7 @@ public class CloudUtils {
         FileUtils.deleteDirectory(new File("data//cache//"));
         Logger.log("Successfully deleted data/cache folder.", LogType.INFO);
         Thread.sleep(300);
-        Logger.log("Successfully stopped Terium. Goodbye!", LogType.INFO);
+        Logger.log("Successfully stopped terium-cloud. Goodbye!", LogType.INFO);
         Thread.sleep(1000);
         System.exit(0);
     }
@@ -69,14 +69,14 @@ public class CloudUtils {
     @SneakyThrows
     public void checkLicense() {
         Logger.licenseLog("Trying to check license...", LogType.INFO);
-        /*if (getHttpResponse("licence?key=" + Terium.getTerium().getConfigManager().getString("license")) != null) {
+        /*if (getHttpResponse("licence?key=" + TeriumCloud.getTerium().getConfigManager().getString("license")) != null) {
             Logger.licenseLog("License is accessible.", LogType.INFO);
             System.out.println(" ");
         } else {
             Logger.licenseLog("Your license isn't accessible.", LogType.ERROR);
             Logger.licenseLog("Please typ a accessible license. Or are you one of the illegal owners of the cloud? ;)", LogType.ERROR);
-            Terium.getTerium().getConfigManager().getJson().addProperty("setup", true);
-            Terium.getTerium().getConfigManager().save();
+            TeriumCloud.getTerium().getConfigManager().getJson().addProperty("setup", true);
+            TeriumCloud.getTerium().getConfigManager().save();
             Thread.sleep(5000);
             System.exit(0);
         }*/

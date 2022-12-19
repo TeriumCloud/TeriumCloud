@@ -1,12 +1,11 @@
 package cloud.terium.cloudsystem.console;
 
-import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.jline.reader.Completer;
 import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -53,7 +52,7 @@ public class ConsoleManager {
             while (true) {
                 String input = null;
                 Command command;
-                if (Terium.getTerium().getCloudUtils().isRunning()) {
+                if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
                     try {
                         input = lineReader.readLine("\u001B[36m" + username + "\u001B[0m@terium => ");
                     } catch (EndOfFileException exception) {
@@ -72,7 +71,7 @@ public class ConsoleManager {
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
-                    Logger.log("Terium found a error: " + exception.getMessage(), LogType.ERROR);
+                    Logger.log("TeriumCloud found a error: " + exception.getMessage(), LogType.ERROR);
                 }
             }
         });

@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.console;
 
 import cloud.terium.cloudsystem.console.commands.HelpCommand;
+import cloud.terium.cloudsystem.console.commands.StopCommand;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class CommandManager implements ICommandFactory {
         this.buildedCommands = new HashMap<>();
 
         registerCommand(new HelpCommand());
+        registerCommand(new StopCommand());
     }
 
     public void registerCommand(Command command) {

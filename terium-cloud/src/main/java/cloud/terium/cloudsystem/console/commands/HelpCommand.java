@@ -1,6 +1,6 @@
 package cloud.terium.cloudsystem.console.commands;
 
-import cloud.terium.cloudsystem.Terium;
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
@@ -15,6 +15,6 @@ public class HelpCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        Terium.getTerium().getCommandManager().getCommandList().forEach(command -> Logger.log(command.getCommand() + Arrays.toString(command.getAliases()) + " - " + command.getDescription(), LogType.INFO));
+        TeriumCloud.getTerium().getCommandManager().getCommandList().forEach(command -> Logger.log(command.getCommand() + Arrays.toString(command.getAliases()) + " - " + command.getDescription(), LogType.INFO));
     }
 }
