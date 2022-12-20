@@ -65,7 +65,7 @@ public class TemplateCommand extends Command {
     public List<String> tabComplete(String[] args) {
         if(args.length == 1) {
             return Arrays.asList("create", "delete", "info", "list");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("delete"))) {
             return TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString();
         }
         return super.tabComplete(args);

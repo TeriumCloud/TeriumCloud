@@ -21,6 +21,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.jline:jline:3.21.0'
     implementation 'org.slf4j:slf4j-simple:2.0.3'
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
 }
 
 def targetJavaVersion = 16

@@ -2,6 +2,7 @@ package cloud.terium.cloudsystem.console;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.cloudsystem.utils.logger.LoggerColors;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import lombok.Getter;
@@ -22,7 +23,6 @@ public class ConsoleManager {
     private final Terminal terminal;
     private final String username;
     private LineReader lineReader;
-    private CommandManager commandManager;
     private AggregateCompleter completer;
     private Thread thread;
 
@@ -33,7 +33,6 @@ public class ConsoleManager {
                 .system(true).streams(System.in, System.out)
                 .encoding(StandardCharsets.UTF_8).dumb(true).build();
         this.username = username();
-        this.commandManager = commandManager;
 
         readConsole();
     }
@@ -56,7 +55,7 @@ public class ConsoleManager {
                 Command command;
                 if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
                     try {
-                        input = lineReader.readLine("\u001B[36m" + username + "\u001B[0m@terium => ");
+                        input = lineReader.readLine(LoggerColors.replaceColorCodes("§b" + username + "§f@terium => "));
                     } catch (EndOfFileException exception) {
                         input = lineReader.readLine("");
                     }
@@ -65,7 +64,7 @@ public class ConsoleManager {
                 }
 
                 try {
-                    if ((command = commandManager.getCommand(input.split(" ")[0])) != null || (command = commandManager.getCommandByAlias(input.split(" ")[0])) != null) {
+                    if ((command = TeriumCloud.getTerium().getCommandManager().getCommand(input.split(" ")[0])) != null || (command = TeriumCloud.getTerium().getCommandManager().getCommandByAlias(input.split(" ")[0])) != null) {
                         final String[] args = input.split(" ");
                         command.execute(Arrays.copyOfRange(args, 1, args.length));
                     } else {

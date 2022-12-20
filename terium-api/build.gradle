@@ -5,6 +5,7 @@ plugins {
 
 group = 'cloud.terium'
 version = '1.0-SNAPSHOT'
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
