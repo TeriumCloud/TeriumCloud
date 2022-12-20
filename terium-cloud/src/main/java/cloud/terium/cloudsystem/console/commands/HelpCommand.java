@@ -12,7 +12,7 @@ import java.util.List;
 public class HelpCommand extends Command {
 
     public HelpCommand() {
-        super("help", "See all commands with description and aliases.", new String[]{"?", "question"});
+        super("help", "See all commands with description and aliases.", "?");
     }
 
     @Override

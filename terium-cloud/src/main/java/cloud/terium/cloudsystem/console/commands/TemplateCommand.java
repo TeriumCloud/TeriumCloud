@@ -5,18 +5,14 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.template.ITemplate;
-import org.jline.builtins.Completers;
-import org.jline.builtins.Completers.TreeCompleter;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.jline.builtins.Completers.TreeCompleter.node;
-
 public class TemplateCommand extends Command {
 
     public TemplateCommand() {
-        super("template", "A list of all tempaltes", new String[]{"temps"});
+        super("template", "A list of all tempaltes");
     }
 
     @Override

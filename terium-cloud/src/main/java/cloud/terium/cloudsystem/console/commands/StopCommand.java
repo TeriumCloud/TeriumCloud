@@ -7,7 +7,7 @@ import org.jline.builtins.Completers;
 public class StopCommand extends Command {
 
     public StopCommand() {
-        super("stop", "Stop the cloud-system", new String[]{"exit", "shutdown"});
+        super("stop", "Stop the cloud-system", "exit");
     }
 
     @Override
