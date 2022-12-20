@@ -21,7 +21,7 @@ import java.util.List;
 public class CommandManager implements ICommandFactory {
 
     private final List<Command> commandList;
-    private final HashMap<String, Completer> buildedCommands;
+    private final HashMap<String, Command> buildedCommands;
 
     public CommandManager() {
         this.commandList = new ArrayList<>();
@@ -29,7 +29,7 @@ public class CommandManager implements ICommandFactory {
 
         registerCommand(new HelpCommand());
         registerCommand(new StopCommand());
-        registerCommand(new TemplateCommand(TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString().toArray(String[]::new)));
+        registerCommand(new TemplateCommand());
     }
 
     public void registerCommand(Command command) {
@@ -59,6 +59,18 @@ public class CommandManager implements ICommandFactory {
     private void buildCommand(Command command) {
         buildedCommands.remove(command.getCommand());
 
+        buildedCommands.put(command.getCommand(), command);
+        if (command.getAliases() != null) {
+            for (String alias : command.getAliases()) {
+                buildedCommands.remove(alias);
+                buildedCommands.put(alias, command);
+            }
+        }
+    }
+
+    /*private void buildCommand(Command command) {
+        buildedCommands.remove(command.getCommand());
+
         List<Completer> arguments = new ArrayList<>();
         arguments.add(new StringsCompleter(command.getCommand()));
         if (command.getArguments() != null)
@@ -77,5 +89,5 @@ public class CommandManager implements ICommandFactory {
                 buildedCommands.put(alias, new ArgumentCompleter(arguments));
             }
         }
-    }
+    }*/
 }

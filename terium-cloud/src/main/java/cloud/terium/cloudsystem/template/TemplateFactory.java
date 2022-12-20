@@ -24,7 +24,7 @@ public class TemplateFactory implements ITemplateFactory {
         }
         file.mkdirs();
         TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().add(new Template(name, Path.of(file.getPath())));
-        TeriumCloud.getTerium().getCommandManager().registerCommand(new TemplateCommand(TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString().toArray(String[]::new)));
+        TeriumCloud.getTerium().getCommandManager().registerCommand(new TemplateCommand());
         Logger.log("Successfully created template '" + name + "'.", LogType.INFO);
     }
 
@@ -37,6 +37,6 @@ public class TemplateFactory implements ITemplateFactory {
     public void deleteTemplate(String name) {
         FileUtils.deleteDirectory(new File("templates//" + name));
         TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().remove(TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(name));
-        TeriumCloud.getTerium().getCommandManager().registerCommand(new TemplateCommand(TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString().toArray(String[]::new)));
+        TeriumCloud.getTerium().getCommandManager().registerCommand(new TemplateCommand());
     }
 }

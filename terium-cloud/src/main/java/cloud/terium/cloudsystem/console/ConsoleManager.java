@@ -13,6 +13,7 @@ import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 @Getter
@@ -29,10 +30,8 @@ public class ConsoleManager {
     public ConsoleManager(CommandManager commandManager) {
         this.terminal = TerminalBuilder.builder()
                 .name("terium-console")
-                .system(true)
-                .nativeSignals(true)
-                .signalHandler(Terminal.SignalHandler.SIG_IGN)
-                .build();
+                .system(true).streams(System.in, System.out)
+                .encoding(StandardCharsets.UTF_8).dumb(true).build();
         this.username = username();
         this.commandManager = commandManager;
 
@@ -40,11 +39,14 @@ public class ConsoleManager {
     }
 
     public void readConsole() {
-        completer = new AggregateCompleter(commandManager.getBuildedCommands().values());
+        completer = new AggregateCompleter(new ConsoleCompleter());
 
         this.lineReader = LineReaderBuilder.builder()
                 .appName("terium-console")
                 .terminal(terminal)
+                .option(LineReader.Option.DISABLE_EVENT_EXPANSION, true)
+                .option(LineReader.Option.AUTO_REMOVE_SLASH, false)
+                .option(LineReader.Option.INSERT_TAB, false)
                 .completer(completer)
                 .build();
 
@@ -81,9 +83,5 @@ public class ConsoleManager {
     @SneakyThrows
     private String username() {
         return System.getProperty("user.name");
-    }
-
-    public void updateCompleter() {
-        this.completer = new AggregateCompleter(commandManager.getBuildedCommands().values());
     }
 }

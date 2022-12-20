@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.jline:jline:3.21.0'
     compileOnly fileTree(dir: '../terium-framework/build/libs/', include: '*.jar')
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 

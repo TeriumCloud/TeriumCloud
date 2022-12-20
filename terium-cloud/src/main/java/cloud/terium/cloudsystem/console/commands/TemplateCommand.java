@@ -5,13 +5,18 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.template.ITemplate;
+import org.jline.builtins.Completers;
+import org.jline.builtins.Completers.TreeCompleter;
 
 import java.util.Arrays;
+import java.util.List;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class TemplateCommand extends Command {
 
-    public TemplateCommand(String[] templates) {
-        super("template", "A list of all tempaltes", new String[]{"temps"}, Arrays.asList(new String[]{"create", "delete", "info", "list"}, templates));
+    public TemplateCommand() {
+        super("template", "A list of all tempaltes", new String[]{"temps"});
     }
 
     @Override
@@ -58,5 +63,15 @@ public class TemplateCommand extends Command {
         Logger.log("template delete [name] | delete a template", LogType.INFO);
         Logger.log("template info [name] | see all informations about a template", LogType.INFO);
         Logger.log("template list | a list of all loaded tempaltes", LogType.INFO);
+    }
+
+    @Override
+    public List<String> tabComplete(String[] args) {
+        if(args.length == 1) {
+            return Arrays.asList("create", "delete", "info", "list");
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+            return TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString();
+        }
+        return super.tabComplete(args);
     }
 }

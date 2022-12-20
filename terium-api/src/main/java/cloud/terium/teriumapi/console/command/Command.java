@@ -2,6 +2,7 @@ package cloud.terium.teriumapi.console.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jline.builtins.Completers;
 
 import java.util.List;
 
@@ -12,7 +13,10 @@ public abstract class Command {
     private final String command;
     private final String description;
     private final String[] aliases;
-    private final List<String[]> arguments;
 
     public abstract void execute(String[] args);
+
+    public List<String> tabComplete(String[] args) {
+        return null;
+    }
 }
