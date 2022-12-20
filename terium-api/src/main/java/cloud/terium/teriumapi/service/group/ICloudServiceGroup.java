@@ -1,6 +1,6 @@
 package cloud.terium.teriumapi.service.group;
 
-import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.JsonParser;
@@ -30,11 +30,11 @@ public interface ICloudServiceGroup {
     String getGroupTitle();
 
     /**
-     * Get the cluster of the service group
+     * Get the node of the service group
      *
      * @return String This returns the node name of the service group as String.
      */
-    ICluster getServiceGroupCluster();
+    INode getServiceGroupNode();
 
     /**
      * Get the templates of the service group

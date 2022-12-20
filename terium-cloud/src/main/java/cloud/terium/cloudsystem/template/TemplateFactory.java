@@ -3,7 +3,7 @@ package cloud.terium.cloudsystem.template;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.console.commands.TemplateCommand;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import lombok.SneakyThrows;
@@ -29,7 +29,7 @@ public class TemplateFactory implements ITemplateFactory {
     }
 
     @Override
-    public void createTemplate(String name, ICluster cluster) {
+    public void createTemplate(String name, INode node) {
     }
 
     @SneakyThrows

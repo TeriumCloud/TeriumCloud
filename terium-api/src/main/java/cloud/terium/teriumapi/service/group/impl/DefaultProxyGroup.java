@@ -1,7 +1,7 @@
 package cloud.terium.teriumapi.service.group.impl;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
@@ -25,7 +25,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
 
     private final String name;
     private final String groupTitle;
-    private final ICluster cluster;
+    private final INode node;
     private final List<ITemplate> templates;
     private final ServiceType cloudServiceType = ServiceType.Proxy;
     private final String version;
@@ -38,10 +38,10 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultProxyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> templates, String version, boolean maintenance, boolean isStatic, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultProxyGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean maintenance, boolean isStatic, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
-        this.cluster = cluster;
+        this.node = node;
         this.templates = templates;
         this.version = version;
         this.maintenance = maintenance;
@@ -63,7 +63,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
 
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
-        json.addProperty("node", cluster.getName());
+        json.addProperty("node", node.getName());
         json.add("templates", jsonArray);
         json.addProperty("servicetype", ServiceType.Proxy.name());
         json.addProperty("port", port);
@@ -94,8 +94,8 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public ICluster getServiceGroupCluster() {
-        return cluster;
+    public INode getServiceGroupNode() {
+        return node;
     }
 
     @Override

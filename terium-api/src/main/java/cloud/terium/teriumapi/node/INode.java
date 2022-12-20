@@ -1,21 +1,21 @@
-package cloud.terium.teriumapi.cluster;
+package cloud.terium.teriumapi.node;
 
 import java.net.InetSocketAddress;
 
-public interface ICluster {
+public interface INode {
 
     /**
-     * Get the name of the cluster
+     * Get the name of the node
      *
      * @return String
      */
     String getName();
 
     /**
-     * Get the cluster key of the cluster
+     * Get the node key of the node
      * @return String
      */
-    String getClusterKey();
+    String getKey();
 
     /**
      * Get the address of the node

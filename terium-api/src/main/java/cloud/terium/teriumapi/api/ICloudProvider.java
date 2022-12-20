@@ -1,6 +1,6 @@
 package cloud.terium.teriumapi.api;
 
-import cloud.terium.teriumapi.cluster.IClusterProvider;
+import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
@@ -48,10 +48,10 @@ public abstract class ICloudProvider {
     public abstract IEventProvider getEventProvider();
 
     /**
-     * Use this methode to get the IClusterProvider
-     * The IEventProvider is usefull to interact with clusters.
+     * Use this methode to get the INodeProvider
+     * The INodeProvider is usefull to interact with nodes.
      */
-    public abstract IClusterProvider getClusterProvider();
+    public abstract INodeProvider getNodeProvider();
 
     /**
      * Use this methode to get the ITemplateProvider

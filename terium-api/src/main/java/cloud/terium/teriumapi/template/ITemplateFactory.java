@@ -1,6 +1,6 @@
 package cloud.terium.teriumapi.template;
 
-import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.node.INode;
 
 public interface ITemplateFactory {
 
@@ -17,7 +17,7 @@ public interface ITemplateFactory {
      * @param name
      * @param node
      */
-    void createTemplate(String name, ICluster cluster);
+    void createTemplate(String name, INode node);
 
     /**
      * Delete a template by name

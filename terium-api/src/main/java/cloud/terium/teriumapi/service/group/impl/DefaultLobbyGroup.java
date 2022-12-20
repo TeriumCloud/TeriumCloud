@@ -1,7 +1,7 @@
 package cloud.terium.teriumapi.service.group.impl;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.cluster.ICluster;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
@@ -27,7 +27,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     private String name;
     private String groupTitle;
-    private ICluster cluster;
+    private INode node;
     private List<ITemplate> templates;
     private String version;
     private final ServiceType cloudServiceType = ServiceType.Lobby;
@@ -39,10 +39,10 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, ICluster cluster, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, INode node, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
-        this.cluster = cluster;
+        this.node = node;
         this.templates = template;
         this.version = version;
         this.maintenance = maintenance;
@@ -62,7 +62,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
 
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
-        json.addProperty("node", cluster.getName());
+        json.addProperty("node", node.getName());
         json.add("templates", jsonArray);
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
@@ -92,8 +92,8 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public ICluster getServiceGroupCluster() {
-        return cluster;
+    public INode getServiceGroupNode() {
+        return node;
     }
 
     @Override

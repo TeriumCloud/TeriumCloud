@@ -44,7 +44,7 @@ public class TeriumServer {
                                     .addLast("packet-encoder", new ObjectEncoder())
                                     .addLast(new SimpleChannelInboundHandler<Packet>() {
                                         @Override
-                                        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
+                                        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
 
                                             channels.forEach(targetChannel -> {
                                                 if (targetChannel != channelHandlerContext.channel()) {
@@ -59,7 +59,7 @@ public class TeriumServer {
                                         }
 
                                         @Override
-                                        public void channelUnregistered(ChannelHandlerContext channelHandlerContext) throws Exception {
+                                        public void channelUnregistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.remove(channelHandlerContext.channel());
                                         }
 
