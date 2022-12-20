@@ -22,19 +22,19 @@ public class EventProvider implements IEventProvider {
     @Override
     public <T extends Event> void callEvent(T event) {
         for (Listener listener : listeners) {
-            if(!listener.isActive()) {
+            if (!listener.isActive()) {
                 continue;
             }
             for (Method method : listener.getClass().getDeclaredMethods()) {
                 Subscribe subscribe = method.getAnnotation(Subscribe.class);
-                if(subscribe == null) {
+                if (subscribe == null) {
                     continue;
                 }
-                if(method.getParameterCount() != 1) {
+                if (method.getParameterCount() != 1) {
                     System.out.println("[TERIUM-EVENTSYSTEM]: @Subscribe method with more or less then 1 arguments can't be invoked: " + method.getName());
                     continue;
                 }
-                if(!Arrays.asList(method.getParameterTypes()).contains(event.getClass())) {
+                if (!Arrays.asList(method.getParameterTypes()).contains(event.getClass())) {
                     continue;
                 }
                 try {

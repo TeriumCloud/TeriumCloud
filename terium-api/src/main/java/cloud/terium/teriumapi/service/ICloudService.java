@@ -52,11 +52,25 @@ public interface ICloudService {
     int getOnlinePlayers();
 
     /**
+     * Set the online players of the service.
+     *
+     * @param onlinePlayers
+     */
+    void setOnlinePlayers(int onlinePlayers);
+
+    /**
      * Get the used memory from the service
      *
      * @return int This returns the used memory from the service as long.
      */
     long getUsedMemory();
+
+    /**
+     * Set the used memory of the service.
+     *
+     * @param usedMemory
+     */
+    void setUsedMemory(long usedMemory);
 
     /**
      * Update every change by api to cloud.
@@ -87,11 +101,25 @@ public interface ICloudService {
     ServiceState getServiceState();
 
     /**
+     * Set the service state of the service.
+     *
+     * @param serviceState
+     */
+    void setServiceState(ServiceState serviceState);
+
+    /**
      * Get if the service is locked
      *
      * @return boolean This returns if the serivce is locked. (true if yes else false)
      */
     boolean isLocked();
+
+    /**
+     * Set the service lock state.
+     *
+     * @param locked
+     */
+    void setLocked(boolean locked);
 
     /**
      * Get the service type of the service
@@ -119,34 +147,6 @@ public interface ICloudService {
     default boolean isPreparing() {
         return getServiceState() == ServiceState.PREPARING;
     }
-
-    /**
-     * Set the service lock state.
-     *
-     * @param locked
-     */
-    void setLocked(boolean locked);
-
-    /**
-     * Set the online players of the service.
-     *
-     * @param onlinePlayers
-     */
-    void setOnlinePlayers(int onlinePlayers);
-
-    /**
-     * Set the used memory of the service.
-     *
-     * @param usedMemory
-     */
-    void setUsedMemory(long usedMemory);
-
-    /**
-     * Set the service state of the service.
-     *
-     * @param serviceState
-     */
-    void setServiceState(ServiceState serviceState);
 
     /**
      * Shutdown this service.

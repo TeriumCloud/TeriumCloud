@@ -1,11 +1,11 @@
 package cloud.terium.teriumapi.service.group.impl;
 
+import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
-import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -25,12 +25,12 @@ import java.util.concurrent.Executors;
 @Setter
 public class DefaultLobbyGroup implements ICloudServiceGroup {
 
+    private final ServiceType cloudServiceType = ServiceType.Lobby;
     private String name;
     private String groupTitle;
     private INode node;
     private List<ITemplate> templates;
     private String version;
-    private final ServiceType cloudServiceType = ServiceType.Lobby;
     private int maximumPlayers;
     private boolean maintenance;
     private boolean isStatic;
@@ -117,8 +117,18 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public void setMaintenance(boolean maintenance) {
+        this.maintenance = maintenance;
+    }
+
+    @Override
     public boolean isStatic() {
         return isStatic;
+    }
+
+    @Override
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
     }
 
     @Override
@@ -147,33 +157,23 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public int getMaxServices() {
-        return maximalServices;
-    }
-
-    @Override
-    public void setMaxPlayer(int players) {
-        this.maximumPlayers = players;
-    }
-
-    @Override
-    public void setMaintenance(boolean maintenance) {
-        this.maintenance = maintenance;
-    }
-
-    @Override
-    public void setStatic(boolean isStatic) {
-        this.isStatic = isStatic;
-    }
-
-    @Override
     public void setMinServices(int services) {
         this.minimalServices = services;
     }
 
     @Override
+    public int getMaxServices() {
+        return maximalServices;
+    }
+
+    @Override
     public void setMaxServices(int services) {
         this.maximalServices = services;
+    }
+
+    @Override
+    public void setMaxPlayer(int players) {
+        this.maximumPlayers = players;
     }
 
     @Override

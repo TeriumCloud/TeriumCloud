@@ -1,8 +1,6 @@
 package cloud.terium.cloudsystem.pipe;
 
-import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.Packet;
-import cloud.terium.teriumapi.console.LogType;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;

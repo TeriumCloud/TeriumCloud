@@ -8,7 +8,6 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TemplateProvider implements ITemplateProvider {
@@ -25,14 +24,14 @@ public class TemplateProvider implements ITemplateProvider {
     private void loadTempaltes() {
         for (File file : new File("templates//").listFiles()) {
             templates.add(new Template(file.getName(), Path.of(file.getPath())));
-            Logger.log("Successfully loaded template '" + file.getName() + "' with path '" + file.getPath() +"'", LogType.INFO);
+            Logger.log("Successfully loaded template '" + file.getName() + "' with path '" + file.getPath() + "'", LogType.INFO);
         }
     }
 
     @Override
     public ITemplate getTemplateByName(String name) {
         for (ITemplate template : templates) {
-            if(template.getName().equals(name)) {
+            if (template.getName().equals(name)) {
                 return template;
             }
         }

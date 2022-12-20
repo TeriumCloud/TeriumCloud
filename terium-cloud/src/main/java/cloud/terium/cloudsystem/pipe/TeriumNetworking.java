@@ -6,9 +6,6 @@ import cloud.terium.teriumapi.network.Packet;
 public class TeriumNetworking implements IDefaultTeriumNetworking {
 
 
-
-
-
     @Override
     public void sendPacket(Packet packet) {
 

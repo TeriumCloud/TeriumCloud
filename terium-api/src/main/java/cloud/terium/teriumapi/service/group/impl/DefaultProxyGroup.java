@@ -1,11 +1,11 @@
 package cloud.terium.teriumapi.service.group.impl;
 
+import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
-import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -29,9 +29,9 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private final List<ITemplate> templates;
     private final ServiceType cloudServiceType = ServiceType.Proxy;
     private final String version;
+    private final int port;
     private boolean maintenance;
     private boolean isStatic;
-    private final int port;
     private int maximumPlayers;
     private int memory;
     private int minimalServices;
@@ -119,8 +119,18 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public void setMaintenance(boolean maintenance) {
+        this.maintenance = maintenance;
+    }
+
+    @Override
     public boolean isStatic() {
         return isStatic;
+    }
+
+    @Override
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
     }
 
     @Override
@@ -144,33 +154,13 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public int getMinServices() {
-        return minimalServices;
-    }
-
-    @Override
-    public int getMaxServices() {
-        return maximalServices;
-    }
-
-    @Override
-    public void setMaxPlayer(int players) {
-        this.maximumPlayers = players;
-    }
-
-    @Override
-    public void setMaintenance(boolean maintenance) {
-        this.maintenance = maintenance;
-    }
-
-    @Override
-    public void setStatic(boolean isStatic) {
-        this.isStatic = isStatic;
-    }
-
-    @Override
     public void setMemory(int memory) {
         this.memory = memory;
+    }
+
+    @Override
+    public int getMinServices() {
+        return minimalServices;
     }
 
     @Override
@@ -179,8 +169,18 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public int getMaxServices() {
+        return maximalServices;
+    }
+
+    @Override
     public void setMaxServices(int services) {
         this.maximalServices = services;
+    }
+
+    @Override
+    public void setMaxPlayer(int players) {
+        this.maximumPlayers = players;
     }
 
     @Override

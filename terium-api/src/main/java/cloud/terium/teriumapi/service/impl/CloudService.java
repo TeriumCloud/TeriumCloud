@@ -1,8 +1,8 @@
 package cloud.terium.teriumapi.service.impl;
 
-import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
-import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ServiceState;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.List;
@@ -60,8 +60,18 @@ public class CloudService implements ICloudService {
     }
 
     @Override
+    public void setOnlinePlayers(int onlinePlayers) {
+        this.onlinePlayers = onlinePlayers;
+    }
+
+    @Override
     public long getUsedMemory() {
         return usedMemory;
+    }
+
+    @Override
+    public void setUsedMemory(long usedMemory) {
+        this.usedMemory = usedMemory;
     }
 
     @Override
@@ -80,6 +90,11 @@ public class CloudService implements ICloudService {
     }
 
     @Override
+    public void setServiceState(ServiceState serviceState) {
+        this.serviceState = serviceState;
+    }
+
+    @Override
     public boolean isLocked() {
         return locked;
     }
@@ -87,20 +102,5 @@ public class CloudService implements ICloudService {
     @Override
     public void setLocked(boolean locked) {
         this.locked = locked;
-    }
-
-    @Override
-    public void setOnlinePlayers(int onlinePlayers) {
-        this.onlinePlayers = onlinePlayers;
-    }
-
-    @Override
-    public void setUsedMemory(long usedMemory) {
-        this.usedMemory = usedMemory;
-    }
-
-    @Override
-    public void setServiceState(ServiceState serviceState) {
-        this.serviceState = serviceState;
     }
 }

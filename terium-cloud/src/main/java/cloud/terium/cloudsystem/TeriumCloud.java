@@ -32,23 +32,19 @@ public class TeriumCloud {
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
 
-    public static void main(String[] args) {
-        new TeriumCloud();
-    }
-
     public TeriumCloud() {
         terium = this;
         this.cloudUtils = new CloudUtils();
 
         System.setProperty("org.jline.terminal.dumb", "true");
         Logger.log("""
-                        \u001B[0m_______ _______  ______ _____ _     _ _______ \u001B[36m_______         _____  _     _ ______\s
-                        \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
-                        \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/ \u001B[37m[\u001B[0m%version%\u001B[37m]
-                                                                                                    \s
-                        \u001B[0m> Terium by ByRaudy(Jannik H.)\s
-                        \u001B[0m> Discord: \u001B[36mterium.cloud/discord \u001B[0m| Twitter: \u001B[36m@teriumcloud\u001B[0m
-                        """.replace("%version%", getCloudUtils().getVersion()));
+                \u001B[0m_______ _______  ______ _____ _     _ _______ \u001B[36m_______         _____  _     _ ______\s
+                \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
+                \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/ \u001B[37m[\u001B[0m%version%\u001B[37m]
+                                                                                            \s
+                \u001B[0m> Terium by ByRaudy(Jannik H.)\s
+                \u001B[0m> Discord: \u001B[36mterium.cloud/discord \u001B[0m| Twitter: \u001B[36m@teriumcloud\u001B[0m
+                """.replace("%version%", getCloudUtils().getVersion()));
         Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
 
         this.configManager = new ConfigManager();
@@ -63,6 +59,10 @@ public class TeriumCloud {
             cloudUtils.setRunning(false);
             shutdownCloud();
         });
+    }
+
+    public static void main(String[] args) {
+        new TeriumCloud();
     }
 
     public static TeriumCloud getTerium() {

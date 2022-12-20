@@ -6,7 +6,7 @@ public interface IEventProvider {
      * Use that methode to call a custom event.
      *
      * @param event Event
-     * @param <T> T
+     * @param <T>   T
      */
     <T extends Event> void callEvent(T event);
 

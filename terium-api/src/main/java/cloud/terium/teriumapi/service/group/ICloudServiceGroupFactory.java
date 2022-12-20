@@ -1,9 +1,9 @@
 package cloud.terium.teriumapi.service.group;
 
 import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
+import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.List;
@@ -13,13 +13,13 @@ public interface ICloudServiceGroupFactory {
     /**
      * Use this methode to create a lobby service group
      *
-     * @param name String
-     * @param groupTitle String
-     * @param node INode
-     * @param templates List<ITemplate>
-     * @param version String
-     * @param maximumPlayers Int
-     * @param memory Int
+     * @param name            String
+     * @param groupTitle      String
+     * @param node            INode
+     * @param templates       List<ITemplate>
+     * @param version         String
+     * @param maximumPlayers  Int
+     * @param memory          Int
      * @param minimalServices Int
      * @param maximalServices Int
      */
@@ -30,13 +30,13 @@ public interface ICloudServiceGroupFactory {
     /**
      * Use this methode to create a proxy service group
      *
-     * @param name String
-     * @param groupTitle String
-     * @param node INode
-     * @param templates List<ITemplate>
-     * @param version String
-     * @param maximumPlayers Int
-     * @param memory Int
+     * @param name            String
+     * @param groupTitle      String
+     * @param node            INode
+     * @param templates       List<ITemplate>
+     * @param version         String
+     * @param maximumPlayers  Int
+     * @param memory          Int
      * @param minimalServices Int
      * @param maximalServices Int
      */
@@ -47,13 +47,13 @@ public interface ICloudServiceGroupFactory {
     /**
      * Use this methode to create a server service group
      *
-     * @param name String
-     * @param groupTitle String
-     * @param node INode
-     * @param templates List<ITemplate>
-     * @param version String
-     * @param maximumPlayers Int
-     * @param memory Int
+     * @param name            String
+     * @param groupTitle      String
+     * @param node            INode
+     * @param templates       List<ITemplate>
+     * @param version         String
+     * @param maximumPlayers  Int
+     * @param memory          Int
      * @param minimalServices Int
      * @param maximalServices Int
      */

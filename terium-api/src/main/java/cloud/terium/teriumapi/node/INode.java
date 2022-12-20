@@ -13,6 +13,7 @@ public interface INode {
 
     /**
      * Get the node key of the node
+     *
      * @return String
      */
     String getKey();

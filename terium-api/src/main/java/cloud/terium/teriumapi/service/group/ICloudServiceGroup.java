@@ -65,11 +65,25 @@ public interface ICloudServiceGroup {
     boolean isMaintenance();
 
     /**
+     * Set the maintenance state of the service group
+     *
+     * @param maintenance Boolean
+     */
+    void setMaintenance(boolean maintenance);
+
+    /**
      * Get if the service group is statc
      *
      * @return boolean This returns if the serivce group is static as boolean. (true if yes else false)
      */
     boolean isStatic();
+
+    /**
+     * Set the static value of the service group
+     *
+     * @param isStatic Boolean
+     */
+    void setStatic(boolean isStatic);
 
     /**
      * Get if the service group has a port
@@ -100,46 +114,18 @@ public interface ICloudServiceGroup {
     int getMemory();
 
     /**
-     * Get the minimal online service count of the service group
-     *
-     * @return int This returns the minimal online service count from the service group as int.
-     */
-    int getMinServices();
-
-    /**
-     * Get the maximal online service count of the service group
-     *
-     * @return int This returns the maximal online service count from the service group as int.
-     */
-    int getMaxServices();
-
-    /**
-     * Set the maximal players who can join on the service group
-     *
-     * @param players Int
-     */
-    void setMaxPlayer(int players);
-
-    /**
-     * Set the maintenance state of the service group
-     *
-     * @param maintenance Boolean
-     */
-    void setMaintenance(boolean maintenance);
-
-    /**
-     * Set the static value of the service group
-     *
-     * @param isStatic Boolean
-     */
-    void setStatic(boolean isStatic);
-
-    /**
      * Set the max memory of the service group
      *
      * @param memory Int
      */
     void setMemory(int memory);
+
+    /**
+     * Get the minimal online service count of the service group
+     *
+     * @return int This returns the minimal online service count from the service group as int.
+     */
+    int getMinServices();
 
     /**
      * Set the minimal online service count of the service group
@@ -149,10 +135,25 @@ public interface ICloudServiceGroup {
     void setMinServices(int services);
 
     /**
+     * Get the maximal online service count of the service group
+     *
+     * @return int This returns the maximal online service count from the service group as int.
+     */
+    int getMaxServices();
+
+    /**
      * Set the maximal online service count of the service group
+     *
      * @param services Int
      */
     void setMaxServices(int services);
+
+    /**
+     * Set the maximal players who can join on the service group
+     *
+     * @param players Int
+     */
+    void setMaxPlayer(int players);
 
     /**
      * Update every change by api to cloud.

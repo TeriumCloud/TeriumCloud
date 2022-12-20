@@ -12,7 +12,6 @@ public interface INodeProvider {
     List<INode> getAllNodes();
 
     /**
-     *
      * @param name String
      * @return INode
      */

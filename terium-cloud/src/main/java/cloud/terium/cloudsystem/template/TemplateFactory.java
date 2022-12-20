@@ -3,8 +3,8 @@ package cloud.terium.cloudsystem.template;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.console.commands.TemplateCommand;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
@@ -18,7 +18,7 @@ public class TemplateFactory implements ITemplateFactory {
     public void createTemplate(String name) {
         File file = new File("templates//" + name);
 
-        if(file.exists()) {
+        if (file.exists()) {
             Logger.log("A template with this name already exist.", LogType.ERROR);
             return;
         }

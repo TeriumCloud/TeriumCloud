@@ -1,9 +1,9 @@
 package cloud.terium.teriumapi.api;
 
-import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
+import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;

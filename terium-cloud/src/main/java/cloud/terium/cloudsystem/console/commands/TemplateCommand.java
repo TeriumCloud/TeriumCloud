@@ -19,14 +19,14 @@ public class TemplateCommand extends Command {
         if (args.length >= 1) {
             switch (args[0]) {
                 case "create" -> {
-                    if(args.length > 1) {
+                    if (args.length > 1) {
                         Logger.log("Trying to create template '" + args[1] + "'...", LogType.INFO);
                         TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[1]);
                     } else Logger.log("template create [name] | create a new template", LogType.INFO);
                     return;
                 }
                 case "delete" -> {
-                    if(args.length > 1) {
+                    if (args.length > 1) {
                         Logger.log("Trying to delete template '" + args[1] + "'...", LogType.INFO);
                         TeriumCloud.getTerium().getTemplateFactory().deleteTemplate(args[1]);
                         Logger.log("Successfully deleted template '" + args[1] + "'.", LogType.INFO);
@@ -34,7 +34,7 @@ public class TemplateCommand extends Command {
                     return;
                 }
                 case "info" -> {
-                    if(args.length > 1) {
+                    if (args.length > 1) {
                         ITemplate template = TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[1]);
                         try {
                             Logger.log("Informations of template '" + template.getName() + "':", LogType.INFO);

@@ -19,8 +19,8 @@ import java.util.Arrays;
 public class ConsoleManager {
 
     private final Terminal terminal;
-    private LineReader lineReader;
     private final String username;
+    private LineReader lineReader;
     private CommandManager commandManager;
     private AggregateCompleter completer;
     private Thread thread;
@@ -42,7 +42,7 @@ public class ConsoleManager {
     public void readConsole() {
         completer = new AggregateCompleter(commandManager.getBuildedCommands().values());
 
-         this.lineReader = LineReaderBuilder.builder()
+        this.lineReader = LineReaderBuilder.builder()
                 .appName("terium-console")
                 .terminal(terminal)
                 .completer(completer)

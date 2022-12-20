@@ -1,11 +1,7 @@
 package cloud.terium.cloudsystem.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
-
-import java.util.Arrays;
 
 public class StopCommand extends Command {
 
