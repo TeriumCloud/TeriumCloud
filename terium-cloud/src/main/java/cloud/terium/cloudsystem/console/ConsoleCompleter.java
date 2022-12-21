@@ -20,36 +20,38 @@ public class ConsoleCompleter implements Completer {
 
         List<String> suggestions = null;
         String[] arguments = input.split(" ");
-        if (input.indexOf(' ') == -1) {
-            Collection<String> registeredCommands = TeriumCloud.getTerium().getCommandManager().getBuildedCommands().keySet();
-            String tests = arguments[arguments.length - 1];
-            List<String> result = new LinkedList<>();
-            for (final String s : registeredCommands) {
-                if (s != null && (tests.trim().isEmpty() || s.toLowerCase().contains(tests.toLowerCase()))) {
-                    result.add(s);
+        try {
+            if (input.indexOf(' ') == -1) {
+                Collection<String> registeredCommands = TeriumCloud.getTerium().getCommandManager().getBuildedCommands().keySet();
+                String tests = arguments[arguments.length - 1];
+                List<String> result = new LinkedList<>();
+                for (final String s : registeredCommands) {
+                    if (s != null && (tests.trim().isEmpty() || s.toLowerCase().contains(tests.toLowerCase()))) {
+                        result.add(s);
+                    }
+                }
+
+                if (result.isEmpty() && !registeredCommands.isEmpty()) {
+                    result.addAll(registeredCommands);
+                }
+
+                suggestions = result;
+            } else {
+                Command command = TeriumCloud.getTerium().getCommandManager().getBuildedCommands().get(arguments[0]);
+                if (arguments.length > 1) {
+                    if (input.endsWith(" ")) {
+                        arguments = Arrays.copyOfRange(arguments, 1, arguments.length + 1);
+                        arguments[arguments.length - 1] = "";
+                    } else {
+                        arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+                    }
+                }
+
+                if (command != null) {
+                    suggestions = command.tabComplete(arguments);
                 }
             }
-
-            if (result.isEmpty() && !registeredCommands.isEmpty()) {
-                result.addAll(registeredCommands);
-            }
-
-            suggestions = result;
-        } else {
-            Command command = TeriumCloud.getTerium().getCommandManager().getBuildedCommands().get(arguments[0]);
-            if (arguments.length > 1) {
-                if (input.endsWith(" ")) {
-                    arguments = Arrays.copyOfRange(arguments, 1, arguments.length + 1);
-                    arguments[arguments.length - 1] = "";
-                } else {
-                    arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
-                }
-            }
-
-            if (command != null) {
-                suggestions = command.tabComplete(arguments);
-            }
-        }
+        } catch (Exception ignored) {}
 
         if (suggestions == null || suggestions.isEmpty()) return;
 

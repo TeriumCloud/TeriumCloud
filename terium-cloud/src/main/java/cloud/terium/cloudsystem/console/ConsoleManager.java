@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.UserInterruptException;
 import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -60,9 +61,9 @@ public class ConsoleManager {
                         input = lineReader.readLine(LoggerColors.replaceColorCodes("§b" + username + "§f@terium => "));
                     } catch (EndOfFileException exception) {
                         input = lineReader.readLine("");
+                    } catch (UserInterruptException exception) {
+                        TeriumCloud.getTerium().shutdownCloud();
                     }
-                } else {
-                    input = lineReader.readLine("");
                 }
 
                 try {
