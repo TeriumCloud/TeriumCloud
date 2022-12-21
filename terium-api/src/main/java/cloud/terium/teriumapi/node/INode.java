@@ -24,4 +24,18 @@ public interface INode {
      * @return InetSocketAddress
      */
     InetSocketAddress getAddress();
+
+    /**
+     * Get if the node is the head of all nodes.
+     *
+     * @return Boolean This returns if the node is the head of all nodes. (true if yes else false)
+     */
+    boolean isHeadNode();
+
+    /**
+     * Set the current node to the head of all nodes.
+     *
+     * @param headNode Boolean
+     */
+    boolean setHeadNode(boolean headNode);
 }
