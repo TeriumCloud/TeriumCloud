@@ -43,7 +43,6 @@ public class TeriumServer {
                                     .addLast(new SimpleChannelInboundHandler<Packet>() {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
-
                                             channels.forEach(targetChannel -> {
                                                 if (targetChannel != channelHandlerContext.channel()) {
                                                     targetChannel.writeAndFlush(packet);

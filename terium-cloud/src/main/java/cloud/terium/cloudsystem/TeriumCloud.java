@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
+import cloud.terium.cloudsystem.pipe.TeriumNetworking;
 import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
@@ -28,6 +29,7 @@ public class TeriumCloud {
     private final CloudConfig cloudConfig;
     private final ConfigManager configManager;
     private final ConsoleManager consoleManager;
+    private final TeriumNetworking networking;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
@@ -55,6 +57,7 @@ public class TeriumCloud {
 
         this.configManager = new ConfigManager();
         this.cloudConfig = configManager.toCloudConfig();
+        this.networking = new TeriumNetworking();
         this.eventProvider = new EventProvider();
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
@@ -75,8 +78,10 @@ public class TeriumCloud {
                 
                 §a✓ §fLoaded %commands% commands successfully.
                 §a✓ §fLoaded %templates% templates successfully.
+                §a✓ §fStarted terium-server on %ip%:%port%.
                 
-                """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplatesAsString().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + ""));
+                """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplatesAsString().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
+                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + ""));
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
