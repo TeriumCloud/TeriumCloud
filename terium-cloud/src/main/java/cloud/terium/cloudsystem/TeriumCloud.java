@@ -76,9 +76,9 @@ public class TeriumCloud {
                 §7> §fTerium by ByRaudy(Jannik H.)\s
                 §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                 
-                §a✓ §fLoaded %commands% commands successfully.
-                §a✓ §fLoaded %templates% templates successfully.
-                §a✓ §fStarted terium-server on %ip%:%port%.
+                    §a✓ §fLoaded %commands% commands successfully.
+                    §a✓ §fLoaded %templates% templates successfully.
+                    §a✓ §fStarted terium-server on %ip%:%port%.
                 
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplatesAsString().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + ""));
