@@ -32,20 +32,26 @@ public class TeriumCloud {
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
 
+    public static void main(String[] args) {
+        new TeriumCloud();
+    }
+
+    @SneakyThrows
     public TeriumCloud() {
         terium = this;
         this.cloudUtils = new CloudUtils();
 
         System.setProperty("org.jline.terminal.dumb", "true");
         Logger.log("""
-                \u001B[0m_______ _______  ______ _____ _     _ _______ \u001B[36m_______         _____  _     _ ______\s
-                \u001B[0m   |    |______ |_____/   |   |     | |  |  | \u001B[36m|       |      |     | |     | |     \\
-                \u001B[0m   |    |______ |    \\_ __|__ |_____| |  |  | \u001B[36m|_____  |_____ |_____| |_____| |_____/ \u001B[37m[\u001B[0m%version%\u001B[37m]
+                §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
+                §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
+                §f   |    |______ |    \\_ __|__ |_____| |  |  | §b|_____  |_____ |_____| |_____| |_____/ §7[§f%version%§7]
                                                                                             \s
-                \u001B[0m> Terium by ByRaudy(Jannik H.)\s
-                \u001B[0m> Discord: \u001B[36mterium.cloud/discord \u001B[0m| Twitter: \u001B[36m@teriumcloud\u001B[0m
+                §7> §fTerium by ByRaudy(Jannik H.)\s
+                §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                 """.replace("%version%", getCloudUtils().getVersion()));
-        Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Trying to start Terium..."));
+        Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Welcome to terium-cloud!"));
+        Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "terium-cloud is starting phase §6one §7of the startup... Please wait a small while."));
 
         this.configManager = new ConfigManager();
         this.cloudConfig = configManager.toCloudConfig();
@@ -55,14 +61,27 @@ public class TeriumCloud {
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
+        Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
+        Thread.sleep(1000);
+
+        consoleManager.clearScreen();
+        Logger.log("""
+                §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
+                §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
+                §f   |    |______ |    \\_ __|__ |_____| |  |  | §b|_____  |_____ |_____| |_____| |_____/ §7[§f%version%§7]
+                                                                                            \s
+                §7> §fTerium by ByRaudy(Jannik H.)\s
+                §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
+                
+                §a✓ §fLoaded %commands% commands successfully.
+                §a✓ §fLoaded %templates% templates successfully.
+                
+                """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplatesAsString().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + ""));
+
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
             shutdownCloud();
         });
-    }
-
-    public static void main(String[] args) {
-        new TeriumCloud();
     }
 
     public static TeriumCloud getTerium() {

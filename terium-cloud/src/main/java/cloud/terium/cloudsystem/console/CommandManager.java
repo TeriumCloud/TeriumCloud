@@ -1,9 +1,12 @@
 package cloud.terium.cloudsystem.console;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.console.commands.ClearCommand;
 import cloud.terium.cloudsystem.console.commands.HelpCommand;
 import cloud.terium.cloudsystem.console.commands.StopCommand;
 import cloud.terium.cloudsystem.console.commands.TemplateCommand;
+import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import lombok.Getter;
@@ -27,9 +30,12 @@ public class CommandManager implements ICommandFactory {
         this.commandList = new ArrayList<>();
         this.buildedCommands = new HashMap<>();
 
+        Logger.log("Loading all commands...", LogType.INFO);
         registerCommand(new HelpCommand());
         registerCommand(new StopCommand());
+        registerCommand(new ClearCommand());
         registerCommand(new TemplateCommand());
+        Logger.log("Successfully loaded all commands...", LogType.INFO);
     }
 
     public void registerCommand(Command command) {
@@ -66,6 +72,7 @@ public class CommandManager implements ICommandFactory {
                 buildedCommands.put(alias, command);
             }
         }
+        Logger.log("Loaded commmand '" + command.getCommand() + "'", LogType.INFO);
     }
 
     /*private void buildCommand(Command command) {

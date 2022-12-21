@@ -26,7 +26,10 @@ public class Logger {
     }
 
     public static void log(String message) {
-        System.out.println(LoggerColors.replaceColorCodes(message));
+        if (TeriumCloud.getTerium().getConsoleManager() != null)
+            TeriumCloud.getTerium().getConsoleManager().getLineReader().printAbove(LoggerColors.replaceColorCodes(message));
+        else
+            System.out.println(LoggerColors.replaceColorCodes(message));
     }
 
     @SneakyThrows

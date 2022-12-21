@@ -13,6 +13,7 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ public class ConsoleManager {
     }
 
     public void readConsole() {
+        Logger.log("Starting console-read thread...", LogType.INFO);
         completer = new AggregateCompleter(new ConsoleCompleter());
 
         this.lineReader = LineReaderBuilder.builder()
@@ -67,8 +69,6 @@ public class ConsoleManager {
                     if ((command = TeriumCloud.getTerium().getCommandManager().getCommand(input.split(" ")[0])) != null || (command = TeriumCloud.getTerium().getCommandManager().getCommandByAlias(input.split(" ")[0])) != null) {
                         final String[] args = input.split(" ");
                         command.execute(Arrays.copyOfRange(args, 1, args.length));
-                    } else {
-                        Logger.log("This command doesn't exist!", LogType.ERROR);
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
@@ -77,6 +77,12 @@ public class ConsoleManager {
             }
         });
         this.thread.start();
+        Logger.log("Successfully started console-read thread.", LogType.INFO);
+    }
+
+    public void clearScreen() {
+        this.terminal.puts(InfoCmp.Capability.clear_screen);
+        this.terminal.flush();
     }
 
     @SneakyThrows
