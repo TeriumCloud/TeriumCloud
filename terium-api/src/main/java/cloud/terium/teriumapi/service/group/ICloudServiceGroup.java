@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.service.group;
 
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.JsonParser;
@@ -56,6 +57,14 @@ public interface ICloudServiceGroup {
      * @return String This returns the version as string.
      */
     String getVersion();
+
+    /**
+     * Get all online players on services from a service group
+     *
+     * @return List<ICloudPlayer> This returns all online players as List<ICloudPlayer>.
+     *
+     */
+    List<ICloudPlayer> getOnlinePlayers();
 
     /**
      * Get if the service group is in maintenance

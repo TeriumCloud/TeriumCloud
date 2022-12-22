@@ -122,6 +122,28 @@ public interface ICloudService {
     void setLocked(boolean locked);
 
     /**
+     * Set a property to the service.
+     *
+     * @param name
+     * @param property
+     */
+    void addProperty(String name, Object property);
+
+    /**
+     * Remove a property from the service.
+     * @param name
+     */
+    void removeProperty(String name);
+
+    /**
+     * Get a property from the service.
+     *
+     * @param name
+     * @return Object
+     */
+    Object getProperty(String name);
+
+    /**
      * Get the service type of the service
      *
      * @return ServiceType this returns the service type of the service
