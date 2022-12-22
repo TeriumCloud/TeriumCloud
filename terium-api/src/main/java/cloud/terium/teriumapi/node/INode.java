@@ -26,16 +26,19 @@ public interface INode {
     InetSocketAddress getAddress();
 
     /**
-     * Get if the node is the head of all nodes.
+     * Get if the node is connected with the current node.
      *
-     * @return Boolean This returns if the node is the head of all nodes. (true if yes else false)
+     * @return Boolean This returns if the node is connected. (true if yes else false)
      */
-    boolean isHeadNode();
+    boolean isConnected();
 
     /**
-     * Set the current node to the head of all nodes.
-     *
-     * @param headNode Boolean
+     * Use that methode to disconnect the node.
      */
-    boolean setHeadNode(boolean headNode);
+    void disconnect();
+
+    /**
+     * Use that methode to stop the node.
+     */
+    void stop();
 }
