@@ -1,8 +1,10 @@
 package cloud.terium.cloudsystem.node;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 
@@ -66,6 +68,11 @@ public class Node implements INode {
     @Override
     public void setMaxMemory(long maxMemory) {
         this.maxMemory = maxMemory;
+    }
+
+    @Override
+    public void update() {
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeUpdate(this, usedMemory, maxMemory));
     }
 
     @Override

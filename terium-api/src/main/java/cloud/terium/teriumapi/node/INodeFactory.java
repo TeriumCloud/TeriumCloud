@@ -16,7 +16,7 @@ public interface INodeFactory {
     /**
      * Use that methode to delete a node by name.
      *
-     * @param name String
+     * @param node INode
      */
-    void deleteNode(String name);
+    void deleteNode(INode node);
 }

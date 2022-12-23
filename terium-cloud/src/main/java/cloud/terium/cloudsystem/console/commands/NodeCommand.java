@@ -6,6 +6,7 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
 
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,15 +29,35 @@ public class NodeCommand extends Command {
                         } catch (Exception exception) {
                             Logger.log("This node is currently not connected with this node.", LogType.ERROR);
                         }
-                    } else Logger.log("node execute [name] disconnect | disconnect or stop a node", LogType.INFO);
+                    } else Logger.log("node execute [name] disconnect§7|§fstop", LogType.INFO);
 
                     return;
                 }
                 case "add" -> {
-                    // TODO
+                    if (args.length >= 5) {
+                        try {
+                            TeriumCloud.getTerium().getNodeFactory().createNode(args[1], args[4], new InetSocketAddress(args[2], Integer.parseInt(args[3])));
+                            Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
+                        } catch (Exception exception) {
+                            if(args.length == 6 && args[5].equalsIgnoreCase("--print")) exception.printStackTrace();
+                            Logger.log("Error while creating new node.", LogType.ERROR);
+                        }
+                    } else Logger.log("node add [name] [ip] [port] [key] (command)", LogType.INFO);
+
+                    return;
                 }
                 case "remove" -> {
-                    // TODO:
+                    if (args.length > 1) {
+                        INode node = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
+                        try {
+                            if(args[1].equalsIgnoreCase("--stop")) node.stop();
+                            TeriumCloud.getTerium().getNodeFactory().deleteNode(node);
+                        } catch (Exception exception) {
+                            Logger.log("A node with that name isn't registered.", LogType.ERROR);
+                        }
+                    } else Logger.log("node remove [name] (command)", LogType.INFO);
+
+                    return;
                 }
                 case "info" -> {
                     if (args.length > 1) {
@@ -51,7 +72,7 @@ public class NodeCommand extends Command {
                         } catch (Exception exception) {
                             Logger.log("A node with that name isn't registered.", LogType.ERROR);
                         }
-                    } else Logger.log("node info [name] | see all informations about a node", LogType.INFO);
+                    } else Logger.log("node info [name]", LogType.INFO);
 
                     return;
                 }
@@ -65,8 +86,8 @@ public class NodeCommand extends Command {
             return;
         }
 
-        Logger.log("node execute [name] disconnect | disconnect or stop a node", LogType.INFO);
-        Logger.log("node add [name] | add a node", LogType.INFO);
+        Logger.log("node execute [name] disconnect§7|§fstop | disconnect or stop a node", LogType.INFO);
+        Logger.log("node add [name] [ip] [port] [key] (command) | add a node", LogType.INFO);
         Logger.log("node remove [name] | remove a node", LogType.INFO);
         Logger.log("node info [name] | see all informations about a node", LogType.INFO);
         Logger.log("nodes list | a list of all loaded nodes with informations", LogType.INFO);
@@ -87,6 +108,9 @@ public class NodeCommand extends Command {
                 if (args[0].equalsIgnoreCase("execute")) {
                     return Arrays.asList("disconnect", "stop");
                 }
+            }
+            case 6 -> {
+                return List.of("--print");
             }
         }
 

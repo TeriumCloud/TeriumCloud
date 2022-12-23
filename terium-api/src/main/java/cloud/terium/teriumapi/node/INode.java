@@ -1,5 +1,7 @@
 package cloud.terium.teriumapi.node;
 
+import cloud.terium.networking.client.TeriumClient;
+
 import java.net.InetSocketAddress;
 
 public interface INode {
@@ -59,6 +61,11 @@ public interface INode {
      * @param maxMemory
      */
     void setMaxMemory(long maxMemory);
+
+    /**
+     * Update the node.
+     */
+    void update();
 
     /**
      * Use that methode to disconnect the node.
