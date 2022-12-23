@@ -53,7 +53,7 @@ public class ConfigManager {
                 json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("nodes").getAsJsonArray());
     }
 
-    private void save() {
+    public void save() {
         pool.execute(() -> {
             try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 gson.toJson(json, writer);
@@ -61,5 +61,9 @@ public class ConfigManager {
                 ex.printStackTrace();
             }
         });
+    }
+
+    public JsonObject getJson() {
+        return json;
     }
 }
