@@ -1,10 +1,7 @@
 package cloud.terium.cloudsystem.console;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.console.commands.ClearCommand;
-import cloud.terium.cloudsystem.console.commands.HelpCommand;
-import cloud.terium.cloudsystem.console.commands.StopCommand;
-import cloud.terium.cloudsystem.console.commands.TemplateCommand;
+import cloud.terium.cloudsystem.console.commands.*;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
@@ -35,6 +32,7 @@ public class CommandManager implements ICommandFactory {
         registerCommand(new StopCommand());
         registerCommand(new ClearCommand());
         registerCommand(new TemplateCommand());
+        registerCommand(new NodeCommand());
         Logger.log("Successfully loaded all commands...", LogType.INFO);
     }
 

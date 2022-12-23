@@ -66,7 +66,7 @@ public class TemplateCommand extends Command {
         if(args.length == 1) {
             return Arrays.asList("create", "delete", "info", "list");
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("delete"))) {
-            return TeriumCloud.getTerium().getTemplateProvider().getAllTemplatesAsString();
+            return TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().map(ITemplate::getName).toList();
         }
         return super.tabComplete(args);
     }

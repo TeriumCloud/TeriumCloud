@@ -42,13 +42,4 @@ public class TemplateProvider implements ITemplateProvider {
     public List<ITemplate> getAllTemplates() {
         return templates;
     }
-
-    public List<String> getAllTemplatesAsString() {
-        List<String> templateNames = new ArrayList<>();
-        templates.forEach(template -> {
-            templateNames.add(template.getName());
-        });
-
-        return templateNames;
-    }
 }

@@ -33,6 +33,34 @@ public interface INode {
     boolean isConnected();
 
     /**
+     * Get the used memory of the node.
+     *
+     * @return Long This returns the used memory of the node.
+     */
+    long getUsedMemory();
+
+    /**
+     * Get the max memory of the node.
+     *
+     * @return Long This returns the max memory of the node.
+     */
+    long getMaxMemory();
+
+    /**
+     * Set the used memory of the node.
+     *
+     * @param usedMemory
+     */
+    void setUsedMemory(long usedMemory);
+
+    /**
+     * Set the max memory of the node.
+     *
+     * @param maxMemory
+     */
+    void setMaxMemory(long maxMemory);
+
+    /**
      * Use that methode to disconnect the node.
      */
     void disconnect();

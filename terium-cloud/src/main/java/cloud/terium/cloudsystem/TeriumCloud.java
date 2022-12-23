@@ -87,7 +87,7 @@ public class TeriumCloud {
                     §a✓ §fLoaded and connected to %nodes% nodes successfully.
                     §a✓ §fStarted terium-server on %ip%:%port%.
                 
-                """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplatesAsString().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
+                """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%nodes%", nodeProvider.getAllNodes().size() + ""));
 
         Signal.handle(new Signal("INT"), signal -> {
