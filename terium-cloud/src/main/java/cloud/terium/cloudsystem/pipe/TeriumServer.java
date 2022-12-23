@@ -1,6 +1,6 @@
 package cloud.terium.cloudsystem.pipe;
 
-import cloud.terium.networking.packet.Packet;
+import cloud.terium.teriumapi.network.Packet;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;

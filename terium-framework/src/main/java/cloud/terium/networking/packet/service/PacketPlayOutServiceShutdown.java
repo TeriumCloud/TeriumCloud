@@ -1,6 +1,7 @@
 package cloud.terium.networking.packet.service;
 
 import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.service.ICloudService;
 
-public record PacketPlayOutServiceShutdown(String servicename) implements Packet {
+public record PacketPlayOutServiceShutdown(ICloudService cloudService) implements Packet {
 }

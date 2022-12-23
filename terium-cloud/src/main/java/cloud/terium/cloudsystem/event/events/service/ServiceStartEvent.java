@@ -1,5 +1,7 @@
 package cloud.terium.cloudsystem.event.events.service;
 
+import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.networking.packet.service.PacketPlayOutServiceStart;
 import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -14,5 +16,6 @@ public class ServiceStartEvent extends Event {
     public ServiceStartEvent(ICloudService cloudService, INode node) {
         this.cloudService = cloudService;
         this.node = node;
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceStart(cloudService.getServiceName(), cloudService.getServiceGroup(), cloudService.getTemplates(), cloudService.getServiceId(), cloudService.getMaxPlayers(), cloudService.getMaxMemory()));
     }
 }
