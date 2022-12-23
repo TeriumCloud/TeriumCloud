@@ -1,10 +1,13 @@
 package cloud.terium.teriumapi.service.impl;
 
+import cloud.terium.networking.packet.PacketPlayOutUpdateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CloudService implements ICloudService {
@@ -14,6 +17,7 @@ public class CloudService implements ICloudService {
     private final int port;
     private final List<ITemplate> templates;
     private final ICloudServiceGroup iCloudServiceGroup;
+    private final HashMap<String, Object> propertyCache;
     private int onlinePlayers;
     private long usedMemory;
     private boolean locked;
@@ -32,6 +36,7 @@ public class CloudService implements ICloudService {
         this.onlinePlayers = 0;
         this.usedMemory = 0;
         this.serviceState = online ? ServiceState.ONLINE : ServiceState.PREPARING;
+        this.propertyCache = new HashMap<>();
     }
 
     @Override
@@ -76,7 +81,7 @@ public class CloudService implements ICloudService {
 
     @Override
     public void update() {
-        //TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(serviceName, locked, serviceState, onlinePlayers, usedMemory));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(serviceName, locked, serviceState, onlinePlayers, usedMemory));
     }
 
     @Override
@@ -102,5 +107,20 @@ public class CloudService implements ICloudService {
     @Override
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    @Override
+    public void addProperty(String name, Object property) {
+        this.propertyCache.put(name, property);
+    }
+
+    @Override
+    public void removeProperty(String name) {
+        this.propertyCache.remove(name);
+    }
+
+    @Override
+    public Object getProperty(String name) {
+        return this.propertyCache.get(name);
     }
 }

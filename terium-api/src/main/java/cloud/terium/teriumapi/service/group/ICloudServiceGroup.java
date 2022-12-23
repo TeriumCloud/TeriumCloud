@@ -59,14 +59,6 @@ public interface ICloudServiceGroup {
     String getVersion();
 
     /**
-     * Get all online players on services from a service group
-     *
-     * @return List<ICloudPlayer> This returns all online players as List<ICloudPlayer>.
-     *
-     */
-    List<ICloudPlayer> getOnlinePlayers();
-
-    /**
      * Get if the service group is in maintenance
      *
      * @return boolean This returns if the serivce group is in maintenance as boolean. (true if yes else false)

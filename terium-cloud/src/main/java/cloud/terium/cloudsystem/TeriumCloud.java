@@ -5,6 +5,8 @@ import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
+import cloud.terium.cloudsystem.node.NodeFactory;
+import cloud.terium.cloudsystem.node.NodeProvider;
 import cloud.terium.cloudsystem.pipe.TeriumNetworking;
 import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
@@ -30,6 +32,8 @@ public class TeriumCloud {
     private final ConfigManager configManager;
     private final ConsoleManager consoleManager;
     private final TeriumNetworking networking;
+    private final NodeProvider nodeProvider;
+    private final NodeFactory nodeFactory;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
@@ -61,6 +65,8 @@ public class TeriumCloud {
         this.eventProvider = new EventProvider();
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
+        this.nodeProvider = new NodeProvider();
+        this.nodeFactory = new NodeFactory();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
@@ -78,10 +84,11 @@ public class TeriumCloud {
                 
                     §a✓ §fLoaded %commands% commands successfully.
                     §a✓ §fLoaded %templates% templates successfully.
+                    §a✓ §fLoaded and connected to %nodes% nodes successfully.
                     §a✓ §fStarted terium-server on %ip%:%port%.
                 
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplatesAsString().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
-                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + ""));
+                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%nodes%", nodeProvider.getAllNodes().size() + ""));
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
