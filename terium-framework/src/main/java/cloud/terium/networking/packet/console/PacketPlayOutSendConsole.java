@@ -1,4 +1,4 @@
-package cloud.terium.networking.packet;
+package cloud.terium.networking.packet.console;
 
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.network.Packet;
