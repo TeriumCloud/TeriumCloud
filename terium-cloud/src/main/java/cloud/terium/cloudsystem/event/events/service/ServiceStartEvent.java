@@ -16,6 +16,6 @@ public class ServiceStartEvent extends Event {
     public ServiceStartEvent(ICloudService cloudService, INode node) {
         this.cloudService = cloudService;
         this.node = node;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceStart(cloudService.getServiceName(), cloudService.getServiceGroup(), cloudService.getTemplates(), cloudService.getServiceId(), cloudService.getMaxPlayers(), cloudService.getMaxMemory()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceStart(cloudService, cloudService.getServiceGroup().getServiceGroupNode()));
     }
 }

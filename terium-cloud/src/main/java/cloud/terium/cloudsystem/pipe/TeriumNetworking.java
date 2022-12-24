@@ -18,6 +18,6 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
 
     @Override
     public void sendPacket(Packet packet) {
-        this.teriumServer.getChannels().forEach(channel -> channel.writeAndFlush(packet));
+        this.teriumServer.getChannels().stream().filter(channel -> channel != this.teriumServer.getChannel()).forEach(channel -> channel.writeAndFlush(packet));
     }
 }
