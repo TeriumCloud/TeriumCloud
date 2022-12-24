@@ -1,6 +1,8 @@
 package cloud.terium.teriumapi.service;
 
-public enum ServiceState {
+import java.io.Serializable;
+
+public enum ServiceState implements Serializable {
     PREPARING,
     STARTING,
     ONLINE,

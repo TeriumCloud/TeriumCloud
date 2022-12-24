@@ -2,9 +2,10 @@ package cloud.terium.teriumapi.player;
 
 import cloud.terium.teriumapi.service.ICloudService;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public interface ICloudPlayer {
+public interface ICloudPlayer extends Serializable {
 
     /**
      * Get the username from the cloud player as long

@@ -1,6 +1,8 @@
 package cloud.terium.teriumapi.service;
 
-public enum ServiceType {
+import java.io.Serializable;
+
+public enum ServiceType implements Serializable {
     Lobby,
     Proxy,
     Server;

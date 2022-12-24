@@ -81,7 +81,7 @@ public class CloudService implements ICloudService {
 
     @Override
     public void update() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(serviceName, locked, serviceState, onlinePlayers, usedMemory));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(this, locked, serviceState, onlinePlayers, usedMemory));
     }
 
     @Override

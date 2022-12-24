@@ -1,6 +1,8 @@
 package cloud.terium.teriumapi.console;
 
-public interface IConsoleProvider {
+import java.io.Serializable;
+
+public interface IConsoleProvider extends Serializable {
 
     /**
      * Send a log message with log type to cloud instance

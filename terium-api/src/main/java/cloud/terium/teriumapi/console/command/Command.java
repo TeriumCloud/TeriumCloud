@@ -2,11 +2,12 @@ package cloud.terium.teriumapi.console.command;
 
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public abstract class Command {
+public abstract class Command implements Serializable {
 
     private final String command;
     private final String description;

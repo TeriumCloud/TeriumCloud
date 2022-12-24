@@ -1,10 +1,9 @@
 package cloud.terium.teriumapi.node;
 
-import cloud.terium.networking.client.TeriumClient;
-
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public interface INode {
+public interface INode extends Serializable {
 
     /**
      * Get the name of the node

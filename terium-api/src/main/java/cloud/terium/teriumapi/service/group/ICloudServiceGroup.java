@@ -10,11 +10,12 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
-public interface ICloudServiceGroup {
+public interface ICloudServiceGroup extends Serializable {
 
     /**
      * Get the name of the service group

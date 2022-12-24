@@ -3,9 +3,10 @@ package cloud.terium.teriumapi.service;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface ICloudService {
+public interface ICloudService extends Serializable {
 
     /**
      * Get the service name of a serivce

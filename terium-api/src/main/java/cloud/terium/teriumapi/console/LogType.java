@@ -2,8 +2,10 @@ package cloud.terium.teriumapi.console;
 
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @Getter
-public enum LogType {
+public enum LogType implements Serializable {
     NOTHING(""),
     DOWNLOAD("\u001B[35mDOWNLOAD\u001B[0m: "),
     SETUP("\u001B[33mSETUP\u001B[0m: "),
