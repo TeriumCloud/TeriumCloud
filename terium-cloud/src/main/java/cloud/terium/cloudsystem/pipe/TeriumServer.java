@@ -1,7 +1,15 @@
 package cloud.terium.cloudsystem.pipe;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.event.events.player.CloudPlayerConnectEvent;
+import cloud.terium.cloudsystem.event.events.player.CloudPlayerConnectedToServiceEvent;
+import cloud.terium.cloudsystem.event.events.player.CloudPlayerJoinEvent;
+import cloud.terium.cloudsystem.event.events.player.CloudPlayerQuitEvent;
 import cloud.terium.cloudsystem.event.events.service.*;
+import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnect;
+import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnectedService;
+import cloud.terium.networking.packet.PacketPlayOutCloudPlayerJoin;
+import cloud.terium.networking.packet.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.teriumapi.network.Packet;
 import io.netty.bootstrap.ServerBootstrap;
@@ -47,6 +55,7 @@ public class TeriumServer {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
                                             try {
+                                                // service packets
                                                 if(packet instanceof PacketPlayOutServiceAdd newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(newPacket.cloudService()));
                                                 if(packet instanceof PacketPlayOutCreateService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.name(), newPacket.serviceGroup(), newPacket.templates(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.serviceId(), newPacket.cloudServiceType()));
                                                 if(packet instanceof PacketPlayOutServiceForceShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.cloudService()));
@@ -58,6 +67,13 @@ public class TeriumServer {
                                                 if(packet instanceof PacketPlayOutServiceShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceStopEvent(newPacket.cloudService(), newPacket.cloudService().getServiceGroup().getServiceGroupNode()));
                                                 if(packet instanceof PacketPlayOutServiceUnlock newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUnlockEvent(newPacket.cloudService()));
                                                 if(packet instanceof PacketPlayOutUpdateService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(newPacket.cloudService(), newPacket.serviceState(), newPacket.locked(), newPacket.usedMemory(), newPacket.onlinePlayers()));
+
+                                                // player packets
+                                                if(packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));                                                if(packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
+                                                if(packet instanceof PacketPlayOutCloudPlayerConnect newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
+                                                if(packet instanceof PacketPlayOutCloudPlayerJoin newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerJoinEvent(newPacket.cloudPlayer()));
+                                                if(packet instanceof PacketPlayOutCloudPlayerQuit newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerQuitEvent(newPacket.cloudPlayer()));
+
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
                                                     if (targetChannel != channelHandlerContext.channel()) {

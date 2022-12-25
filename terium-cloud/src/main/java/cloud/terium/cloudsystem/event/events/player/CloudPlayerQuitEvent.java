@@ -13,6 +13,6 @@ public class CloudPlayerQuitEvent extends Event {
 
     public CloudPlayerQuitEvent(ICloudPlayer cloudPlayer) {
         this.cloudPlayer = cloudPlayer;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(cloudPlayer.getUsername(), cloudPlayer.getUniqueId()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(cloudPlayer));
     }
 }

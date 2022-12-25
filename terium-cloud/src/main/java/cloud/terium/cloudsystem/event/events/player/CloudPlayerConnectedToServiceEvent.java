@@ -16,6 +16,6 @@ public class CloudPlayerConnectedToServiceEvent extends Event {
     public CloudPlayerConnectedToServiceEvent(ICloudPlayer cloudPlayer, ICloudService cloudService) {
         this.cloudPlayer = cloudPlayer;
         this.cloudService = cloudService;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerConnectedService(cloudPlayer.getUniqueId(), cloudService.getServiceName()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerConnectedService(cloudPlayer, cloudService));
     }
 }

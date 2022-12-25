@@ -13,6 +13,6 @@ public class CloudPlayerJoinEvent extends Event {
 
     public CloudPlayerJoinEvent(ICloudPlayer cloudPlayer) {
         this.cloudPlayer = cloudPlayer;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(cloudPlayer.getUsername(), cloudPlayer.getUniqueId()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(cloudPlayer));
     }
 }
