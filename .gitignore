@@ -26,6 +26,12 @@ build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
+/.gradle/
+/terium-framework/.gradle/
+/terium-framework/.idea/
+/terium-framework/build/
+/terium-framework/gradle/
+/terium-framework/gradle.properties
 
 ##########################
 ## IntelliJ
@@ -58,4 +64,3 @@ local.properties
 ## OS X
 ##########################
 .DS_Store
-/.gradle/
