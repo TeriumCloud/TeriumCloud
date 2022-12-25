@@ -1,6 +1,8 @@
 package cloud.terium.cloudsystem.pipe;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.event.events.console.RegisterCommandEvent;
+import cloud.terium.cloudsystem.event.events.console.SendConsoleEvent;
 import cloud.terium.cloudsystem.event.events.node.NodeLoggedInEvent;
 import cloud.terium.cloudsystem.event.events.node.NodeShutdownEvent;
 import cloud.terium.cloudsystem.event.events.node.NodeUpdateEvent;
@@ -13,6 +15,8 @@ import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnect;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnectedService;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerQuit;
+import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
+import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
@@ -84,6 +88,10 @@ public class TeriumServer {
                                                 if(packet instanceof PacketPlayOutNodeStarted newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node()));
                                                 if(packet instanceof PacketPlayOutNodeShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
                                                 if(packet instanceof PacketPlayOutNodeUpdate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeUpdateEvent(newPacket.node(), newPacket.usedMemory(), newPacket.maxMemory()));
+
+                                                // console packets
+                                                if(packet instanceof PacketPlayOutSendConsole newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new SendConsoleEvent(newPacket.message(), newPacket.logType()));
+                                                if(packet instanceof PacketPlayOutRegisterCommand newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new RegisterCommandEvent(newPacket.command()));
 
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
