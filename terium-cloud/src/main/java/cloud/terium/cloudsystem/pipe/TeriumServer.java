@@ -1,6 +1,9 @@
 package cloud.terium.cloudsystem.pipe;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.event.events.node.NodeLoggedInEvent;
+import cloud.terium.cloudsystem.event.events.node.NodeShutdownEvent;
+import cloud.terium.cloudsystem.event.events.node.NodeUpdateEvent;
 import cloud.terium.cloudsystem.event.events.player.CloudPlayerConnectEvent;
 import cloud.terium.cloudsystem.event.events.player.CloudPlayerConnectedToServiceEvent;
 import cloud.terium.cloudsystem.event.events.player.CloudPlayerJoinEvent;
@@ -10,6 +13,9 @@ import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnect;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnectedService;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerQuit;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.teriumapi.network.Packet;
 import io.netty.bootstrap.ServerBootstrap;
@@ -73,6 +79,11 @@ public class TeriumServer {
                                                 if(packet instanceof PacketPlayOutCloudPlayerConnect newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
                                                 if(packet instanceof PacketPlayOutCloudPlayerJoin newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerJoinEvent(newPacket.cloudPlayer()));
                                                 if(packet instanceof PacketPlayOutCloudPlayerQuit newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerQuitEvent(newPacket.cloudPlayer()));
+
+                                                // node packets
+                                                if(packet instanceof PacketPlayOutNodeStarted newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node()));
+                                                if(packet instanceof PacketPlayOutNodeShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
+                                                if(packet instanceof PacketPlayOutNodeUpdate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeUpdateEvent(newPacket.node(), newPacket.usedMemory(), newPacket.maxMemory()));
 
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
