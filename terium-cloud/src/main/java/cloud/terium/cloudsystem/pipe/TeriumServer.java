@@ -12,10 +12,9 @@ import cloud.terium.cloudsystem.event.events.player.CloudPlayerConnectedToServic
 import cloud.terium.cloudsystem.event.events.player.CloudPlayerJoinEvent;
 import cloud.terium.cloudsystem.event.events.player.CloudPlayerQuitEvent;
 import cloud.terium.cloudsystem.event.events.service.*;
-import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnect;
-import cloud.terium.networking.packet.PacketPlayOutCloudPlayerConnectedService;
-import cloud.terium.networking.packet.PacketPlayOutCloudPlayerJoin;
-import cloud.terium.networking.packet.PacketPlayOutCloudPlayerQuit;
+import cloud.terium.cloudsystem.event.events.template.TemplateCreateEvent;
+import cloud.terium.cloudsystem.event.events.template.TemplateDeleteEvent;
+import cloud.terium.networking.packet.*;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;
@@ -105,6 +104,9 @@ public class TeriumServer {
                                                 if(packet instanceof PacketPlayOutGroupReload newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.iCloudServiceGroup()));
                                                 if(packet instanceof PacketPlayOutGroupsReload) TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupsEvent());
 
+                                                // template events
+                                                if(packet instanceof PacketPlayOutTemplateCreate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
+                                                if(packet instanceof PacketPlayOutTemplateDelete newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
                                                     if (targetChannel != channelHandlerContext.channel()) {

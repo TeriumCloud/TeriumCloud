@@ -1,4 +1,4 @@
-package cloud.terium.cloudsystem.event.events;
+package cloud.terium.cloudsystem.event.events.template;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.PacketPlayOutTemplateCreate;
