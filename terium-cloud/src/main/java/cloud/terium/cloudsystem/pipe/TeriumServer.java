@@ -3,6 +3,7 @@ package cloud.terium.cloudsystem.pipe;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.event.events.console.RegisterCommandEvent;
 import cloud.terium.cloudsystem.event.events.console.SendConsoleEvent;
+import cloud.terium.cloudsystem.event.events.group.*;
 import cloud.terium.cloudsystem.event.events.node.NodeLoggedInEvent;
 import cloud.terium.cloudsystem.event.events.node.NodeShutdownEvent;
 import cloud.terium.cloudsystem.event.events.node.NodeUpdateEvent;
@@ -17,10 +18,12 @@ import cloud.terium.networking.packet.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
+import cloud.terium.networking.packet.group.*;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
+import cloud.terium.teriumapi.events.group.CloudGroupDeleteEvent;
 import cloud.terium.teriumapi.network.Packet;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -92,6 +95,15 @@ public class TeriumServer {
                                                 // console packets
                                                 if(packet instanceof PacketPlayOutSendConsole newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new SendConsoleEvent(newPacket.message(), newPacket.logType()));
                                                 if(packet instanceof PacketPlayOutRegisterCommand newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new RegisterCommandEvent(newPacket.command()));
+
+                                                // group packets
+                                                if(packet instanceof PacketPlayOutCreateLobbyGroup newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                if(packet instanceof PacketPlayOutCreateProxyGroup newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                if(packet instanceof PacketPlayOutCreateServerGroup newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                if(packet instanceof PacketPlayOutGroupDelete newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.iCloudServiceGroup()));
+                                                if(packet instanceof PacketPlayOutGroupUpdate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.servicegroup(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maxPlayers(), newPacket.memory(), newPacket.minServices(), newPacket.maxServices()));
+                                                if(packet instanceof PacketPlayOutGroupReload newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.iCloudServiceGroup()));
+                                                if(packet instanceof PacketPlayOutGroupsReload) TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupsEvent());
 
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
