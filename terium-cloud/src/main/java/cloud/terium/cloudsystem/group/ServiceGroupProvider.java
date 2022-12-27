@@ -36,7 +36,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
     @SneakyThrows
     public void initServiceGroup(File groupFile) {
-        JsonObject serviceGroup = new JsonParser().parse(new FileReader(groupFile)).getAsJsonObject();
+        JsonObject serviceGroup = JsonParser.parseReader(new FileReader(groupFile)).getAsJsonObject();
         switch (ServiceType.valueOf(serviceGroup.get("servicetype").getAsString())) {
             case Proxy -> {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),

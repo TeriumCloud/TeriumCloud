@@ -6,6 +6,8 @@ import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
 import cloud.terium.cloudsystem.event.events.node.NodeShutdownEvent;
+import cloud.terium.cloudsystem.group.ServiceGroupFactory;
+import cloud.terium.cloudsystem.group.ServiceGroupProvider;
 import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
@@ -38,6 +40,8 @@ public class TeriumCloud {
     private final TeriumNetworking networking;
     private final NodeProvider nodeProvider;
     private final NodeFactory nodeFactory;
+    private final ServiceGroupProvider serviceGroupProvider;
+    private final ServiceGroupFactory serviceGroupFactory;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
@@ -72,6 +76,8 @@ public class TeriumCloud {
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
         this.nodeFactory = new NodeFactory();
+        this.serviceGroupProvider = new ServiceGroupProvider();
+        this.serviceGroupFactory = new ServiceGroupFactory();
         this.thisNode = new Node(cloudConfig.name(), "", new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
         this.nodeProvider.registerNodes();
         this.commandManager = new CommandManager();
@@ -91,11 +97,13 @@ public class TeriumCloud {
                 
                  §a> §fLoaded %commands% commands successfully.
                  §a> §fLoaded %templates% templates successfully.
+                 §a> §fLoaded %groups% groups successfully.
                  §a> §fLoaded to %loaded_nodes% and connected to %connected_nodes% nodes successfully.
                  §a> §fStarted terium-server on %ip%:%port%.
                 
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
-                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().size() + "").replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + ""));
+                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().size() + "")
+                .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
