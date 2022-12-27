@@ -2,8 +2,10 @@ package cloud.terium.cloudsystem.node;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.networking.TeriumFramework;
 import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
@@ -17,7 +19,7 @@ public class Node implements INode {
     private final InetSocketAddress address;
     private long usedMemory;
     private long maxMemory;
-    private final TeriumClient client;
+    private TeriumClient client;
 
     public Node(String name, String key, InetSocketAddress address) {
         this.name = name;
@@ -25,8 +27,17 @@ public class Node implements INode {
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = 0;
-        this.client = null;
-        //this.client = TeriumFramework.createClient(address.getHostName(), address.getPort());
+        if(!name.equalsIgnoreCase(TeriumCloud.getTerium().getCloudConfig().name())) {
+            try {
+                this.client = TeriumFramework.createClient(address.getHostName(), address.getPort());
+                TeriumCloud.getTerium().getNodeProvider().addClientToNode(this, client);
+                Logger.log("Connected to node '" + name + "'.", LogType.INFO);
+                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeStarted(this));
+            } catch (Exception exception) {
+                this.client = null;
+                Logger.log("Connection to node '" + name + "' with ip '" + address.toString() + "' can't be created. (" + exception.getMessage() + ")", LogType.ERROR);
+            }
+        }
     }
 
     @Override

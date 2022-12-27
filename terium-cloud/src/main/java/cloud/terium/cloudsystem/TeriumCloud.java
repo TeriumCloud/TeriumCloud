@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
+import cloud.terium.cloudsystem.event.events.node.NodeShutdownEvent;
 import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
@@ -71,9 +72,10 @@ public class TeriumCloud {
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
         this.nodeFactory = new NodeFactory();
+        this.thisNode = new Node(cloudConfig.name(), "", new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
+        this.nodeProvider.registerNodes();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
-        this.thisNode = new Node(cloudConfig.name(), "", new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
 
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
         Thread.sleep(1000);
@@ -87,13 +89,13 @@ public class TeriumCloud {
                 §7> §fTerium by ByRaudy(Jannik H.)\s
                 §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                 
-                    §a✓ §fLoaded %commands% commands successfully.
-                    §a✓ §fLoaded %templates% templates successfully.
-                    §a✓ §fLoaded and connected to %nodes% nodes successfully.
-                    §a✓ §fStarted terium-server on %ip%:%port%.
+                 §a> §fLoaded %commands% commands successfully.
+                 §a> §fLoaded %templates% templates successfully.
+                 §a> §fLoaded to %loaded_nodes% and connected to %connected_nodes% nodes successfully.
+                 §a> §fStarted terium-server on %ip%:%port%.
                 
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
-                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%nodes%", nodeProvider.getAllNodes().size() + ""));
+                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().size() + "").replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + ""));
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
