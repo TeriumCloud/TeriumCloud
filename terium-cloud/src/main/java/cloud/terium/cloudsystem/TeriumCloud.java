@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
+import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
 import cloud.terium.cloudsystem.pipe.TeriumNetworking;
@@ -13,12 +14,14 @@ import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.node.INode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import sun.misc.Signal;
 
 import java.io.File;
+import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -37,6 +40,7 @@ public class TeriumCloud {
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
+    private final INode thisNode;
 
     public static void main(String[] args) {
         new TeriumCloud();
@@ -69,6 +73,7 @@ public class TeriumCloud {
         this.nodeFactory = new NodeFactory();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
+        this.thisNode = new Node(cloudConfig.name(), "", new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
 
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
         Thread.sleep(1000);
