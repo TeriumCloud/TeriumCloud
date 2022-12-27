@@ -1,16 +1,11 @@
 package cloud.terium.cloudsystem.console;
 
-import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.console.commands.*;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import lombok.Getter;
-import org.jline.reader.Completer;
-import org.jline.reader.impl.completer.ArgumentCompleter;
-import org.jline.reader.impl.completer.NullCompleter;
-import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +28,7 @@ public class CommandManager implements ICommandFactory {
         registerCommand(new ClearCommand());
         registerCommand(new TemplateCommand());
         registerCommand(new NodeCommand());
+        registerCommand(new GroupCommand());
         Logger.log("Successfully loaded all commands...", LogType.INFO);
     }
 

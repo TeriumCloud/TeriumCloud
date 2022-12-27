@@ -76,7 +76,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         json.addProperty("maximal_services", maximalServices);
 
         executorService.execute(() -> {
-            try (final OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(new File("groups/" + cloudServiceType + "/" + name + ".json").toPath()), StandardCharsets.UTF_8)) {
+            try (final OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(new File("groups/" + name + ".json").toPath()), StandardCharsets.UTF_8)) {
                 gson.toJson(json, writer);
             } catch (IOException ignored) {
             }
