@@ -202,8 +202,8 @@ public interface ICloudServiceGroup extends Serializable {
                 "   group_name: " + getGroupName() + "\n" +
                 "   group_title: " + getGroupTitle() + "\n" +
                 "   node: " + getGroupNode().getName() + "\n" +
-                "   fallback nodes: " + getGroupFallbackNode().toString() + "\n" +
-                "   templates: " + getTemplates().toString() + "\n" +
+                "   fallback nodes: " + getGroupFallbackNode().stream().map(INode::getName).toList() + "\n" +
+                "   templates: " + getTemplates().stream().map(ITemplate::getName).toList() + "\n" +
                 "   version: " + getVersion() + "\n" +
                 "   servicetype: " + getServiceType() + "\n" +
                 "   maintenance: " + isMaintenance() + "\n" +
