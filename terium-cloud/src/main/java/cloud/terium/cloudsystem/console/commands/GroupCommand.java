@@ -45,6 +45,13 @@ public class GroupCommand extends Command {
                 return;
             }
 
+            if (args[0].equalsIgnoreCase("info")) {
+                if (args.length > 1) {
+                    Logger.log(TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getInformations(), LogType.INFO);
+                } else Logger.log("group delete [name]", LogType.INFO);
+                return;
+            }
+
             if (args[0].equalsIgnoreCase("list")) {
                 // TODO: Add online services count (after implement cloud services
                 if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
@@ -82,6 +89,11 @@ public class GroupCommand extends Command {
                     return Arrays.asList("maintenance", "static", "memory", "maxplayers", "minservices", "maxservices");
             }
             case 4 -> {
+                if(args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
+                    return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2");
+                if (args[1].equalsIgnoreCase("proxy"))
+                    return Arrays.asList("velocity", "waterfall", "bungeecord");
+
                 if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
                     return Arrays.asList("true", "false");
                 else if (args[2].equalsIgnoreCase("memory"))

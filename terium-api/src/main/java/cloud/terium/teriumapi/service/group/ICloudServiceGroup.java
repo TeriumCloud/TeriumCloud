@@ -169,7 +169,7 @@ public interface ICloudServiceGroup extends Serializable {
      */
     @SneakyThrows
     default String getInformations() {
-        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(new File("groups/" + getServiceType() + "/" + getServiceGroupName() + ".json").toPath()), StandardCharsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(new File("groups/" + getServiceGroupName() + ".json").toPath()), StandardCharsets.UTF_8)) {
             return JsonParser.parseReader(reader).getAsJsonObject().toString().replace("{", "{\n    ").replace(":", ": ").replace("}", "\n}").replace(",", ",\n    ");
         } catch (IOException ex) {
             ex.printStackTrace();
