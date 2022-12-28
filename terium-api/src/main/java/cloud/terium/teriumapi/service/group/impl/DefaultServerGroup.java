@@ -51,7 +51,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
         this.maximalServices = maximalServices;
     }
 
-    public void initFile() {
+    public ICloudServiceGroup initFile() {
         final JsonObject json = new JsonObject();
         final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
@@ -77,6 +77,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
             } catch (IOException ignored) {
             }
         });
+        return this;
     }
 
     @Override

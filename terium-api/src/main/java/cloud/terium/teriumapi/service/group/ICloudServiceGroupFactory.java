@@ -22,9 +22,10 @@ public interface ICloudServiceGroupFactory {
      * @param memory          Int
      * @param minimalServices Int
      * @param maximalServices Int
+     * @return ICloudServiceGroup
      */
-    default void createLobbyGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultLobbyGroup(name, groupTitle, node, templates, version, false, isStatic, maximumPlayers, memory, minimalServices, maximalServices).initFile();
+    default ICloudServiceGroup createLobbyGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        return new DefaultLobbyGroup(name, groupTitle, node, templates, version, false, isStatic, maximumPlayers, memory, minimalServices, maximalServices).initFile();
     }
 
     /**
@@ -39,9 +40,10 @@ public interface ICloudServiceGroupFactory {
      * @param memory          Int
      * @param minimalServices Int
      * @param maximalServices Int
+     * @return ICloudServiceGroup
      */
-    default void createProxyGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean isStatic, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultProxyGroup(name, groupTitle, node, templates, version, false, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices).initFile();
+    default ICloudServiceGroup createProxyGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean isStatic, int port, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        return new DefaultProxyGroup(name, groupTitle, node, templates, version, false, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices).initFile();
     }
 
     /**
@@ -56,9 +58,10 @@ public interface ICloudServiceGroupFactory {
      * @param memory          Int
      * @param minimalServices Int
      * @param maximalServices Int
+     * @return ICloudServiceGroup
      */
-    default void createServerGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
-        new DefaultServerGroup(name, groupTitle, node, templates, version, false, isStatic, maximumPlayers, memory, minimalServices, maximalServices).initFile();
+    default ICloudServiceGroup createServerGroup(String name, String groupTitle, INode node, List<ITemplate> templates, String version, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+        return new DefaultServerGroup(name, groupTitle, node, templates, version, false, isStatic, maximumPlayers, memory, minimalServices, maximalServices).initFile();
     }
 
     /**

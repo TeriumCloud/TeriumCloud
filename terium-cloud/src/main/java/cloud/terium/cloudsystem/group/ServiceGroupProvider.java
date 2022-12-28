@@ -34,6 +34,11 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
         }
     }
 
+    public void registerServiceGroup(ICloudServiceGroup serviceGroup) {
+        serviceGroups.add(serviceGroup);
+        serviceGroupCache.put(serviceGroup.getServiceGroupName(), serviceGroup);
+    }
+
     @SneakyThrows
     public void initServiceGroup(File groupFile) {
         JsonObject serviceGroup = JsonParser.parseReader(new FileReader(groupFile)).getAsJsonObject();
