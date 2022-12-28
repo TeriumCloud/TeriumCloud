@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,23 @@ public class GroupCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args.length >= 1) {
+            if(args[0].equalsIgnoreCase("delete")) {
+                if (args.length > 1) {
+                    TeriumCloud.getTerium().getServiceGroupFactory().deleteServiceGroup(TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]));
+                    Logger.log("Successfully deleted service group '" + args[1] + "'.", LogType.INFO);
+                } else Logger.log("group delete [name]", LogType.INFO);
+                return;
+            }
+
+            if(args[0].equalsIgnoreCase("list")) {
+                // TODO: Add online services count (after implement cloud services)
+                if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
+                    TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
+                        Logger.log("Name: " + serviceGroup.getServiceGroupName() + " - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
+                    });
+                else Logger.log("There are no loaded service groups.", LogType.ERROR);
+            }
+
             return;
         }
 

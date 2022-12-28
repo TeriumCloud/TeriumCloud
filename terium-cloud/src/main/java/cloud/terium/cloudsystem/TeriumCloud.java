@@ -98,7 +98,7 @@ public class TeriumCloud {
                  §a> §fLoaded %commands% commands successfully.
                  §a> §fLoaded %templates% templates successfully.
                  §a> §fLoaded %groups% groups successfully.
-                 §a> §fLoaded to %loaded_nodes% and connected to %connected_nodes% nodes successfully.
+                 §a> §fLoaded %loaded_nodes% and connected to %connected_nodes% nodes successfully.
                  §a> §fStarted terium-server on %ip%:%port%.
                 
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")

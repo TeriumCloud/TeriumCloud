@@ -7,10 +7,7 @@ import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
 import org.jline.reader.ParsedLine;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ConsoleCompleter implements Completer {
 
@@ -21,10 +18,10 @@ public class ConsoleCompleter implements Completer {
         List<String> suggestions = null;
         String[] arguments = input.split(" ");
         try {
-            if (input.indexOf(' ') == -1) {
+            if (!input.contains(" ")) {
                 Collection<String> registeredCommands = TeriumCloud.getTerium().getCommandManager().getBuildedCommands().keySet();
                 String tests = arguments[arguments.length - 1];
-                List<String> result = new LinkedList<>();
+                List<String> result = new ArrayList<>();
                 for (final String s : registeredCommands) {
                     if (s != null && (tests.trim().isEmpty() || s.toLowerCase().contains(tests.toLowerCase()))) {
                         result.add(s);
