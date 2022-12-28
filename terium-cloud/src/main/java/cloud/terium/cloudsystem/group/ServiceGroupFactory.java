@@ -15,6 +15,6 @@ public class ServiceGroupFactory implements ICloudServiceGroupFactory {
     public void deleteServiceGroup(ICloudServiceGroup iCloudServiceGroup) {
         // stop all services
         TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().remove(iCloudServiceGroup);
-        FileUtils.delete(new File("groups//" + iCloudServiceGroup.getServiceGroupName() + ".json"));
+        FileUtils.delete(new File("groups//" + iCloudServiceGroup.getGroupName() + ".json"));
     }
 }

@@ -22,7 +22,7 @@ public interface ICloudServiceGroup extends Serializable {
      *
      * @return String This returns the name of the service group as String.
      */
-    String getServiceGroupName();
+    String getGroupName();
 
     /**
      * Get the title of the service group
@@ -36,12 +36,41 @@ public interface ICloudServiceGroup extends Serializable {
      *
      * @return String This returns the node name of the service group as String.
      */
-    INode getServiceGroupNode();
+    INode getGroupNode();
+
+    /**
+     * Get the fallback nodes of the service group
+     *
+     * @return List<INode> This returns the fallback nodes of the service group as List<INode>.
+     */
+    List<INode> getGroupFallbackNode();
+
+    /**
+     * Add a node as fallback node to the service group
+     *
+     * @param node INode
+     * @return INode This retuns the added fallback node.
+     */
+    default INode addFallbackNode(INode node) {
+        getGroupFallbackNode().add(node);
+        return node;
+    }
+
+    /**
+     * Remove a node as fallback node to the service group
+     *
+     * @param node INode
+     * @return INode This retuns the removed fallback node.
+     */
+    default INode removeFallbackNode(INode node) {
+        getGroupFallbackNode().remove(node);
+        return node;
+    }
 
     /**
      * Get the templates of the service group
      *
-     * @return List<ITemplate> This returns the template of the service group as ITemplate.
+     * @return List<ITemplate> This returns the templates of the service group as List<ITemplate>.
      */
     List<ITemplate> getTemplates();
 
@@ -170,9 +199,10 @@ public interface ICloudServiceGroup extends Serializable {
     @SneakyThrows
     default String getInformations() {
         return "{\n" +
-                "   group_name: " + getServiceGroupName() + "\n" +
+                "   group_name: " + getGroupName() + "\n" +
                 "   group_title: " + getGroupTitle() + "\n" +
-                "   node: " + getServiceGroupNode().getName() + "\n" +
+                "   node: " + getGroupNode().getName() + "\n" +
+                "   fallback nodes: " + getGroupFallbackNode().toString() + "\n" +
                 "   templates: " + getTemplates().toString() + "\n" +
                 "   version: " + getVersion() + "\n" +
                 "   servicetype: " + getServiceType() + "\n" +

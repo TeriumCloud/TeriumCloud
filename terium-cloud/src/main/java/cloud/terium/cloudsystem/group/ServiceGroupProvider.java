@@ -36,7 +36,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
     public void registerServiceGroup(ICloudServiceGroup serviceGroup) {
         serviceGroups.add(serviceGroup);
-        serviceGroupCache.put(serviceGroup.getServiceGroupName(), serviceGroup);
+        serviceGroupCache.put(serviceGroup.getGroupName(), serviceGroup);
     }
 
     @SneakyThrows
@@ -47,6 +47,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         TeriumCloud.getTerium().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()),
+                        TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList(),
                         TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList(),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
@@ -63,6 +64,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         TeriumCloud.getTerium().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()),
+                        TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList(),
                         TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList(),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
@@ -78,6 +80,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         TeriumCloud.getTerium().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()),
+                        TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList(),
                         TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList(),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
@@ -106,7 +109,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
     @Override
     public List<ICloudServiceGroup> getServiceGroupsByNode(String nodeName) {
-        return serviceGroups.stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getServiceGroupNode().getName().equalsIgnoreCase(nodeName)).toList();
+        return serviceGroups.stream().filter(iCloudServiceGroup -> iCloudServiceGroup.getGroupNode().getName().equalsIgnoreCase(nodeName)).toList();
     }
 
     @Override

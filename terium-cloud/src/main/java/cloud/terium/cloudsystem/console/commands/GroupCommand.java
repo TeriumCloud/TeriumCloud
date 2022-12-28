@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.template.Template;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
@@ -25,13 +26,13 @@ public class GroupCommand extends Command {
                     if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server")) {
                         if (args.length == 6) {
                             switch (args[1]) {
-                                case "lobby" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), args[3], Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
-                                case "server" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createServerGroup(args[2], "Default server group", TeriumCloud.getTerium().getThisNode(), List.of(), args[3], Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                case "lobby" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                case "server" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createServerGroup(args[2], "Default server group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
                             }
                         } else Logger.log("group create lobby/server [name] [version] [static] [memory]", LogType.INFO);
                     } else {
                         if (args.length == 7) {
-                            TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createProxyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), args[3], Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
+                            TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createProxyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
                         } else Logger.log("group create proxy [name] [version] [static] [memory] [port]", LogType.INFO);
                     }
                 }
@@ -57,7 +58,7 @@ public class GroupCommand extends Command {
                 // TODO: Add online services count (after implement cloud services
                 if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
                     TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
-                        Logger.log("Name: " + serviceGroup.getServiceGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
+                        Logger.log("Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
                     });
                 else Logger.log("There are no loaded service groups.", LogType.ERROR);
             }
@@ -81,7 +82,7 @@ public class GroupCommand extends Command {
             }
             case 2 -> {
                 if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("update") || args[0].equalsIgnoreCase("delete"))
-                    return TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getServiceGroupName).toList();
+                    return TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getGroupName).toList();
                 if(args[0].equalsIgnoreCase("create"))
                     return Arrays.asList("lobby", "server", "proxy");
             }

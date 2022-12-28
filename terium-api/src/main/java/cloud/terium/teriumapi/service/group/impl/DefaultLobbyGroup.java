@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,10 +27,11 @@ import java.util.concurrent.Executors;
 public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     private final ServiceType cloudServiceType = ServiceType.Lobby;
-    private String name;
-    private String groupTitle;
-    private INode node;
-    private List<ITemplate> templates;
+    private final String name;
+    private final String groupTitle;
+    private final INode node;
+    private final List<INode> fallbackNodes;
+    private final List<ITemplate> templates;
     private String version;
     private int maximumPlayers;
     private boolean maintenance;
@@ -39,10 +41,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, INode node, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, INode node, List<INode> fallbackNodes, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
+        this.fallbackNodes = fallbackNodes;
         this.templates = template;
         this.version = version;
         this.maintenance = maintenance;
@@ -57,13 +60,16 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         final JsonObject json = new JsonObject();
         final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
-        final JsonArray jsonArray = new JsonArray();
-        templates.forEach(template -> jsonArray.add(template.getName()));
+        final JsonArray templateArray = new JsonArray();
+        final JsonArray fallbackNodesArray = new JsonArray();
+        templates.forEach(template -> templateArray.add(template.getName()));
+        fallbackNodes.forEach(node -> fallbackNodesArray.add(node.getName()));
 
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node.getName());
-        json.add("templates", jsonArray);
+        json.add("fallback_nodes", fallbackNodesArray);
+        json.add("templates", templateArray);
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
         json.addProperty("maintenance", maintenance);
@@ -84,7 +90,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public String getServiceGroupName() {
+    public String getGroupName() {
         return name;
     }
 
@@ -94,8 +100,13 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public INode getServiceGroupNode() {
+    public INode getGroupNode() {
         return node;
+    }
+
+    @Override
+    public List<INode> getGroupFallbackNode() {
+        return fallbackNodes;
     }
 
     @Override
