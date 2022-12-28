@@ -49,7 +49,9 @@ public class GroupCommand extends Command {
 
             if (args[0].equalsIgnoreCase("info")) {
                 if (args.length > 1) {
-                    Logger.log(TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getInformations(), LogType.INFO);
+                    if(args.length == 3)
+                        Logger.log(TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getInformationsFromJson(), LogType.INFO);
+                    else Logger.log(TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getInformations(), LogType.INFO);
                 } else Logger.log("group delete [name]", LogType.INFO);
                 return;
             }
@@ -69,8 +71,9 @@ public class GroupCommand extends Command {
         Logger.log("group create lobby/server [name] [version] [static] [memory] | create a lobby/server service group", LogType.INFO);
         Logger.log("group create proxy [name] [version] [static] [memory] [port] | create a proxy service group", LogType.INFO);
         Logger.log("group delete [name] | delete a service group", LogType.INFO);
-        Logger.log("group info [name] | see all informations about a service group", LogType.INFO);
-        Logger.log("group update [name] [maintenance/static/memory/maxplayers/minservices/maxservices] [value] | update a service group", LogType.INFO);
+        Logger.log("group info [name] (--json) | see all informations about a service group", LogType.INFO);
+        Logger.log("group update [name] [maintenance/version/static/memory/maxplayers/minservices/maxservices] [value] | update a service group", LogType.INFO);
+        Logger.log("group add/remove [name] [fallback-node/template] | add or remove fallback node or template to a service group", LogType.INFO);
         Logger.log("group list | a list of all loaded service groups with informations", LogType.INFO);
     }
 
@@ -78,21 +81,23 @@ public class GroupCommand extends Command {
     public List<String> tabComplete(String[] args) {
         switch (args.length) {
             case 1 -> {
-                return Arrays.asList("create", "delete", "info", "update", "list");
+                return Arrays.asList("create", "delete", "add", "remove", "info", "update", "list");
             }
             case 2 -> {
-                if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("update") || args[0].equalsIgnoreCase("delete"))
+                if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("update") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove"))
                     return TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getGroupName).toList();
                 if(args[0].equalsIgnoreCase("create"))
                     return Arrays.asList("lobby", "server", "proxy");
             }
             case 3 -> {
                 if (args[0].equalsIgnoreCase("update"))
-                    return Arrays.asList("maintenance", "static", "memory", "maxplayers", "minservices", "maxservices");
+                    return Arrays.asList("maintenance", "version", "static", "memory", "maxplayers", "minservices", "maxservices");
+                if(args[0].equalsIgnoreCase("info"))
+                    return List.of("--json");
             }
             case 4 -> {
                 if(args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
-                    return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2");
+                    return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
                 if (args[1].equalsIgnoreCase("proxy"))
                     return Arrays.asList("velocity", "waterfall", "bungeecord");
 

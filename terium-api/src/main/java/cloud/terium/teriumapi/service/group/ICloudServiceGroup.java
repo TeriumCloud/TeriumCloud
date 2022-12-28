@@ -214,4 +214,19 @@ public interface ICloudServiceGroup extends Serializable {
                 "   maximal_services: " + getMaxServices() + "\n" +
                 "}";
     }
+
+    /**
+     * Get all informations of the service group from the json file in a fancy JSON format
+     *
+     * @return String This returns all informations from the service group from the json file in a JSON format as String.
+     */
+    @SneakyThrows
+    default String getInformationsFromJson() {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(new File("groups/" + getGroupName() + ".json").toPath()), StandardCharsets.UTF_8)) {
+            return JsonParser.parseReader(reader).getAsJsonObject().toString().replace("{", "{\n    ").replace(":", ": ").replace("}", "\n}").replace(",", ",\n    ");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "Error while getting information of " + getGroupName() + ".";
+    }
 }
