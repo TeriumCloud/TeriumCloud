@@ -4,6 +4,7 @@ import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
+import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
@@ -56,7 +57,7 @@ public class GroupCommand extends Command {
                 // TODO: Add online services count (after implement cloud services
                 if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
                     TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
-                        Logger.log("Name: " + serviceGroup.getServiceGroupName() + " - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
+                        Logger.log("Name: " + serviceGroup.getServiceGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
                     });
                 else Logger.log("There are no loaded service groups.", LogType.ERROR);
             }
