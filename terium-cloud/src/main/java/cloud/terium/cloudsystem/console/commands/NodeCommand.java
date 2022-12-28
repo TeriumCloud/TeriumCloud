@@ -78,7 +78,7 @@ public class NodeCommand extends Command {
                 }
                 case "list" -> {
                     Logger.log(TeriumCloud.getTerium().getNodeProvider().getAllNodes().size() > 0 ? "All registered nodes:" : "There is no registered node.", LogType.INFO);
-                    TeriumCloud.getTerium().getNodeProvider().getAllNodes().forEach(node -> Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress(), LogType.INFO));
+                    TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).forEach(node -> Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress(), LogType.INFO));
                     return;
                 }
             }
@@ -101,7 +101,7 @@ public class NodeCommand extends Command {
             }
             case 2 -> {
                 if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("execute") || args[0].equalsIgnoreCase("info")) {
-                    return TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().map(INode::getName).toList();
+                    return TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).map(INode::getName).toList();
                 }
             }
             case 3 -> {

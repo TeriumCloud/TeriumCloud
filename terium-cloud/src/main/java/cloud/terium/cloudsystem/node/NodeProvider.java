@@ -30,6 +30,7 @@ public class NodeProvider implements INodeProvider {
 
     public void registerNodes() {
         Logger.log("Trying to load all nodes from config.", LogType.INFO);
+        registerNode(TeriumCloud.getTerium().getThisNode());
         TeriumCloud.getTerium().getCloudConfig().nodes().forEach(jsonElement -> registerNode(new Node(jsonElement.getAsJsonObject().get("name").getAsString(), jsonElement.getAsJsonObject().get("key").getAsString(),
                 new InetSocketAddress(jsonElement.getAsJsonObject().get("ip").getAsString(), jsonElement.getAsJsonObject().get("port").getAsInt()))));
     }

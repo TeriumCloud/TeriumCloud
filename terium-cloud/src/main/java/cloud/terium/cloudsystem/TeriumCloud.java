@@ -76,10 +76,10 @@ public class TeriumCloud {
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
         this.nodeFactory = new NodeFactory();
-        this.serviceGroupProvider = new ServiceGroupProvider();
-        this.serviceGroupFactory = new ServiceGroupFactory();
         this.thisNode = new Node(cloudConfig.name(), "", new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
         this.nodeProvider.registerNodes();
+        this.serviceGroupProvider = new ServiceGroupProvider();
+        this.serviceGroupFactory = new ServiceGroupFactory();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
@@ -102,7 +102,7 @@ public class TeriumCloud {
                  §a> §fStarted terium-server on %ip%:%port%.
                 
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
-                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().size() + "")
+                .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).toList().size() + "")
                 .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
 
         Signal.handle(new Signal("INT"), signal -> {

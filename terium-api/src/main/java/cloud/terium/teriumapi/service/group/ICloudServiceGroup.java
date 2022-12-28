@@ -169,11 +169,19 @@ public interface ICloudServiceGroup extends Serializable {
      */
     @SneakyThrows
     default String getInformations() {
-        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(new File("groups/" + getServiceGroupName() + ".json").toPath()), StandardCharsets.UTF_8)) {
-            return JsonParser.parseReader(reader).getAsJsonObject().toString().replace("{", "{\n    ").replace(":", ": ").replace("}", "\n}").replace(",", ",\n    ");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return "Error while getting information of " + getServiceGroupName() + ".";
+        return "{\n" +
+                "   group_name: " + getServiceGroupName() + "\n" +
+                "   group_title: " + getGroupTitle() + "\n" +
+                "   node: " + getServiceGroupNode().getName() + "\n" +
+                "   templates: " + getTemplates().toString() + "\n" +
+                "   version: " + getVersion() + "\n" +
+                "   servicetype: " + getServiceType() + "\n" +
+                "   maintenance: " + isMaintenance() + "\n" +
+                "   static: " + isStatic() + "\n" +
+                "   maximum_players: " + getMaxPlayers() + "\n" +
+                "   memory: " + getMemory() + "\n" +
+                "   minimal_services: " + getMinServices() + "\n" +
+                "   maximal_services: " + getMaxServices() + "\n" +
+                "}";
     }
 }
