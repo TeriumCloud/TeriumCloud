@@ -56,6 +56,64 @@ public class GroupCommand extends Command {
                 return;
             }
 
+            if(args[0].equalsIgnoreCase("update")) {
+                if(args.length > 1) {
+                    if(args.length == 4) {
+                        ICloudServiceGroup serviceGroup = TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]);
+                        try {
+                            switch (args[2]) {
+                                case "maintenance" -> {
+                                    if(args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false"))
+                                        serviceGroup.setMaintenance(Boolean.parseBoolean(args[3]));
+                                }
+                                case "static" -> {
+                                    if(args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false"))
+                                        serviceGroup.setStatic(Boolean.parseBoolean(args[3]));
+                                }
+                                case "version" -> {
+                                    if(Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom").contains(args[3]))
+                                        serviceGroup.setVersion(args[3]);
+                                }
+                                case "memory" -> {
+                                    try {
+                                        serviceGroup.setMemory(Integer.parseInt(args[3]));
+                                    } catch (Exception exception) {
+                                        Logger.log("Please type a int as value.", LogType.ERROR);
+                                    }
+                                }
+                                case "maxplayers" -> {
+                                    try {
+                                        serviceGroup.setMaxPlayer(Integer.parseInt(args[3]));
+                                    } catch (Exception exception) {
+                                        Logger.log("Please type a int as value.", LogType.ERROR);
+                                    }
+                                }
+                                case "minservices" -> {
+                                    try {
+                                        serviceGroup.setMinServices(Integer.parseInt(args[3]));
+                                    } catch (Exception exception) {
+                                        Logger.log("Please type a int as value.", LogType.ERROR);
+                                    }
+                                }
+                                case "maxservices" -> {
+                                    try {
+                                        serviceGroup.setMaxServices(Integer.parseInt(args[3]));
+                                    } catch (Exception exception) {
+                                        Logger.log("Please type a int as value.", LogType.ERROR);
+                                    }
+                                }
+                            }
+                            TeriumCloud.getTerium().getServiceGroupProvider().updateServiceGroup(serviceGroup);
+                        } catch (Exception exception) {
+                            Logger.log("A service group with that name isn't registered.", LogType.ERROR);
+                        }
+                    }
+                    return;
+                }
+                Logger.log("group update [name] [maintenance/static/version/memory/maxplayers/minservices/maxservices] [value] (--shutdown) | update a service group", LogType.INFO);
+                return;
+            }
+
             if (args[0].equalsIgnoreCase("list")) {
                 // TODO: Add online services count (after implement cloud services
                 if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
@@ -72,7 +130,7 @@ public class GroupCommand extends Command {
         Logger.log("group create proxy [name] [version] [static] [memory] [port] | create a proxy service group", LogType.INFO);
         Logger.log("group delete [name] | delete a service group", LogType.INFO);
         Logger.log("group info [name] (--json) | see all informations about a service group", LogType.INFO);
-        Logger.log("group update [name] [maintenance/version/static/memory/maxplayers/minservices/maxservices] [value] | update a service group", LogType.INFO);
+        Logger.log("group update [name] [maintenance/version/static/memory/maxplayers/minservices/maxservices] [value] (--shutdown) | update a service group", LogType.INFO);
         Logger.log("group add/remove [name] [fallback-node/template] | add or remove fallback node or template to a service group", LogType.INFO);
         Logger.log("group list | a list of all loaded service groups with informations", LogType.INFO);
     }

@@ -89,6 +89,13 @@ public interface ICloudServiceGroup extends Serializable {
     String getVersion();
 
     /**
+     * Set the version of the service group
+     *
+     * @param version String
+     */
+    void setVersion(String version);
+
+    /**
      * Get if the service group is in maintenance
      *
      * @return boolean This returns if the serivce group is in maintenance as boolean. (true if yes else false)

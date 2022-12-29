@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Setter
 public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     private final ServiceType cloudServiceType = ServiceType.Lobby;
@@ -125,6 +124,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    @Override
     public boolean isMaintenance() {
         return maintenance;
     }
@@ -162,6 +166,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     @Override
     public int getMemory() {
         return memory;
+    }
+
+    @Override
+    public void setMemory(int memory) {
+        this.memory = memory;
     }
 
     @Override

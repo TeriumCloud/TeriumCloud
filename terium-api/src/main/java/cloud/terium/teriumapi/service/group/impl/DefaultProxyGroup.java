@@ -29,7 +29,7 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     private final List<INode> fallbackNodes;
     private final List<ITemplate> templates;
     private final ServiceType cloudServiceType = ServiceType.Proxy;
-    private final String version;
+    private String version;
     private final int port;
     private boolean maintenance;
     private boolean isStatic;
@@ -122,6 +122,11 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
     @Override
     public String getVersion() {
         return version;
+    }
+
+    @Override
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     @Override

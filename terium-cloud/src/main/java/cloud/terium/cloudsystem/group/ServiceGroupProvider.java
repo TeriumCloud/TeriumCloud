@@ -9,12 +9,15 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +98,31 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
         }
 
         Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
+    }
+
+    public void updateServiceGroup(ICloudServiceGroup serviceGroup) {
+        File file = new File("groups/" + serviceGroup.getGroupName() + ".json");
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
+            JsonObject serviceGroupJson = JsonParser.parseReader(reader).getAsJsonObject();
+            final JsonArray templateArray = new JsonArray();
+            final JsonArray fallbackNodesArray = new JsonArray();
+            serviceGroup.getTemplates().forEach(template -> templateArray.add(template.getName()));
+            serviceGroup.getGroupFallbackNode().forEach(node -> fallbackNodesArray.add(node.getName()));
+
+            serviceGroupJson.addProperty("maintenance", serviceGroup.isMaintenance());
+            serviceGroupJson.addProperty("static", serviceGroup.isStatic());
+            serviceGroupJson.addProperty("version", serviceGroup.getVersion());
+            serviceGroupJson.addProperty("memory", serviceGroup.getMemory());
+            serviceGroupJson.addProperty("maximum_players", serviceGroup.getMaxPlayers());
+            serviceGroupJson.addProperty("minimal_services", serviceGroup.getMinServices());
+            serviceGroupJson.addProperty("maximal_services", serviceGroup.getMaxServices());
+            serviceGroupJson.add("fallback_nodes", fallbackNodesArray);
+            serviceGroupJson.add("templates", templateArray);
+            //new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(serviceGroupJson, new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8));
+            new PrintWriter(file).print(new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(serviceGroupJson));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

@@ -28,7 +28,7 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     private final INode node;
     private final List<INode> fallbackNodes;
     private final List<ITemplate> templates;
-    private final String version;
+    private String version;
     private final ServiceType cloudServiceType = ServiceType.Server;
     private int maximumPlayers;
     private boolean maintenance;
@@ -118,6 +118,11 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     @Override
     public String getVersion() {
         return version;
+    }
+
+    @Override
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     @Override
