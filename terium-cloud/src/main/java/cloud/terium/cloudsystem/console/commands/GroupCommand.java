@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.pipe.TeriumServer;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
@@ -123,11 +124,12 @@ public class GroupCommand extends Command {
                        ICloudServiceGroup serviceGroup = TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]);
                        try {
                            if (args[2].equalsIgnoreCase("fallback-node"))
-                               serviceGroup.getGroupFallbackNode().add(TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[3]));
+                               serviceGroup.addFallbackNode(TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[3]));
                            else if (args[2].equalsIgnoreCase("template"))
-                               serviceGroup.getTemplates().add(TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[3]));
+                               serviceGroup.addTemplate(TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[3]));
                            TeriumCloud.getTerium().getServiceGroupProvider().updateServiceGroup(serviceGroup);
                        } catch (Exception exception) {
+                           exception.printStackTrace();
                            if(exception.getMessage() == null) {
                                if (args[2].equalsIgnoreCase("fallback-node"))
                                    Logger.log("A node with that name isn't registered.", LogType.ERROR);
@@ -137,6 +139,29 @@ public class GroupCommand extends Command {
                        }
                    }
                }
+            }
+
+            if(args[0].equalsIgnoreCase("remove")) {
+                if (args.length > 1) {
+                    if (args.length == 4) {
+                        ICloudServiceGroup serviceGroup = TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]);
+                        try {
+                            if (args[2].equalsIgnoreCase("fallback-node"))
+                                serviceGroup.removeFallbackNode(TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[3]));
+                            else if (args[2].equalsIgnoreCase("template"))
+                                serviceGroup.removeTemplate(TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[3]));
+                             TeriumCloud.getTerium().getServiceGroupProvider().updateServiceGroup(serviceGroup);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                            if(exception.getMessage() == null) {
+                                if (args[2].equalsIgnoreCase("fallback-node"))
+                                    Logger.log("A node with that name isn't added to the service group.", LogType.ERROR);
+                                else if (args[2].equalsIgnoreCase("template"))
+                                    Logger.log("A template with that name isn't added to the service group.", LogType.ERROR);
+                            } else Logger.log("A service group with that name isn't registered.", LogType.ERROR);
+                        }
+                    }
+                }
             }
 
             if (args[0].equalsIgnoreCase("list")) {
@@ -199,11 +224,18 @@ public class GroupCommand extends Command {
                         return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
                 }
 
-                if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")) {
+                if(args[0].equalsIgnoreCase("add")) {
                     if(args[2].equalsIgnoreCase("fallback-node"))
-                        return TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).map(INode::getName).toList();
+                        return TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).filter(node -> !TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getGroupFallbackNode().contains(node)).map(INode::getName).toList();
                     if(args[2].equalsIgnoreCase("template"))
-                        return TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().map(ITemplate::getName).toList();
+                        return TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> !TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getTemplates().contains(template)).map(ITemplate::getName).toList();
+                }
+
+                if(args[0].equalsIgnoreCase("remove")) {
+                    if(args[2].equalsIgnoreCase("fallback-node"))
+                        return TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getGroupFallbackNode().stream().map(INode::getName).toList();
+                    if(args[2].equalsIgnoreCase("template"))
+                        return TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]).getTemplates().stream().map(ITemplate::getName).toList();
                 }
             }
             case 5 -> {

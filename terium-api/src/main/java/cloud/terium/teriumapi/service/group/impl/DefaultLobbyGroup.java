@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -106,6 +107,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     @Override
     public List<INode> getGroupFallbackNode() {
         return fallbackNodes;
+    }
+
+    @Override
+    public void addFallbackNode(INode node) {
+        fallbackNodes.add(node);
     }
 
     @Override

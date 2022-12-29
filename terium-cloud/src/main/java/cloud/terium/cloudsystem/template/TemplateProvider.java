@@ -9,13 +9,14 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TemplateProvider implements ITemplateProvider {
 
     public final List<ITemplate> templates;
 
     public TemplateProvider() {
-        this.templates = new ArrayList<>();
+        this.templates = new CopyOnWriteArrayList<>();
 
         new File("templates//").mkdirs();
         loadTempaltes();

@@ -10,6 +10,8 @@ import lombok.Getter;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -20,7 +22,7 @@ public class NodeProvider implements INodeProvider {
 
     public NodeProvider() {
         Logger.log("Loaded node-provider", LogType.INFO);
-        this.nodes = new HashMap<>();
+        this.nodes = new LinkedHashMap<>();
         this.nodeClients = new HashMap<>();
     }
 

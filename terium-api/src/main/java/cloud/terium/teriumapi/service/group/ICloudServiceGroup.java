@@ -1,7 +1,6 @@
 package cloud.terium.teriumapi.service.group;
 
 import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.JsonParser;
@@ -49,22 +48,18 @@ public interface ICloudServiceGroup extends Serializable {
      * Add a node as fallback node to the service group
      *
      * @param node INode
-     * @return INode This retuns the added fallback node.
      */
-    default INode addFallbackNode(INode node) {
+    default void addFallbackNode(INode node) {
         getGroupFallbackNode().add(node);
-        return node;
     }
 
     /**
      * Remove a node as fallback node to the service group
      *
      * @param node INode
-     * @return INode This retuns the removed fallback node.
      */
-    default INode removeFallbackNode(INode node) {
+    default void removeFallbackNode(INode node) {
         getGroupFallbackNode().remove(node);
-        return node;
     }
 
     /**
@@ -73,6 +68,24 @@ public interface ICloudServiceGroup extends Serializable {
      * @return List<ITemplate> This returns the templates of the service group as List<ITemplate>.
      */
     List<ITemplate> getTemplates();
+
+    /**
+     * Add a template to the service group
+     *
+     * @param template ITemplate
+     */
+    default void addTemplate(ITemplate template) {
+        getTemplates().add(template);
+    }
+
+    /**
+     * Remove a template to the service group
+     *
+     * @param template ITemplate
+     */
+    default void removeTemplate(ITemplate template) {
+        getTemplates().remove(template);
+    }
 
     /**
      * Get the service type of the service group
