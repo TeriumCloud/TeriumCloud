@@ -4,9 +4,11 @@ import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -131,7 +133,7 @@ public class GroupCommand extends Command {
         Logger.log("group delete [name] | delete a service group", LogType.INFO);
         Logger.log("group info [name] (--json) | see all informations about a service group", LogType.INFO);
         Logger.log("group update [name] [maintenance/version/static/memory/maxplayers/minservices/maxservices] [value] (--shutdown) | update a service group", LogType.INFO);
-        Logger.log("group add/remove [name] [fallback-node/template] | add or remove fallback node or template to a service group", LogType.INFO);
+        Logger.log("group add/remove [name] [fallback-node/template] [value] | add or remove fallback node or template to a service group", LogType.INFO);
         Logger.log("group list | a list of all loaded service groups with informations", LogType.INFO);
     }
 
@@ -152,6 +154,8 @@ public class GroupCommand extends Command {
                     return Arrays.asList("maintenance", "version", "static", "memory", "maxplayers", "minservices", "maxservices");
                 if(args[0].equalsIgnoreCase("info"))
                     return List.of("--json");
+                if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove"))
+                    return Arrays.asList("fallback-node", "template");
             }
             case 4 -> {
                 if(args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
@@ -170,6 +174,13 @@ public class GroupCommand extends Command {
                         return Arrays.asList("1", "2", "3", "4", "5");
                     else if (args[2].equalsIgnoreCase("version"))
                         return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
+                }
+
+                if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")) {
+                    if(args[2].equalsIgnoreCase("fallback-node"))
+                        return TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).map(INode::getName).toList();
+                    if(args[2].equalsIgnoreCase("template"))
+                        return TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().map(ITemplate::getName).toList();
                 }
             }
             case 5 -> {
