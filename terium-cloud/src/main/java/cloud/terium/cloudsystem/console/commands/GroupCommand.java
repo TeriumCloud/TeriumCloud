@@ -7,6 +7,7 @@ import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
+import org.jline.utils.Log;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -116,8 +117,30 @@ public class GroupCommand extends Command {
                 return;
             }
 
+            if(args[0].equalsIgnoreCase("add")) {
+               if (args.length > 1) {
+                   if (args.length == 4) {
+                       ICloudServiceGroup serviceGroup = TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]);
+                       try {
+                           if (args[2].equalsIgnoreCase("fallback-node"))
+                               serviceGroup.getGroupFallbackNode().add(TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[3]));
+                           else if (args[2].equalsIgnoreCase("template"))
+                               serviceGroup.getTemplates().add(TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[3]));
+                           TeriumCloud.getTerium().getServiceGroupProvider().updateServiceGroup(serviceGroup);
+                       } catch (Exception exception) {
+                           if(exception.getMessage() == null) {
+                               if (args[2].equalsIgnoreCase("fallback-node"))
+                                   Logger.log("A node with that name isn't registered.", LogType.ERROR);
+                               else if (args[2].equalsIgnoreCase("template"))
+                                   Logger.log("A template with that name isn't registered.", LogType.ERROR);
+                           } else Logger.log("A service group with that name isn't registered.", LogType.ERROR);
+                       }
+                   }
+               }
+            }
+
             if (args[0].equalsIgnoreCase("list")) {
-                // TODO: Add online services count (after implement cloud services
+                // TODO: Add online services count (after implement cloud services)
                 if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
                     TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
                         Logger.log("Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
