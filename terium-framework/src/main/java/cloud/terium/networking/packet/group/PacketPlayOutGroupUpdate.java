@@ -1,7 +1,7 @@
 package cloud.terium.networking.packet.group;
 
 import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 
-public record PacketPlayOutGroupUpdate(String servicegroup, boolean maintenance, boolean isStatic, int maxPlayers,
-                                       int memory, int minServices, int maxServices) implements Packet {
+public record PacketPlayOutGroupUpdate(ICloudServiceGroup serviceGroup) implements Packet {
 }

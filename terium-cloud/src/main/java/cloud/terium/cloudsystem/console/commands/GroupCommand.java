@@ -1,11 +1,9 @@
 package cloud.terium.cloudsystem.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.template.Template;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
-import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
@@ -42,6 +40,7 @@ public class GroupCommand extends Command {
             if (args[0].equalsIgnoreCase("delete")) {
                 if (args.length > 1) {
                     TeriumCloud.getTerium().getServiceGroupFactory().deleteServiceGroup(TeriumCloud.getTerium().getServiceGroupProvider().getServiceGroupByName(args[1]));
+                    TeriumCloud.getTerium().getTemplateFactory().deleteTemplate(args[1]);
                     Logger.log("Successfully deleted service group '" + args[1] + "'.", LogType.INFO);
                 } else Logger.log("group delete [name]", LogType.INFO);
                 return;
@@ -104,6 +103,7 @@ public class GroupCommand extends Command {
                                 }
                             }
                             TeriumCloud.getTerium().getServiceGroupProvider().updateServiceGroup(serviceGroup);
+                            Logger.log("Successfully updated service group '" + args[1] + "'.", LogType.INFO);
                         } catch (Exception exception) {
                             Logger.log("A service group with that name isn't registered.", LogType.ERROR);
                         }
@@ -159,14 +159,23 @@ public class GroupCommand extends Command {
                 if (args[1].equalsIgnoreCase("proxy"))
                     return Arrays.asList("velocity", "waterfall", "bungeecord");
 
-                if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
-                    return Arrays.asList("true", "false");
-                else if (args[2].equalsIgnoreCase("memory"))
-                    return Arrays.asList("128", "512", "1024", "2048");
-                else if (args[2].equalsIgnoreCase("maxplayers"))
-                    return Arrays.asList("1", "5", "10", "20");
-                else if (args[2].equalsIgnoreCase("minservices") || args[2].equalsIgnoreCase("maxservices"))
-                    return Arrays.asList("1", "2", "3", "4", "5");
+                if(args[0].equalsIgnoreCase("update")) {
+                    if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
+                        return Arrays.asList("true", "false");
+                    else if (args[2].equalsIgnoreCase("memory"))
+                        return Arrays.asList("128", "512", "1024", "2048");
+                    else if (args[2].equalsIgnoreCase("maxplayers"))
+                        return Arrays.asList("1", "5", "10", "20");
+                    else if (args[2].equalsIgnoreCase("minservices") || args[2].equalsIgnoreCase("maxservices"))
+                        return Arrays.asList("1", "2", "3", "4", "5");
+                    else if (args[2].equalsIgnoreCase("version"))
+                        return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
+                }
+            }
+            case 5 -> {
+                if (args[0].equalsIgnoreCase("update")) {
+                    return List.of("--shutdown");
+                }
             }
         }
         return super.tabComplete(args);

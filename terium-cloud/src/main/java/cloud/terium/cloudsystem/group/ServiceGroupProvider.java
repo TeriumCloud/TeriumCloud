@@ -2,6 +2,7 @@ package cloud.terium.cloudsystem.group;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -101,9 +102,9 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
     }
 
     public void updateServiceGroup(ICloudServiceGroup serviceGroup) {
-        File file = new File("groups/" + serviceGroup.getGroupName() + ".json");
+        final File file = new File("groups/" + serviceGroup.getGroupName() + ".json");
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
-            JsonObject serviceGroupJson = JsonParser.parseReader(reader).getAsJsonObject();
+            final JsonObject serviceGroupJson = JsonParser.parseReader(reader).getAsJsonObject();
             final JsonArray templateArray = new JsonArray();
             final JsonArray fallbackNodesArray = new JsonArray();
             serviceGroup.getTemplates().forEach(template -> templateArray.add(template.getName()));
@@ -118,8 +119,12 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
             serviceGroupJson.addProperty("maximal_services", serviceGroup.getMaxServices());
             serviceGroupJson.add("fallback_nodes", fallbackNodesArray);
             serviceGroupJson.add("templates", templateArray);
-            //new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(serviceGroupJson, new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8));
-            new PrintWriter(file).print(new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(serviceGroupJson));
+            try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8)) {
+                new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(serviceGroupJson, writer);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutGroupUpdate(serviceGroup));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
