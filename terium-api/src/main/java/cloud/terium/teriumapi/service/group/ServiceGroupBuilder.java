@@ -1,14 +1,19 @@
 package cloud.terium.teriumapi.service.group;
 
+import cloud.terium.networking.packet.group.PacketPlayOutCreateLobbyGroup;
+import cloud.terium.networking.packet.group.PacketPlayOutCreateProxyGroup;
+import cloud.terium.networking.packet.group.PacketPlayOutCreateServerGroup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
+import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
+import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
+import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 import lombok.Getter;
 
 import java.util.List;
 
-@Getter
 public class ServiceGroupBuilder {
 
     private final String name;
@@ -93,6 +98,26 @@ public class ServiceGroupBuilder {
     }
 
     public ICloudServiceGroup build() {
-        return null;
+        if(name == null)
+            throw new NullPointerException("name cannot be null");
+        if(serviceType == null)
+            throw new NullPointerException("cloud service type cannot be null");
+
+        ICloudServiceGroup cloudServiceGroup = null;
+        switch (serviceType) {
+            case Proxy -> {
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateProxyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices));
+                cloudServiceGroup = new DefaultProxyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices);
+            }
+            case Lobby -> {
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateLobbyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
+                cloudServiceGroup = new DefaultLobbyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices);
+            }
+            case Server -> {
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateServerGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
+                cloudServiceGroup = new DefaultServerGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices);
+            }
+        }
+        return cloudServiceGroup;
     }
 }
