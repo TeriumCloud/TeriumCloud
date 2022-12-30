@@ -28,13 +28,13 @@ public class GroupCommand extends Command {
                     if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server")) {
                         if (args.length == 6) {
                             switch (args[1]) {
-                                case "lobby" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
-                                case "server" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createServerGroup(args[2], "Default server group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                case "lobby" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                case "server" -> TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createServerGroup(args[2], "Default server group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
                             }
                         } else Logger.log("group create lobby/server [name] [version] [static] [memory]", LogType.INFO);
                     } else {
                         if (args.length == 7) {
-                            TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createProxyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
+                            TeriumCloud.getTerium().getServiceGroupProvider().registerServiceGroup(TeriumCloud.getTerium().getServiceGroupFactory().createProxyGroup(args[2], "Default lobby group", TeriumCloud.getTerium().getThisNode(), List.of(), List.of(TeriumCloud.getTerium().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
                         } else Logger.log("group create proxy [name] [version] [static] [memory] [port]", LogType.INFO);
                     }
                 }

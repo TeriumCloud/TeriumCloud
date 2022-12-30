@@ -3,6 +3,7 @@ package cloud.terium.cloudsystem.console;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.logger.LoggerColors;
+import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import lombok.Getter;
@@ -15,12 +16,13 @@ import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.InfoCmp;
+import org.jline.utils.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 @Getter
-public class ConsoleManager {
+public class ConsoleManager implements IConsoleProvider {
 
     private final Terminal terminal;
     private final String username;
@@ -89,5 +91,16 @@ public class ConsoleManager {
     @SneakyThrows
     private String username() {
         return System.getProperty("user.name");
+    }
+
+    @Override
+    public void sendConsole(String message, LogType logType) {
+        Logger.log(message, logType);
+    }
+
+    @Override
+    public void executeCommand(String command) {
+        final String[] args = command.split(" ");
+        TeriumCloud.getTerium().getCommandManager().getCommand(args[0]).execute(Arrays.copyOfRange(args, 1, args.length));
     }
 }

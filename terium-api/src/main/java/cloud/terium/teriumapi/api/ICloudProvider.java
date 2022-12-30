@@ -3,6 +3,7 @@ package cloud.terium.teriumapi.api;
 import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -16,6 +17,11 @@ public abstract class ICloudProvider {
      * Use this methode to get the current server as ICloudService
      */
     public abstract ICloudService getThisService();
+
+    /**
+     * Use this methode to get the node where the service is running.
+     */
+    public abstract INode getThisNode();
 
     /**
      * Use this methode to get the ICloudServiceProvider

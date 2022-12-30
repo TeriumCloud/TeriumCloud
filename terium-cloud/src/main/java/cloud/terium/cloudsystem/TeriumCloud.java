@@ -5,7 +5,7 @@ import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
-import cloud.terium.cloudsystem.event.events.node.NodeShutdownEvent;
+import cloud.terium.cloudsystem.group.CloudGroupBuilder;
 import cloud.terium.cloudsystem.group.ServiceGroupFactory;
 import cloud.terium.cloudsystem.group.ServiceGroupProvider;
 import cloud.terium.cloudsystem.node.Node;
@@ -16,8 +16,27 @@ import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.api.ICloudFactory;
+import cloud.terium.teriumapi.api.ICloudProvider;
+import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.console.command.ICommandFactory;
+import cloud.terium.teriumapi.event.IEventProvider;
+import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.node.INodeFactory;
+import cloud.terium.teriumapi.node.INodeProvider;
+import cloud.terium.teriumapi.player.ICloudPlayerProvider;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ICloudServiceFactory;
+import cloud.terium.teriumapi.service.ICloudServiceProvider;
+import cloud.terium.teriumapi.service.ServiceType;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
+import cloud.terium.teriumapi.service.group.ServiceGroupBuilder;
+import cloud.terium.teriumapi.template.ITemplateFactory;
+import cloud.terium.teriumapi.template.ITemplateProvider;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
@@ -29,7 +48,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-public class TeriumCloud {
+public class TeriumCloud extends TeriumAPI {
 
     private static TeriumCloud terium;
     private final CloudUtils cloudUtils;
@@ -109,6 +128,94 @@ public class TeriumCloud {
             cloudUtils.setRunning(false);
             shutdownCloud();
         });
+    }
+
+    @Override
+    public ICloudProvider getProvider() {
+        return new ICloudProvider() {
+            @Override
+            public ICloudService getThisService() {
+                return null;
+            }
+
+            @Override
+            public INode getThisNode() {
+                return thisNode;
+            }
+
+            @Override
+            public ICloudServiceProvider getServiceProvider() {
+                // Todo: need to be implemented
+                return null;
+            }
+
+            @Override
+            public ICloudServiceGroupProvider getServiceGroupProvider() {
+                return serviceGroupProvider;
+            }
+
+            @Override
+            public ICloudPlayerProvider getCloudPlayerProvider() {
+                // Todo: need to be implemented
+                return null;
+            }
+
+            @Override
+            public IConsoleProvider getConsoleProvider() {
+                return consoleManager;
+            }
+
+            @Override
+            public IEventProvider getEventProvider() {
+                return eventProvider;
+            }
+
+            @Override
+            public INodeProvider getNodeProvider() {
+                return nodeProvider;
+            }
+
+            @Override
+            public ITemplateProvider getTemplateProvider() {
+                return templateProvider;
+            }
+
+            @Override
+            public IDefaultTeriumNetworking getTeriumNetworking() {
+                return networking;
+            }
+        };
+    }
+
+    @Override
+    public ICloudFactory getFactory() {
+        return new ICloudFactory() {
+            @Override
+            public ICloudServiceFactory getServiceFactory() {
+                // Todo: need to be implemented
+                return null;
+            }
+
+            @Override
+            public ICloudServiceGroupFactory getServiceGroupFactory() {
+                return serviceGroupFactory;
+            }
+
+            @Override
+            public ITemplateFactory getTemplateFactory() {
+                return templateFactory;
+            }
+
+            @Override
+            public INodeFactory getNodeFactory() {
+                return nodeFactory;
+            }
+
+            @Override
+            public ICommandFactory getCommandFactory() {
+                return commandManager;
+            }
+        };
     }
 
     public static TeriumCloud getTerium() {
