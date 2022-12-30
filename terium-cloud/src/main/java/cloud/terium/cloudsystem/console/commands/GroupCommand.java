@@ -214,14 +214,8 @@ public class GroupCommand extends Command {
                 if(args[0].equalsIgnoreCase("update")) {
                     if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
                         return Arrays.asList("true", "false");
-                    else if (args[2].equalsIgnoreCase("memory"))
-                        return Arrays.asList("128", "512", "1024", "2048");
-                    else if (args[2].equalsIgnoreCase("maxplayers"))
-                        return Arrays.asList("1", "5", "10", "20");
-                    else if (args[2].equalsIgnoreCase("minservices") || args[2].equalsIgnoreCase("maxservices"))
-                        return Arrays.asList("1", "2", "3", "4", "5");
                     else if (args[2].equalsIgnoreCase("version"))
-                        return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
+                        return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspigot-1.8.8", "minestom");
                 }
 
                 if(args[0].equalsIgnoreCase("add")) {
