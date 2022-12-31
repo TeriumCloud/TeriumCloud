@@ -17,6 +17,6 @@ public class HelpCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        TeriumCloud.getTerium().getCommandManager().getCommandList().forEach(command -> Logger.log(command.getCommand() + Arrays.toString(command.getAliases()) + " - " + command.getDescription(), LogType.INFO));
+        TeriumCloud.getTerium().getCommandManager().getCommandList().forEach(command -> Logger.log(command.getCommand() + (command.getAliases().length >= 1 ? Arrays.asList(command.getAliases()) : "") + " - " + command.getDescription(), LogType.INFO));
     }
 }

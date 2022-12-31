@@ -1,23 +1,20 @@
 package cloud.terium.cloudsystem.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.pipe.TeriumServer;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
-import org.jline.utils.Log;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
 public class GroupCommand extends Command {
 
     public GroupCommand() {
-        super("group", "Manage service groups.", "groups");
+        super("group", "Manage service groups.");
     }
 
     @Override
