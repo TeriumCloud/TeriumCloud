@@ -16,7 +16,6 @@ import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.InfoCmp;
-import org.jline.utils.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

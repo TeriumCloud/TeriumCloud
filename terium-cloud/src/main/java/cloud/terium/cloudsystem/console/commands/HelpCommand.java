@@ -4,10 +4,8 @@ import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
-import org.jline.builtins.Completers;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class HelpCommand extends Command {
 

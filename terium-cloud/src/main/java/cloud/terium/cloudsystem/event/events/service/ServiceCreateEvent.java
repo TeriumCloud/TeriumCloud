@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.event.events.service;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
 import cloud.terium.teriumapi.event.Event;
-import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;

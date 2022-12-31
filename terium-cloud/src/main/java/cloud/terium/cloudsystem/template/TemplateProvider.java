@@ -7,7 +7,6 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

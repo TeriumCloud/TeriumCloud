@@ -2,7 +2,6 @@ package cloud.terium.cloudsystem.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.teriumapi.console.command.Command;
-import org.jline.builtins.Completers;
 
 public class StopCommand extends Command {
 
