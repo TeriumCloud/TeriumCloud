@@ -26,7 +26,7 @@ build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
-/.gradle/
+.gradle/
 /terium-framework/.gradle/
 /terium-framework/.idea/
 /terium-framework/build/

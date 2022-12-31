@@ -13,7 +13,7 @@ import java.util.List;
 public class NodeCommand extends Command {
 
     public NodeCommand() {
-        super("node", "Interact with all registered nodes or add/remove a node.", "nodes");
+        super("node", "Interact with all registered nodes or add/remove a node.");
     }
 
     @Override
