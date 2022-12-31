@@ -35,7 +35,7 @@ public class Node implements INode {
                 TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeStarted(this));
             } catch (Exception exception) {
                 this.client = null;
-                Logger.log("Connection to node '" + name + "' with ip '" + address.toString() + "' can't be created. (" + exception.getMessage() + ")", LogType.ERROR);
+                Logger.log("Connection to node '" + name + "' with ip '" + address.getHostName() + ":" + address.getPort() + "' can't be created. (" + exception.getMessage() + ")", LogType.ERROR);
             }
         }
     }

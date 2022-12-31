@@ -67,7 +67,7 @@ public class NodeCommand extends Command {
                             if (node.getUsedMemory() > (node.getMaxMemory() / 1.3)) memoryColor = "§c";
                             else if (node.getUsedMemory() > (node.getMaxMemory() / 2)) memoryColor = "§6";
                             else memoryColor = "§a";
-                            Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress(), LogType.INFO);
+                            Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress().getHostName() + ":" + node.getAddress().getPort(), LogType.INFO);
                             Logger.log("Memory: " + memoryColor + node.getUsedMemory() + "§f/" + node.getMaxMemory(), LogType.INFO);
                         } catch (Exception exception) {
                             Logger.log("A node with that name isn't registered.", LogType.ERROR);
@@ -78,7 +78,7 @@ public class NodeCommand extends Command {
                 }
                 case "list" -> {
                     Logger.log(TeriumCloud.getTerium().getNodeProvider().getAllNodes().size() > 0 ? "All registered nodes:" : "There is no registered node.", LogType.INFO);
-                    TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).forEach(node -> Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress(), LogType.INFO));
+                    TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).forEach(node -> Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress().getHostName() + ":" + node.getAddress().getPort(), LogType.INFO));
                     return;
                 }
             }
