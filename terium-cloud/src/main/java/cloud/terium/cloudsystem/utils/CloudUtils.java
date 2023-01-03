@@ -2,20 +2,25 @@ package cloud.terium.cloudsystem.utils;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.cloudsystem.utils.setup.SetupState;
+import cloud.terium.cloudsystem.utils.version.ServerVersions;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
+import org.jline.utils.Log;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -26,7 +31,6 @@ public class CloudUtils {
     private final String version;
     private boolean running;
     private boolean setup;
-    private SetupState setupState;
     private boolean isInScreen;
 
     public CloudUtils() {
@@ -35,11 +39,21 @@ public class CloudUtils {
         this.isInScreen = false;
         this.version = "1.0.0-DEVELOPMENT";
         this.playerList = new ArrayList<>();
-    }
 
-    public void startSetup() {
-        this.setup = true;
-        this.setupState = SetupState.STARTING;
+        File data = new File("data//versions");
+        Logger.log("Downloading all server versions...");
+        if(!data.exists()) {
+            Arrays.stream(ServerVersions.values()).toList().forEach(version -> {
+                try {
+                    Logger.log("Trying to download '" + version.getName() + "'...");
+                    FileUtils.copyURLToFile(new URL(version.getUrl()), new File("data//versions//" + version.getName() + ".jar"));
+                    Logger.log("Successfully to downloaded '" + version.getName() + "'.");
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            });
+        }
+        data.mkdirs();
     }
 
     @SneakyThrows
