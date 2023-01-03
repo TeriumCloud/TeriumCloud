@@ -8,11 +8,11 @@ import cloud.terium.teriumapi.network.Packet;
 import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-public class TeriumNetworking implements IDefaultTeriumNetworking {
+public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
     private final TeriumServer teriumServer;
 
-    public TeriumNetworking() {
+    public TeriumNetworkProvider() {
         Logger.log("Trying to start terium-server...", LogType.INFO);
         this.teriumServer = new TeriumServer(TeriumCloud.getTerium().getCloudConfig().ip(), TeriumCloud.getTerium().getCloudConfig().port());
         Logger.log("Successfully started terium-server on " + TeriumCloud.getTerium().getCloudConfig().ip() + ":" + TeriumCloud.getTerium().getCloudConfig().port() + ".", LogType.INFO);

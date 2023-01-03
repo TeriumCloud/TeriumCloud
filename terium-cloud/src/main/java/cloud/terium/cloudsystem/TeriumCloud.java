@@ -10,7 +10,7 @@ import cloud.terium.cloudsystem.group.ServiceGroupProvider;
 import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
-import cloud.terium.cloudsystem.pipe.TeriumNetworking;
+import cloud.terium.cloudsystem.pipe.TeriumNetworkProvider;
 import cloud.terium.cloudsystem.service.CloudServiceProvider;
 import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
@@ -54,7 +54,7 @@ public class TeriumCloud extends TeriumAPI {
     private final CloudConfig cloudConfig;
     private final ConfigManager configManager;
     private final ConsoleManager consoleManager;
-    private final TeriumNetworking networking;
+    private final TeriumNetworkProvider networking;
     private final NodeProvider nodeProvider;
     private final NodeFactory nodeFactory;
     private final ServiceGroupProvider serviceGroupProvider;
@@ -88,7 +88,7 @@ public class TeriumCloud extends TeriumAPI {
 
         this.configManager = new ConfigManager();
         this.cloudConfig = configManager.toCloudConfig();
-        this.networking = new TeriumNetworking();
+        this.networking = new TeriumNetworkProvider();
         this.eventProvider = new EventProvider();
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
