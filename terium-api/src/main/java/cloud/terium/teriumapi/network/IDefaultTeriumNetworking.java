@@ -1,8 +1,7 @@
 package cloud.terium.teriumapi.network;
 
+import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.nio.channels.Channel;
 
 public interface IDefaultTeriumNetworking {
 

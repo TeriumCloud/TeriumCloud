@@ -11,6 +11,7 @@ import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
 import cloud.terium.cloudsystem.pipe.TeriumNetworking;
+import cloud.terium.cloudsystem.service.CloudServiceProvider;
 import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
@@ -58,6 +59,7 @@ public class TeriumCloud extends TeriumAPI {
     private final NodeFactory nodeFactory;
     private final ServiceGroupProvider serviceGroupProvider;
     private final ServiceGroupFactory serviceGroupFactory;
+    private final CloudServiceProvider serviceProvider;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
     private final TemplateFactory templateFactory;
@@ -96,6 +98,7 @@ public class TeriumCloud extends TeriumAPI {
         this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
+        this.serviceProvider = new CloudServiceProvider();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
@@ -142,8 +145,7 @@ public class TeriumCloud extends TeriumAPI {
 
             @Override
             public ICloudServiceProvider getServiceProvider() {
-                // Todo: need to be implemented
-                return null;
+                return serviceProvider;
             }
 
             @Override
