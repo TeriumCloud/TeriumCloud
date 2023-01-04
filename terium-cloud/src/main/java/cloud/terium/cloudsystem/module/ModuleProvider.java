@@ -27,13 +27,12 @@ public class ModuleProvider implements IModuleProvider {
     }
 
     @SneakyThrows
-    public IModule executeModule(String mainClass, String methode) {
+    public void executeModule(String mainClass, String methode) {
         Class<?> description = Class.forName(mainClass);
         IModule cloudModule = (IModule) description.newInstance();
 
         if(methode.equals("enable")) cloudModule.onEnable(); else cloudModule.onDisable();
 
-        return cloudModule;
     }
 
     @Override
@@ -79,12 +78,12 @@ public class ModuleProvider implements IModuleProvider {
                                 }
                             });
                             Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
+                            executeModule(jsonObject.get("mainclass").getAsString(), "enable");
                         }
                     }
                 }
             }
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
     }
 
     @Override

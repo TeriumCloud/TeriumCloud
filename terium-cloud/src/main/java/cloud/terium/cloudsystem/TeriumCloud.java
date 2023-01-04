@@ -7,6 +7,7 @@ import cloud.terium.cloudsystem.console.ConsoleManager;
 import cloud.terium.cloudsystem.event.EventProvider;
 import cloud.terium.cloudsystem.group.ServiceGroupFactory;
 import cloud.terium.cloudsystem.group.ServiceGroupProvider;
+import cloud.terium.cloudsystem.module.ModuleProvider;
 import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
@@ -23,6 +24,7 @@ import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import cloud.terium.teriumapi.event.IEventProvider;
+import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeFactory;
@@ -62,6 +64,7 @@ public class TeriumCloud extends TeriumAPI {
     private final CloudServiceProvider serviceProvider;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
+    private final ModuleProvider moduleProvider;
     private final TemplateFactory templateFactory;
     private final INode thisNode;
 
@@ -99,6 +102,7 @@ public class TeriumCloud extends TeriumAPI {
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceProvider = new CloudServiceProvider();
+        this.moduleProvider = new ModuleProvider();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
@@ -167,6 +171,11 @@ public class TeriumCloud extends TeriumAPI {
             @Override
             public IEventProvider getEventProvider() {
                 return eventProvider;
+            }
+
+            @Override
+            public IModuleProvider getModuleProvider() {
+                return moduleProvider;
             }
 
             @Override
