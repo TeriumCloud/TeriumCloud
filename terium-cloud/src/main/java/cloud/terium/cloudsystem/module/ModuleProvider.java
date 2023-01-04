@@ -11,8 +11,12 @@ import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -26,13 +30,25 @@ public class ModuleProvider implements IModuleProvider {
         this.loadedModuleCache = new HashMap<>();
     }
 
+    public void loadModules() {
+        File file = new File("modules//");
+        if (!file.exists()) file.mkdirs();
+        Arrays.stream(file.listFiles()).toList().forEach(module -> loadModule(module.getPath()));
+    }
+
     @SneakyThrows
-    public void executeModule(String mainClass, String methode) {
-        Class<?> description = Class.forName(mainClass);
-        IModule cloudModule = (IModule) description.newInstance();
+    public void executeModule(File file, String mainClass, String methode) {
+        try {
+            Class<?> cl = new URLClassLoader(new URL[]{file.toURL()}, Thread.currentThread().getContextClassLoader()).loadClass(mainClass);
 
-        if(methode.equals("enable")) cloudModule.onEnable(); else cloudModule.onDisable();
+            Class<?> moduleClass = Class.forName(mainClass, true, cl.getClassLoader());
+            IModule cloudModule = (IModule) moduleClass.newInstance();
 
+            if (methode.equals("enable")) cloudModule.onEnable();
+            else cloudModule.onDisable();
+        } catch (MalformedURLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Override
@@ -69,7 +85,7 @@ public class ModuleProvider implements IModuleProvider {
 
                                 @Override
                                 public String getMainClass() {
-                                    return jsonObject.get("mainclass").getAsString();
+                                    return jsonObject.get("main-class").getAsString();
                                 }
 
                                 @Override
@@ -77,13 +93,18 @@ public class ModuleProvider implements IModuleProvider {
                                     return ModuleType.valueOf(jsonObject.get("type").getAsString());
                                 }
                             });
+
                             Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
-                            executeModule(jsonObject.get("mainclass").getAsString(), "enable");
+                            executeModule(new File(path), jsonObject.get("main-class").getAsString(), "enable");
+                            in.close();
+                            return;
                         }
                     }
                 }
             }
-        } catch (IOException ignored) {}
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Override

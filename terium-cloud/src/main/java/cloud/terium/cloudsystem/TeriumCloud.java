@@ -127,6 +127,7 @@ public class TeriumCloud extends TeriumAPI {
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).toList().size() + "")
                 .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
+        this.moduleProvider.loadModules();
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);
