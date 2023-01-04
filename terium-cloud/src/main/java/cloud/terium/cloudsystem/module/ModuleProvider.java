@@ -112,6 +112,11 @@ public class ModuleProvider implements IModuleProvider {
         }
     }
 
+    public void unloadModule(ILoadedModule module) {
+        loadedModuleCache.remove(module.getName());
+        executeModule(new File("modules//" + module.getFileName()), module.getMainClass(), "disable");
+    }
+
     @Override
     public ILoadedModule getModuleByName(String name) {
         return loadedModuleCache.get(name);
