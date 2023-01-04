@@ -7,6 +7,8 @@ public interface ILoadedModule extends Serializable {
 
     String getName();
 
+    String getFileName();
+
     String getAuthor();
 
     String getVersion();
