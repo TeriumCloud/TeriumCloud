@@ -69,6 +69,11 @@ public class ModuleProvider implements IModuleProvider {
                                 }
 
                                 @Override
+                                public String getFileName() {
+                                    return new File(path).getName();
+                                }
+
+                                @Override
                                 public String getAuthor() {
                                     return jsonObject.get("author").getAsString();
                                 }
