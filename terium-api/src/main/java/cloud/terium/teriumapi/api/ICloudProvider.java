@@ -2,6 +2,7 @@ package cloud.terium.teriumapi.api;
 
 import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
+import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeProvider;
@@ -52,6 +53,12 @@ public abstract class ICloudProvider {
      * The IEventProvider is usefull to call events or add register a listener.
      */
     public abstract IEventProvider getEventProvider();
+
+    /**
+     * Use this methode to get the IModuleProvider
+     * The IModuleProvider is usefull to get informations about a module.
+     */
+    public abstract IModuleProvider getModuleProvider();
 
     /**
      * Use this methode to get the INodeProvider

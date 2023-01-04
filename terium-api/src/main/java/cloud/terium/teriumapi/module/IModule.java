@@ -1,19 +1,21 @@
 package cloud.terium.teriumapi.module;
 
-import java.io.File;
-import java.io.Serializable;
+public interface IModule {
 
-public interface IModule extends Serializable {
+    /**
+     * Called when the module will be enabled.
+     */
+    void onEnable();
 
-    String getName();
+    /**
+     * Called when the module will be disabled.
+     */
+    void onDisable();
 
-    String getAuthor();
-
-    String getVersion();
-
-    String getDescription();
-
-    File getFile();
-
-    ModuleType getModuleType();
+    /**
+     * Returns if the module is reloadable.
+     *
+     * @return Boolean
+     */
+    Boolean isReloadable();
 }

@@ -2,7 +2,7 @@ package cloud.terium.teriumapi.module;
 
 import java.util.List;
 
-public interface IModuleManager {
+public interface IModuleProvider {
 
     /**
      * load a module by path
@@ -15,14 +15,14 @@ public interface IModuleManager {
      * Get a module by name
      *
      * @param name
-     * @return IModule This returns the module by name.
+     * @return ILoadedModule This returns the module by name.
      */
-    IModule getModuleByName(String name);
+    ILoadedModule getModuleByName(String name);
 
     /**
      * Get all loaded modules
      *
-     * @return List<IModule> This returns a list of all loaded modules.
+     * @return List<ILoadedModule> This returns a list of all loaded modules.
      */
-    List<IModule> getAllModules();
+    List<ILoadedModule> getAllModules();
 }
