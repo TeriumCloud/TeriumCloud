@@ -24,6 +24,15 @@ public class ModuleCommand extends Command {
                     Logger.log(module.getName() + "(" + module.getFileName() + ") by " + module.getAuthor() + " version " + module.getVersion() + ".", LogType.INFO);
                 });
             }
+
+            if(args.length == 2 && args[0].equalsIgnoreCase("disable")) {
+                ILoadedModule module = TeriumCloud.getTerium().getModuleProvider().getModuleByName(args[1]);
+                try {
+                    TeriumCloud.getTerium().getModuleProvider().unloadModule(module);
+                } catch (Exception exception) {
+                    Logger.log("A module with this name isn't loaded");
+                }
+            }
             return;
         }
 
