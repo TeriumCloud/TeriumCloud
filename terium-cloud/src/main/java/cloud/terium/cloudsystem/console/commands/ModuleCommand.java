@@ -25,6 +25,14 @@ public class ModuleCommand extends Command {
                 });
             }
 
+            if(args.length == 2 && args[0].equalsIgnoreCase("enable")) {
+                try {
+                    TeriumCloud.getTerium().getModuleProvider().loadModule("modules//" + args[1]);
+                } catch (Exception exception) {
+                    Logger.log("A module with this name isn't in the modules folder.");
+                }
+            }
+
             if(args.length == 2 && args[0].equalsIgnoreCase("disable")) {
                 ILoadedModule module = TeriumCloud.getTerium().getModuleProvider().getModuleByName(args[1]);
                 try {
