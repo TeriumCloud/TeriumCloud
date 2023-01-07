@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.service.group;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * If you need to 'filter' other things like all methodes here use: getAllServiceGroups().stream().filter();
@@ -13,7 +14,7 @@ public interface ICloudServiceGroupProvider {
      * @param groupName This is the group name
      * @return ICloudServiceGroup This returns the ICloudServiceGroup by the name you typed in param.
      */
-    ICloudServiceGroup getServiceGroupByName(String groupName);
+    Optional<ICloudServiceGroup> getServiceGroupByName(String groupName);
 
     /**
      * Get a ICloudServiceGroup by group title

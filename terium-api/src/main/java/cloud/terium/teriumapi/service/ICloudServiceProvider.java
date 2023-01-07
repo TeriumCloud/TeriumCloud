@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ICloudServiceProvider {
 
@@ -10,7 +11,7 @@ public interface ICloudServiceProvider {
      * @param serviceName The service name of the service you want.
      * @return ICloudService The cloud service you wanted by name.
      */
-    ICloudService getCloudServiceByName(String serviceName);
+    Optional<ICloudService> getCloudServiceByName(String serviceName);
 
     /**
      * Get a List of all ICloudServices by serviceGroup

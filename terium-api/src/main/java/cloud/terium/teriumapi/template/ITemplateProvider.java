@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.template;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ITemplateProvider {
 
@@ -10,7 +11,7 @@ public interface ITemplateProvider {
      * @param name
      * @return ITemplate
      */
-    ITemplate getTemplateByName(String name);
+    Optional<ITemplate> getTemplateByName(String name);
 
     /**
      * Returns a list of all exist templates

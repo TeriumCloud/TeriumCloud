@@ -3,6 +3,7 @@ package cloud.terium.teriumapi.player;
 import cloud.terium.teriumapi.service.ICloudService;
 
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ICloudPlayer extends Serializable {
@@ -47,7 +48,7 @@ public interface ICloudPlayer extends Serializable {
      *
      * @return ICloudService This returns the ICloudService the cloud player is connected with.
      */
-    ICloudService getConnectedCloudService();
+    Optional<ICloudService> getConnectedCloudService();
 
     /**
      * Connect a cloud player to the service from a other cloud player

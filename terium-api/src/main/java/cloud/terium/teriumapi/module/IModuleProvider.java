@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.module;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IModuleProvider {
 
@@ -17,7 +18,7 @@ public interface IModuleProvider {
      * @param name
      * @return ILoadedModule This returns the module by name.
      */
-    ILoadedModule getModuleByName(String name);
+    Optional<ILoadedModule> getModuleByName(String name);
 
     /**
      * Get all loaded modules

@@ -11,11 +11,4 @@ public interface IModule {
      * Called when the module will be disabled.
      */
     void onDisable();
-
-    /**
-     * Returns if the module is reloadable.
-     *
-     * @return Boolean
-     */
-    Boolean isReloadable();
 }
