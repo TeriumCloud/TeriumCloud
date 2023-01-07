@@ -24,7 +24,6 @@ import java.util.Arrays;
 public class ConsoleManager implements IConsoleProvider {
 
     private final Terminal terminal;
-    private final String username;
     private LineReader lineReader;
     private AggregateCompleter completer;
     private Thread thread;
@@ -35,7 +34,6 @@ public class ConsoleManager implements IConsoleProvider {
                 .name("terium-console")
                 .system(true).streams(System.in, System.out)
                 .encoding(StandardCharsets.UTF_8).dumb(true).build();
-        this.username = username();
 
         readConsole();
     }
@@ -59,8 +57,9 @@ public class ConsoleManager implements IConsoleProvider {
                 Command command;
                 if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
                     try {
-                        input = lineReader.readLine(LoggerColors.replaceColorCodes("§b" + username + "§f@terium => "));
-                    } catch (EndOfFileException exception) {
+                        input = lineReader.readLine(LoggerColors.replaceColorCodes(TeriumCloud.getTerium().getCloudConfig().promt().replace("%user%", username()))
+                                .replace("%node%", TeriumCloud.getTerium().getThisNode().getName()).replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
+                    } catch (EndOfFileException exception)  {
                         input = lineReader.readLine("");
                     } catch (UserInterruptException exception) {
                         TeriumCloud.getTerium().shutdownCloud();
