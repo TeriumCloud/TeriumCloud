@@ -8,6 +8,7 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TemplateProvider implements ITemplateProvider {
@@ -29,13 +30,13 @@ public class TemplateProvider implements ITemplateProvider {
     }
 
     @Override
-    public ITemplate getTemplateByName(String name) {
+    public Optional<ITemplate> getTemplateByName(String name) {
         for (ITemplate template : templates) {
             if (template.getName().equals(name)) {
-                return template;
+                return Optional.ofNullable(template);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

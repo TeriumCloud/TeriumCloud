@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class NodeProvider implements INodeProvider {
@@ -42,8 +43,8 @@ public class NodeProvider implements INodeProvider {
     }
 
     @Override
-    public INode getNodeByName(String name) {
-        return nodes.get(name);
+    public Optional<INode> getNodeByName(String name) {
+        return Optional.ofNullable(nodes.get(name));
     }
 
     public void addClientToNode(INode node, TeriumClient client) {

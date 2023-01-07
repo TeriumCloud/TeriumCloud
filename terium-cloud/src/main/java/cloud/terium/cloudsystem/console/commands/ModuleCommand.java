@@ -9,6 +9,7 @@ import cloud.terium.teriumapi.module.ILoadedModule;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ModuleCommand extends Command {
 
@@ -18,14 +19,14 @@ public class ModuleCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        if(args.length >= 1) {
-            if(args.length == 1 && args[0].equalsIgnoreCase("list")) {
+        if (args.length >= 1) {
+            if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
                 TeriumCloud.getTerium().getModuleProvider().getAllModules().forEach(module -> {
                     Logger.log(module.getName() + "(" + module.getFileName() + ") by " + module.getAuthor() + " version " + module.getVersion() + ".", LogType.INFO);
                 });
             }
 
-            if(args.length == 2 && args[0].equalsIgnoreCase("enable")) {
+            if (args.length == 2 && args[0].equalsIgnoreCase("enable")) {
                 try {
                     TeriumCloud.getTerium().getModuleProvider().loadModule("modules//" + args[1]);
                 } catch (Exception exception) {
@@ -33,13 +34,9 @@ public class ModuleCommand extends Command {
                 }
             }
 
-            if(args.length == 2 && args[0].equalsIgnoreCase("disable")) {
-                ILoadedModule module = TeriumCloud.getTerium().getModuleProvider().getModuleByName(args[1]);
-                try {
-                    TeriumCloud.getTerium().getModuleProvider().unloadModule(module);
-                } catch (Exception exception) {
-                    Logger.log("A module with this name isn't loaded");
-                }
+            if (args.length == 2 && args[0].equalsIgnoreCase("disable")) {
+                Optional<ILoadedModule> cloudModule = TeriumCloud.getTerium().getModuleProvider().getModuleByName(args[1]);
+                cloudModule.ifPresentOrElse(module -> TeriumCloud.getTerium().getModuleProvider().unloadModule(module), () -> Logger.log("A module with this name isn't loaded"));
             }
             return;
         }
@@ -57,11 +54,11 @@ public class ModuleCommand extends Command {
             }
 
             case 2 -> {
-                if(args[0].equalsIgnoreCase("enable")) {
+                if (args[0].equalsIgnoreCase("enable")) {
                     return Arrays.stream(new File("modules//").listFiles()).map(File::getName).filter(s -> !TeriumCloud.getTerium().getModuleProvider().getAllModules().stream().map(ILoadedModule::getFileName).toList().contains(s)).toList();
                 }
 
-                if(args[0].equalsIgnoreCase("disable")) {
+                if (args[0].equalsIgnoreCase("disable")) {
                     return TeriumCloud.getTerium().getModuleProvider().getAllModules().stream().map(ILoadedModule::getName).toList();
                 }
             }

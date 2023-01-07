@@ -11,6 +11,8 @@ import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.node.INode;
 
+import java.util.Optional;
+
 public class NodeListener implements Listener {
 
     @Subscribe
@@ -32,8 +34,10 @@ public class NodeListener implements Listener {
 
     @Subscribe
     public void handleNodeUpdate(NodeUpdateEvent event) {
-        INode node = TeriumCloud.getTerium().getNodeProvider().getNodeByName(event.getNode().getName());
-        node.setMaxMemory(event.getMaxMemory());
-        node.setUsedMemory(event.getUsedMemory());
+        Optional<INode> optionalNode = TeriumCloud.getTerium().getNodeProvider().getNodeByName(event.getNode().getName());
+        optionalNode.ifPresent(node -> {
+            node.setMaxMemory(event.getMaxMemory());
+            node.setUsedMemory(event.getUsedMemory());
+        });
     }
 }

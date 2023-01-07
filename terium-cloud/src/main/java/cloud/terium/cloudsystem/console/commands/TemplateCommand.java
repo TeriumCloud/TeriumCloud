@@ -8,6 +8,7 @@ import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class TemplateCommand extends Command {
 
@@ -36,13 +37,11 @@ public class TemplateCommand extends Command {
                 }
                 case "info" -> {
                     if (args.length > 1) {
-                        ITemplate template = TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[1]);
-                        try {
+                        Optional<ITemplate> cloudTemplate = TeriumCloud.getTerium().getTemplateProvider().getTemplateByName(args[1]);
+                        cloudTemplate.ifPresentOrElse(template -> {
                             Logger.log("Informations of template '" + template.getName() + "':", LogType.INFO);
                             Logger.log("Name: " + template.getName() + " - Path: " + template.getPath().toString(), LogType.INFO);
-                        } catch (Exception exception) {
-                            Logger.log("A template with that name isn't registered.", LogType.ERROR);
-                        }
+                        }, () -> Logger.log("A template with that name isn't registered.", LogType.ERROR));
                     } else Logger.log("template info [name] | see all informations about a template", LogType.INFO);
 
                     return;
@@ -63,7 +62,7 @@ public class TemplateCommand extends Command {
 
     @Override
     public List<String> tabComplete(String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             return Arrays.asList("create", "delete", "info", "list");
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("delete"))) {
             return TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().map(ITemplate::getName).toList();

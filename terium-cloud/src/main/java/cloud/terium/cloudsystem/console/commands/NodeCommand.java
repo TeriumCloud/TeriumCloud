@@ -9,6 +9,7 @@ import cloud.terium.teriumapi.node.INode;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class NodeCommand extends Command {
 
@@ -22,13 +23,11 @@ public class NodeCommand extends Command {
             switch (args[0]) {
                 case "execute" -> {
                     if (args.length > 1) {
-                        INode node = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
-                        try {
-                            if(args[2].equalsIgnoreCase("disconnect")) node.disconnect();
-                            if(args[2].equalsIgnoreCase("stop")) node.stop();
-                        } catch (Exception exception) {
-                            Logger.log("This node is currently not connected with this node.", LogType.ERROR);
-                        }
+                        Optional<INode> cloudNode = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
+                        cloudNode.ifPresentOrElse(node -> {
+                            if (args[2].equalsIgnoreCase("disconnect")) node.disconnect();
+                            if (args[2].equalsIgnoreCase("stop")) node.stop();
+                        }, () -> Logger.log("This node is currently not connected with this node.", LogType.ERROR));
                     } else Logger.log("node execute [name] disconnect§7|§fstop", LogType.INFO);
 
                     return;
@@ -39,7 +38,7 @@ public class NodeCommand extends Command {
                             TeriumCloud.getTerium().getNodeFactory().createNode(args[1], args[4], new InetSocketAddress(args[2], Integer.parseInt(args[3])));
                             Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
                         } catch (Exception exception) {
-                            if(args.length == 6 && args[5].equalsIgnoreCase("--print")) exception.printStackTrace();
+                            if (args.length == 6 && args[5].equalsIgnoreCase("--print")) exception.printStackTrace();
                             Logger.log("Error while creating new node.", LogType.ERROR);
                         }
                     } else Logger.log("node add [name] [ip] [port] [key] (command)", LogType.INFO);
@@ -48,30 +47,26 @@ public class NodeCommand extends Command {
                 }
                 case "remove" -> {
                     if (args.length > 1) {
-                        INode node = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
-                        try {
-                            if(args[1].equalsIgnoreCase("--stop")) node.stop();
+                        Optional<INode> cloudNode = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
+                        cloudNode.ifPresentOrElse(node -> {
+                            if (args[1].equalsIgnoreCase("--stop")) node.stop();
                             TeriumCloud.getTerium().getNodeFactory().deleteNode(node);
-                        } catch (Exception exception) {
-                            Logger.log("A node with that name isn't registered.", LogType.ERROR);
-                        }
+                        }, () -> Logger.log("A node with that name isn't registered.", LogType.ERROR));
                     } else Logger.log("node remove [name] (command)", LogType.INFO);
 
                     return;
                 }
                 case "info" -> {
                     if (args.length > 1) {
-                        INode node = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
-                        try {
+                        Optional<INode> cloudNode = TeriumCloud.getTerium().getNodeProvider().getNodeByName(args[1]);
+                        cloudNode.ifPresentOrElse(node -> {
                             String memoryColor;
                             if (node.getUsedMemory() > (node.getMaxMemory() / 1.3)) memoryColor = "§c";
                             else if (node.getUsedMemory() > (node.getMaxMemory() / 2)) memoryColor = "§6";
                             else memoryColor = "§a";
                             Logger.log("Name: " + node.getName() + "§7(" + (node.isConnected() ? "§aCONNECTED" : "§cNOT CONNECTED") + "§7)§f - Address: " + node.getAddress().getHostName() + ":" + node.getAddress().getPort(), LogType.INFO);
                             Logger.log("Memory: " + memoryColor + node.getUsedMemory() + "§f/" + node.getMaxMemory(), LogType.INFO);
-                        } catch (Exception exception) {
-                            Logger.log("A node with that name isn't registered.", LogType.ERROR);
-                        }
+                        }, () -> Logger.log("A node with that name isn't registered.", LogType.ERROR));
                     } else Logger.log("node info [name]", LogType.INFO);
 
                     return;

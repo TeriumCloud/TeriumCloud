@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -118,8 +119,8 @@ public class ModuleProvider implements IModuleProvider {
     }
 
     @Override
-    public ILoadedModule getModuleByName(String name) {
-        return loadedModuleCache.get(name);
+    public Optional<ILoadedModule> getModuleByName(String name) {
+        return Optional.ofNullable(loadedModuleCache.get(name));
     }
 
     @Override

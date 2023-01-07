@@ -7,6 +7,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CloudServiceProvider implements ICloudServiceProvider {
@@ -37,8 +38,8 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     }
 
     @Override
-    public ICloudService getCloudServiceByName(String serviceName) {
-        return cloudServiceCache.get(serviceName);
+    public Optional<ICloudService> getCloudServiceByName(String serviceName) {
+        return Optional.ofNullable(cloudServiceCache.get(serviceName));
     }
 
     @Override
