@@ -4,7 +4,6 @@ import cloud.terium.teriumapi.module.annotation.Module;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -18,16 +17,15 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Set;
 
 @SupportedAnnotationTypes({"cloud.terium.teriumapi.module.annotation.Module"})
 public class ModuleAnnotationProcessor extends AbstractProcessor {
 
     private ProcessingEnvironment environment;
-    private String pluginClassFound;
-    private boolean hasPrintedPluginError;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -50,17 +48,6 @@ public class ModuleAnnotationProcessor extends AbstractProcessor {
 
             Name qualifiedName = ((TypeElement) element).getQualifiedName();
 
-            if (Objects.equals(pluginClassFound, qualifiedName.toString())) {
-                if (!hasPrintedPluginError) {
-                    environment.getMessager()
-                            .printMessage(Diagnostic.Kind.WARNING, "Spigot does not support "
-                                    + "multiple plugins in one jar. We will generate a plugin.yml using " + pluginClassFound
-                                    + " for your plugin's main class.");
-                    hasPrintedPluginError = true;
-                }
-                return false;
-            }
-
             Module module = element.getAnnotation(Module.class);
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("name", module.name());
@@ -79,7 +66,7 @@ public class ModuleAnnotationProcessor extends AbstractProcessor {
                 }
             } catch (IOException e) {
                 environment.getMessager()
-                        .printMessage(Diagnostic.Kind.ERROR, "Unable to generate plugin file");
+                        .printMessage(Diagnostic.Kind.ERROR, "Unable to generate terium-info.json file");
             }
         }
 

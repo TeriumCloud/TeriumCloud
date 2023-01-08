@@ -68,10 +68,6 @@ public class TeriumCloud extends TeriumAPI {
     private final TemplateFactory templateFactory;
     private final INode thisNode;
 
-    public static void main(String[] args) {
-        new TeriumCloud();
-    }
-
     @SneakyThrows
     public TeriumCloud() {
         terium = this;
@@ -117,13 +113,13 @@ public class TeriumCloud extends TeriumAPI {
                                                                                             \s
                 §7> §fTerium by ByRaudy(Jannik H.)\s
                 §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
-                
+                                
                  §a> §fLoaded %commands% commands successfully.
                  §a> §fLoaded %templates% templates successfully.
                  §a> §fLoaded %groups% groups successfully.
                  §a> §fLoaded %loaded_nodes% and connected to %connected_nodes% nodes successfully.
                  §a> §fStarted terium-server on %ip%:%port%.
-                
+                                
                 """.replace("%version%", getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).toList().size() + "")
                 .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
@@ -133,6 +129,14 @@ public class TeriumCloud extends TeriumAPI {
             cloudUtils.setRunning(false);
             shutdownCloud();
         });
+    }
+
+    public static void main(String[] args) {
+        new TeriumCloud();
+    }
+
+    public static TeriumCloud getTerium() {
+        return terium;
     }
 
     @Override
@@ -225,10 +229,6 @@ public class TeriumCloud extends TeriumAPI {
                 return commandManager;
             }
         };
-    }
-
-    public static TeriumCloud getTerium() {
-        return terium;
     }
 
     @SneakyThrows

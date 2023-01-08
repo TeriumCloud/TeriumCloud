@@ -15,7 +15,7 @@ public enum LoggerColors {
     ORANGE(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.YELLOW).boldOff().toString(), '6'),
     GRAY(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.WHITE).boldOff().toString(), '7'),
     DARK_RED(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.RED).boldOff().toString(), '4'),
-    DARK_GRAY( Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.BLACK).boldOff().toString(), '8'),
+    DARK_GRAY(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.BLACK).boldOff().toString(), '8'),
     DARK_BLUE(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.BLUE).boldOff().toString(), '1'),
     DARK_GREEN(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.GREEN).boldOff().toString(), '2'),
     LIGHT_BLUE(Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.CYAN).bold().toString(), '3'),
@@ -29,14 +29,14 @@ public enum LoggerColors {
         this.code = code;
     }
 
-    public char getCode() {
-        return code;
-    }
-
     public static String replaceColorCodes(String s) {
         for (LoggerColors value : LoggerColors.values()) {
             s = s.replace("§" + value.getCode(), value.ansi);
         }
         return s;
+    }
+
+    public char getCode() {
+        return code;
     }
 }

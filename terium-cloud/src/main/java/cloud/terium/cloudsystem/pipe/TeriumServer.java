@@ -67,46 +67,76 @@ public class TeriumServer {
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
                                             try {
                                                 // service packets
-                                                if(packet instanceof PacketPlayOutServiceAdd newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutCreateService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.name(), newPacket.serviceGroup(), newPacket.templates(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.serviceId(), newPacket.cloudServiceType()));
-                                                if(packet instanceof PacketPlayOutServiceForceShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutServiceLock newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceLockEvent(newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceLoggedInEvent(newPacket.cloudService(), newPacket.cloudService().getServiceGroup().getGroupNode()));
-                                                if(packet instanceof PacketPlayOutServiceRemove newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceRemoveEvent(newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutServiceRestart newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceRestartEvent(newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutServiceStart newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceStartEvent(newPacket.cloudService(), newPacket.node()));
-                                                if(packet instanceof PacketPlayOutServiceShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceStopEvent(newPacket.cloudService(), newPacket.cloudService().getServiceGroup().getGroupNode()));
-                                                if(packet instanceof PacketPlayOutServiceUnlock newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUnlockEvent(newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutUpdateService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(newPacket.cloudService(), newPacket.propertyMap(), newPacket.serviceState(), newPacket.locked(), newPacket.usedMemory(), newPacket.onlinePlayers()));
+                                                if (packet instanceof PacketPlayOutServiceAdd newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutCreateService newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.name(), newPacket.serviceGroup(), newPacket.templates(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.serviceId(), newPacket.cloudServiceType()));
+                                                if (packet instanceof PacketPlayOutServiceForceShutdown newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutServiceLock newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceLockEvent(newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceLoggedInEvent(newPacket.cloudService(), newPacket.cloudService().getServiceGroup().getGroupNode()));
+                                                if (packet instanceof PacketPlayOutServiceRemove newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceRemoveEvent(newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutServiceRestart newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceRestartEvent(newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutServiceStart newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceStartEvent(newPacket.cloudService(), newPacket.node()));
+                                                if (packet instanceof PacketPlayOutServiceShutdown newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceStopEvent(newPacket.cloudService(), newPacket.cloudService().getServiceGroup().getGroupNode()));
+                                                if (packet instanceof PacketPlayOutServiceUnlock newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUnlockEvent(newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutUpdateService newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(newPacket.cloudService(), newPacket.propertyMap(), newPacket.serviceState(), newPacket.locked(), newPacket.usedMemory(), newPacket.onlinePlayers()));
 
                                                 // player packets
-                                                if(packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutCloudPlayerConnect newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
-                                                if(packet instanceof PacketPlayOutCloudPlayerJoin newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerJoinEvent(newPacket.cloudPlayer()));
-                                                if(packet instanceof PacketPlayOutCloudPlayerQuit newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerQuitEvent(newPacket.cloudPlayer()));
+                                                if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutCloudPlayerConnect newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutCloudPlayerJoin newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerJoinEvent(newPacket.cloudPlayer()));
+                                                if (packet instanceof PacketPlayOutCloudPlayerQuit newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerQuitEvent(newPacket.cloudPlayer()));
 
                                                 // node packets
-                                                if(packet instanceof PacketPlayOutNodeStarted newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node()));
-                                                if(packet instanceof PacketPlayOutNodeShutdown newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
-                                                if(packet instanceof PacketPlayOutNodeUpdate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new NodeUpdateEvent(newPacket.node(), newPacket.usedMemory(), newPacket.maxMemory()));
+                                                if (packet instanceof PacketPlayOutNodeStarted newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node()));
+                                                if (packet instanceof PacketPlayOutNodeShutdown newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
+                                                if (packet instanceof PacketPlayOutNodeUpdate newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new NodeUpdateEvent(newPacket.node(), newPacket.usedMemory(), newPacket.maxMemory()));
 
                                                 // console packets
-                                                if(packet instanceof PacketPlayOutSendConsole newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new SendConsoleEvent(newPacket.message(), newPacket.logType()));
-                                                if(packet instanceof PacketPlayOutRegisterCommand newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new RegisterCommandEvent(newPacket.command()));
+                                                if (packet instanceof PacketPlayOutSendConsole newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new SendConsoleEvent(newPacket.message(), newPacket.logType()));
+                                                if (packet instanceof PacketPlayOutRegisterCommand newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new RegisterCommandEvent(newPacket.command()));
 
                                                 // group packets
-                                                if(packet instanceof PacketPlayOutCreateLobbyGroup newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
-                                                if(packet instanceof PacketPlayOutCreateProxyGroup newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
-                                                if(packet instanceof PacketPlayOutCreateServerGroup newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
-                                                if(packet instanceof PacketPlayOutGroupDelete newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.iCloudServiceGroup()));
-                                                if(packet instanceof PacketPlayOutGroupUpdate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup()));
-                                                if(packet instanceof PacketPlayOutGroupReload newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.iCloudServiceGroup()));
-                                                if(packet instanceof PacketPlayOutGroupsReload) TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupsEvent());
+                                                if (packet instanceof PacketPlayOutCreateLobbyGroup newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                if (packet instanceof PacketPlayOutCreateProxyGroup newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                if (packet instanceof PacketPlayOutCreateServerGroup newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                if (packet instanceof PacketPlayOutGroupDelete newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.iCloudServiceGroup()));
+                                                if (packet instanceof PacketPlayOutGroupUpdate newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup()));
+                                                if (packet instanceof PacketPlayOutGroupReload newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.iCloudServiceGroup()));
+                                                if (packet instanceof PacketPlayOutGroupsReload)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupsEvent());
 
                                                 // template events
-                                                if(packet instanceof PacketPlayOutTemplateCreate newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
-                                                if(packet instanceof PacketPlayOutTemplateDelete newPacket) TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
+                                                if (packet instanceof PacketPlayOutTemplateCreate newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
+                                                if (packet instanceof PacketPlayOutTemplateDelete newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
                                                     if (targetChannel != channelHandlerContext.channel()) {

@@ -24,20 +24,20 @@ import java.util.Properties;
 public class CloudService implements ICloudService {
 
     private final ICloudServiceGroup serviceGroup;
-    private ServiceState serviceState;
-    private ServiceType serviceType;
     private final String name;
     private final File folder;
     private final int port;
     private final int serviceId;
     private final int maxPlayers;
     private final int maxMemory;
+    private final List<ITemplate> templates;
+    private final HashMap<String, Object> propertyMap;
+    private ServiceState serviceState;
+    private ServiceType serviceType;
     private long usedMemory;
     private int onlinePlayers;
     private boolean locked;
     private Process process;
-    private final List<ITemplate> templates;
-    private final HashMap<String, Object> propertyMap;
     private Thread outputThread;
     private Thread thread;
 
@@ -82,7 +82,8 @@ public class CloudService implements ICloudService {
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         });
 
         if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
@@ -120,33 +121,33 @@ public class CloudService implements ICloudService {
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             //TODO: Looking with events | TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceAdd(this, serviceGroup, templates, getServiceId(), getPort()));
 
-        this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "server.jar" : "velocity.jar", "nogui"};
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            this.thread = new Thread(() -> {
+                String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "server.jar" : "velocity.jar", "nogui"};
+                ProcessBuilder processBuilder = new ProcessBuilder(command);
 
-            processBuilder.directory(this.folder);
-            try {
-                this.process = processBuilder.start();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+                processBuilder.directory(this.folder);
+                try {
+                    this.process = processBuilder.start();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
 
-            int resultCode = 0;
-            try {
-                resultCode = this.process.waitFor();
-            } catch (InterruptedException exception) {
-                exception.printStackTrace();
-            }
+                int resultCode = 0;
+                try {
+                    resultCode = this.process.waitFor();
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
 
-            TeriumCloud.getTerium().getServiceProvider().removeService(this);
-            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
-            try {
-                FileUtils.deleteDirectory(this.folder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
-        });
+                TeriumCloud.getTerium().getServiceProvider().removeService(this);
+                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
+                try {
+                    FileUtils.deleteDirectory(this.folder);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
+            });
         this.thread.start();
     }
 

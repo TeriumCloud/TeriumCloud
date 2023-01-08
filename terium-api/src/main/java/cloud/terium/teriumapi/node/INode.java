@@ -41,18 +41,18 @@ public interface INode extends Serializable {
     long getUsedMemory();
 
     /**
-     * Get the max memory of the node.
-     *
-     * @return Long This returns the max memory of the node.
-     */
-    long getMaxMemory();
-
-    /**
      * Set the used memory of the node.
      *
      * @param usedMemory
      */
     void setUsedMemory(long usedMemory);
+
+    /**
+     * Get the max memory of the node.
+     *
+     * @return Long This returns the max memory of the node.
+     */
+    long getMaxMemory();
 
     /**
      * Set the max memory of the node.

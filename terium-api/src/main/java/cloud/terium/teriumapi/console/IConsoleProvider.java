@@ -1,7 +1,5 @@
 package cloud.terium.teriumapi.console;
 
-import cloud.terium.teriumapi.console.command.Command;
-
 import java.io.Serializable;
 
 public interface IConsoleProvider extends Serializable {

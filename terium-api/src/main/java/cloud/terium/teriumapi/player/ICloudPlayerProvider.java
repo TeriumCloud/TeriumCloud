@@ -1,7 +1,5 @@
 package cloud.terium.teriumapi.player;
 
-import cloud.terium.teriumapi.template.ITemplate;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

@@ -21,7 +21,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {
         AtomicInteger integer = new AtomicInteger(1);
         getCloudServicesByGroupName(cloudServiceGroup.getGroupName()).forEach(service -> {
-            if(service.getServiceId() == integer.get()) {
+            if (service.getServiceId() == integer.get()) {
                 integer.getAndIncrement();
             }
         });

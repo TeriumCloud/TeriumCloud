@@ -27,7 +27,7 @@ public class Node implements INode {
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = 0;
-        if(!name.equalsIgnoreCase(TeriumCloud.getTerium().getCloudConfig().name())) {
+        if (!name.equalsIgnoreCase(TeriumCloud.getTerium().getCloudConfig().name())) {
             try {
                 this.client = TeriumFramework.createClient(address.getHostName(), address.getPort());
                 TeriumCloud.getTerium().getNodeProvider().addClientToNode(this, client);
@@ -57,7 +57,7 @@ public class Node implements INode {
 
     @Override
     public boolean isConnected() {
-        if(client == null) return false;
+        if (client == null) return false;
         return client.getChannel().isActive();
     }
 
@@ -67,13 +67,13 @@ public class Node implements INode {
     }
 
     @Override
-    public long getMaxMemory() {
-        return maxMemory;
+    public void setUsedMemory(long usedMemory) {
+        this.usedMemory = usedMemory;
     }
 
     @Override
-    public void setUsedMemory(long usedMemory) {
-        this.usedMemory = usedMemory;
+    public long getMaxMemory() {
+        return maxMemory;
     }
 
     @Override

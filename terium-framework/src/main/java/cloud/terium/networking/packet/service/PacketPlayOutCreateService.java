@@ -7,7 +7,8 @@ import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.List;
 
-public record PacketPlayOutCreateService(String name, ICloudServiceGroup serviceGroup, List<ITemplate> templates, int port,
+public record PacketPlayOutCreateService(String name, ICloudServiceGroup serviceGroup, List<ITemplate> templates,
+                                         int port,
                                          int maxPlayers, int memory, int serviceId,
                                          ServiceType cloudServiceType) implements Packet {
 }

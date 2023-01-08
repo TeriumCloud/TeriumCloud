@@ -51,7 +51,8 @@ public class ConsoleCompleter implements Completer {
                     suggestions = command.tabComplete(arguments);
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         if (suggestions == null || suggestions.isEmpty()) return;
 

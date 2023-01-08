@@ -28,8 +28,8 @@ public class DefaultServerGroup implements ICloudServiceGroup {
     private final INode node;
     private final List<INode> fallbackNodes;
     private final List<ITemplate> templates;
-    private String version;
     private final ServiceType cloudServiceType = ServiceType.Server;
+    private String version;
     private int maximumPlayers;
     private boolean maintenance;
     private boolean isStatic;

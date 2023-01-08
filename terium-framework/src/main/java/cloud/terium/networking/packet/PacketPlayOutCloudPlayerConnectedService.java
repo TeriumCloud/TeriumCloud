@@ -4,7 +4,6 @@ import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 
-import java.util.UUID;
-
-public record PacketPlayOutCloudPlayerConnectedService(ICloudPlayer cloudPlayer, ICloudService cloudService) implements Packet {
+public record PacketPlayOutCloudPlayerConnectedService(ICloudPlayer cloudPlayer,
+                                                       ICloudService cloudService) implements Packet {
 }

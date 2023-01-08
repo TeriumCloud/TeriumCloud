@@ -27,7 +27,7 @@ public class NodeListener implements Listener {
 
     @Subscribe
     public void handleNodeShutdown(NodeShutdownEvent event) {
-        if(event.getNode().getName().equals(TeriumCloud.getTerium().getThisNode().getName())) {
+        if (event.getNode().getName().equals(TeriumCloud.getTerium().getThisNode().getName())) {
             TeriumCloud.getTerium().shutdownCloud();
         }
     }

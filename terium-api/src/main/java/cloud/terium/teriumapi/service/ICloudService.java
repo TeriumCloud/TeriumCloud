@@ -132,6 +132,7 @@ public interface ICloudService extends Serializable {
 
     /**
      * Remove a property from the service.
+     *
      * @param name
      */
     void removeProperty(String name);

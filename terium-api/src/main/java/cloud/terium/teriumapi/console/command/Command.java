@@ -3,7 +3,6 @@ package cloud.terium.teriumapi.console.command;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -16,9 +15,9 @@ public abstract class Command implements Serializable {
     /**
      * Constructor to create a command.
      *
-     * @param command String
+     * @param command     String
      * @param description String
-     * @param aliases String[]
+     * @param aliases     String[]
      */
     public Command(String command, String description, String... aliases) {
         this.command = command;

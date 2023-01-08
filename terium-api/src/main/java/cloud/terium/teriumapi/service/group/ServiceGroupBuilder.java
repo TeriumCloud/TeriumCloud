@@ -10,18 +10,17 @@ import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.template.ITemplate;
-import lombok.Getter;
 
 import java.util.List;
 
 public class ServiceGroupBuilder {
 
     private final String name;
+    private final ServiceType serviceType;
     private String groupTitle = "Default service group";
     private INode node = TeriumAPI.getTeriumAPI().getProvider().getThisNode();
     private List<INode> fallbackNodes = List.of();
     private List<ITemplate> templates;
-    private final ServiceType serviceType;
     private String version = "paper-1.19.3";
     private int port = 0;
     private boolean maintenance = true;
@@ -98,9 +97,9 @@ public class ServiceGroupBuilder {
     }
 
     public ICloudServiceGroup build() {
-        if(name == null)
+        if (name == null)
             throw new NullPointerException("name cannot be null");
-        if(serviceType == null)
+        if (serviceType == null)
             throw new NullPointerException("cloud service type cannot be null");
 
         ICloudServiceGroup cloudServiceGroup = null;

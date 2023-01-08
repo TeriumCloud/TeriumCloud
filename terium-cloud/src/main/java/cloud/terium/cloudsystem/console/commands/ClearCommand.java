@@ -20,7 +20,7 @@ public class ClearCommand extends Command {
                                                                                             \s
                 §7> §fTerium by ByRaudy(Jannik H.)\s
                 §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
-                
+                                
                 """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
     }
 }

@@ -9,16 +9,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import org.jline.utils.Log;
 
 import java.io.*;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +37,7 @@ public class CloudUtils {
 
         File data = new File("data//versions");
         Logger.log("Downloading all server versions...");
-        if(!data.exists()) {
+        if (!data.exists()) {
             Arrays.stream(ServerVersions.values()).toList().forEach(version -> {
                 try {
                     Logger.log("Trying to download '" + version.getName() + "'...");
