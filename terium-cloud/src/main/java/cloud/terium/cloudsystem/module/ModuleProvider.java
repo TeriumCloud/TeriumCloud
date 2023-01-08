@@ -6,6 +6,7 @@ import cloud.terium.teriumapi.module.ILoadedModule;
 import cloud.terium.teriumapi.module.IModule;
 import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.module.ModuleType;
+import cloud.terium.teriumapi.module.annotation.Module;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
@@ -57,6 +58,7 @@ public class ModuleProvider implements IModuleProvider {
         try (JarInputStream in = new JarInputStream(
                 new BufferedInputStream(Files.newInputStream(new File(path).toPath())))) {
             JarEntry entry;
+
             while ((entry = in.getNextJarEntry()) != null) {
                 if (entry.getName().equals("terium-module.json")) {
                     try (Reader pluginInfoReader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
