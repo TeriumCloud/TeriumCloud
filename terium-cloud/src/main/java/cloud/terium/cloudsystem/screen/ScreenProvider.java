@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ServiceProvider {
+public class ScreenProvider {
 
     private final HashMap<ICloudService, List<String>> cachedScreens;
     private ICloudService currentScreen;
 
-    public ServiceProvider() {
+    public ScreenProvider() {
         this.cachedScreens = new HashMap<>();
         this.currentScreen = null;
     }
@@ -26,6 +26,10 @@ public class ServiceProvider {
 
     public void addCloudService(ICloudService iCloudService) {
         cachedScreens.put(iCloudService, new ArrayList<>());
+    }
+
+    public void removeCloudService(ICloudService iCloudService) {
+        cachedScreens.remove(iCloudService);
     }
 
     public void addLogToScreen(ICloudService iCloudService, String log) {

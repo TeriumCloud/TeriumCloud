@@ -12,6 +12,8 @@ import cloud.terium.cloudsystem.node.Node;
 import cloud.terium.cloudsystem.node.NodeFactory;
 import cloud.terium.cloudsystem.node.NodeProvider;
 import cloud.terium.cloudsystem.pipe.TeriumNetworkProvider;
+import cloud.terium.cloudsystem.screen.ScreenProvider;
+import cloud.terium.cloudsystem.service.CloudServiceFactory;
 import cloud.terium.cloudsystem.service.CloudServiceProvider;
 import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
@@ -62,6 +64,8 @@ public class TeriumCloud extends TeriumAPI {
     private final ServiceGroupProvider serviceGroupProvider;
     private final ServiceGroupFactory serviceGroupFactory;
     private final CloudServiceProvider serviceProvider;
+    private final CloudServiceFactory serviceFactory;
+    private final ScreenProvider screenProvider;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
     private final ModuleProvider moduleProvider;
@@ -98,6 +102,8 @@ public class TeriumCloud extends TeriumAPI {
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceProvider = new CloudServiceProvider();
+        this.serviceFactory = new CloudServiceFactory();
+        this.screenProvider = new ScreenProvider();
         this.moduleProvider = new ModuleProvider();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
@@ -129,6 +135,8 @@ public class TeriumCloud extends TeriumAPI {
             cloudUtils.setRunning(false);
             shutdownCloud();
         });
+
+        serviceFactory.createService(serviceGroupProvider.getServiceGroupByName("lobby").orElseGet(null));
     }
 
     public static void main(String[] args) {
@@ -236,12 +244,10 @@ public class TeriumCloud extends TeriumAPI {
         Logger.log("Trying to stop terium-cloud...", LogType.INFO);
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
-        //TeriumCloud.getTerium().getServiceManager().getMinecraftServices().forEach(ICloudService::shutdown);
+        TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(ICloudService::shutdown);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);
-        //TeriumCloud.getTerium().getDefaultTeriumNetworking().getServer().getChannel().close().sync();
-        Logger.log("Successfully stopped terium-server.", LogType.INFO);
-        // TeriumCloud.getTerium().getConfigManager().resetPort();
+        TeriumCloud.getTerium().getNetworking().getChannel().close().sync();
         Logger.log("Successfully reset terium-port.", LogType.INFO);
 
         FileUtils.deleteDirectory(new File("servers//"));

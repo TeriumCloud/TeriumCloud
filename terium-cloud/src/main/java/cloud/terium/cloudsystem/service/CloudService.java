@@ -1,6 +1,8 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.event.events.service.ServiceAddEvent;
+import cloud.terium.cloudsystem.event.events.service.ServiceStartEvent;
 import cloud.terium.cloudsystem.event.events.service.ServiceUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
@@ -17,9 +19,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CloudService implements ICloudService {
 
@@ -42,7 +47,11 @@ public class CloudService implements ICloudService {
     private Thread thread;
 
     public CloudService(ICloudServiceGroup cloudServiceGroup) {
-        this(cloudServiceGroup.getTemplates(), cloudServiceGroup, TeriumCloud.getTerium().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.getPort());
+        this(cloudServiceGroup.getTemplates(), cloudServiceGroup, TeriumCloud.getTerium().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.hasPort() ? cloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
+    }
+
+    public CloudService(ICloudServiceGroup cloudServiceGroup, List<ITemplate> templates) {
+        this(templates, cloudServiceGroup, TeriumCloud.getTerium().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.hasPort() ? cloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), cloudServiceGroup.getMaxPlayers());
     }
 
     public CloudService(List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, int serviceId, int port) {
@@ -67,7 +76,7 @@ public class CloudService implements ICloudService {
         this.maxMemory = maxMemory;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
-        //TODO: Write screen system | TeriumCloud.getTerium().getScreenManager().addCloudService(this);
+        TeriumCloud.getTerium().getScreenProvider().addCloudService(this);
         TeriumCloud.getTerium().getServiceProvider().addService(this);
         Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
     }
@@ -75,10 +84,10 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void start() {
         this.folder.mkdirs();
-        FileUtils.copyFileToDirectory(new File("data//versions//" + (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "server.jar" : "velocity.jar")), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//terium-bridge//terium-config.json"), folder);
-        FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//teriumbridge.jar"), new File("servers//" + getServiceName() + "//plugins//"));
+        FileUtils.copyFileToDirectory(new File("data//versions//" + serviceGroup.getVersion() + ".jar"), folder);
+        //FileUtils.copyFileToDirectory(new File("data//versions//terium-plugin//terium-plugin.json"), folder);
+        //FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
+       // FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
@@ -119,10 +128,11 @@ public class CloudService implements ICloudService {
         }
 
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
+            TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(this));
             //TODO: Looking with events | TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceAdd(this, serviceGroup, templates, getServiceId(), getPort()));
 
             this.thread = new Thread(() -> {
-                String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "server.jar" : "velocity.jar", "nogui"};
+                String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getVersion() + ".jar", "nogui"};
                 ProcessBuilder processBuilder = new ProcessBuilder(command);
 
                 processBuilder.directory(this.folder);
@@ -139,47 +149,40 @@ public class CloudService implements ICloudService {
                     exception.printStackTrace();
                 }
 
-                TeriumCloud.getTerium().getServiceProvider().removeService(this);
-                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
-                try {
-                    FileUtils.deleteDirectory(this.folder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
+                shutdown();
+                delete();
             });
         this.thread.start();
     }
 
     public void shutdown() {
-        CloudService cloudService = this;
-        // Todo: Screen 
-        /*if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenManager().getCurrentScreen().equals(this))
-            toggleScreen();*/
+        if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
+            toggleScreen();
+        TeriumCloud.getTerium().getScreenProvider().removeCloudService(this);
         Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
 
-        thread.stop();
-        process.destroyForcibly();
-        delete();
+        process.destroyForcibly().onExit().thenRun(() -> {
+            thread.stop();
+            delete();
+        });
         Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
     }
 
     public void restart() {
-        CloudService cloudService = this;
-        // Todo: Screen 
-        /*if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenManager().getCurrentScreen().equals(this))
-            toggleScreen();*/
-        Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
+        if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
+            toggleScreen();
+        Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#restart  ]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
 
         setOnlinePlayers(0);
         setUsedMemory(0);
         setServiceState(ServiceState.PREPARING);
+        process.destroy();
         thread.stop();
-        process.destroyForcibly();
+        update();
         Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
         start();
     }
@@ -210,8 +213,7 @@ public class CloudService implements ICloudService {
         }, 5000);
     }*/
 
-    // Todo: Screen
-    /*public void toggleScreen() {
+    public void toggleScreen() {
         if (!TeriumCloud.getTerium().getCloudUtils().isInScreen()) {
             outputThread = new Thread(() -> {
                 String line = null;
@@ -223,7 +225,7 @@ public class CloudService implements ICloudService {
                         e.printStackTrace();
                     }
                     Logger.log(line, LogType.SCREEN);
-                    TeriumCloud.getTerium().getScreenManager().addLogToScreen(this, "[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.SCREEN.getPrefix() + line);
+                    TeriumCloud.getTerium().getScreenProvider().addLogToScreen(this, "[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.SCREEN.getPrefix() + line);
                 }
                 try {
                     input.close();
@@ -231,21 +233,21 @@ public class CloudService implements ICloudService {
                     e.printStackTrace();
                 }
             });
-            if (TeriumCloud.getTerium().getScreenManager().getLogsFromService(this) != null) {
-                TeriumCloud.getTerium().getScreenManager().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
+            if (TeriumCloud.getTerium().getScreenProvider().getLogsFromService(this) != null) {
+                TeriumCloud.getTerium().getScreenProvider().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
             }
             Logger.log("You're now inside of " + getServiceName() + ".", LogType.INFO);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(true);
-            TeriumCloud.getTerium().getScreenManager().setCurrentScreen(this);
+            TeriumCloud.getTerium().getScreenProvider().setCurrentScreen(this);
             outputThread.start();
         } else {
             outputThread.stop();
-            TeriumCloud.getTerium().getScreenManager().setCurrentScreen(null);
+            TeriumCloud.getTerium().getScreenProvider().setCurrentScreen(null);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(false);
             Logger.log("You left the screen from " + getServiceName() + ".", LogType.INFO);
             Logger.logAllCachedLogs();
         }
-    }*/
+    }
 
     private void replaceInFile(File file, String placeHolder, String replacedWith) {
         String content;

@@ -61,9 +61,9 @@ public class ConsoleManager implements IConsoleProvider {
                                 .replace("%node%", TeriumCloud.getTerium().getThisNode().getName()).replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
                     } catch (EndOfFileException exception) {
                         input = lineReader.readLine("");
-                    } catch (UserInterruptException exception) {
-                        TeriumCloud.getTerium().shutdownCloud();
                     }
+                } else {
+                    input = lineReader.readLine("");
                 }
 
                 try {
