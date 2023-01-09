@@ -3,7 +3,7 @@
 
 ## Terium
 
-#### Terium is the best way to set up a server network with enough but not too many features.
+#### Terium is a simple usable cloud-system for minecraft networks with a few special features
 
 ## Why Terium?
 
@@ -20,7 +20,8 @@
 - Multi-root
 - [Velocity](https://velocitypowered.com), [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/)
   and [Waterfall](https://papermc.io/downloads#Waterfall) support
-- [Spigot](https://spigotmc.org) and [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.2)
+- [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
+- [WindSpigot](https://github.com/Wind-Development/WindSpigot) support (1.8.8)
 
 ## Links
 
