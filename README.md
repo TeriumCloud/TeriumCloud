@@ -16,7 +16,7 @@
 - Dynamic and static services
 - Template-System
 - Basic and simple api
-- Module system with which you can write your own modules
+- Module system
 - Multi-root
 - [Velocity](https://velocitypowered.com), [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/)
   and [Waterfall](https://papermc.io/downloads#Waterfall) support
