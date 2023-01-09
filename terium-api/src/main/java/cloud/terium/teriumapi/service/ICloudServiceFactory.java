@@ -3,22 +3,24 @@ package cloud.terium.teriumapi.service;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.List;
+
 public interface ICloudServiceFactory {
 
     /**
      * Create a service with defined service group
      *
-     * @param iCloudServiceGroup
+     * @param serviceGroup
      */
-    void createService(ICloudServiceGroup iCloudServiceGroup);
+    void createService(ICloudServiceGroup serviceGroup);
 
     /**
      * Create a service with defined service group and cloud template
      *
-     * @param iCloudServiceGroup
-     * @param iTemplate
+     * @param serviceGroup
+     * @param templates
      */
-    void createService(ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate);
+    void createService(ICloudServiceGroup serviceGroup, List<ITemplate> templates);
 
     /**
      * Create a service with defined service name, cloud template, service type, service id and port
@@ -30,7 +32,7 @@ public interface ICloudServiceFactory {
      * @param maxPlayers
      * @param memory
      */
-    void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate, int serviceId, int maxPlayers, int memory);
+    void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates, int serviceId, int maxPlayers, int memory);
 
     /**
      * Create a service with defined service name and service group
@@ -38,7 +40,7 @@ public interface ICloudServiceFactory {
      * @param serviceName
      * @param iCloudServiceGroup
      */
-    void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup);
+    void createService(String serviceName, ICloudServiceGroup serviceGroup);
 
     /**
      * Create a service with defined service name, service group and template
@@ -47,5 +49,5 @@ public interface ICloudServiceFactory {
      * @param iCloudServiceGroup
      * @param iTemplate
      */
-    void createService(String serviceName, ICloudServiceGroup iCloudServiceGroup, ITemplate iTemplate);
+    void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates);
 }
