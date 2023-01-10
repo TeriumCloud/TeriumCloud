@@ -41,11 +41,4 @@
 - Download the .zip folder and move the terium-cloud.jar and the start.sh/start.bat file to your folder
 - Give the start.sh file '777' rights (Only on linux systems)
 - Execute start.sh (if you have a Windows system execute the start.bat file)
-- Now Terium is starting and automatically go in the "Setup" mode
-    - Now Terium will ask you some questions. (Its important that you read & answer the questions)
-    - Terium asks you:
-        - Do you agree to the minecraft eula?
-        - On which port should Terium start the webserver?
-        - On which port should Terium start the proxy-server?
-        - Which proxy version and which spigot version you want to use?
-    - After that Terium is installing all important files and will restart.
+- TODO: Write here
