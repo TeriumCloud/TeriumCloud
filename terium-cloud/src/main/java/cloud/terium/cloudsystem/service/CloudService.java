@@ -129,7 +129,6 @@ public class CloudService implements ICloudService {
 
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(this));
-            //TODO: Looking with events | TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceAdd(this, serviceGroup, templates, getServiceId(), getPort()));
 
             this.thread = new Thread(() -> {
                 String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getVersion() + ".jar", "nogui"};

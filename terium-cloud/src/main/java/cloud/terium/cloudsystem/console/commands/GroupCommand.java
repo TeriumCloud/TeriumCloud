@@ -174,7 +174,7 @@ public class GroupCommand extends Command {
                 // TODO: Add online services count (after implement cloud services)
                 if (TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().size() > 0)
                     TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
-                        Logger.log("Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: %NaN%" + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
+                        Logger.log("Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: " + TeriumCloud.getTerium().getServiceGroupProvider().getOnlineServicesFromServiceGroup(serviceGroup.getGroupName()) + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);
                     });
                 else Logger.log("There are no loaded service groups.", LogType.ERROR);
             }

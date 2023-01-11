@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
@@ -135,6 +136,11 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
     @Override
     public Optional<ICloudServiceGroup> getServiceGroupByName(String groupName) {
         return Optional.ofNullable(serviceGroupCache.get(groupName));
+    }
+
+    @Override
+    public int getOnlineServicesFromServiceGroup(String groupName) {
+        return TeriumCloud.getTerium().getServiceProvider().getCloudServicesByGroupName(groupName).size();
     }
 
     @Override
