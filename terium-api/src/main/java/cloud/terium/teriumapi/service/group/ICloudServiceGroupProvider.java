@@ -12,9 +12,17 @@ public interface ICloudServiceGroupProvider {
      * Get a ICloudServiceGroup by group name
      *
      * @param groupName This is the group name
-     * @return ICloudServiceGroup This returns the ICloudServiceGroup by the name you typed in param.
+     * @return Optional<ICloudServiceGroup> This returns the ICloudServiceGroup by the name you typed in param.
      */
     Optional<ICloudServiceGroup> getServiceGroupByName(String groupName);
+
+    /**
+     * Get the online players from a ICloudServicegroup by group name
+     *
+     * @param groupName This is the group name
+     * @return Int This returns the online players from a ICloudServiceGroup by the name you typed in param.
+     */
+    int getOnlinePlayersFromServiceGroup(String groupName);
 
     /**
      * Get a ICloudServiceGroup by group title
