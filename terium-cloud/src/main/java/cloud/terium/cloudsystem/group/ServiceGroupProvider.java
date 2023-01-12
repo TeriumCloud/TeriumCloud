@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.group;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.event.events.group.GroupUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.console.LogType;
@@ -127,7 +128,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutGroupUpdate(serviceGroup));
+            TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(serviceGroup));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
