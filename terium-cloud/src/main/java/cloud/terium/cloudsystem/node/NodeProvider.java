@@ -6,13 +6,11 @@ import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeProvider;
+import com.google.gson.JsonObject;
 import lombok.Getter;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 public class NodeProvider implements INodeProvider {
@@ -33,8 +31,10 @@ public class NodeProvider implements INodeProvider {
     public void registerNodes() {
         Logger.log("Trying to load all nodes from config.", LogType.INFO);
         registerNode(TeriumCloud.getTerium().getThisNode());
-        TeriumCloud.getTerium().getCloudConfig().nodes().forEach(jsonElement -> registerNode(new Node(jsonElement.getAsJsonObject().get("name").getAsString(), jsonElement.getAsJsonObject().get("key").getAsString(),
-                new InetSocketAddress(jsonElement.getAsJsonObject().get("ip").getAsString(), jsonElement.getAsJsonObject().get("port").getAsInt()))));
+        JsonObject jsonObject = TeriumCloud.getTerium().getCloudConfig().nodes();
+
+        TeriumCloud.getTerium().getCloudConfig().nodes().entrySet().forEach(jsonElement -> registerNode(new Node(jsonElement.getValue().getAsJsonObject().get("name").getAsString(), jsonElement.getValue().getAsJsonObject().get("key").getAsString(),
+                new InetSocketAddress(jsonElement.getValue().getAsJsonObject().get("address").getAsString(), jsonElement.getValue().getAsJsonObject().get("port").getAsInt()))));
     }
 
     @Override

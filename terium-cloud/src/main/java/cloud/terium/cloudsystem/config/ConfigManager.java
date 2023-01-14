@@ -36,7 +36,7 @@ public class ConfigManager {
             json.addProperty("promt", "§b%user%§f@terium => ");
             json.addProperty("memory", 5120);
             json.addProperty("serviceAddress", "127.0.0.1");
-            json.add("nodes", new JsonArray());
+            json.add("nodes", new JsonObject());
 
             save();
         } else {
@@ -51,7 +51,7 @@ public class ConfigManager {
     public CloudConfig toCloudConfig() {
         return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
                 json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
-                json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("nodes").getAsJsonArray());
+                json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("nodes").getAsJsonObject());
     }
 
     public void save() {
