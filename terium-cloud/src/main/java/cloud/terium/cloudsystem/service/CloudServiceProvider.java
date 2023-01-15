@@ -1,13 +1,13 @@
 package cloud.terium.cloudsystem.service;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
+import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CloudServiceProvider implements ICloudServiceProvider {
@@ -16,6 +16,21 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public CloudServiceProvider() {
         this.cloudServiceCache = new HashMap<>();
+    }
+
+    public void startServiceCheck() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
+                    TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
+                        if (getCloudServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() && getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) || iCloudService.getServiceState().equals(ServiceState.PREPARING)).toList().size() < group.getMinServices()) {
+                            TeriumCloud.getTerium().getServiceFactory().createService(group);
+                        }
+                    });
+                }
+            }
+        }, 0, 1000);
     }
 
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {

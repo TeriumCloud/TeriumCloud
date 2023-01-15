@@ -136,7 +136,7 @@ public class TeriumCloud extends TeriumAPI {
             shutdownCloud();
         });
 
-        serviceFactory.createService(serviceGroupProvider.getServiceGroupByName("lobby").orElseGet(null));
+        serviceProvider.startServiceCheck();
     }
 
     public static void main(String[] args) {
@@ -213,8 +213,7 @@ public class TeriumCloud extends TeriumAPI {
         return new ICloudFactory() {
             @Override
             public ICloudServiceFactory getServiceFactory() {
-                // Todo: need to be implemented
-                return null;
+                return serviceFactory;
             }
 
             @Override
