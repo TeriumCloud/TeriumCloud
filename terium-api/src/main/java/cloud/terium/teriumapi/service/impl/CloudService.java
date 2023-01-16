@@ -2,6 +2,7 @@ package cloud.terium.teriumapi.service.impl;
 
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -15,22 +16,24 @@ public class CloudService implements ICloudService {
     private final String serviceName;
     private final int serviceId;
     private final int port;
-    private final List<ITemplate> templates;
+    private final INode node;
     private final ICloudServiceGroup iCloudServiceGroup;
+    private final List<ITemplate> templates;
     private final HashMap<String, Object> propertyCache;
     private int onlinePlayers;
     private long usedMemory;
     private boolean locked;
     private ServiceState serviceState;
 
-    public CloudService(String serviceName, int serviceId, int port, ICloudServiceGroup iCloudServiceGroup, List<ITemplate> templates) {
-        this(serviceName, serviceId, port, iCloudServiceGroup, templates != null ? templates : iCloudServiceGroup.getTemplates(), false);
+    public CloudService(String serviceName, int serviceId, int port, INode node, ICloudServiceGroup iCloudServiceGroup, List<ITemplate> templates) {
+        this(serviceName, serviceId, port, node, iCloudServiceGroup, templates != null ? templates : iCloudServiceGroup.getTemplates(), false);
     }
 
-    public CloudService(String serviceName, int serviceId, int port, ICloudServiceGroup iCloudServiceGroup, List<ITemplate> templates, boolean online) {
+    public CloudService(String serviceName, int serviceId, int port, INode node, ICloudServiceGroup iCloudServiceGroup, List<ITemplate> templates, boolean online) {
         this.serviceName = serviceName;
         this.serviceId = serviceId;
         this.port = port;
+        this.node = node;
         this.iCloudServiceGroup = iCloudServiceGroup;
         this.templates = templates;
         this.onlinePlayers = 0;
@@ -87,6 +90,11 @@ public class CloudService implements ICloudService {
     @Override
     public ICloudServiceGroup getServiceGroup() {
         return iCloudServiceGroup;
+    }
+
+    @Override
+    public INode getServiceNode() {
+        return node;
     }
 
     @Override

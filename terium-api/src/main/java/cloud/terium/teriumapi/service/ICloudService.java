@@ -1,5 +1,6 @@
 package cloud.terium.teriumapi.service;
 
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
@@ -93,6 +94,14 @@ public interface ICloudService extends Serializable {
      * @return ICloudServiceGroup This returns the ICloudServiceGroup of the service.
      */
     ICloudServiceGroup getServiceGroup();
+
+    /**
+     * Get the INode of the serivce
+     *
+     * @return INode This returns the INode of the service.
+     */
+    INode getServiceNode();
+
 
     /**
      * Get the ServiceState of the service
