@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
@@ -77,8 +78,13 @@ public class GroupCommand extends Command {
                                         serviceGroup.setStatic(Boolean.parseBoolean(args[3]));
                                 }
                                 case "version" -> {
-                                    if (Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom").contains(args[3]))
-                                        serviceGroup.setVersion(args[3]);
+                                    if(!serviceGroup.getServiceType().equals(ServiceType.Proxy)) {
+                                        if (Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom").contains(args[3]))
+                                            serviceGroup.setVersion(args[3]);
+                                    } else {
+                                        if (Arrays.asList("bungeecord", "waterfall", "velocity", "velocity-3").contains(args[3]))
+                                            serviceGroup.setVersion(args[3]);
+                                    }
                                 }
                                 case "memory" -> {
                                     try {
@@ -215,7 +221,7 @@ public class GroupCommand extends Command {
                 if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
                     return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
                 if (args[1].equalsIgnoreCase("proxy"))
-                    return Arrays.asList("velocity", "waterfall", "bungeecord");
+                    return Arrays.asList("velocity-3", "velocity", "waterfall", "bungeecord");
 
                 if (args[0].equalsIgnoreCase("update")) {
                     if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
