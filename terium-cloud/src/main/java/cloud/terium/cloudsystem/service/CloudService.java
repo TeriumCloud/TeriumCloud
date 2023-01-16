@@ -7,6 +7,7 @@ import cloud.terium.cloudsystem.event.events.service.ServiceUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ServiceType;
@@ -310,6 +311,11 @@ public class CloudService implements ICloudService {
     @Override
     public ICloudServiceGroup getServiceGroup() {
         return serviceGroup;
+    }
+
+    @Override
+    public INode getServiceNode() {
+        return TeriumCloud.getTerium().getThisNode();
     }
 
     @Override
