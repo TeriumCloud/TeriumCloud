@@ -2,6 +2,8 @@ package cloud.terium.plugin;
 
 import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
+import cloud.terium.plugin.impl.node.NodeFactory;
+import cloud.terium.plugin.impl.node.NodeProvider;
 import cloud.terium.plugin.impl.pipe.TeriumNetworkListener;
 import cloud.terium.plugin.impl.service.ServiceFactory;
 import cloud.terium.plugin.impl.service.ServiceProvider;
@@ -42,6 +44,9 @@ public final class TeriumPlugin extends TeriumAPI {
     // Service group
     private final ServiceGroupFactory serviceGroupFactory;
     private final ServiceGroupProvider serviceGroupProvider;
+    // Node
+    private final NodeFactory nodeFactory;
+    private final NodeProvider nodeProvider;
     // Template
     private final TemplateFactory templateFactory;
     private final TemplateProvider templateProvider;
@@ -59,6 +64,8 @@ public final class TeriumPlugin extends TeriumAPI {
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceGroupProvider = new ServiceGroupProvider();
+        this.nodeFactory = new NodeFactory();
+        this.nodeProvider = new NodeProvider();
         this.templateFactory = new TemplateFactory();
         this.templateProvider = new TemplateProvider();
         this.consoleProvider = new ConsoleProvider();
@@ -114,7 +121,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public INodeProvider getNodeProvider() {
-                return null;
+                return nodeProvider;
             }
 
             @Override
@@ -149,7 +156,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public INodeFactory getNodeFactory() {
-                return null;
+                return nodeFactory;
             }
 
             @Override
