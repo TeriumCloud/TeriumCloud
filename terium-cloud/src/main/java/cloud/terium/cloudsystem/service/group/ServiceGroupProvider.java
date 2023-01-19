@@ -1,4 +1,4 @@
-package cloud.terium.cloudsystem.group;
+package cloud.terium.cloudsystem.service.group;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.event.events.group.GroupUpdateEvent;
