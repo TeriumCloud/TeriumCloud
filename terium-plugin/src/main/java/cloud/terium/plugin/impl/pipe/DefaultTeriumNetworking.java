@@ -7,13 +7,13 @@ import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.SneakyThrows;
 
-public class TeriumNetworkListener implements IDefaultTeriumNetworking {
+public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
 
     private final TeriumClient teriumClient;
 
     @SneakyThrows
-    public TeriumNetworkListener() {
-        teriumClient = new TeriumClient("127.0.0.1", 1234);
+    public DefaultTeriumNetworking() {
+        teriumClient = new TeriumClient(System.getProperty("netty-address"), Integer.parseInt(System.getProperty("netty-port")));
     }
 
     @Override

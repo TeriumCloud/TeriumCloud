@@ -1,12 +1,14 @@
 package cloud.terium.plugin;
 
+import cloud.terium.networking.packet.service.PacketPlayOutSuccessfullyServiceStarted;
+import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.plugin.impl.console.CommandFactory;
 import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
 import cloud.terium.plugin.impl.module.ModuleProvider;
 import cloud.terium.plugin.impl.node.NodeFactory;
 import cloud.terium.plugin.impl.node.NodeProvider;
-import cloud.terium.plugin.impl.pipe.TeriumNetworkListener;
+import cloud.terium.plugin.impl.pipe.DefaultTeriumNetworking;
 import cloud.terium.plugin.impl.service.ServiceFactory;
 import cloud.terium.plugin.impl.service.ServiceProvider;
 import cloud.terium.plugin.impl.service.group.ServiceGroupFactory;
@@ -34,7 +36,10 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Getter
 public final class TeriumPlugin extends TeriumAPI {
@@ -56,7 +61,7 @@ public final class TeriumPlugin extends TeriumAPI {
     private final ConsoleProvider consoleProvider;
     private final CommandFactory commandFactory;
     // Network
-    private final TeriumNetworkListener teriumNetworkListener;
+    private final DefaultTeriumNetworking defaultTeriumNetworking;
     // Event
     private final EventProvider eventProvider;
     // Module
@@ -67,6 +72,7 @@ public final class TeriumPlugin extends TeriumAPI {
     public TeriumPlugin() {
         super();
         instance = this;
+        this.defaultTeriumNetworking = new DefaultTeriumNetworking();
         this.serviceFactory = new ServiceFactory();
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
@@ -79,7 +85,19 @@ public final class TeriumPlugin extends TeriumAPI {
         this.commandFactory = new CommandFactory();
         this.eventProvider = new EventProvider();
         this.moduleProvider = new ModuleProvider();
-        this.teriumNetworkListener = new TeriumNetworkListener();
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                defaultTeriumNetworking.sendPacket(new PacketPlayOutUpdateService(getProvider().getThisService()));
+            }
+        }, 0, 10);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService()));
+            }
+        }, 1500);
     }
 
     public static TeriumPlugin getInstance() {
@@ -141,7 +159,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public IDefaultTeriumNetworking getTeriumNetworking() {
-                return teriumNetworkListener;
+                return defaultTeriumNetworking;
             }
         };
     }
