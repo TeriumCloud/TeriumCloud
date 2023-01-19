@@ -1,4 +1,4 @@
-package cloud.terium.plugin.pipe;
+package cloud.terium.plugin.impl.pipe;
 
 import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;

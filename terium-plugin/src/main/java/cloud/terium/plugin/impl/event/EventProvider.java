@@ -1,9 +1,5 @@
-package cloud.terium.cloudsystem.event;
+package cloud.terium.plugin.impl.event;
 
-import cloud.terium.cloudsystem.console.ConsoleListener;
-import cloud.terium.cloudsystem.node.NodeListener;
-import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.event.Listener;
@@ -21,9 +17,6 @@ public class EventProvider implements IEventProvider {
 
     public EventProvider() {
         this.listeners = new ArrayList<>();
-        subscribeListener(new ConsoleListener());
-        subscribeListener(new NodeListener());
-        Logger.log("Loaded event-provider", LogType.INFO);
     }
 
     @Override

@@ -12,14 +12,6 @@ public interface ITemplateFactory {
     ITemplate createTemplate(String name);
 
     /**
-     * Create a template with defined name and node
-     *
-     * @param name String
-     * @param node INode
-     */
-    ITemplate createTemplate(String name, INode node);
-
-    /**
      * Delete a template by name
      *
      * @param name

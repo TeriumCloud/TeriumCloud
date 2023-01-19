@@ -56,7 +56,7 @@ public class CloudService implements ICloudService {
     }
 
     public CloudService(List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, int serviceId, int port) {
-        this(templates, cloudServiceGroup, serviceId, port, cloudServiceGroup.getMaxPlayers());
+        this(templates, cloudServiceGroup, serviceId != -1 ? serviceId : TeriumCloud.getTerium().getServiceProvider().getFreeServiceId(cloudServiceGroup), port, cloudServiceGroup.getMaxPlayers());
     }
 
     public CloudService(List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, int serviceId, int port, int maxPlayers) {

@@ -1,0 +1,4 @@
+name: terium-plugin
+version: '${version}'
+main: cloud.terium.plugin.bukkit.TeriumBukkitStartup
+author: ByRaudy

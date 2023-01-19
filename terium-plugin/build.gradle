@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'cloud.terium'
@@ -7,20 +8,21 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'papermc-repo'
-        url = 'https://repo.papermc.io/repository/maven-public/'
-    }
-    maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
-    }
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
 }
 
 dependencies {
+    compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
     compileOnly 'com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT'
-}
+    compileOnly 'com.velocitypowered:velocity-api:3.0.1'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
 
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation fileTree(dir: '../terium-api/build/libs/', include: '*.jar')
+    implementation fileTree(dir: '../terium-framework/build/libs/', include: '*.jar')
+}
 def targetJavaVersion = 8
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
