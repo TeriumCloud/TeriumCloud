@@ -11,11 +11,4 @@ public interface IConsoleProvider extends Serializable {
      * @param logType
      */
     void sendConsole(String message, LogType logType);
-
-    /**
-     * Let the cloud execute the defined command
-     *
-     * @param command
-     */
-    void executeCommand(String command);
 }

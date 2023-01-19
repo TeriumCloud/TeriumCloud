@@ -1,5 +1,6 @@
 package cloud.terium.plugin;
 
+import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
 import cloud.terium.plugin.impl.pipe.TeriumNetworkListener;
 import cloud.terium.plugin.impl.service.ServiceFactory;
@@ -26,7 +27,6 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
-import com.velocitypowered.api.proxy.Player;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,6 +47,8 @@ public final class TeriumPlugin extends TeriumAPI {
     private final TemplateProvider templateProvider;
     // Network
     private final TeriumNetworkListener teriumNetworkListener;
+    // Console
+    private final ConsoleProvider consoleProvider;
     // Utils
     private String thisName;
 
@@ -59,6 +61,7 @@ public final class TeriumPlugin extends TeriumAPI {
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.templateFactory = new TemplateFactory();
         this.templateProvider = new TemplateProvider();
+        this.consoleProvider = new ConsoleProvider();
         this.teriumNetworkListener = new TeriumNetworkListener();
     }
 
@@ -96,7 +99,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public IConsoleProvider getConsoleProvider() {
-                return null;
+                return consoleProvider;
             }
 
             @Override
@@ -160,14 +163,14 @@ public final class TeriumPlugin extends TeriumAPI {
         return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
     }
 
-    public @NotNull Optional<ICloudService> getFallback(final Player player) {
+    public @NotNull Optional<ICloudService> getFallback(final ICloudPlayer player) {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().stream()
                 .filter(service -> service.getServiceState().equals(ServiceState.ONLINE))
                 .filter(service -> !service.getServiceGroup().getServiceType().equals(ServiceType.Proxy))
                 .filter(service -> service.getServiceGroup().getServiceType().equals(ServiceType.Lobby))
                 .filter(service -> !service.isLocked())
-                .filter(service -> (player.getCurrentServer().isEmpty()
-                        || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
+                .filter(service -> (player.getConnectedCloudService().isEmpty()
+                        || !player.getConnectedCloudService().get().getServiceName().equals(service.getServiceName())))
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers));
     }
 }
