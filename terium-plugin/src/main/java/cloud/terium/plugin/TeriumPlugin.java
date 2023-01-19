@@ -3,6 +3,7 @@ package cloud.terium.plugin;
 import cloud.terium.plugin.impl.console.CommandFactory;
 import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
+import cloud.terium.plugin.impl.module.ModuleProvider;
 import cloud.terium.plugin.impl.node.NodeFactory;
 import cloud.terium.plugin.impl.node.NodeProvider;
 import cloud.terium.plugin.impl.pipe.TeriumNetworkListener;
@@ -56,6 +57,10 @@ public final class TeriumPlugin extends TeriumAPI {
     private final CommandFactory commandFactory;
     // Network
     private final TeriumNetworkListener teriumNetworkListener;
+    // Event
+    private final EventProvider eventProvider;
+    // Module
+    private final ModuleProvider moduleProvider;
     // Utils
     private String thisName;
 
@@ -72,6 +77,8 @@ public final class TeriumPlugin extends TeriumAPI {
         this.templateProvider = new TemplateProvider();
         this.consoleProvider = new ConsoleProvider();
         this.commandFactory = new CommandFactory();
+        this.eventProvider = new EventProvider();
+        this.moduleProvider = new ModuleProvider();
         this.teriumNetworkListener = new TeriumNetworkListener();
     }
 
@@ -114,12 +121,12 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public IEventProvider getEventProvider() {
-                return new EventProvider();
+                return eventProvider;
             }
 
             @Override
             public IModuleProvider getModuleProvider() {
-                return null;
+                return moduleProvider;
             }
 
             @Override
