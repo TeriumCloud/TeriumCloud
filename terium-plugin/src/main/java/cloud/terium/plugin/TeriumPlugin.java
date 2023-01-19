@@ -1,5 +1,6 @@
 package cloud.terium.plugin;
 
+import cloud.terium.plugin.impl.console.CommandFactory;
 import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
 import cloud.terium.plugin.impl.node.NodeFactory;
@@ -50,10 +51,11 @@ public final class TeriumPlugin extends TeriumAPI {
     // Template
     private final TemplateFactory templateFactory;
     private final TemplateProvider templateProvider;
-    // Network
-    private final TeriumNetworkListener teriumNetworkListener;
     // Console
     private final ConsoleProvider consoleProvider;
+    private final CommandFactory commandFactory;
+    // Network
+    private final TeriumNetworkListener teriumNetworkListener;
     // Utils
     private String thisName;
 
@@ -69,6 +71,7 @@ public final class TeriumPlugin extends TeriumAPI {
         this.templateFactory = new TemplateFactory();
         this.templateProvider = new TemplateProvider();
         this.consoleProvider = new ConsoleProvider();
+        this.commandFactory = new CommandFactory();
         this.teriumNetworkListener = new TeriumNetworkListener();
     }
 
@@ -161,7 +164,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public ICommandFactory getCommandFactory() {
-                return null;
+                return commandFactory;
             }
         };
     }
