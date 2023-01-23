@@ -29,11 +29,6 @@ public class TemplateFactory implements ITemplateFactory {
         return template;
     }
 
-    @Override
-    public ITemplate createTemplate(String name, INode node) {
-        return null;
-    }
-
     @SneakyThrows
     @Override
     public void deleteTemplate(String name) {

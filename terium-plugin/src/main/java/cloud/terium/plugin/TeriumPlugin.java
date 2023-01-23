@@ -86,6 +86,8 @@ public final class TeriumPlugin extends TeriumAPI {
         this.eventProvider = new EventProvider();
         this.moduleProvider = new ModuleProvider();
 
+        thisName = System.getProperty("servicename");
+
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

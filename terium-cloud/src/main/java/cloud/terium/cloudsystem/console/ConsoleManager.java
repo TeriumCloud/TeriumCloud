@@ -95,10 +95,4 @@ public class ConsoleManager implements IConsoleProvider {
     public void sendConsole(String message, LogType logType) {
         Logger.log(message, logType);
     }
-
-    @Override
-    public void executeCommand(String command) {
-        final String[] args = command.split(" ");
-        TeriumCloud.getTerium().getCommandManager().getCommand(args[0]).execute(Arrays.copyOfRange(args, 1, args.length));
-    }
 }

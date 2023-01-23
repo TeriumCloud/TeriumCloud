@@ -13,6 +13,6 @@ public class ServiceAddEvent extends Event {
 
     public ServiceAddEvent(ICloudService cloudService) {
         this.cloudService = cloudService;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceAdd(cloudService, cloudService.getServiceGroup(), cloudService.getTemplates(), cloudService.getServiceId(), cloudService.getPort()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceAdd(cloudService));
     }
 }

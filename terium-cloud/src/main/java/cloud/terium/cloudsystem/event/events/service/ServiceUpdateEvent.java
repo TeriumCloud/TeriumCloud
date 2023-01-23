@@ -13,19 +13,9 @@ import java.util.HashMap;
 public class ServiceUpdateEvent extends Event {
 
     private final ICloudService cloudService;
-    private final HashMap<String, Object> propertyMap;
-    private final ServiceState serviceState;
-    private final boolean locked;
-    private final long memory;
-    private final int onlinePlayers;
 
-    public ServiceUpdateEvent(ICloudService cloudService, HashMap<String, Object> propertyMap, ServiceState serviceState, boolean locked, long memory, int onlinePlayers) {
+    public ServiceUpdateEvent(ICloudService cloudService) {
         this.cloudService = cloudService;
-        this.serviceState = serviceState;
-        this.propertyMap = propertyMap;
-        this.locked = locked;
-        this.memory = memory;
-        this.onlinePlayers = onlinePlayers;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutUpdateService(cloudService, propertyMap, cloudService.isLocked(), cloudService.getServiceState(), cloudService.getOnlinePlayers(), cloudService.getUsedMemory()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutUpdateService(cloudService));
     }
 }

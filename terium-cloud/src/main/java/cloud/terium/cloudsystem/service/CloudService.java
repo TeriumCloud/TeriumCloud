@@ -304,7 +304,7 @@ public class CloudService implements ICloudService {
 
     @Override
     public void update() {
-        TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(this, propertyMap, serviceState, locked, usedMemory, onlinePlayers));
+        TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(this));
     }
 
     @Override
