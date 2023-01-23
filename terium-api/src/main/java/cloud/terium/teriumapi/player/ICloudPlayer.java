@@ -23,20 +23,6 @@ public interface ICloudPlayer extends Serializable {
     UUID getUniqueId();
 
     /**
-     * Get the first login from the cloud player as long
-     *
-     * @return long This returns the first login of the cloud player.
-     */
-    long getFirstLogin();
-
-    /**
-     * Get the last login from the cloud player as long
-     *
-     * @return long This returns the last login of the cloud player.
-     */
-    long getLastLogin();
-
-    /**
      * Get the IP Address from the cloud player
      *
      * @return String This returns the address of the cloud player.
