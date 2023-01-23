@@ -2,7 +2,6 @@ package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.event.events.service.ServiceAddEvent;
-import cloud.terium.cloudsystem.event.events.service.ServiceStartEvent;
 import cloud.terium.cloudsystem.event.events.service.ServiceUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
@@ -86,9 +85,9 @@ public class CloudService implements ICloudService {
     public void start() {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File("data//versions//" + serviceGroup.getVersion() + ".jar"), folder);
-        //FileUtils.copyFileToDirectory(new File("data//versions//terium-plugin//terium-plugin.json"), folder);
-        //FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
-       // FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
+        FileUtils.copyFileToDirectory(new File("data//versions//terium-plugin//terium-plugin.json"), folder);
+        FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
+        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
@@ -131,27 +130,27 @@ public class CloudService implements ICloudService {
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(this));
 
-            this.thread = new Thread(() -> {
-                String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getVersion() + ".jar", "nogui"};
-                ProcessBuilder processBuilder = new ProcessBuilder(command);
+        this.thread = new Thread(() -> {
+            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getVersion() + ".jar", "nogui", "-Dservicename=" + getServiceName(), "-Dnetty-address=" + TeriumCloud.getTerium().getCloudConfig().ip(), "-Dnetty-port=" + TeriumCloud.getTerium().getCloudConfig().port()};
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
 
-                processBuilder.directory(this.folder);
-                try {
-                    this.process = processBuilder.start();
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
+            processBuilder.directory(this.folder);
+            try {
+                this.process = processBuilder.start();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
 
-                int resultCode = 0;
-                try {
-                    resultCode = this.process.waitFor();
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
+            int resultCode = 0;
+            try {
+                resultCode = this.process.waitFor();
+            } catch (InterruptedException exception) {
+                exception.printStackTrace();
+            }
 
-                shutdown();
-                delete();
-            });
+            shutdown();
+            delete();
+        });
         this.thread.start();
     }
 
