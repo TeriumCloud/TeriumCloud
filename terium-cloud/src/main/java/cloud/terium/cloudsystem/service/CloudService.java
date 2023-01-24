@@ -85,7 +85,7 @@ public class CloudService implements ICloudService {
     public void start() {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File("data//versions//" + serviceGroup.getVersion() + ".jar"), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//terium-plugin//terium-plugin.json"), folder);
+        // FileUtils.copyFileToDirectory(new File("data//versions//terium-plugin//terium-plugin.json"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
         FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         templates.forEach(template -> {
@@ -131,7 +131,7 @@ public class CloudService implements ICloudService {
             TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(this));
 
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", serviceGroup.getVersion() + ".jar", "nogui", "-Dservicename=" + getServiceName(), "-Dnetty-address=" + TeriumCloud.getTerium().getCloudConfig().ip(), "-Dnetty-port=" + TeriumCloud.getTerium().getCloudConfig().port()};
+            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dnetty-address=" + TeriumCloud.getTerium().getCloudConfig().ip(), "-Dnetty-port=" + TeriumCloud.getTerium().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "nogui"};
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
             processBuilder.directory(this.folder);

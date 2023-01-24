@@ -19,6 +19,8 @@ public class TemplateProvider implements ITemplateProvider {
         this.templates = new CopyOnWriteArrayList<>();
 
         new File("templates//").mkdirs();
+        new File("templates//Global//server").mkdirs();
+        new File("templates//Global//proxy").mkdirs();
         loadTempaltes();
     }
 
