@@ -14,6 +14,7 @@ import cloud.terium.cloudsystem.event.events.player.CloudPlayerQuitEvent;
 import cloud.terium.cloudsystem.event.events.service.*;
 import cloud.terium.cloudsystem.event.events.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.event.events.template.TemplateDeleteEvent;
+import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.*;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
@@ -22,6 +23,7 @@ import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.network.Packet;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -37,6 +39,8 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Getter
 
@@ -65,6 +69,7 @@ public class TeriumServer {
                                     .addLast(new SimpleChannelInboundHandler<Packet>() {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
+                                            System.out.println("packet?");
                                             try {
                                                 // service packets
                                                 if (packet instanceof PacketPlayOutServiceAdd newPacket)
@@ -75,8 +80,10 @@ public class TeriumServer {
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.cloudService()));
                                                 if (packet instanceof PacketPlayOutServiceLock newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceLockEvent(newPacket.cloudService()));
-                                                if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket)
+                                                if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket) {
+                                                    Logger.log("Service '" + newPacket.cloudService().getServiceName() + "' successfully started.", LogType.INFO);
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceLoggedInEvent(newPacket.cloudService(), newPacket.cloudService().getServiceGroup().getGroupNode()));
+                                                }
                                                 if (packet instanceof PacketPlayOutServiceRemove newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceRemoveEvent(newPacket.cloudService()));
                                                 if (packet instanceof PacketPlayOutServiceRestart newPacket)

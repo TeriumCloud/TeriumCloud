@@ -29,17 +29,16 @@ import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.*;
+import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
+import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Getter
 public final class TeriumPlugin extends TeriumAPI {
@@ -67,7 +66,7 @@ public final class TeriumPlugin extends TeriumAPI {
     // Module
     private final ModuleProvider moduleProvider;
     // Utils
-    private String thisName;
+    private final String thisName;
 
     public TeriumPlugin() {
         super();
@@ -88,16 +87,100 @@ public final class TeriumPlugin extends TeriumAPI {
 
         thisName = System.getProperty("servicename");
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                defaultTeriumNetworking.sendPacket(new PacketPlayOutUpdateService(getProvider().getThisService()));
-            }
-        }, 0, 10);
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService()));
+                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(new ICloudService() {
+                    @Override
+                    public String getServiceName() {
+                        return "test-1";
+                    }
+
+                    @Override
+                    public int getServiceId() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getPort() {
+                        return 0;
+                    }
+
+                    @Override
+                    public List<ITemplate> getTemplates() {
+                        return null;
+                    }
+
+                    @Override
+                    public int getOnlinePlayers() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void setOnlinePlayers(int onlinePlayers) {
+
+                    }
+
+                    @Override
+                    public long getUsedMemory() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void setUsedMemory(long usedMemory) {
+
+                    }
+
+                    @Override
+                    public void update() {
+
+                    }
+
+                    @Override
+                    public ICloudServiceGroup getServiceGroup() {
+                        return null;
+                    }
+
+                    @Override
+                    public INode getServiceNode() {
+                        return null;
+                    }
+
+                    @Override
+                    public ServiceState getServiceState() {
+                        return null;
+                    }
+
+                    @Override
+                    public void setServiceState(ServiceState serviceState) {
+
+                    }
+
+                    @Override
+                    public boolean isLocked() {
+                        return false;
+                    }
+
+                    @Override
+                    public void setLocked(boolean locked) {
+
+                    }
+
+                    @Override
+                    public void addProperty(String name, Object property) {
+
+                    }
+
+                    @Override
+                    public void removeProperty(String name) {
+
+                    }
+
+                    @Override
+                    public Object getProperty(String name) {
+                        return null;
+                    }
+                }));
             }
         }, 1500);
     }
