@@ -23,10 +23,6 @@
 - [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
 - [WindSpigot](https://github.com/Wind-Development/WindSpigot) support (1.8.8)
 
-## Supported Java Versions
-- Java 15 and lower - Not Supported
-- Java 16 and higher - Supported
-- Java 16 - Recommended
 
 ## Links
 
@@ -42,3 +38,16 @@
 - Give the start.sh file '777' rights (Only on linux systems)
 - Execute start.sh (if you have a Windows system execute the start.bat file)
 - TODO: Write here
+
+## Supported Java Versions
+- Java 15 and lower - Not Supported
+- Java 16 and higher - Supported
+- Java 16 - Recommended
+
+
+## Supported Minecraft Versions
+
+- Paper 1.12.2 - 1.19.3
+- WindSpigot 1.8.8
+- BungeeCord & Waterfall
+- Velocity & Velocity 3
