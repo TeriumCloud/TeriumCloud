@@ -3,5 +3,7 @@ package cloud.terium.networking.packet.service;
 import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.service.ICloudService;
 
-public record PacketPlayOutService(ICloudService cloudService) implements Packet {
+import java.util.List;
+
+public record PacketPlayOutService(List<ICloudService> cloudService) implements Packet {
 }

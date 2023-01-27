@@ -3,10 +3,12 @@ package cloud.terium.cloudsystem.utils.version;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum ServerVersions {
-    VELOCTIY("velocity", "https://api.papermc.io/v2/projects/velocity/versions/1.1.9/builds/447/downloads/velocity-1.1.9-447.jar"),
-    VELOCITY_3("velocity-3", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/builds/216/downloads/velocity-3.2.0-SNAPSHOT-216.jar"),
+    VELOCITY("velocity", "https://api.papermc.io/v2/projects/velocity/versions/1.1.9/builds/447/downloads/velocity-1.1.9-447.jar"),
+    VELOCITY_3("velocity-3", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/builds/225/downloads/velocity-3.2.0-SNAPSHOT-225.jar"),
     WATERFALL("waterfall", "https://api.papermc.io/v2/projects/waterfall/versions/1.19/builds/510/downloads/waterfall-1.19-510.jar"),
     BUNGEECORD("bungeecord", "https://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar"),
     PAPER_1_19_2("paper-1.19.2", "https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/307/downloads/paper-1.19.2-307.jar"),
@@ -16,8 +18,7 @@ public enum ServerVersions {
     PAPER_1_15_2("paper-1.15.2", "https://api.papermc.io/v2/projects/paper/versions/1.15.2/builds/393/downloads/paper-1.15.2-393.jar"),
     PAPER_1_14_4("paper-1.14.4", "https://api.papermc.io/v2/projects/paper/versions/1.14.4/builds/245/downloads/paper-1.14.4-245.jar"),
     PAPER_1_13_2("paper-1.13.2", "https://api.papermc.io/v2/projects/paper/versions/1.13.2/builds/657/downloads/paper-1.13.2-657.jar"),
-    PAPER_1_12_2("paper-1.12.2", "https://api.papermc.io/v2/projects/paper/versions/1.12.2/builds/1620/downloads/paper-1.12.2-1620.jar"),
-    PAPER_1_8_8("windspigot-1.8.8", "https://github.com/Wind-Development/WindSpigot/releases/download/v2.1.2-hotfix/WindSpigot-2.1.2.jar");
+    PAPER_1_12_2("paper-1.12.2", "https://api.papermc.io/v2/projects/paper/versions/1.12.2/builds/1620/downloads/paper-1.12.2-1620.jar");
 
     private final String name;
     private final String url;

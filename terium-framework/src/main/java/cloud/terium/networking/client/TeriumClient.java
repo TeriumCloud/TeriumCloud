@@ -22,18 +22,18 @@ public class TeriumClient {
     private final Channel channel;
     private final ChannelFuture channelFuture;
 
-    public TeriumClient(String host, int port) throws Exception {
+    public TeriumClient(String host, int port) {
         EventLoopGroup eventLoopGroup = Epoll.isAvailable() ? new EpollEventLoopGroup() : new NioEventLoopGroup();
 
         try {
             this.bootstrap = new Bootstrap()
                     .group(eventLoopGroup)
                     .channel(Epoll.isAvailable() ? EpollSocketChannel.class : NioSocketChannel.class)
-                    .handler(new ChannelInitializer<Channel>() {
+                    .handler(new ChannelInitializer<>() {
                         @Override
-                        protected void initChannel(Channel channel) throws Exception {
+                        protected void initChannel(Channel channel) {
                             channel.pipeline()
-                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())))
+                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(ClassLoader.getSystemClassLoader())))
                                     .addLast("packet-encoder", new ObjectEncoder());
                         }
                     });

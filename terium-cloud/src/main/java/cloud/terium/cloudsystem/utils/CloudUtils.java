@@ -2,7 +2,6 @@ package cloud.terium.cloudsystem.utils;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.cloudsystem.utils.version.ServerVersions;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import lombok.Getter;
@@ -15,7 +14,6 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -38,15 +36,13 @@ public class CloudUtils {
         File data = new File("data//versions");
         Logger.log("Downloading all server versions...");
         if (!data.exists()) {
-            Arrays.stream(ServerVersions.values()).toList().forEach(version -> {
-                try {
-                    Logger.log("Trying to download '" + version.getName() + "'...");
-                    FileUtils.copyURLToFile(new URL(version.getUrl()), new File("data//versions//" + version.getName() + ".jar"));
-                    Logger.log("Successfully to downloaded '" + version.getName() + "'.");
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-            });
+            try {
+                Logger.log("Trying to download 'spigot.yml'...");
+                FileUtils.copyURLToFile(new URL("version.getUrl()"), new File("data//versions//spigot.yml"));
+                Logger.log("Successfully to downloaded 'spigot.yml'.");
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
         data.mkdirs();
     }

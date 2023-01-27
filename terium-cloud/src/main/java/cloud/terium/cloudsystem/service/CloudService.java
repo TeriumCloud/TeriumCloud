@@ -4,10 +4,10 @@ import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.event.events.service.ServiceAddEvent;
 import cloud.terium.cloudsystem.event.events.service.ServiceUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.cloudsystem.utils.version.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -16,17 +16,20 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CloudService implements ICloudService {
+public class CloudService extends cloud.terium.teriumapi.service.impl.CloudService {
 
     private final ICloudServiceGroup serviceGroup;
     private final String name;
@@ -63,6 +66,7 @@ public class CloudService implements ICloudService {
     }
 
     public CloudService(String serviceName, List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, ServiceType serviceType, int serviceId, int port, int maxPlayers, int maxMemory) {
+        super(serviceName, serviceId, port, cloudServiceGroup.getGroupNode(), cloudServiceGroup, templates);
         this.serviceGroup = cloudServiceGroup;
         this.serviceId = serviceId;
         this.name = serviceName;
@@ -84,8 +88,7 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void start() {
         this.folder.mkdirs();
-        FileUtils.copyFileToDirectory(new File("data//versions//" + serviceGroup.getVersion() + ".jar"), folder);
-        // FileUtils.copyFileToDirectory(new File("data//versions//terium-plugin//terium-plugin.json"), folder);
+        FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
         FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
         templates.forEach(template -> {
@@ -94,6 +97,19 @@ public class CloudService implements ICloudService {
             } catch (IOException ignored) {
             }
         });
+
+        AtomicBoolean hasJarFile = new AtomicBoolean(false);
+        Arrays.stream(folder.listFiles()).forEach(file -> {
+            if(file.getName().contains(".jar"))
+                hasJarFile.set(true);
+        });
+        if(!hasJarFile.get()) {
+            try {
+                FileUtils.copyURLToFile(new URL(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")).getUrl()), new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
 
         if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
             Logger.log("The service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);

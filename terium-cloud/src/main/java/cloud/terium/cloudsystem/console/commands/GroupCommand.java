@@ -79,7 +79,7 @@ public class GroupCommand extends Command {
                                 }
                                 case "version" -> {
                                     if(!serviceGroup.getServiceType().equals(ServiceType.Proxy)) {
-                                        if (Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom").contains(args[3]))
+                                        if (Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "minestom").contains(args[3]))
                                             serviceGroup.setVersion(args[3]);
                                     } else {
                                         if (Arrays.asList("bungeecord", "waterfall", "velocity", "velocity-3").contains(args[3]))
@@ -219,7 +219,7 @@ public class GroupCommand extends Command {
             }
             case 4 -> {
                 if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
-                    return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspogot-1.8.8", "minestom");
+                    return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "minestom");
                 if (args[1].equalsIgnoreCase("proxy"))
                     return Arrays.asList("velocity-3", "velocity", "waterfall", "bungeecord");
 
@@ -227,7 +227,7 @@ public class GroupCommand extends Command {
                     if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
                         return Arrays.asList("true", "false");
                     else if (args[2].equalsIgnoreCase("version"))
-                        return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "windspigot-1.8.8", "minestom");
+                        return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "minestom");
                 }
 
                 if (args[0].equalsIgnoreCase("add")) {

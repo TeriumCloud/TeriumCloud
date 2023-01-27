@@ -14,6 +14,7 @@ import cloud.terium.cloudsystem.event.events.player.CloudPlayerQuitEvent;
 import cloud.terium.cloudsystem.event.events.service.*;
 import cloud.terium.cloudsystem.event.events.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.event.events.template.TemplateDeleteEvent;
+import cloud.terium.cloudsystem.service.CloudService;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.*;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
@@ -64,11 +65,11 @@ public class TeriumServer {
                         @Override
                         protected void initChannel(Channel channel) {
                             channel.pipeline()
-                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())))
+                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(ClassLoader.getSystemClassLoader())))
                                     .addLast("packet-encoder", new ObjectEncoder())
-                                    .addLast(new SimpleChannelInboundHandler<Packet>() {
+                                    .addLast(new SimpleChannelInboundHandler<>() {
                                         @Override
-                                        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
+                                        protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                                             System.out.println("packet?");
                                             try {
                                                 // service packets
@@ -156,6 +157,7 @@ public class TeriumServer {
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.add(channelHandlerContext.channel());
+                                            channelHandlerContext.channel().writeAndFlush(new PacketPlayOutService(TeriumCloud.getTerium().getServiceProvider().getAllCloudServices()));
                                         }
 
                                         @Override

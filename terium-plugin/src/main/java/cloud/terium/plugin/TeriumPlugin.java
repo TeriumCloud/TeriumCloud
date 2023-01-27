@@ -1,5 +1,6 @@
 package cloud.terium.plugin;
 
+import cloud.terium.networking.packet.PacketPlayOutTemplateCreate;
 import cloud.terium.networking.packet.service.PacketPlayOutSuccessfullyServiceStarted;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.plugin.impl.console.CommandFactory;
@@ -32,6 +33,7 @@ import cloud.terium.teriumapi.service.*;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
+import cloud.terium.teriumapi.service.impl.CloudService;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
@@ -90,97 +92,7 @@ public final class TeriumPlugin extends TeriumAPI {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(new ICloudService() {
-                    @Override
-                    public String getServiceName() {
-                        return "test-1";
-                    }
-
-                    @Override
-                    public int getServiceId() {
-                        return 0;
-                    }
-
-                    @Override
-                    public int getPort() {
-                        return 0;
-                    }
-
-                    @Override
-                    public List<ITemplate> getTemplates() {
-                        return null;
-                    }
-
-                    @Override
-                    public int getOnlinePlayers() {
-                        return 0;
-                    }
-
-                    @Override
-                    public void setOnlinePlayers(int onlinePlayers) {
-
-                    }
-
-                    @Override
-                    public long getUsedMemory() {
-                        return 0;
-                    }
-
-                    @Override
-                    public void setUsedMemory(long usedMemory) {
-
-                    }
-
-                    @Override
-                    public void update() {
-
-                    }
-
-                    @Override
-                    public ICloudServiceGroup getServiceGroup() {
-                        return null;
-                    }
-
-                    @Override
-                    public INode getServiceNode() {
-                        return null;
-                    }
-
-                    @Override
-                    public ServiceState getServiceState() {
-                        return null;
-                    }
-
-                    @Override
-                    public void setServiceState(ServiceState serviceState) {
-
-                    }
-
-                    @Override
-                    public boolean isLocked() {
-                        return false;
-                    }
-
-                    @Override
-                    public void setLocked(boolean locked) {
-
-                    }
-
-                    @Override
-                    public void addProperty(String name, Object property) {
-
-                    }
-
-                    @Override
-                    public void removeProperty(String name) {
-
-                    }
-
-                    @Override
-                    public Object getProperty(String name) {
-                        return null;
-                    }
-                }));
+                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService()));
             }
         }, 1500);
     }

@@ -17,12 +17,12 @@ public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
     @SneakyThrows
     public DefaultTeriumNetworking() {
         teriumClient = new TeriumClient(System.getProperty("netty-address"), Integer.parseInt(System.getProperty("netty-port")));
-        getChannel().pipeline().addLast(new SimpleChannelInboundHandler<Packet>() {
+        getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
             @Override
-            protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) {
+            protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 System.out.println("packet?");
                 if(packet instanceof PacketPlayOutService newPacket)
-                    TeriumPlugin.getInstance().getServiceProvider().getAllCloudServices().add(newPacket.cloudService());
+                    newPacket.cloudService().forEach(cloudService -> TeriumPlugin.getInstance().getServiceProvider().getAllCloudServices().add(cloudService));
             }
         });
     }
