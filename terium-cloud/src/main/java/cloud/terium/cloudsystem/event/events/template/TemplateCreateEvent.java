@@ -1,7 +1,7 @@
 package cloud.terium.cloudsystem.event.events.template;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.networking.packet.PacketPlayOutTemplateCreate;
+import cloud.terium.networking.packet.template.PacketPlayOutTemplateCreate;
 import cloud.terium.teriumapi.event.Event;
 import lombok.Getter;
 

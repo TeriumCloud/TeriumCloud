@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'cloud.terium'
-version '1.0-SNAPSHOT'
+version '1.0-OXYGEN'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -41,7 +41,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 shadowJar {
-    archiveFileName.set("terium-SNAPSHOT.jar")
+    archiveFileName.set("terium-OXYGEN.jar")
 }
 
 jar {

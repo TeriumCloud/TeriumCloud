@@ -1,4 +1,4 @@
-package cloud.terium.networking.packet;
+package cloud.terium.networking.packet.template;
 
 import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.template.ITemplate;

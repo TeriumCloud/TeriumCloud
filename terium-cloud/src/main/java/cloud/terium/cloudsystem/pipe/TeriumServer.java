@@ -14,7 +14,6 @@ import cloud.terium.cloudsystem.event.events.player.CloudPlayerQuitEvent;
 import cloud.terium.cloudsystem.event.events.service.*;
 import cloud.terium.cloudsystem.event.events.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.event.events.template.TemplateDeleteEvent;
-import cloud.terium.cloudsystem.service.CloudService;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.networking.packet.*;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
@@ -24,8 +23,8 @@ import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
+import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
-import cloud.terium.teriumapi.network.Packet;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -40,8 +39,6 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Getter
 
@@ -141,7 +138,7 @@ public class TeriumServer {
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupsEvent());
 
                                                 // template events
-                                                if (packet instanceof PacketPlayOutTemplateCreate newPacket)
+                                                if (packet instanceof cloud.terium.networking.packet.template.PacketPlayOutTemplateCreate newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
                                                 if (packet instanceof PacketPlayOutTemplateDelete newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
