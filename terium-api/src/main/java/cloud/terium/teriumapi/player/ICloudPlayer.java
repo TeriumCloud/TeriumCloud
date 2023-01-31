@@ -41,12 +41,16 @@ public interface ICloudPlayer extends Serializable {
      *
      * @param cloudPlayer This is the cloudplayer the player should be connected with.
      */
-    void connectCloudPlayerToCloudPlayerService(ICloudPlayer cloudPlayer);
+    default void connectCloudPlayerToCloudPlayerService(ICloudPlayer cloudPlayer) {
+
+    }
 
     /**
      * Connect a cloud player with the service in param
      *
      * @param cloudService This is the cloud service the cloud player should be connected with.
      */
-    void connectWithService(ICloudService cloudService);
+    default void connectWithService(ICloudService cloudService) {
+
+    }
 }
