@@ -8,6 +8,7 @@ import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -131,6 +132,11 @@ public record PacketPlayOutCloudPlayerConnectedService(ICloudPlayer cloudPlayer,
             @Override
             public Object getProperty(String name) {
                 return cloudService.getProperty(name);
+            }
+
+            @Override
+            public HashMap<String, Object> getPropertyMap() {
+                return cloudService.getPropertyMap();
             }
         };
     }

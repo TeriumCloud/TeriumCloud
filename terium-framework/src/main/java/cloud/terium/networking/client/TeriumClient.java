@@ -33,7 +33,7 @@ public class TeriumClient {
                         @Override
                         protected void initChannel(Channel channel) {
                             channel.pipeline()
-                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(ClassLoader.getSystemClassLoader())))
+                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())))
                                     .addLast("packet-encoder", new ObjectEncoder());
                         }
                     });

@@ -104,6 +104,11 @@ public record PacketPlayOutUpdateService(ICloudService cloudService) implements 
             public Object getProperty(String name) {
                 return cloudService.getProperty(name);
             }
+
+            @Override
+            public HashMap<String, Object> getPropertyMap() {
+                return cloudService.getPropertyMap();
+            }
         };
     }
 }

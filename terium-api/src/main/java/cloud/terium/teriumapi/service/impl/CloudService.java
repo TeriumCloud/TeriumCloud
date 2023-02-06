@@ -131,4 +131,9 @@ public class CloudService implements ICloudService {
     public Object getProperty(String name) {
         return this.propertyCache.get(name);
     }
+
+    @Override
+    public HashMap<String, Object> getPropertyMap() {
+        return propertyCache;
+    }
 }

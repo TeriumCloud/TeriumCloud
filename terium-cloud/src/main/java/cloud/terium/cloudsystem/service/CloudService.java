@@ -80,6 +80,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
         this.maxMemory = maxMemory;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
+        templates.addAll(serviceGroup.getTemplates());
         TeriumCloud.getTerium().getScreenProvider().addCloudService(this);
         TeriumCloud.getTerium().getServiceProvider().addService(this);
         Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);

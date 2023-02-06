@@ -5,6 +5,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 public interface ICloudService extends Serializable {
@@ -153,6 +154,12 @@ public interface ICloudService extends Serializable {
      * @return Object
      */
     Object getProperty(String name);
+
+    /**
+     * Returns the property map of the service.
+     * @return HasMap<String, Object>
+     */
+    HashMap<String, Object> getPropertyMap();
 
     /**
      * Get the service type of the service

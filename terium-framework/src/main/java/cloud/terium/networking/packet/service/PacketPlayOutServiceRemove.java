@@ -7,6 +7,7 @@ import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.HashMap;
 import java.util.List;
 
 public record PacketPlayOutServiceRemove(ICloudService cloudService) implements Packet {
@@ -102,6 +103,11 @@ public record PacketPlayOutServiceRemove(ICloudService cloudService) implements 
             @Override
             public Object getProperty(String name) {
                 return cloudService.getProperty(name);
+            }
+
+            @Override
+            public HashMap<String, Object> getPropertyMap() {
+                return cloudService.getPropertyMap();
             }
         };
     }

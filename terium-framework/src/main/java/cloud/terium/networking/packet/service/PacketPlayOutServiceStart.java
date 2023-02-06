@@ -8,6 +8,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.List;
 
 public record PacketPlayOutServiceStart(ICloudService cloudService, INode node) implements Packet {
@@ -103,6 +104,11 @@ public record PacketPlayOutServiceStart(ICloudService cloudService, INode node) 
             @Override
             public Object getProperty(String name) {
                 return cloudService.getProperty(name);
+            }
+
+            @Override
+            public HashMap<String, Object> getPropertyMap() {
+                return cloudService.getPropertyMap();
             }
         };
     }

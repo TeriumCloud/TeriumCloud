@@ -25,6 +25,7 @@ import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -62,7 +63,7 @@ public class TeriumServer {
                         @Override
                         protected void initChannel(Channel channel) {
                             channel.pipeline()
-                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(ClassLoader.getSystemClassLoader())))
+                                    .addLast("packet-decoder", new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader())))
                                     .addLast("packet-encoder", new ObjectEncoder())
                                     .addLast(new SimpleChannelInboundHandler<>() {
                                         @Override
@@ -73,7 +74,7 @@ public class TeriumServer {
                                                 if (packet instanceof PacketPlayOutServiceAdd newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(newPacket.cloudService()));
                                                 if (packet instanceof PacketPlayOutCreateService newPacket)
-                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.name(), newPacket.serviceGroup(), newPacket.templates(), newPacket.maxPlayers(), newPacket.memory(), newPacket.serviceId()));
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates(), newPacket.propertyCache()));
                                                 if (packet instanceof PacketPlayOutServiceForceShutdown newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.cloudService()));
                                                 if (packet instanceof PacketPlayOutServiceLock newPacket)
@@ -129,11 +130,11 @@ public class TeriumServer {
                                                 if (packet instanceof PacketPlayOutCreateServerGroup newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                                                 if (packet instanceof PacketPlayOutGroupDelete newPacket)
-                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.iCloudServiceGroup()));
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.serviceGroup()));
                                                 if (packet instanceof PacketPlayOutGroupUpdate newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup()));
                                                 if (packet instanceof PacketPlayOutGroupReload newPacket)
-                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.iCloudServiceGroup()));
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.serviceGroup()));
                                                 if (packet instanceof PacketPlayOutGroupsReload)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ReloadGroupsEvent());
 
@@ -154,7 +155,9 @@ public class TeriumServer {
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.add(channelHandlerContext.channel());
-                                            channelHandlerContext.channel().writeAndFlush(new PacketPlayOutService(TeriumCloud.getTerium().getServiceProvider().getAllCloudServices()));
+                                            TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
+                                                    new PacketPlayOutCreateService(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
+                                                            cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));
                                         }
 
                                         @Override
@@ -172,7 +175,8 @@ public class TeriumServer {
             this.channel = this.channelFuture.channel();
             this.channels = new ArrayList<>();
         } catch (Exception exception) {
-            throw new IllegalStateException("Failed to start terium-server", exception);
+            throw new IllegalStateException
+                    ("Failed to start terium-server", exception);
         }
     }
 }
