@@ -21,7 +21,7 @@
 - [Velocity](https://velocitypowered.com), [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/)
   and [Waterfall](https://papermc.io/downloads#Waterfall) support
 - [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
-- [WindSpigot](https://github.com/Wind-Development/WindSpigot) support (1.8.8)
+- [Minestom](https://github.com/Minestom/Minestomt) support
 
 
 ## Links
@@ -48,6 +48,6 @@
 ## Supported Minecraft Versions
 
 - Paper 1.12.2 - 1.19.3
-- WindSpigot 1.8.8
+- Minestom
 - BungeeCord & Waterfall
 - Velocity & Velocity 3
