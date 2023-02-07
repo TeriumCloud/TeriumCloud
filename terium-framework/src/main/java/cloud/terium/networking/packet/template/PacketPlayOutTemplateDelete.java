@@ -1,24 +1,14 @@
 package cloud.terium.networking.packet.template;
 
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.template.ITemplate;
 
-import java.nio.file.Path;
+import java.util.Optional;
 
-public record PacketPlayOutTemplateDelete(ITemplate template) implements Packet {
+public record PacketPlayOutTemplateDelete(String template) implements Packet {
 
-    @Override
-    public ITemplate template() {
-        return new ITemplate() {
-            @Override
-            public String getName() {
-                return template.getName();
-            }
-
-            @Override
-            public Path getPath() {
-                return template.getPath();
-            }
-        };
+    public Optional<ITemplate> parsedTemplate() {
+        return TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(template);
     }
 }

@@ -5,14 +5,9 @@ import cloud.terium.teriumapi.template.ITemplate;
 
 import java.nio.file.Path;
 
-public record PacketPlayOutTemplateCreate(String name) implements Packet, ITemplate {
-    @Override
-    public String getName() {
-        return name;
-    }
+public record PacketPlayOutTemplateCreate(String name) implements Packet {
 
-    @Override
-    public Path getPath() {
+    public Path path() {
         return Path.of("templates\\" + name);
     }
 }
