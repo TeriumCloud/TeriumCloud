@@ -150,7 +150,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
             TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(getServiceName(), getServiceId(), getPort(), getMaxPlayers(), getMaxMemory(), getServiceNode().getName(), getServiceGroup().getGroupName(), getTemplates().stream().map(ITemplate::getName).toList(), propertyMap));
 
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dnetty-address=" + TeriumCloud.getTerium().getCloudConfig().ip(), "-Dnetty-port=" + TeriumCloud.getTerium().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "nogui"};
+            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + TeriumCloud.getTerium().getCloudConfig().ip(), "-Dnetty-port=" + TeriumCloud.getTerium().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "nogui"};
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
             processBuilder.directory(this.folder);
