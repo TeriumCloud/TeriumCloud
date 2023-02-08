@@ -87,7 +87,7 @@ public final class TeriumPlugin extends TeriumAPI {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService()));
+                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService().getServiceName(), getProvider().getThisNode().getName()));
             }
         }, 1500);
     }
@@ -106,7 +106,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public INode getThisNode() {
-                return getThisService().getServiceGroup().getGroupNode();
+                return getNodeProvider().getNodeByName(System.getProperty("servicenode")).orElseGet(null);
             }
 
             @Override
