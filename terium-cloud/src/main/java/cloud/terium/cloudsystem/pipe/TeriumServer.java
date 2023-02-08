@@ -19,12 +19,15 @@ import cloud.terium.networking.packet.*;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
+import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -37,6 +40,7 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.Getter;
+import org.jline.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +157,21 @@ public class TeriumServer {
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.add(channelHandlerContext.channel());
+
+                                            // Nodes
+                                            TeriumCloud.getTerium().getNodeProvider().getAllNodes().forEach(node -> channelHandlerContext.channel().writeAndFlush(
+                                                    new PacketPlayOutNodeAdd(node.getName(), node.getKey(), node.getAddress(), node.getMaxMemory(), node.isConnected())));
+
+                                            // Templates
+                                            TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().forEach(template -> channelHandlerContext.channel().writeAndFlush(
+                                                    new PacketPlayOutTemplateAdd(template.getName(), template.getPath().toString())));
+
+                                            // Groups
+                                            TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> channelHandlerContext.channel().writeAndFlush(
+                                                    new PacketPlayOutGroupAdd(group.getGroupName(), group.getGroupTitle(), group.getGroupNode().getName(), group.getGroupFallbackNode().stream().map(INode::getName).toList(), group.getTemplates().stream().map(ITemplate::getName).toList(), group.getServiceType(), group.getVersion(),
+                                                            group.isMaintenance(), group.isStatic(), group.hasPort(), group.getPort(), group.getMaxPlayers(), group.getMemory(), group.getMinServices(), group.getMaxServices())));
+
+                                            // Services
                                             TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
                                                     new PacketPlayOutCreateService(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
                                                             cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));

@@ -5,10 +5,14 @@ import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class ServiceGroupProvider implements ICloudServiceGroupProvider {
+
+    private final List<ICloudServiceGroup> cachedCloudServices = new ArrayList<>();
 
     @Override
     public Optional<ICloudServiceGroup> getServiceGroupByName(String groupName) {
@@ -47,6 +51,6 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
     @Override
     public List<ICloudServiceGroup> getAllServiceGroups() {
-        return null;
+        return cachedCloudServices;
     }
 }
