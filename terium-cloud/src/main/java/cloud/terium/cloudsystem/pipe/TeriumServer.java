@@ -94,7 +94,7 @@ public class TeriumServer {
                                                 if (packet instanceof PacketPlayOutServiceUnlock newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUnlockEvent(newPacket.serviceName()));
                                                 if (packet instanceof PacketPlayOutUpdateService newPacket)
-                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(newPacket.serviceName()));
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(newPacket.serviceName(), newPacket.players(), newPacket.memory(), newPacket.serviceState(), newPacket.locked(), newPacket.propertyCache()));
 
                                                 // player packets
                                                 if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)
