@@ -17,6 +17,6 @@ public class NodeFactory implements INodeFactory {
 
     @Override
     public void deleteNode(INode node) {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutDeleteNode(node));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutDeleteNode(node.getName()));
     }
 }

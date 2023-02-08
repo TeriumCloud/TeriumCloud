@@ -6,6 +6,8 @@ import cloud.terium.cloudsystem.event.events.service.ServiceUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.version.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
+import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -321,7 +323,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
 
     @Override
     public void update() {
-        TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(getServiceName()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutUpdateService(getServiceName(), getOnlinePlayers(), getUsedMemory(), getServiceState(), isLocked(), getPropertyMap()));
     }
 
     @Override

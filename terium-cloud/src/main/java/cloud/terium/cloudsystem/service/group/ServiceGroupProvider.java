@@ -128,7 +128,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(serviceGroup));
+            TeriumCloud.getTerium().getEventProvider().callEvent(new GroupUpdateEvent(serviceGroup.getGroupName()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
