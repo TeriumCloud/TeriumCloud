@@ -1,5 +1,6 @@
 package cloud.terium.networking.packet.service;
 
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -9,8 +10,9 @@ import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
-public record PacketPlayOutCreateAdd(String serviceName, int serviceId, int port, int maxPlayers, int memory, String node, String serviceGroup, List<String> templates, HashMap<String, Object> propertyCache) implements Packet {
+public record PacketPlayOutServiceAdd(String serviceName, int serviceId, int port, int maxPlayers, int memory, String node, String serviceGroup, List<String> templates, HashMap<String, Object> propertyCache) implements Packet {
 
     public Optional<ICloudServiceGroup> parsedServiceGroup() {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(serviceGroup);
