@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class ReloadGroupEvent extends Event {
 
-    private final ICloudServiceGroup cloudServiceGroup;
+    private final String cloudServiceGroup;
 
-    public ReloadGroupEvent(ICloudServiceGroup cloudServiceGroup) {
+    public ReloadGroupEvent(String cloudServiceGroup) {
         this.cloudServiceGroup = cloudServiceGroup;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutGroupReload(cloudServiceGroup));
     }

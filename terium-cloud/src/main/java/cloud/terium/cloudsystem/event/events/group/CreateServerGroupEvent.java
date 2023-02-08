@@ -14,9 +14,9 @@ public class CreateServerGroupEvent extends Event {
 
     private final String name;
     private final String groupTitle;
-    private final INode node;
-    private final List<INode> fallbackNodes;
-    private final List<ITemplate> templates;
+    private final String node;
+    private final List<String> fallbackNodes;
+    private final List<String> templates;
     private final String version;
     private final boolean maintenance;
     private final boolean isStatic;
@@ -25,7 +25,7 @@ public class CreateServerGroupEvent extends Event {
     private final int minimalServices;
     private final int maximalServices;
 
-    public CreateServerGroupEvent(String name, String groupTitle, INode node, List<INode> fallbackNodes, List<ITemplate> templates, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public CreateServerGroupEvent(String name, String groupTitle, String node, List<String> fallbackNodes, List<String> templates, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;

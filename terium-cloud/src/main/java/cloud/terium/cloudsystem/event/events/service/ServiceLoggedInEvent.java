@@ -10,12 +10,12 @@ import lombok.Getter;
 @Getter
 public class ServiceLoggedInEvent extends Event {
 
-    private final ICloudService cloudService;
-    private final INode node;
+    private final String cloudService;
+    private final String node;
 
-    public ServiceLoggedInEvent(ICloudService cloudService, INode node) {
+    public ServiceLoggedInEvent(String cloudService, String node) {
         this.cloudService = cloudService;
         this.node = node;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutSuccessfullyServiceStarted(cloudService));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutSuccessfullyServiceStarted(cloudService, node));
     }
 }

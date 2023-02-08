@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class DeleteGroupEvent extends Event {
 
-    private final ICloudServiceGroup cloudServiceGroup;
+    private final String cloudServiceGroup;
 
-    public DeleteGroupEvent(ICloudServiceGroup cloudServiceGroup) {
+    public DeleteGroupEvent(String cloudServiceGroup) {
         this.cloudServiceGroup = cloudServiceGroup;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutGroupDelete(cloudServiceGroup));
     }

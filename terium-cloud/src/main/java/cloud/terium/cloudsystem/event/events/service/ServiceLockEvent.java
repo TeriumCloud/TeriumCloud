@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class ServiceLockEvent extends Event {
 
-    private final ICloudService cloudService;
+    private final String cloudService;
 
-    public ServiceLockEvent(ICloudService cloudService) {
+    public ServiceLockEvent(String cloudService) {
         this.cloudService = cloudService;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceLock(cloudService));
     }

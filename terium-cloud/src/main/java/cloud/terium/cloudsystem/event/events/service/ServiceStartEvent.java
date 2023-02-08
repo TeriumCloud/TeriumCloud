@@ -10,12 +10,12 @@ import lombok.Getter;
 @Getter
 public class ServiceStartEvent extends Event {
 
-    private final ICloudService cloudService;
-    private final INode node;
+    private final String cloudService;
+    private final String node;
 
-    public ServiceStartEvent(ICloudService cloudService, INode node) {
+    public ServiceStartEvent(String cloudService, String node) {
         this.cloudService = cloudService;
         this.node = node;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceStart(cloudService, cloudService.getServiceGroup().getGroupNode()));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceStart(cloudService, cloudService));
     }
 }

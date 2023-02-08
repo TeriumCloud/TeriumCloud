@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class NodeLoggedInEvent extends Event {
 
-    private final INode node;
+    private final String node;
 
-    public NodeLoggedInEvent(INode node) {
+    public NodeLoggedInEvent(String node) {
         this.node = node;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeStarted(node));
     }

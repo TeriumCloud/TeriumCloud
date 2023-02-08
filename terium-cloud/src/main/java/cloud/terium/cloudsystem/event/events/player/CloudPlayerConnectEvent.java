@@ -7,13 +7,15 @@ import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 public class CloudPlayerConnectEvent extends Event {
 
-    private final ICloudPlayer cloudPlayer;
-    private final ICloudService cloudService;
+    private final UUID cloudPlayer;
+    private final String cloudService;
 
-    public CloudPlayerConnectEvent(ICloudPlayer cloudPlayer, ICloudService cloudService) {
+    public CloudPlayerConnectEvent(UUID cloudPlayer, String cloudService) {
         this.cloudPlayer = cloudPlayer;
         this.cloudService = cloudService;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(cloudPlayer, cloudService));

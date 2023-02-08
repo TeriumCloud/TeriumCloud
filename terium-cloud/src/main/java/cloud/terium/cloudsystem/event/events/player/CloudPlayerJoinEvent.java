@@ -6,12 +6,14 @@ import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 public class CloudPlayerJoinEvent extends Event {
 
-    private final ICloudPlayer cloudPlayer;
+    private final UUID cloudPlayer;
 
-    public CloudPlayerJoinEvent(ICloudPlayer cloudPlayer) {
+    public CloudPlayerJoinEvent(UUID cloudPlayer) {
         this.cloudPlayer = cloudPlayer;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(cloudPlayer));
     }

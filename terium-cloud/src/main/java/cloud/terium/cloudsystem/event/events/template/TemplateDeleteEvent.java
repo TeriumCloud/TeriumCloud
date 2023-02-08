@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class TemplateDeleteEvent extends Event {
 
-    private final ITemplate template;
+    private final String template;
 
-    public TemplateDeleteEvent(ITemplate template) {
+    public TemplateDeleteEvent(String template) {
         this.template = template;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutTemplateDelete(template));
     }

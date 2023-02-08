@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class NodeShutdownEvent extends Event {
 
-    private final INode node;
+    private final String node;
 
-    public NodeShutdownEvent(INode node) {
+    public NodeShutdownEvent(String node) {
         this.node = node;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeShutdown(node));
     }

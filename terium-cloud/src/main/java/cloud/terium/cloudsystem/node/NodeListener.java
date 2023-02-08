@@ -17,7 +17,7 @@ public class NodeListener implements Listener {
 
     @Subscribe
     public void handleNodeLoggedIn(NodeLoggedInEvent event) {
-        Logger.log("Node '" + event.getNode().getName() + "' logged in with ip " + event.getNode().getAddress().toString().replace("/", "") + ".", LogType.INFO);
+        Logger.log("Node '" + event.getNode() + "' logged in with ip " + TeriumCloud.getTerium().getNodeProvider().getNodeByName(event.getNode()).orElseGet(null).getAddress().toString().replace("/", "") + ".", LogType.INFO);
     }
 
     @Subscribe
@@ -27,15 +27,14 @@ public class NodeListener implements Listener {
 
     @Subscribe
     public void handleNodeShutdown(NodeShutdownEvent event) {
-        if (event.getNode().getName().equals(TeriumCloud.getTerium().getThisNode().getName())) {
+        if (event.getNode().equals(TeriumCloud.getTerium().getThisNode().getName())) {
             TeriumCloud.getTerium().shutdownCloud();
         }
     }
 
     @Subscribe
     public void handleNodeUpdate(NodeUpdateEvent event) {
-        Optional<INode> optionalNode = TeriumCloud.getTerium().getNodeProvider().getNodeByName(event.getNode().getName());
-        optionalNode.ifPresent(node -> {
+        TeriumCloud.getTerium().getNodeProvider().getNodeByName(event.getNode()).ifPresent(node -> {
             node.setMaxMemory(event.getMaxMemory());
             node.setUsedMemory(event.getUsedMemory());
         });

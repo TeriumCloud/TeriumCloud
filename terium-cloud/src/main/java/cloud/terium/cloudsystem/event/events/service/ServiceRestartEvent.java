@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class ServiceRestartEvent extends Event {
 
-    private final ICloudService cloudService;
+    private final String cloudService;
 
-    public ServiceRestartEvent(ICloudService cloudService) {
+    public ServiceRestartEvent(String cloudService) {
         this.cloudService = cloudService;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRestart(cloudService));
     }

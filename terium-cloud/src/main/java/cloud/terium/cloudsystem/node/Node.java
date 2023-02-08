@@ -32,7 +32,7 @@ public class Node implements INode {
                 this.client = TeriumFramework.createClient(address.getHostName(), address.getPort());
                 TeriumCloud.getTerium().getNodeProvider().addClientToNode(this, client);
                 Logger.log("Connected to node '" + name + "'.", LogType.INFO);
-                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeStarted(this));
+                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeStarted(getName()));
             } catch (Exception exception) {
                 this.client = null;
                 Logger.log("Connection to node '" + name + "' with ip '" + address.getHostName() + ":" + address.getPort() + "' can't be created. (" + exception.getMessage() + ")", LogType.ERROR);
@@ -83,7 +83,7 @@ public class Node implements INode {
 
     @Override
     public void update() {
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeUpdate(this, usedMemory, maxMemory));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeUpdate(getName(), usedMemory, maxMemory));
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Node implements INode {
     @Override
     public void stop() {
         Logger.log("Trying to stop node '" + name + "'...", LogType.INFO);
-        client.getChannel().writeAndFlush(new PacketPlayOutNodeShutdown(this));
+        client.getChannel().writeAndFlush(new PacketPlayOutNodeShutdown(getName()));
         Logger.log("Successfully stopped node '" + name + "'.", LogType.INFO);
     }
 }

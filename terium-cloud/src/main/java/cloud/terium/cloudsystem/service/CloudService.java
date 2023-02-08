@@ -145,7 +145,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
         }
 
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
-            TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(this));
+            TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceAddEvent(getServiceName(), getServiceId(), getPort(), getMaxPlayers(), getMaxMemory(), getServiceNode().getName(), getServiceGroup().getGroupName(), getTemplates().stream().map(ITemplate::getName).toList(), propertyMap));
 
         this.thread = new Thread(() -> {
             String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dnetty-address=" + TeriumCloud.getTerium().getCloudConfig().ip(), "-Dnetty-port=" + TeriumCloud.getTerium().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "nogui"};
@@ -177,7 +177,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
         TeriumCloud.getTerium().getScreenProvider().removeCloudService(this);
         Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
-            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
+            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
         process.destroyForcibly().onExit().thenRun(() -> {
             thread.stop();
@@ -191,7 +191,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
             toggleScreen();
         Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#restart  ]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
-            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(this));
+            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
         setOnlinePlayers(0);
         setUsedMemory(0);
@@ -321,7 +321,7 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
 
     @Override
     public void update() {
-        TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(this));
+        TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(getServiceName()));
     }
 
     @Override

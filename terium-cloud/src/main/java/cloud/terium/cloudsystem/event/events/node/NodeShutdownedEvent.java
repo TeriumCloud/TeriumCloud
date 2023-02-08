@@ -13,6 +13,6 @@ public class NodeShutdownedEvent extends Event {
 
     public NodeShutdownedEvent(INode node) {
         this.node = node;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeShutdown(node));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutNodeShutdown(node.getName()));
     }
 }

@@ -12,9 +12,9 @@ import java.util.HashMap;
 @Getter
 public class ServiceUpdateEvent extends Event {
 
-    private final ICloudService cloudService;
+    private final String cloudService;
 
-    public ServiceUpdateEvent(ICloudService cloudService) {
+    public ServiceUpdateEvent(String cloudService) {
         this.cloudService = cloudService;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutUpdateService(cloudService));
     }

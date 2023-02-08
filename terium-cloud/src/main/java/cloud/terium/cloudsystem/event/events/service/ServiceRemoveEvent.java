@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class ServiceRemoveEvent extends Event {
 
-    private final ICloudService cloudService;
+    private final String cloudService;
 
-    public ServiceRemoveEvent(ICloudService cloudService) {
+    public ServiceRemoveEvent(String cloudService) {
         this.cloudService = cloudService;
         TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(cloudService));
     }

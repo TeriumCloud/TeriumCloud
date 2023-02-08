@@ -10,12 +10,12 @@ import lombok.Getter;
 @Getter
 public class ServiceStopEvent extends Event {
 
-    private final ICloudService cloudService;
-    private final INode node;
+    private final String cloudService;
+    private final String node;
 
-    public ServiceStopEvent(ICloudService cloudService, INode node) {
+    public ServiceStopEvent(String cloudService, String node) {
         this.cloudService = cloudService;
         this.node = node;
-        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceShutdown(cloudService));
+        TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceShutdown(cloudService, node));
     }
 }

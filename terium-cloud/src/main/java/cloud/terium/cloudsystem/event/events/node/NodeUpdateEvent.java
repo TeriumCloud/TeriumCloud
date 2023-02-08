@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 public class NodeUpdateEvent extends Event {
 
-    private final INode node;
+    private final String node;
     private final long usedMemory;
     private final long maxMemory;
 
-    public NodeUpdateEvent(INode node, long usedMemory, long maxMemory) {
+    public NodeUpdateEvent(String node, long usedMemory, long maxMemory) {
         this.node = node;
         this.usedMemory = usedMemory;
         this.maxMemory = maxMemory;
