@@ -36,6 +36,8 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public final class TeriumPlugin extends TeriumAPI {
@@ -88,6 +90,13 @@ public final class TeriumPlugin extends TeriumAPI {
             @Override
             public void run() {
                 defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService().getServiceName(), getProvider().getThisNode().getName()));
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        getProvider().getThisService().update();
+                    }
+                }, 0, 1000);
             }
         }, 1500);
     }
