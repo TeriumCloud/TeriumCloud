@@ -1,7 +1,9 @@
 package cloud.terium.plugin.bukkit;
 
 import cloud.terium.plugin.TeriumPlugin;
+import cloud.terium.plugin.bukkit.listener.PlayerJoinListener;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TeriumBukkitStartup extends JavaPlugin {
@@ -15,6 +17,9 @@ public class TeriumBukkitStartup extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin...");
         try {
             new TeriumPlugin();
+            PluginManager pluginManager = Bukkit.getPluginManager();
+            pluginManager.registerEvents(new PlayerJoinListener(), this);
+
             Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin successed...");
         } catch (Exception exception) {
             Bukkit.getConsoleSender().sendMessage("§cStartup of bukkit terium-plugin failed...");
