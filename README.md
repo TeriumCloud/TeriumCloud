@@ -23,7 +23,6 @@
 - [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
 - [Minestom](https://github.com/Minestom/Minestomt) support
 
-
 ## Links
 
 - Latest Release
@@ -40,10 +39,10 @@
 - TODO: Write here
 
 ## Supported Java Versions
+
 - Java 15 and lower - Not Supported
 - Java 16 and higher - Supported
 - Java 16 - Recommended
-
 
 ## Supported Minecraft Versions
 
