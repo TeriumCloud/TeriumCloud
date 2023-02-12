@@ -6,8 +6,6 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CloudServiceFactory implements ICloudServiceFactory {

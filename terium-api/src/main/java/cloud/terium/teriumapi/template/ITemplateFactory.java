@@ -1,7 +1,5 @@
 package cloud.terium.teriumapi.template;
 
-import cloud.terium.teriumapi.node.INode;
-
 public interface ITemplateFactory {
 
     /**

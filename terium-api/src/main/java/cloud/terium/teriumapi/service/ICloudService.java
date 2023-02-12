@@ -157,6 +157,7 @@ public interface ICloudService extends Serializable {
 
     /**
      * Returns the property map of the service.
+     *
      * @return HasMap<String, Object>
      */
     HashMap<String, Object> getPropertyMap();

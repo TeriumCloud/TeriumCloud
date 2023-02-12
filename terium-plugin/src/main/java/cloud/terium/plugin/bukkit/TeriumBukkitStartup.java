@@ -10,6 +10,10 @@ public class TeriumBukkitStartup extends JavaPlugin {
 
     private static TeriumBukkitStartup instance;
 
+    public static TeriumBukkitStartup getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -25,9 +29,5 @@ public class TeriumBukkitStartup extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§cStartup of bukkit terium-plugin failed...");
             Bukkit.getConsoleSender().sendMessage("§7Exception message§f: §c" + exception.getMessage());
         }
-    }
-
-    public static TeriumBukkitStartup getInstance() {
-        return instance;
     }
 }

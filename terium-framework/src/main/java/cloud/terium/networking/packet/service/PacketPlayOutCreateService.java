@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public record PacketPlayOutCreateService(String serviceName, int serviceId, int port, int maxPlayers, int memory, String node, String serviceGroup, List<String> templates, HashMap<String, Object> propertyCache) implements Packet {
+public record PacketPlayOutCreateService(String serviceName, int serviceId, int port, int maxPlayers, int memory,
+                                         String node, String serviceGroup, List<String> templates,
+                                         HashMap<String, Object> propertyCache) implements Packet {
 
     public Optional<ICloudServiceGroup> parsedServiceGroup() {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(serviceGroup);

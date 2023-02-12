@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.event.events.player;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.teriumapi.event.Event;
-import cloud.terium.teriumapi.player.ICloudPlayer;
 import lombok.Getter;
 
 import java.util.UUID;

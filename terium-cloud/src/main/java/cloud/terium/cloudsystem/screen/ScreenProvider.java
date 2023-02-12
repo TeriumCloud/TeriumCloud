@@ -16,12 +16,12 @@ public class ScreenProvider {
         this.currentScreen = null;
     }
 
-    public void setCurrentScreen(ICloudService iCloudService) {
-        this.currentScreen = iCloudService;
-    }
-
     public ICloudService getCurrentScreen() {
         return currentScreen;
+    }
+
+    public void setCurrentScreen(ICloudService iCloudService) {
+        this.currentScreen = iCloudService;
     }
 
     public void addCloudService(ICloudService iCloudService) {

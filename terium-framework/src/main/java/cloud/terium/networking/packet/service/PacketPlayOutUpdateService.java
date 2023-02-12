@@ -8,7 +8,8 @@ import cloud.terium.teriumapi.service.ServiceState;
 import java.util.HashMap;
 import java.util.Optional;
 
-public record PacketPlayOutUpdateService(String serviceName, int players, double memory, ServiceState serviceState, boolean locked, HashMap<String, Object> propertyCache) implements Packet {
+public record PacketPlayOutUpdateService(String serviceName, int players, double memory, ServiceState serviceState,
+                                         boolean locked, HashMap<String, Object> propertyCache) implements Packet {
 
     public Optional<ICloudService> parsedCloudService() {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(serviceName);

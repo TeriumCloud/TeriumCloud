@@ -12,7 +12,6 @@ import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ServiceGroupBuilder {
 

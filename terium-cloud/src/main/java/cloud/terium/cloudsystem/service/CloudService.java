@@ -2,12 +2,10 @@ package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.event.events.service.ServiceAddEvent;
-import cloud.terium.cloudsystem.event.events.service.ServiceUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.version.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
-import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -103,10 +101,10 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
 
         AtomicBoolean hasJarFile = new AtomicBoolean(false);
         Arrays.stream(folder.listFiles()).forEach(file -> {
-            if(file.getName().contains(".jar"))
+            if (file.getName().contains(".jar"))
                 hasJarFile.set(true);
         });
-        if(!hasJarFile.get()) {
+        if (!hasJarFile.get()) {
             try {
                 FileUtils.copyURLToFile(new URL(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")).getUrl()), new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
             } catch (IOException exception) {

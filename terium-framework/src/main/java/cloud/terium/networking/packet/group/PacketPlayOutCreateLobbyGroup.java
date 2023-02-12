@@ -5,7 +5,6 @@ import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.template.ITemplate;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

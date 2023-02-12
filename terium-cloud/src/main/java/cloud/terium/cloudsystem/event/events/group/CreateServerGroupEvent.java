@@ -3,8 +3,6 @@ package cloud.terium.cloudsystem.event.events.group;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.group.PacketPlayOutCreateServerGroup;
 import cloud.terium.teriumapi.event.Event;
-import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.template.ITemplate;
 import lombok.Getter;
 
 import java.util.List;

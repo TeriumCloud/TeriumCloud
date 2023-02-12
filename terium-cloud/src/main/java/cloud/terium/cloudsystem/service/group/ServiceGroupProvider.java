@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.service.group;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.event.events.group.GroupUpdateEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.packet.group.PacketPlayOutGroupUpdate;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 

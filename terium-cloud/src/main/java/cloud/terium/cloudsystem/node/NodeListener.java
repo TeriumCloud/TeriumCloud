@@ -9,9 +9,6 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
-import cloud.terium.teriumapi.node.INode;
-
-import java.util.Optional;
 
 public class NodeListener implements Listener {
 

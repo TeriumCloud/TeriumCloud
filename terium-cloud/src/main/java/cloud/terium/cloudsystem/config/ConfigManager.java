@@ -1,6 +1,9 @@
 package cloud.terium.cloudsystem.config;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.IOException;

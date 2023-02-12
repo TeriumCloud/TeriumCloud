@@ -35,9 +35,10 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Getter
 public final class TeriumPlugin extends TeriumAPI {

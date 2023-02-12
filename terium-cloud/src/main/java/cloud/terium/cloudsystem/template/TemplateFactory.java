@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.template;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import lombok.SneakyThrows;

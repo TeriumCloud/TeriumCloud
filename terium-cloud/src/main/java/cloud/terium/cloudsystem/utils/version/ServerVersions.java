@@ -3,8 +3,6 @@ package cloud.terium.cloudsystem.utils.version;
 
 import lombok.Getter;
 
-import java.util.Arrays;
-
 @Getter
 public enum ServerVersions {
     VELOCITY("velocity", "https://api.papermc.io/v2/projects/velocity/versions/1.1.9/builds/447/downloads/velocity-1.1.9-447.jar"),

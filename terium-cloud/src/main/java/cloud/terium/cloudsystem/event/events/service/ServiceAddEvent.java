@@ -3,8 +3,6 @@ package cloud.terium.cloudsystem.event.events.service;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.teriumapi.event.Event;
-import cloud.terium.teriumapi.service.ICloudService;
-import cloud.terium.teriumapi.template.ITemplate;
 import lombok.Getter;
 
 import java.util.HashMap;
