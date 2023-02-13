@@ -20,23 +20,23 @@ public class ScreenProvider {
         return currentScreen;
     }
 
-    public void setCurrentScreen(ICloudService iCloudService) {
-        this.currentScreen = iCloudService;
+    public void setCurrentScreen(ICloudService cloudService) {
+        this.currentScreen = cloudService;
     }
 
-    public void addCloudService(ICloudService iCloudService) {
-        cachedScreens.put(iCloudService, new ArrayList<>());
+    public void addCloudService(ICloudService cloudService) {
+        cachedScreens.put(cloudService, new ArrayList<>());
     }
 
-    public void removeCloudService(ICloudService iCloudService) {
-        cachedScreens.remove(iCloudService);
+    public void removeCloudService(ICloudService cloudService) {
+        cachedScreens.remove(cloudService);
     }
 
-    public void addLogToScreen(ICloudService iCloudService, String log) {
-        cachedScreens.get(iCloudService).add(log);
+    public void addLogToScreen(ICloudService cloudService, String log) {
+        cachedScreens.get(cloudService).add(log);
     }
 
-    public List<String> getLogsFromService(ICloudService iCloudService) {
-        return cachedScreens.get(iCloudService);
+    public List<String> getLogsFromService(ICloudService cloudService) {
+        return cachedScreens.get(cloudService);
     }
 }
