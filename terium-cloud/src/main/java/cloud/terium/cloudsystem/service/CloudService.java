@@ -8,6 +8,7 @@ import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -29,7 +30,7 @@ import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CloudService extends cloud.terium.teriumapi.service.impl.CloudService {
+public class CloudService implements ICloudService {
 
     private final ICloudServiceGroup serviceGroup;
     private final String name;
@@ -66,7 +67,6 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
     }
 
     public CloudService(String serviceName, List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, ServiceType serviceType, int serviceId, int port, int maxPlayers, int maxMemory) {
-        super(serviceName, serviceId, port, cloudServiceGroup.getGroupNode(), cloudServiceGroup, templates);
         this.serviceGroup = cloudServiceGroup;
         this.serviceId = serviceId;
         this.name = serviceName;
@@ -367,5 +367,10 @@ public class CloudService extends cloud.terium.teriumapi.service.impl.CloudServi
     @Override
     public Object getProperty(String name) {
         return propertyMap.get(name);
+    }
+
+    @Override
+    public HashMap<String, Object> getPropertyMap() {
+        return propertyMap;
     }
 }
