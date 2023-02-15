@@ -1,5 +1,7 @@
 package cloud.terium.teriumapi.player;
 
+import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnect;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 
 import java.io.Serializable;
@@ -42,7 +44,7 @@ public interface ICloudPlayer extends Serializable {
      * @param cloudPlayer This is the cloudplayer the player should be connected with.
      */
     default void connectCloudPlayerToCloudPlayerService(ICloudPlayer cloudPlayer) {
-
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(getUniqueId(), cloudPlayer.getConnectedCloudService().orElseGet(null).getServiceName()));
     }
 
     /**
@@ -51,6 +53,6 @@ public interface ICloudPlayer extends Serializable {
      * @param cloudService This is the cloud service the cloud player should be connected with.
      */
     default void connectWithService(ICloudService cloudService) {
-
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(getUniqueId(), cloudService.getServiceName()));
     }
 }
