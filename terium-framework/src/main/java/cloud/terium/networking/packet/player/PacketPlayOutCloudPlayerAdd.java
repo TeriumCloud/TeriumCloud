@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 import java.util.Optional;
 import java.util.UUID;
 
-public record PacketPlayOutCloudPlayerAdd(String username, UUID uniquedId, InetSocketAddress address, String cloudService) {
+public record PacketPlayOutCloudPlayerAdd(String username, UUID uniquedId, InetSocketAddress address, String cloudService, boolean online) {
 
     public Optional<ICloudService> parsedCloudService() {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(cloudService);
