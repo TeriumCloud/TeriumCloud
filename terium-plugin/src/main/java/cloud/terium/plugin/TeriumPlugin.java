@@ -8,6 +8,7 @@ import cloud.terium.plugin.impl.module.ModuleProvider;
 import cloud.terium.plugin.impl.node.NodeFactory;
 import cloud.terium.plugin.impl.node.NodeProvider;
 import cloud.terium.plugin.impl.pipe.DefaultTeriumNetworking;
+import cloud.terium.plugin.impl.player.CloudPlayerProvider;
 import cloud.terium.plugin.impl.service.ServiceFactory;
 import cloud.terium.plugin.impl.service.ServiceProvider;
 import cloud.terium.plugin.impl.service.group.ServiceGroupFactory;
@@ -59,6 +60,8 @@ public final class TeriumPlugin extends TeriumAPI {
     // Console
     private final ConsoleProvider consoleProvider;
     private final CommandFactory commandFactory;
+    // Player
+    private final CloudPlayerProvider cloudPlayerProvider;
     // Network
     private final DefaultTeriumNetworking defaultTeriumNetworking;
     // Event
@@ -82,6 +85,7 @@ public final class TeriumPlugin extends TeriumAPI {
         this.templateProvider = new TemplateProvider();
         this.consoleProvider = new ConsoleProvider();
         this.commandFactory = new CommandFactory();
+        this.cloudPlayerProvider = new CloudPlayerProvider();
         this.eventProvider = new EventProvider();
         this.moduleProvider = new ModuleProvider();
 
@@ -131,7 +135,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public ICloudPlayerProvider getCloudPlayerProvider() {
-                return null;
+                return cloudPlayerProvider;
             }
 
             @Override
