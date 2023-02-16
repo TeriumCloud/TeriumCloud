@@ -7,7 +7,7 @@ import cloud.terium.plugin.impl.event.EventProvider;
 import cloud.terium.plugin.impl.module.ModuleProvider;
 import cloud.terium.plugin.impl.node.NodeFactory;
 import cloud.terium.plugin.impl.node.NodeProvider;
-import cloud.terium.plugin.impl.pipe.DefaultTeriumNetworking;
+import cloud.terium.plugin.impl.pipe.TeriumNetworking;
 import cloud.terium.plugin.impl.player.CloudPlayerProvider;
 import cloud.terium.plugin.impl.service.ServiceFactory;
 import cloud.terium.plugin.impl.service.ServiceProvider;
@@ -63,7 +63,7 @@ public final class TeriumPlugin extends TeriumAPI {
     // Player
     private final CloudPlayerProvider cloudPlayerProvider;
     // Network
-    private final DefaultTeriumNetworking defaultTeriumNetworking;
+    private final TeriumNetworking teriumNetworking;
     // Event
     private final EventProvider eventProvider;
     // Module
@@ -74,7 +74,7 @@ public final class TeriumPlugin extends TeriumAPI {
     public TeriumPlugin() {
         super();
         instance = this;
-        this.defaultTeriumNetworking = new DefaultTeriumNetworking();
+        this.teriumNetworking = new TeriumNetworking();
         this.serviceFactory = new ServiceFactory();
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
@@ -94,7 +94,7 @@ public final class TeriumPlugin extends TeriumAPI {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                defaultTeriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService().getServiceName(), getProvider().getThisNode().getName()));
+                teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService().getServiceName(), getProvider().getThisNode().getName()));
 
                 new Timer().schedule(new TimerTask() {
                     @Override
@@ -165,7 +165,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public IDefaultTeriumNetworking getTeriumNetworking() {
-                return defaultTeriumNetworking;
+                return teriumNetworking;
             }
         };
     }
