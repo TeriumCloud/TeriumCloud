@@ -18,8 +18,7 @@
 - Basic and simple api
 - Module system
 - Multi-root
-- [Velocity](https://velocitypowered.com), [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/)
-  and [Waterfall](https://papermc.io/downloads#Waterfall) support
+- [Velocity](https://velocitypowered.com) support
 - [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
 - [Minestom](https://github.com/Minestom/Minestomt) support
 
@@ -48,5 +47,4 @@
 
 - Paper 1.12.2 - 1.19.3
 - Minestom
-- BungeeCord & Waterfall
 - Velocity & Velocity 3
