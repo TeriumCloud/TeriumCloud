@@ -4,6 +4,7 @@ import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.group.PacketPlayOutGroupAdd;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerAdd;
+import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerUpdate;
 import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.plugin.TeriumPlugin;
@@ -14,7 +15,6 @@ import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.player.impl.CloudPlayer;
-import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
@@ -29,15 +29,13 @@ import lombok.SneakyThrows;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
+public class TeriumNetworking implements IDefaultTeriumNetworking {
 
     private final TeriumClient teriumClient;
 
     @SneakyThrows
-    public DefaultTeriumNetworking() {
+    public TeriumNetworking() {
         teriumClient = new TeriumClient(System.getProperty("netty-address"), Integer.parseInt(System.getProperty("netty-port")));
         getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
             @Override
@@ -77,6 +75,12 @@ public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
                     if(packet instanceof PacketPlayOutCloudPlayerAdd newPacket) {
                         if(newPacket.online()) TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName(), newPacket.parsedCloudService()));
                         TeriumPlugin.getInstance().getCloudPlayerProvider().getRegisteredPlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName(), newPacket.parsedCloudService()));
+                    }
+                    if(packet instanceof PacketPlayOutCloudPlayerUpdate newPacket) {
+                        ICloudPlayer cloudPlayer = TeriumPlugin.getInstance().getCloudPlayerProvider().getCloudPlayer(newPacket.uniquedId()).orElseGet(null);
+                        cloudPlayer.updateUsername(newPacket.username());
+                        cloudPlayer.updateAddress(newPacket.address());
+                        cloudPlayer.updateConnectedService(newPacket.parsedCloudService().orElseGet(null));
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
