@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.player;
 
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnect;
+import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 
@@ -82,5 +83,12 @@ public interface ICloudPlayer extends Serializable {
      */
     default void connectWithService(ICloudService cloudService) {
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(getUniqueId(), cloudService.getServiceName()));
+    }
+
+    /**
+     * Send all updated informations to all cloud services, and cloud instances.
+     */
+    default void update() {
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerUpdate(getUniqueId(), getUsername(), getAddress(), getConnectedCloudService().orElseGet(null).getServiceName()));
     }
 }
