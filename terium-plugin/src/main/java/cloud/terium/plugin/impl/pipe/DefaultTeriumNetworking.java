@@ -13,6 +13,7 @@ import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.player.ICloudPlayer;
+import cloud.terium.teriumapi.player.impl.CloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
@@ -74,50 +75,8 @@ public class DefaultTeriumNetworking implements IDefaultTeriumNetworking {
 
                     // Players
                     if(packet instanceof PacketPlayOutCloudPlayerAdd newPacket) {
-                        switch (newPacket.online()) {
-                            case true -> TeriumPlugin.getInstance().getCloudPlayerProvider().getRegisteredPlayers().add(new ICloudPlayer() {
-                                @Override
-                                public String getUsername() {
-                                    return newPacket.username();
-                                }
-
-                                @Override
-                                public UUID getUniqueId() {
-                                    return newPacket.uniquedId();
-                                }
-
-                                @Override
-                                public String getAddress() {
-                                    return newPacket.address().getHostName();
-                                }
-
-                                @Override
-                                public Optional<ICloudService> getConnectedCloudService() {
-                                    return newPacket.parsedCloudService();
-                                }
-                            });
-                            case false -> TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().add(new ICloudPlayer() {
-                                @Override
-                                public String getUsername() {
-                                    return newPacket.username();
-                                }
-
-                                @Override
-                                public UUID getUniqueId() {
-                                    return newPacket.uniquedId();
-                                }
-
-                                @Override
-                                public String getAddress() {
-                                    return newPacket.address().getHostName();
-                                }
-
-                                @Override
-                                public Optional<ICloudService> getConnectedCloudService() {
-                                    return newPacket.parsedCloudService();
-                                }
-                            });
-                        }
+                        if(newPacket.online()) TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName(), newPacket.parsedCloudService()));
+                        TeriumPlugin.getInstance().getCloudPlayerProvider().getRegisteredPlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName(), newPacket.parsedCloudService()));
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
