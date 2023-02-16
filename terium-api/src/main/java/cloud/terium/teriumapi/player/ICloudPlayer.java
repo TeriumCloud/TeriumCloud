@@ -39,6 +39,34 @@ public interface ICloudPlayer extends Serializable {
     Optional<ICloudService> getConnectedCloudService();
 
     /**
+     * Update the username of the cloud player
+     *
+     * @param username
+     */
+    void updateUsername(String username);
+
+    /**
+     * Update the uniqueId of the cloud player
+     *
+     * @param uniqueId
+     */
+    void updateUniqueId(UUID uniqueId);
+
+    /**
+     * Update the address of the cloud palyer
+     *
+     * @param address
+     */
+    void updateAddress(String address);
+
+    /**
+     * Update the connected cloud service of the cloud player
+     *
+     * @param cloudService
+     */
+    void updateConnectedService(ICloudService cloudService);
+
+    /**
      * Connect a cloud player to the service from a other cloud player
      *
      * @param cloudPlayer This is the cloudplayer the player should be connected with.
