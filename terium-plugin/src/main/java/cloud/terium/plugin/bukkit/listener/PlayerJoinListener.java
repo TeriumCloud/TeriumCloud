@@ -11,5 +11,10 @@ public class PlayerJoinListener implements Listener {
     public void handlePlayerJoin(PlayerJoinEvent event) {
         TeriumAPI.getTeriumAPI().getProvider().getThisService().setOnlinePlayers(TeriumAPI.getTeriumAPI().getProvider().getThisService().getOnlinePlayers() + 1);
         TeriumAPI.getTeriumAPI().getProvider().getThisService().update();
+
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).orElseGet(null).updateUsername(event.getPlayer().getName());
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).orElseGet(null).updateAddress(event.getPlayer().getAddress().getHostName());
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).orElseGet(null).updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getThisService());
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).orElseGet(null).update();
     }
 }
