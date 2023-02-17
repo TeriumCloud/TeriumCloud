@@ -4,6 +4,7 @@ import cloud.terium.cloudsystem.config.CloudConfig;
 import cloud.terium.cloudsystem.config.ConfigManager;
 import cloud.terium.cloudsystem.console.CommandManager;
 import cloud.terium.cloudsystem.console.ConsoleManager;
+import cloud.terium.cloudsystem.entity.CloudPlayerProvider;
 import cloud.terium.cloudsystem.event.EventProvider;
 import cloud.terium.cloudsystem.module.ModuleProvider;
 import cloud.terium.cloudsystem.node.Node;
@@ -65,6 +66,7 @@ public class TeriumCloud extends TeriumAPI {
     private final ServiceGroupFactory serviceGroupFactory;
     private final CloudServiceProvider serviceProvider;
     private final CloudServiceFactory serviceFactory;
+    private final CloudPlayerProvider cloudPlayerProvider;
     private final ScreenProvider screenProvider;
     private final EventProvider eventProvider;
     private final TemplateProvider templateProvider;
@@ -103,6 +105,7 @@ public class TeriumCloud extends TeriumAPI {
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceProvider = new CloudServiceProvider();
         this.serviceFactory = new CloudServiceFactory();
+        this.cloudPlayerProvider = new CloudPlayerProvider();
         this.screenProvider = new ScreenProvider();
         this.moduleProvider = new ModuleProvider();
         this.commandManager = new CommandManager();
@@ -172,8 +175,7 @@ public class TeriumCloud extends TeriumAPI {
 
             @Override
             public ICloudPlayerProvider getCloudPlayerProvider() {
-                // Todo: need to be implemented
-                return null;
+                return cloudPlayerProvider;
             }
 
             @Override
