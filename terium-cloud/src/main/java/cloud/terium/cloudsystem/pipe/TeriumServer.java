@@ -15,10 +15,7 @@ import cloud.terium.cloudsystem.event.events.service.*;
 import cloud.terium.cloudsystem.event.events.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.event.events.template.TemplateDeleteEvent;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnect;
-import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnectedService;
-import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerJoin;
-import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
+import cloud.terium.networking.packet.player.*;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;
@@ -30,7 +27,9 @@ import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -147,6 +146,13 @@ public class TeriumServer {
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
                                                 if (packet instanceof PacketPlayOutTemplateDelete newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
+
+                                                // player
+                                                if(packet instanceof PacketPlayOutCloudPlayerUpdate newPacket)
+                                                    TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerUpdateEvent(TeriumCloud.getTerium().getCloudPlayerProvider().getCloudPlayer(newPacket.uniquedId()).orElseGet(null),
+                                                            newPacket.username(), newPacket.address(), newPacket.parsedCloudService().orElseGet(null)));
+                                                if(packet instanceof PacketPlayOutCloudPlayerAdd newPacket)
+                                                    TeriumCloud.getTerium().getCloudPlayerProvider().registerPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName());
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
                                                     if (targetChannel != channelHandlerContext.channel()) {
