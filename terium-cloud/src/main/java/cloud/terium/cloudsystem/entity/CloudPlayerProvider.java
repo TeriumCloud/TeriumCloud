@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.entity;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,11 @@ public class CloudPlayerProvider implements ICloudPlayerProvider {
     private final List<ICloudPlayer> registeredPlayers = new ArrayList<>();
     private final List<ICloudPlayer> onlinePlayers = new ArrayList<>();
 
-    public void registerPlayer(String username, UUID uniuqedId, InetSocketAddress address) {
+    public void registerPlayer(String username, UUID uniuqedId, String address) {
+
+    }
+
+    public void updatePlayer(String username, UUID uniuqedId, String address) {
 
     }
 
