@@ -198,7 +198,7 @@ public class CloudService implements ICloudService {
     public void restart() {
         if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
             toggleScreen();
-        Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#restart  ]", LogType.INFO);
+        Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#restart]", LogType.INFO);
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
