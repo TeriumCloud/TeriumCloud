@@ -175,6 +175,11 @@ public class CloudService implements ICloudService {
         this.thread.start();
     }
 
+    @Override
+    public void forceShutdown() {
+       shutdown();
+    }
+
     public void shutdown() {
         if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
             toggleScreen();
