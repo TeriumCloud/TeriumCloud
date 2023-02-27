@@ -6,6 +6,7 @@ import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerAdd;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerUpdate;
 import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
+import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.impl.node.Node;
@@ -68,8 +69,9 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     }
 
                     // Services
-                    if (packet instanceof PacketPlayOutCreateService newPacket)
+                    if (packet instanceof PacketPlayOutServiceAdd newPacket)
                         TeriumPlugin.getInstance().getServiceProvider().getAllCloudServices().add(new CloudService(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates()));
+
 
                     // Players
                     if(packet instanceof PacketPlayOutCloudPlayerAdd newPacket) {
