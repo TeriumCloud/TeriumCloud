@@ -41,11 +41,6 @@ public class CloudPlayer implements ICloudPlayer {
     }
 
     @Override
-    public void updateUniqueId(UUID uniqueId) {
-        this.uniqueId = uniqueId;
-    }
-
-    @Override
     public void updateAddress(String address) {
         this.address = address;
     }

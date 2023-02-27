@@ -47,13 +47,6 @@ public interface ICloudPlayer extends Serializable {
     void updateUsername(String username);
 
     /**
-     * Update the uniqueId of the cloud player
-     *
-     * @param uniqueId
-     */
-    void updateUniqueId(UUID uniqueId);
-
-    /**
      * Update the address of the cloud palyer
      *
      * @param address
