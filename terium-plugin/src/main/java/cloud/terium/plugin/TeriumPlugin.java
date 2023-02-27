@@ -95,6 +95,8 @@ public final class TeriumPlugin extends TeriumAPI {
             @Override
             public void run() {
                 teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService().getServiceName(), getProvider().getThisNode().getName()));
+                getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
+                getTeriumAPI().getProvider().getThisService().update();
 
                 new Timer().schedule(new TimerTask() {
                     @Override
