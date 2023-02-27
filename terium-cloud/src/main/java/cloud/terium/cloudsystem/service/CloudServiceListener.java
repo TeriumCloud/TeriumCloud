@@ -14,6 +14,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CloudServiceListener implements Listener {
 
     @Subscribe
+    public void handleServiceUpdate(ServiceUpdateEvent event) {
+        TeriumCloud.getTerium().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> {
+            cloudService.setServiceState(event.getServiceState());
+            cloudService.setLocked(event.isLocked());
+            cloudService.setUsedMemory((long) event.getMemory());
+            cloudService.setOnlinePlayers(event.getPlayers());
+            event.getPropertyCache().forEach(cloudService::addProperty);
+        });
+    }
+
+    @Subscribe
     public void handleServiceAdd(ServiceAddEvent event) {
         TeriumCloud.getTerium().getServiceProvider().addService(new CloudService(event.getServiceName(), event.getServiceId(), event.getPort(), event.getMemory(),
                 TeriumCloud.getTerium().getNodeProvider().getNodeByName(event.getNode()).orElseGet(null),
