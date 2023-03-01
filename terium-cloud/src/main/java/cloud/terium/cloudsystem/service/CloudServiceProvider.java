@@ -1,6 +1,8 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -9,22 +11,28 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class CloudServiceProvider implements ICloudServiceProvider {
 
     private final HashMap<String, ICloudService> cloudServiceCache;
+    private final HashMap<ICloudServiceGroup, List<Integer>> cloudServiceIdCache;
 
     public CloudServiceProvider() {
         this.cloudServiceCache = new HashMap<>();
+        this.cloudServiceIdCache = new HashMap<>();
+        TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(cloudServiceGroup -> cloudServiceIdCache.put(cloudServiceGroup, new LinkedList<>()));
     }
 
     public void startServiceCheck() {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
+                if (TeriumCloud.getTerium().getCloudUtils().isRunning() && gloablUsedMemory() < TeriumCloud.getTerium().getCloudConfig().memory()) {
                     TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
-                        if (getCloudServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() && getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) || iCloudService.getServiceState().equals(ServiceState.PREPARING)).toList().size() < group.getMinServices()) {
+                        if (getCloudServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() &&
+                                getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) ||
+                                        iCloudService.getServiceState().equals(ServiceState.PREPARING)).toList().size() < group.getMinServices()) {
                             TeriumCloud.getTerium().getServiceFactory().createService(group);
                         }
                     });
@@ -35,13 +43,29 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {
         AtomicInteger integer = new AtomicInteger(1);
-        getCloudServicesByGroupName(cloudServiceGroup.getGroupName()).forEach(service -> {
-            if (service.getServiceId() == integer.get()) {
+        for (int i = 0; i < getCloudServicesByGroupName(cloudServiceGroup.getGroupName()).size(); i++) {
+            Logger.log(cloudServiceIdCache.get(cloudServiceGroup).contains(integer.get()) + " / " + integer.get(), LogType.INFO);
+            if (cloudServiceIdCache.get(cloudServiceGroup).contains(integer.get())) {
                 integer.getAndIncrement();
             }
-        });
-
+        }
         return integer.get();
+    }
+
+    public void putServiceId(ICloudServiceGroup serviceGroup, int id) {
+        cloudServiceIdCache.get(serviceGroup).add(id);
+    }
+
+    public void removeServiceId(ICloudServiceGroup serviceGroup, int id) {
+        cloudServiceIdCache.get(serviceGroup).remove(id);
+        Logger.log("done", LogType.INFO);
+    }
+
+    public long gloablUsedMemory() {
+        AtomicLong globalUsedMemory = new AtomicLong();
+        TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
+
+        return globalUsedMemory.get();
     }
 
     public void addService(ICloudService cloudService) {

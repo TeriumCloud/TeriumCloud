@@ -87,6 +87,7 @@ public class CloudService implements ICloudService {
         templates.addAll(serviceGroup.getTemplates());
         TeriumCloud.getTerium().getScreenProvider().addCloudService(this);
         TeriumCloud.getTerium().getServiceProvider().addService(this);
+        TeriumCloud.getTerium().getServiceProvider().putServiceId(cloudServiceGroup, serviceId);
         Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
     }
 
@@ -188,10 +189,15 @@ public class CloudService implements ICloudService {
         if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
             TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
 
-        process.destroyForcibly().onExit().thenRun(() -> {
+        if(process != null) {
+            process.destroyForcibly().onExit().thenRun(() -> {
+                thread.stop();
+                delete();
+            });
+        } else {
             thread.stop();
             delete();
-        });
+        }
         Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
     }
 
@@ -205,8 +211,15 @@ public class CloudService implements ICloudService {
         setOnlinePlayers(0);
         setUsedMemory(0);
         setServiceState(ServiceState.PREPARING);
-        process.destroy();
-        thread.stop();
+        if(process != null) {
+            process.destroyForcibly().onExit().thenRun(() -> {
+                thread.stop();
+                delete();
+            });
+        } else {
+            thread.stop();
+            delete();
+        }
         update();
         Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
         start();
@@ -214,29 +227,10 @@ public class CloudService implements ICloudService {
 
     @SneakyThrows
     public void delete() {
+        TeriumCloud.getTerium().getServiceProvider().removeServiceId(serviceGroup, serviceId);
         FileUtils.deleteDirectory(folder);
         TeriumCloud.getTerium().getServiceProvider().removeService(this);
     }
-
-    /*@SneakyThrows
-    @Override
-    public void forceShutdown() {
-        MinecraftService minecraftService = this;
-        Logger.log("Trying to stop service '" + getServiceName() + "'. [MinecraftService#forceShutdown]", LogType.INFO);
-        if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
-            TeriumCloud.getTerium().getDefaultTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
-        thread.stop();
-        process.destroyForcibly();
-        new Timer().schedule(new TimerTask() {
-            @SneakyThrows
-            @Override
-            public void run() {
-                FileUtils.deleteDirectory(folder);
-                TeriumCloud.getTerium().getServiceManager().removeService(minecraftService);
-                Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
-            }
-        }, 5000);
-    }*/
 
     public void toggleScreen() {
         if (!TeriumCloud.getTerium().getCloudUtils().isInScreen()) {
