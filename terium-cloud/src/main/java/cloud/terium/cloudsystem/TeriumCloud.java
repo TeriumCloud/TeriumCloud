@@ -249,12 +249,10 @@ public class TeriumCloud extends TeriumAPI {
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);
         TeriumCloud.getTerium().getNetworking().getChannel().close().sync();
-        Logger.log("Successfully reset terium-port.", LogType.INFO);
+        Logger.log("Successfully stopped terium-server.", LogType.INFO);
 
         FileUtils.deleteDirectory(new File("servers//"));
         Logger.log("Successfully deleted server folder.", LogType.INFO);
-        FileUtils.deleteDirectory(new File("data//cache//"));
-        Logger.log("Successfully deleted data/cache folder.", LogType.INFO);
         Thread.sleep(300);
         Logger.log("Successfully stopped terium-cloud. Goodbye!", LogType.INFO);
         Thread.sleep(1000);
