@@ -44,7 +44,6 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {
         AtomicInteger integer = new AtomicInteger(1);
         for (int i = 0; i < getCloudServicesByGroupName(cloudServiceGroup.getGroupName()).size(); i++) {
-            Logger.log(cloudServiceIdCache.get(cloudServiceGroup).contains(integer.get()) + " / " + integer.get(), LogType.INFO);
             if (cloudServiceIdCache.get(cloudServiceGroup).contains(integer.get())) {
                 integer.getAndIncrement();
             }
@@ -57,8 +56,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     }
 
     public void removeServiceId(ICloudServiceGroup serviceGroup, int id) {
-        cloudServiceIdCache.get(serviceGroup).remove(id);
-        Logger.log("done", LogType.INFO);
+        cloudServiceIdCache.get(serviceGroup).remove((Object)id);
     }
 
     public long gloablUsedMemory() {
