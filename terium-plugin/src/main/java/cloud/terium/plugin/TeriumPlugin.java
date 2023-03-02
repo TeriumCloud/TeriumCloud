@@ -33,6 +33,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
+import com.velocitypowered.api.proxy.Player;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -101,6 +102,7 @@ public final class TeriumPlugin extends TeriumAPI {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        getProvider().getThisService().setUsedMemory(usedMemory());
                         getProvider().getThisService().update();
                     }
                 }, 0, 1000);
@@ -206,14 +208,14 @@ public final class TeriumPlugin extends TeriumAPI {
         return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
     }
 
-    public @NotNull Optional<ICloudService> getFallback(final ICloudPlayer player) {
+    public @NotNull Optional<ICloudService> getFallback(final Player player) {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().stream()
                 .filter(service -> service.getServiceState().equals(ServiceState.ONLINE))
                 .filter(service -> !service.getServiceGroup().getServiceType().equals(ServiceType.Proxy))
                 .filter(service -> service.getServiceGroup().getServiceType().equals(ServiceType.Lobby))
                 .filter(service -> !service.isLocked())
-                .filter(service -> (player.getConnectedCloudService().isEmpty()
-                        || !player.getConnectedCloudService().get().getServiceName().equals(service.getServiceName())))
+                .filter(service -> (player.getCurrentServer().isEmpty()
+                        || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers));
     }
 }
