@@ -33,12 +33,12 @@ public class TeriumVelocityStartup {
 
             proxyServer.getEventManager().register(this, new LoginListener());
             proxyServer.getEventManager().register(this, new ServerConnectedListener());
-            //proxyServer.getCommandManager().register(new CloudCommand().build());
+            //proxyServer.getCommandManager().register(new CloudCommand().build());\
 
-            proxyServer.getConsoleCommandSource().sendMessage(Component.text("§aStartup of velocity terium-plugin successed..."));
+            System.out.println("§aStartup of velocity terium-plugin successed...");
         } catch (Exception exception) {
-            proxyServer.getConsoleCommandSource().sendMessage(Component.text("§cStartup of velocity terium-plugin failed..."));
-            proxyServer.getConsoleCommandSource().sendMessage(Component.text("§7Exception message§f: §c" + exception.getMessage()));
+            System.out.println("§cStartup of velocity terium-plugin failed...");
+            System.out.println("§7Exception message§f: §c" + exception.getMessage());
         }
     }
 
