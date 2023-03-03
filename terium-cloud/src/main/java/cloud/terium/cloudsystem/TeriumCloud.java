@@ -150,6 +150,10 @@ public class TeriumCloud extends TeriumAPI {
         return terium;
     }
 
+    public boolean isDebugMode() {
+        return cloudConfig.debugMode();
+    }
+
     @Override
     public ICloudProvider getProvider() {
         return new ICloudProvider() {
