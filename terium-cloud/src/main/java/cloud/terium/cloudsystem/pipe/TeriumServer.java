@@ -72,7 +72,6 @@ public class TeriumServer {
                                     .addLast(new SimpleChannelInboundHandler<>() {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
-                                            System.out.println("packet?");
                                             try {
                                                 // service packets
                                                 if (packet instanceof PacketPlayOutServiceAdd newPacket)
@@ -97,7 +96,25 @@ public class TeriumServer {
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUnlockEvent(newPacket.serviceName()));
                                                 if (packet instanceof PacketPlayOutUpdateService newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new ServiceUpdateEvent(newPacket.serviceName(), newPacket.players(), newPacket.memory(), newPacket.serviceState(), newPacket.locked(), newPacket.propertyCache()));
+                                                if(packet instanceof PacketPlayOutServiceRegister newPacket) {
+                                                    // Nodes
+                                                    TeriumCloud.getTerium().getNodeProvider().getAllNodes().forEach(node -> channelHandlerContext.channel().writeAndFlush(
+                                                            new PacketPlayOutNodeAdd(node.getName(), node.getKey(), node.getAddress(), node.getMaxMemory(), node.isConnected())));
 
+                                                    // Templates
+                                                    TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().forEach(template -> channelHandlerContext.channel().writeAndFlush(
+                                                            new PacketPlayOutTemplateAdd(template.getName(), template.getPath().toString())));
+
+                                                    // Groups
+                                                    TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> channelHandlerContext.channel().writeAndFlush(
+                                                            new PacketPlayOutGroupAdd(group.getGroupName(), group.getGroupTitle(), group.getGroupNode().getName(), group.getGroupFallbackNode().stream().map(INode::getName).toList(), group.getTemplates().stream().map(ITemplate::getName).toList(), group.getServiceType(), group.getVersion(),
+                                                                    group.isMaintenance(), group.isStatic(), group.hasPort(), group.getPort(), group.getMaxPlayers(), group.getMemory(), group.getMinServices(), group.getMaxServices())));
+
+                                                    // Services
+                                                    TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
+                                                            new PacketPlayOutServiceAdd(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
+                                                                    cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));
+                                                }
                                                 // player packets
                                                 if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerConnectedToServiceEvent(newPacket.cloudPlayer(), newPacket.cloudService()));
@@ -160,24 +177,6 @@ public class TeriumServer {
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.add(channelHandlerContext.channel());
-
-                                            // Nodes
-                                            TeriumCloud.getTerium().getNodeProvider().getAllNodes().forEach(node -> channelHandlerContext.channel().writeAndFlush(
-                                                    new PacketPlayOutNodeAdd(node.getName(), node.getKey(), node.getAddress(), node.getMaxMemory(), node.isConnected())));
-
-                                            // Templates
-                                            TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().forEach(template -> channelHandlerContext.channel().writeAndFlush(
-                                                    new PacketPlayOutTemplateAdd(template.getName(), template.getPath().toString())));
-
-                                            // Groups
-                                            TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> channelHandlerContext.channel().writeAndFlush(
-                                                    new PacketPlayOutGroupAdd(group.getGroupName(), group.getGroupTitle(), group.getGroupNode().getName(), group.getGroupFallbackNode().stream().map(INode::getName).toList(), group.getTemplates().stream().map(ITemplate::getName).toList(), group.getServiceType(), group.getVersion(),
-                                                            group.isMaintenance(), group.isStatic(), group.hasPort(), group.getPort(), group.getMaxPlayers(), group.getMemory(), group.getMinServices(), group.getMaxServices())));
-
-                                            // Services
-                                            TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
-                                                    new PacketPlayOutServiceAdd(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
-                                                            cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));
                                         }
 
                                         @Override
