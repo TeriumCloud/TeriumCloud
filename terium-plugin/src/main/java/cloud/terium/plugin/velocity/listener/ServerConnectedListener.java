@@ -31,7 +31,7 @@ public class ServerConnectedListener {
     @Subscribe
     public void handleKickedFromServer(final @NotNull KickedFromServerEvent event) {
         if (event.getPlayer().isActive()) {
-            TeriumPlugin.getInstance().getFallback(TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).orElseGet(null)).flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
+            TeriumPlugin.getInstance().getFallback(event.getPlayer()).flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
                     .ifPresent(registeredServer -> {
                         if (event.getServer() != null && event.getServer().getServerInfo().getName().equals(registeredServer.getServerInfo().getName())) {
                             event.setResult(KickedFromServerEvent.Notify.create(event.getServerKickReason().orElse(Component.empty())));
