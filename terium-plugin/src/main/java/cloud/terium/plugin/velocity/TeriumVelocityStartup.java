@@ -3,6 +3,7 @@ package cloud.terium.plugin.velocity;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.listener.LoginListener;
 import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
+import cloud.terium.plugin.velocity.terium.NetworkingAdapter;
 import com.google.inject.Inject;
 
 import com.velocitypowered.api.event.Subscribe;
@@ -28,6 +29,8 @@ public class TeriumVelocityStartup {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         try {
             teriumBridge = new TeriumPlugin();
+            new NetworkingAdapter();
+
             proxyServer.getEventManager().register(this, new LoginListener());
             proxyServer.getEventManager().register(this, new ServerConnectedListener());
             //proxyServer.getCommandManager().register(new CloudCommand().build());
