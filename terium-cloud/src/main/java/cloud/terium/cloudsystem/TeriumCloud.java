@@ -250,6 +250,7 @@ public class TeriumCloud extends TeriumAPI {
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
         TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(ICloudService::shutdown);
+        Thread.sleep(500);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);
         TeriumCloud.getTerium().getNetworking().getChannel().close().sync();

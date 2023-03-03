@@ -88,7 +88,8 @@ public class CloudService implements ICloudService {
         TeriumCloud.getTerium().getScreenProvider().addCloudService(this);
         TeriumCloud.getTerium().getServiceProvider().addService(this);
         TeriumCloud.getTerium().getServiceProvider().putServiceId(cloudServiceGroup, serviceId);
-        Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
+        if (TeriumCloud.getTerium().isDebugMode())
+            Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
     }
 
     @SneakyThrows
@@ -170,35 +171,28 @@ public class CloudService implements ICloudService {
                 exception.printStackTrace();
             }
 
-            shutdown();
+            if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
+                toggleScreen();
+            TeriumCloud.getTerium().getScreenProvider().removeCloudService(this);
+            if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
+                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
             delete();
+            Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
         });
         this.thread.start();
     }
 
     @Override
     public void forceShutdown() {
-       shutdown();
+        shutdown();
     }
 
     public void shutdown() {
-        if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
-            toggleScreen();
-        TeriumCloud.getTerium().getScreenProvider().removeCloudService(this);
-        Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
-        if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
-            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
-
-        if(process != null) {
-            process.destroyForcibly().onExit().thenRun(() -> {
-                thread.stop();
-                delete();
-            });
-        } else {
-            thread.stop();
-            delete();
-        }
-        Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
+        if (TeriumCloud.getTerium().isDebugMode())
+            Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
+        if (process != null)
+            process.destroy();
+        thread.stop();
     }
 
     public void restart() {
@@ -211,7 +205,7 @@ public class CloudService implements ICloudService {
         setOnlinePlayers(0);
         setUsedMemory(0);
         setServiceState(ServiceState.PREPARING);
-        if(process != null) {
+        if (process != null) {
             process.destroyForcibly().onExit().thenRun(() -> {
                 thread.stop();
                 delete();

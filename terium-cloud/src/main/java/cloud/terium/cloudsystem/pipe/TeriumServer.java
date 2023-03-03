@@ -44,6 +44,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 
@@ -192,7 +193,7 @@ public class TeriumServer {
                     });
             this.channelFuture = this.serverBootstrap.bind(host, port).sync();
             this.channel = this.channelFuture.channel();
-            this.channels = new ArrayList<>();
+            this.channels = new CopyOnWriteArrayList<>();
         } catch (Exception exception) {
             throw new IllegalStateException
                     ("Failed to start terium-server", exception);
