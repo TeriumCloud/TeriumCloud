@@ -40,8 +40,6 @@ public class LoginListener {
                     return;
                 }
 
-                player.createConnectionRequest(TeriumVelocityStartup.getInstance().getProxyServer().getServer(minecraftService.get().getServiceName()).get()).connect();
-                iCloudPlayer.ifPresent(cloudPlayer -> cloudPlayer.updateConnectedService(minecraftService.get()));
                 TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
                     cloudService.setOnlinePlayers(TeriumVelocityStartup.getInstance().getProxyServer().getPlayerCount() + 1);
                     cloudService.update();
@@ -55,15 +53,19 @@ public class LoginListener {
         }
 
         if (player.getUniqueId().equals(UUID.fromString("c1685728-72d6-4dbe-8899-28c4aa3cb93c"))) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("This server is running <gradient:#245dec:#00d4ff>Terium</gradient><white>."));
+            player.sendMessage(MiniMessage.miniMessage().deserialize("This server is running <gradient:#245dec:#00d4ff>terium-cloud</gradient><white>."));
         }
     }
 
     @Subscribe
     public void handle(final @NotNull PlayerChooseInitialServerEvent event) {
-        event.setInitialServer(TeriumPlugin.getInstance().getFallback(event.getPlayer())
+        Optional<ICloudService> cloudService = TeriumPlugin.getInstance().getFallback(event.getPlayer());
+
+        event.setInitialServer(cloudService
                 .flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
                 .orElse(null));
+
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> cloudPlayer.updateConnectedService(cloudService.orElseGet(null)));
     }
 
     @Subscribe
@@ -76,7 +78,7 @@ public class LoginListener {
         });
 
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
-            cloudService.setOnlinePlayers(TeriumVelocityStartup.getInstance().getProxyServer().getPlayerCount() - 1);
+            cloudService.setOnlinePlayers(TeriumVelocityStartup.getInstance().getProxyServer().getPlayerCount());
             cloudService.update();
         });
     }
