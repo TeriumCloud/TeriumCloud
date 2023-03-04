@@ -25,6 +25,7 @@ public class TeriumVelocityStartup {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        System.out.println("§aTrying to start velocity terium-plugin...");
         try {
             teriumBridge = new TeriumPlugin();
 
@@ -32,9 +33,9 @@ public class TeriumVelocityStartup {
             proxyServer.getEventManager().register(this, new ServerConnectedListener());
             //proxyServer.getCommandManager().register(new CloudCommand().build());\
 
-            System.out.println("§aStartup of velocity terium-plugin successed...");
+            System.out.println("§aStartup of velocity terium-plugin successed.");
         } catch (Exception exception) {
-            System.out.println("§cStartup of velocity terium-plugin failed...");
+            System.out.println("§cStartup of velocity terium-plugin failed.");
             System.out.println("§7Exception message§f: §c" + exception.getMessage());
         }
     }

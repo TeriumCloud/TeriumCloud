@@ -45,7 +45,6 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
         getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
-                System.out.println(packet.getClass().getSimpleName());
                 // Nodes
                 try {
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
@@ -109,7 +108,6 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                             }
 
                             if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                                System.out.println("packet 2");
                                 TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()).ifPresentOrElse(cloudService -> {
                                     TeriumVelocityStartup.getInstance().getProxyServer().unregisterServer(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).orElse(null).getServerInfo());
                                 }, () -> {
@@ -128,7 +126,6 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
             }
         });
         sendPacket(new PacketPlayOutServiceRegister());
-        System.out.println("lol 2");
     }
 
     @Override
