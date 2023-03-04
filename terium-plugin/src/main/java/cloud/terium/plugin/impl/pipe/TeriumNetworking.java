@@ -96,28 +96,30 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                         cloudPlayer.updateConnectedService(newPacket.parsedCloudService().orElseGet(null));
                     }
 
-                    if(TeriumAPI.getTeriumAPI().getProvider().getThisService() != null && TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceType().equals(ServiceType.Proxy)) {
-                        if (packet instanceof PacketPlayOutSuccessfullyServiceStarted packetAdd) {
-                            if(!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetAdd.serviceName()).orElseGet(null).getServiceType().equals(ServiceType.Proxy)) {
-                                if (TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
-                                    return;
+                    if(TeriumAPI.getTeriumAPI().getProvider().getThisService() != null) {
+                        if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceType().equals(ServiceType.Proxy)) {
+                            if (packet instanceof PacketPlayOutSuccessfullyServiceStarted packetAdd) {
+                                if (!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetAdd.serviceName()).orElseGet(null).getServiceType().equals(ServiceType.Proxy)) {
+                                    if (TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
+                                        return;
+                                    }
+
+                                    TeriumVelocityStartup.getInstance().getProxyServer().registerServer(new ServerInfo(packetAdd.serviceName(), new InetSocketAddress("127.0.0.1", packetAdd.parsedCloudService().orElseGet(null).getPort())));
                                 }
-
-                                TeriumVelocityStartup.getInstance().getProxyServer().registerServer(new ServerInfo(packetAdd.serviceName(), new InetSocketAddress("127.0.0.1", packetAdd.parsedCloudService().orElseGet(null).getPort())));
                             }
-                        }
 
-                        if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                            System.out.println("packet 2");
-                            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()).ifPresentOrElse(cloudService -> {
-                                TeriumVelocityStartup.getInstance().getProxyServer().unregisterServer(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).orElse(null).getServerInfo());
-                            }, () -> {
-                                System.out.println("This service isn't connected with the proxy service.");
-                            });
-                        }
+                            if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
+                                System.out.println("packet 2");
+                                TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(packetRemove.serviceName()).ifPresentOrElse(cloudService -> {
+                                    TeriumVelocityStartup.getInstance().getProxyServer().unregisterServer(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).orElse(null).getServerInfo());
+                                }, () -> {
+                                    System.out.println("This service isn't connected with the proxy service.");
+                                });
+                            }
 
-                        if (packet instanceof PacketPlayOutCloudPlayerConnect packetConnect) {
-                            TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(packetConnect.cloudPlayer()).ifPresent(player -> player.createConnectionRequest(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetConnect.cloudService()).orElse(null)).connect());
+                            if (packet instanceof PacketPlayOutCloudPlayerConnect packetConnect) {
+                                TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(packetConnect.cloudPlayer()).ifPresent(player -> player.createConnectionRequest(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetConnect.cloudService()).orElse(null)).connect());
+                            }
                         }
                     }
                 } catch (Exception exception) {
