@@ -11,12 +11,10 @@ import java.util.Optional;
 public class CloudPlayerServiceConnectEvent extends Event {
 
     private final ICloudPlayer cloudPlayer;
-    private final Optional<ICloudService> oldService;
     private final ICloudService newService;
 
-    public CloudPlayerServiceConnectEvent(ICloudPlayer cloudPlayer, Optional<ICloudService> oldService, ICloudService newService) {
+    public CloudPlayerServiceConnectEvent(ICloudPlayer cloudPlayer, ICloudService newService) {
         this.cloudPlayer = cloudPlayer;
-        this.oldService = oldService;
         this.newService = newService;
     }
 }
