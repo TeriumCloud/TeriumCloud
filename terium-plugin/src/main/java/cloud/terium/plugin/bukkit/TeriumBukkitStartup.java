@@ -32,9 +32,5 @@ public class TeriumBukkitStartup extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§cStartup of bukkit terium-plugin failed...");
             Bukkit.getConsoleSender().sendMessage("§7Exception message§f: §c" + exception.getMessage());
         }
-
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().forEach(cloudService -> Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(cloudService.getServiceName())));
-        }, 0, 20);
     }
 }
