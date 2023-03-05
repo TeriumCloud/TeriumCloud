@@ -105,7 +105,7 @@ public final class TeriumPlugin extends TeriumAPI {
                         getProvider().getThisService().setUsedMemory(usedMemory());
                         getProvider().getThisService().update();
                     }
-                }, 0, 1000);
+                }, 0, 2000);
             }
         }, 1500);
     }
