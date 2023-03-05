@@ -26,6 +26,7 @@ import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.node.INode;
@@ -43,6 +44,8 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.Getter;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -112,6 +115,11 @@ public class TeriumServer {
                                                             new PacketPlayOutGroupAdd(group.getGroupName(), group.getGroupTitle(), group.getGroupNode().getName(), group.getGroupFallbackNode().stream().map(INode::getName).toList(), group.getTemplates().stream().map(ITemplate::getName).toList(), group.getServiceType(), group.getVersion(),
                                                                     group.isMaintenance(), group.isStatic(), group.hasPort(), group.getPort(), group.getMaxPlayers(), group.getMemory(), group.getMinServices(), group.getMaxServices())));
 
+                                                    // Players
+                                                    TeriumCloud.getTerium().getCloudPlayerProvider().getOnlinePlayers().forEach(player -> channelHandlerContext.channel().writeAndFlush(
+                                                            new PacketPlayOutCloudPlayerAdd(player.getUsername(), player.getUniqueId(), player.getAddress(), player.getSkinValue(), player.getSkinSignature(), player.getConnectedCloudService().orElseGet(null).getServiceName()
+                                                            )));
+
                                                     // Services
                                                     TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
                                                             new PacketPlayOutServiceAdd(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
@@ -130,9 +138,11 @@ public class TeriumServer {
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerQuitEvent(newPacket.cloudPlayer()));
                                                 if(packet instanceof PacketPlayOutCloudPlayerUpdate newPacket)
                                                     TeriumCloud.getTerium().getEventProvider().callEvent(new CloudPlayerUpdateEvent(newPacket.parsedCloudPlayer().orElseGet(null),
-                                                            newPacket.username(), newPacket.address(), newPacket.parsedCloudService().orElseGet(null)));
+                                                            newPacket.username(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.parsedCloudService().orElseGet(null)));
+                                                if(packet instanceof PacketPlayOutCloudPlayerRegister newPacket)
+                                                    TeriumCloud.getTerium().getCloudPlayerProvider().registerPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService());
                                                 if(packet instanceof PacketPlayOutCloudPlayerAdd newPacket)
-                                                    TeriumCloud.getTerium().getCloudPlayerProvider().registerPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName());
+                                                    TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutCloudPlayerAdd(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService()));
 
                                                 // node packets
                                                 if (packet instanceof PacketPlayOutNodeStarted newPacket)

@@ -25,6 +25,6 @@ public class CloudPlayerListener implements Listener {
         event.getCloudPlayer().updateUsername(event.getUsername());
         event.getCloudPlayer().updateAddress(event.getAddress());
         event.getCloudPlayer().updateConnectedService(event.getConnectedService());
-        TeriumCloud.getTerium().getCloudPlayerProvider().updatePlayer(event.getUsername(), event.getCloudPlayer().getUniqueId(), event.getAddress());
+        event.getCloudPlayer().updateSkinData(event.getValue(), event.getSignature());
     }
 }

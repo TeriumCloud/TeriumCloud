@@ -4,6 +4,7 @@ import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.AllArgsConstructor;
 
+import java.net.InetSocketAddress;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,7 +13,9 @@ public class CloudPlayer implements ICloudPlayer {
 
     private String username;
     private UUID uniqueId;
-    private String address;
+    private InetSocketAddress address;
+    private String skinValue;
+    private String skinSignature;
     private Optional<ICloudService> connectedService;
 
     @Override
@@ -26,8 +29,18 @@ public class CloudPlayer implements ICloudPlayer {
     }
 
     @Override
-    public String getAddress() {
+    public InetSocketAddress getAddress() {
         return address;
+    }
+
+    @Override
+    public String getSkinValue() {
+        return skinValue;
+    }
+
+    @Override
+    public String getSkinSignature() {
+        return skinSignature;
     }
 
     @Override
@@ -41,12 +54,18 @@ public class CloudPlayer implements ICloudPlayer {
     }
 
     @Override
-    public void updateAddress(String address) {
+    public void updateAddress(InetSocketAddress address) {
         this.address = address;
     }
 
     @Override
     public void updateConnectedService(ICloudService cloudService) {
         this.connectedService = Optional.of(cloudService);
+    }
+
+    @Override
+    public void updateSkinData(String skinValue, String skinSignature) {
+        this.skinValue = skinValue;
+        this.skinSignature = skinSignature;
     }
 }

@@ -6,6 +6,7 @@ import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,7 +31,21 @@ public interface ICloudPlayer extends Serializable {
      *
      * @return String This returns the address of the cloud player.
      */
-    String getAddress();
+    InetSocketAddress getAddress();
+
+    /**
+     * Get the skin value from the cloud player as long
+     *
+     * @return String This returns the skin value of the cloud player.
+     */
+    String getSkinValue();
+
+    /**
+     * Get the skin signature from the cloud player
+     *
+     * @return String This returns the skin signature of the cloud player.
+     */
+    String getSkinSignature();
 
     /**
      * Get the server from the cloud player
@@ -51,7 +66,7 @@ public interface ICloudPlayer extends Serializable {
      *
      * @param address
      */
-    void updateAddress(String address);
+    void updateAddress(InetSocketAddress address);
 
     /**
      * Update the connected cloud service of the cloud player
@@ -59,6 +74,14 @@ public interface ICloudPlayer extends Serializable {
      * @param cloudService
      */
     void updateConnectedService(ICloudService cloudService);
+
+    /**
+     * Update the skin data of the cloud player
+     *
+     * @param value
+     * @param signature
+     */
+    void updateSkinData(String value, String signature);
 
     /**
      * Connect a cloud player to the service from a other cloud player
@@ -82,6 +105,6 @@ public interface ICloudPlayer extends Serializable {
      * Send all updated informations to all cloud services, and cloud instances.
      */
     default void update() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerUpdate(getUniqueId(), getUsername(), getAddress(), getConnectedCloudService().orElseGet(null).getServiceName()));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerUpdate(getUniqueId(), getUsername(), getAddress(), getSkinValue(), getSkinSignature(), getConnectedCloudService().orElseGet(null).getServiceName()));
     }
 }

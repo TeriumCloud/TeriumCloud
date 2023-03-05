@@ -23,13 +23,6 @@ public interface ICloudPlayerProvider {
     Optional<ICloudPlayer> getCloudPlayer(UUID uniqueId);
 
     /**
-     * Get all registered cloud players from terium-cloud
-     *
-     * @return List<ICloudPlayer> This returns a list of all registered cloud players
-     */
-    List<ICloudPlayer> getRegisteredPlayers();
-
-    /**
      * Get all online cloud players
      *
      * @return List<ICloudPlayer> This returns a list of all online cloud players

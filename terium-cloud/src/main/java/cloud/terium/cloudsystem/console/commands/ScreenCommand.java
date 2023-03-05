@@ -18,7 +18,7 @@ public class ScreenCommand extends Command {
     @Override
     public void execute(String[] args) {
         if(args.length == 1) {
-            TeriumCloud.getTerium().getServiceProvider().getCloudServiceByName(args[0]).ifPresentOrElse(cloudService -> ((CloudService)cloudService).toggleScreen(), () -> Logger.log("A screen with that same isn't registered.", LogType.ERROR));
+            TeriumCloud.getTerium().getServiceProvider().getCloudServiceByName(args[0]).ifPresentOrElse(cloudService -> ((CloudService)cloudService).toggleScreen(), () -> Logger.log("A screen with that name isn't registered.", LogType.ERROR));
             return;
         }
 

@@ -10,22 +10,16 @@ import java.util.UUID;
 
 public class CloudPlayerProvider implements ICloudPlayerProvider {
 
-    private final List<ICloudPlayer> registeredPlayers = new ArrayList<>();
     private final List<ICloudPlayer> onlinePlayers = new ArrayList<>();
 
     @Override
     public Optional<ICloudPlayer> getCloudPlayer(String username) {
-        return registeredPlayers.stream().filter(player -> player.getUsername().equals(username)).toList().stream().findAny();
+        return onlinePlayers.stream().filter(player -> player.getUsername().equals(username)).toList().stream().findAny();
     }
 
     @Override
     public Optional<ICloudPlayer> getCloudPlayer(UUID uniqueId) {
-        return registeredPlayers.stream().filter(player -> player.getUniqueId().equals(uniqueId)).toList().stream().findAny();
-    }
-
-    @Override
-    public List<ICloudPlayer> getRegisteredPlayers() {
-        return registeredPlayers;
+        return onlinePlayers.stream().filter(player -> player.getUniqueId().equals(uniqueId)).toList().stream().findAny();
     }
 
     @Override

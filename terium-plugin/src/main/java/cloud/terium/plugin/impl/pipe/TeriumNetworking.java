@@ -103,14 +103,15 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
 
                     // Players
                     if (packet instanceof PacketPlayOutCloudPlayerAdd newPacket) {
-                        if (newPacket.online())
-                            TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName(), newPacket.parsedCloudService()));
-                        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getRegisteredPlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address().getHostName(), newPacket.parsedCloudService()));
+                        TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.parsedCloudService()));
+                        System.out.println("player added");
                     }
+
                     if (packet instanceof PacketPlayOutCloudPlayerUpdate newPacket) {
                         ICloudPlayer cloudPlayer = TeriumPlugin.getInstance().getCloudPlayerProvider().getCloudPlayer(newPacket.uniquedId()).orElseGet(null);
                         cloudPlayer.updateUsername(newPacket.username());
                         cloudPlayer.updateAddress(newPacket.address());
+                        cloudPlayer.updateSkinData(newPacket.value(), newPacket.signature());
                         cloudPlayer.updateConnectedService(newPacket.parsedCloudService().orElseGet(null));
                     }
 
@@ -141,7 +142,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     if (packet instanceof PacketPlayOutCloudPlayerConnect newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudPlayerServiceConnectEvent(newPacket.parsedCloudPlayer().orElseGet(null), newPacket.parsedCloudService().orElseGet(null)));
                     if (packet instanceof PacketPlayOutCloudPlayerUpdate newPacket)
-                        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudPlayerUpdateEvent(newPacket.parsedCloudPlayer().orElseGet(null), newPacket.username(), newPacket.address(), newPacket.parsedCloudService().orElseGet(null)));
+                        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudPlayerUpdateEvent(newPacket.parsedCloudPlayer().orElseGet(null), newPacket.username(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.parsedCloudService().orElseGet(null)));
                     // service
                     if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudServiceStartedEvent(newPacket.parsedCloudService().orElseGet(null)));
