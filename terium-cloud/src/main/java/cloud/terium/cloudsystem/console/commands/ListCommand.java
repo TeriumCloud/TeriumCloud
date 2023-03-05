@@ -18,7 +18,7 @@ public class ListCommand extends Command {
         TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
             Logger.log("Services from group '" + group.getGroupName() + "':", LogType.INFO);
             TeriumCloud.getTerium().getServiceProvider().getCloudServicesByGroupName(group.getGroupName()).forEach(service ->
-                    Logger.log("- Name: " + service.getServiceName() + " | State: " + service.getServiceState() + " | Players:" + service.getOnlinePlayers() + "/" + service.getMaxPlayers(), LogType.INFO));
+                    Logger.log("- Name: " + service.getServiceName() + " | State: " + service.getServiceState() + " | Players: " + service.getOnlinePlayers() + "/" + service.getMaxPlayers(), LogType.INFO));
 
             Logger.log("", LogType.INFO);
         });

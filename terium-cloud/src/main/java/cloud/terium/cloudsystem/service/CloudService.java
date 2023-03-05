@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.cloudsystem.utils.version.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
+import cloud.terium.networking.packet.service.PacketPlayOutServiceStart;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
@@ -125,7 +126,7 @@ public class CloudService implements ICloudService {
             File serverProperties = new File(this.folder, "server.properties");
             properties.setProperty("server-name", getServiceName());
             properties.setProperty("server-port", getPort() + "");
-            properties.setProperty("server-ip", "127.0.0.1");
+            properties.setProperty("server-ip", TeriumCloud.getTerium().getCloudConfig().serviceAddress());
             properties.setProperty("online-mode", "false");
 
             try (OutputStream outputStream = new FileOutputStream(serverProperties);
@@ -191,7 +192,7 @@ public class CloudService implements ICloudService {
         if (TeriumCloud.getTerium().isDebugMode())
             Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
         if (process != null)
-            process.destroy();
+            process.destroyForcibly();
         thread.stop();
     }
 

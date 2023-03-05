@@ -45,7 +45,6 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceLoggedIn(ServiceLoggedInEvent event) {
-        Logger.log("called " + event.getClass().getSimpleName());
         if(TeriumCloud.getTerium().getThisNode().getName().equals(event.getNode())) Logger.log("Service '" + event.getCloudService() + "' successfully started.", LogType.INFO);
         else Logger.log("Service '" + event.getCloudService() + "' successfully started on node '" + event.getNode() + "'.", LogType.INFO);
     }
