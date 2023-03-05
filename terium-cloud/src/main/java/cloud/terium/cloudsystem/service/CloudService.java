@@ -168,15 +168,12 @@ public class CloudService implements ICloudService {
             int resultCode = 0;
             try {
                 resultCode = this.process.waitFor();
-            } catch (InterruptedException exception) {
-                exception.printStackTrace();
-            }
+            } catch (InterruptedException ignored) {}
 
             if (TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getScreenProvider().getCurrentScreen().equals(this))
                 toggleScreen();
             TeriumCloud.getTerium().getScreenProvider().removeCloudService(this);
-            if (!serviceGroup.getServiceType().equals(ServiceType.Proxy))
-                TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
+            TeriumCloud.getTerium().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
             delete();
             Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
         });
@@ -193,7 +190,7 @@ public class CloudService implements ICloudService {
             Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
         if (process != null)
             process.destroyForcibly();
-        thread.stop();
+        thread.interrupt();
     }
 
     @SneakyThrows
