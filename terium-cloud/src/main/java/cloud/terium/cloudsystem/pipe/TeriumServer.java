@@ -29,6 +29,7 @@ import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -115,6 +116,8 @@ public class TeriumServer {
                                                     TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
                                                             new PacketPlayOutServiceAdd(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
                                                                     cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));
+                                                    TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceState().equals(ServiceState.ONLINE)).toList().forEach(cloudService ->
+                                                            channelHandlerContext.channel().writeAndFlush(new PacketPlayOutSuccessfullyServiceStarted(cloudService.getServiceName(), cloudService.getServiceNode().getName())));
                                                 }
                                                 // player packets
                                                 if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)
