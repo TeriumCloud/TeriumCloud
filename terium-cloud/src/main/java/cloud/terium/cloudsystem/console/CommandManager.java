@@ -32,6 +32,7 @@ public class CommandManager implements ICommandFactory {
         registerCommand(new ModuleCommand());
         registerCommand(new ListCommand());
         registerCommand(new ShutdownCommand());
+        registerCommand(new ScreenCommand());
         Logger.log("Successfully loaded all commands...", LogType.INFO);
     }
 
