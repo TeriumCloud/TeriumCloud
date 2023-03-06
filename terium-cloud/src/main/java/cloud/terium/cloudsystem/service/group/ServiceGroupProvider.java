@@ -19,10 +19,7 @@ import lombok.SneakyThrows;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServiceGroupProvider implements ICloudServiceGroupProvider {
@@ -53,8 +50,8 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         TeriumCloud.getTerium().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()).orElseGet(null),
-                        new CopyOnWriteArrayList<>(TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
-                        new CopyOnWriteArrayList<>(TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
+                        new LinkedList<>(TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
+                        new LinkedList<>(TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("static").getAsBoolean(),
@@ -70,8 +67,8 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         TeriumCloud.getTerium().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()).orElseGet(null),
-                        new CopyOnWriteArrayList<>(TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
-                        new CopyOnWriteArrayList<>(TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
+                        new LinkedList<>(TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
+                        new LinkedList<>(TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("static").getAsBoolean(),
@@ -86,8 +83,8 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         TeriumCloud.getTerium().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()).orElseGet(null),
-                        new CopyOnWriteArrayList<>(TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
-                        new CopyOnWriteArrayList<>(TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
+                        new LinkedList<>(TeriumCloud.getTerium().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
+                        new LinkedList<>(TeriumCloud.getTerium().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
                         serviceGroup.get("static").getAsBoolean(),

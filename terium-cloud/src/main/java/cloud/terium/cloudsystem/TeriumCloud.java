@@ -140,6 +140,7 @@ public class TeriumCloud extends TeriumAPI {
         });
 
         serviceProvider.startServiceCheck();
+        serviceProvider.startServiceStopCheck();
     }
 
     public static void main(String[] args) {

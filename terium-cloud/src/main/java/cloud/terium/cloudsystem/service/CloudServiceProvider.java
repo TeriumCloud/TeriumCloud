@@ -41,6 +41,21 @@ public class CloudServiceProvider implements ICloudServiceProvider {
         }, 0, 1000);
     }
 
+    public void startServiceStopCheck() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
+                    TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
+                        if (getCloudServicesByGroupName(group.getGroupName()).size() > group.getMinServices()) {
+                            getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) && iCloudService.getOnlinePlayers() == 0).sorted(Comparator.comparing(ICloudService::getServiceId).reversed()).findFirst().ifPresent(ICloudService::shutdown);
+                        }
+                    });
+                }
+            }
+        }, 0, 60000);
+    }
+
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {
         AtomicInteger integer = new AtomicInteger(1);
         for (int i = 0; i < getCloudServicesByGroupName(cloudServiceGroup.getGroupName()).size(); i++) {
