@@ -104,7 +104,6 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     // Players
                     if (packet instanceof PacketPlayOutCloudPlayerAdd newPacket) {
                         TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.parsedCloudService()));
-                        System.out.println("player added");
                     }
 
                     if (packet instanceof PacketPlayOutCloudPlayerUpdate newPacket) {
@@ -135,8 +134,10 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     // player
                     if (packet instanceof PacketPlayOutCloudPlayerJoin newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudPlayerJoinEvent(newPacket.parsedCloudPlayer().orElseGet(null)));
-                    if (packet instanceof PacketPlayOutCloudPlayerQuit newPacket)
+                    if (packet instanceof PacketPlayOutCloudPlayerQuit newPacket) {
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudPlayerQuitEvent(newPacket.parsedCloudPlayer().orElseGet(null)));
+                        TeriumPlugin.getInstance().getCloudPlayerProvider().getOnlinePlayers().remove(newPacket.parsedCloudPlayer());
+                    }
                     if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudPlayerServiceConnectedEvent(newPacket.parsedCloudPlayer().orElseGet(null), newPacket.parsedCloudService().orElseGet(null)));
                     if (packet instanceof PacketPlayOutCloudPlayerConnect newPacket)

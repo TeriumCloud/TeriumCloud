@@ -2,6 +2,7 @@ package cloud.terium.cloudsystem.entity;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerAdd;
+import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.player.ICloudPlayer;
@@ -21,6 +22,11 @@ public class CloudPlayerProvider implements ICloudPlayerProvider {
     public void registerPlayer(String username, UUID uniquedId, InetSocketAddress address, String value, String signature, String cloudService) {
         onlinePlayers.add(new CloudPlayer(username, uniquedId, address, value, signature, TeriumCloud.getTerium().getServiceProvider().getCloudServiceByName(cloudService)));
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerAdd(username, uniquedId, address, value, signature, cloudService));
+    }
+
+    public void unregisterPlayer(ICloudPlayer cloudPlayer) {
+        onlinePlayers.remove(cloudPlayer);
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(cloudPlayer.getUniqueId()));
     }
 
     @Override

@@ -44,6 +44,11 @@ public class CloudServiceListener implements Listener {
     }
 
     @Subscribe
+    public void handleServiceForceStop(ServiceStopEvent event) {
+        TeriumCloud.getTerium().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(ICloudService::shutdown);
+    }
+
+    @Subscribe
     public void handleServiceLoggedIn(ServiceLoggedInEvent event) {
         if(TeriumCloud.getTerium().getThisNode().getName().equals(event.getNode())) Logger.log("Service '" + event.getCloudService() + "' successfully started.", LogType.INFO);
         else Logger.log("Service '" + event.getCloudService() + "' successfully started on node '" + event.getNode() + "'.", LogType.INFO);

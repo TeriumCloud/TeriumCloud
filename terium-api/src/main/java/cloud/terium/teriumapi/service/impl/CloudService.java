@@ -1,5 +1,6 @@
 package cloud.terium.teriumapi.service.impl;
 
+import cloud.terium.networking.packet.service.PacketPlayOutServiceShutdown;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
@@ -148,5 +149,10 @@ public class CloudService implements ICloudService {
     @Override
     public HashMap<String, Object> getPropertyMap() {
         return propertyCache;
+    }
+
+    @Override
+    public void shutdown() {
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceShutdown(getServiceName(), getServiceNode().getName()));
     }
 }

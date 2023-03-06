@@ -1,6 +1,7 @@
 package cloud.terium.plugin;
 
 import cloud.terium.networking.packet.service.PacketPlayOutSuccessfullyServiceStarted;
+import cloud.terium.plugin.impl.config.ConfigManager;
 import cloud.terium.plugin.impl.console.CommandFactory;
 import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
@@ -46,6 +47,7 @@ import java.util.TimerTask;
 public final class TeriumPlugin extends TeriumAPI {
 
     private static TeriumPlugin instance;
+    private final ConfigManager configManager;
     // Service
     private final ServiceFactory serviceFactory;
     private final ServiceProvider serviceProvider;
@@ -75,6 +77,7 @@ public final class TeriumPlugin extends TeriumAPI {
     public TeriumPlugin() {
         super();
         instance = this;
+        this.configManager = new ConfigManager();
         this.teriumNetworking = new TeriumNetworking();
         this.serviceFactory = new ServiceFactory();
         this.serviceProvider = new ServiceProvider();
@@ -218,4 +221,10 @@ public final class TeriumPlugin extends TeriumAPI {
                         || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers));
     }
+
+    public String getPrefix() {
+        return configManager.getJson().get("prefix").getAsString();
+    }
+
+    public String getVersion() { return "1.0.0-OXYGEN(DEVELOPMENT)"; }
 }

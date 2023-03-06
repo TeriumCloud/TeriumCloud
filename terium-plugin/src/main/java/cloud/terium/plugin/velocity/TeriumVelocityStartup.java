@@ -1,6 +1,7 @@
 package cloud.terium.plugin.velocity;
 
 import cloud.terium.plugin.TeriumPlugin;
+import cloud.terium.plugin.velocity.command.CloudCommand;
 import cloud.terium.plugin.velocity.listener.LoginListener;
 import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
 import com.google.inject.Inject;
@@ -28,6 +29,7 @@ public class TeriumVelocityStartup {
         System.out.println("§aTrying to start velocity terium-plugin...");
         try {
             teriumBridge = new TeriumPlugin();
+            teriumBridge.getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement -> proxyServer.getCommandManager().register(new CloudCommand().build(jsonElement.getAsString())));
 
             proxyServer.getEventManager().register(this, new LoginListener());
             proxyServer.getEventManager().register(this, new ServerConnectedListener());
