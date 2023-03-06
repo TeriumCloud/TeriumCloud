@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.entity;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerAdd;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
-import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;

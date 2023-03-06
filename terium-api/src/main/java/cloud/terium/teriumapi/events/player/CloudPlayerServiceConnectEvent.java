@@ -5,8 +5,6 @@ import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 
-import java.util.Optional;
-
 @Getter
 public class CloudPlayerServiceConnectEvent extends Event {
 

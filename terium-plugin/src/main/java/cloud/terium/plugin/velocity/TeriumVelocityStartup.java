@@ -5,7 +5,6 @@ import cloud.terium.plugin.velocity.command.CloudCommand;
 import cloud.terium.plugin.velocity.listener.LoginListener;
 import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
 import com.google.inject.Inject;
-
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -24,6 +23,10 @@ public class TeriumVelocityStartup {
         this.proxyServer = proxyServer;
     }
 
+    public static TeriumVelocityStartup getInstance() {
+        return instance;
+    }
+
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         System.out.println("§aTrying to start velocity terium-plugin...");
@@ -40,9 +43,5 @@ public class TeriumVelocityStartup {
             System.out.println("§cStartup of velocity terium-plugin failed.");
             System.out.println("§7Exception message§f: §c" + exception.getMessage());
         }
-    }
-
-    public static TeriumVelocityStartup getInstance() {
-        return instance;
     }
 }

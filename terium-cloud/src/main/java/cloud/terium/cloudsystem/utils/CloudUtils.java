@@ -1,17 +1,13 @@
 package cloud.terium.cloudsystem.utils;
 
-import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.player.ICloudPlayer;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
-import java.io.*;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;

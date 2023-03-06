@@ -50,7 +50,9 @@
 - Velocity & Velocity 3
 
 ## Thanks to
+
 Thanks to all partners of TeriumCloud and persons who helped:
+
 - [invis-cloud.de](https://invis-cloud.de) (Hosting solution)
 - [TGamings](https://github.com/TGamings)
 - [MenschenToaster](https://github.com/MenschenToaster)

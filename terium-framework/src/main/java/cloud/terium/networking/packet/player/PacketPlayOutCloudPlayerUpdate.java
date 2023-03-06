@@ -9,7 +9,8 @@ import java.net.InetSocketAddress;
 import java.util.Optional;
 import java.util.UUID;
 
-public record PacketPlayOutCloudPlayerUpdate(UUID uniquedId, String username, InetSocketAddress address, String value, String signature, String cloudService) implements Packet {
+public record PacketPlayOutCloudPlayerUpdate(UUID uniquedId, String username, InetSocketAddress address, String value,
+                                             String signature, String cloudService) implements Packet {
 
     public Optional<ICloudPlayer> parsedCloudPlayer() {
         return TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(uniquedId);

@@ -1,6 +1,5 @@
 package cloud.terium.plugin.velocity.listener;
 
-import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerAdd;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
 import cloud.terium.plugin.TeriumPlugin;
@@ -26,7 +25,8 @@ public class LoginListener {
     public void handleLogin(LoginEvent event) {
         Player player = event.getPlayer();
         Optional<ICloudPlayer> iCloudPlayer = TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId());
-        iCloudPlayer.ifPresentOrElse(cloudPlayer -> {}, () -> {
+        iCloudPlayer.ifPresentOrElse(cloudPlayer -> {
+        }, () -> {
             TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerRegister(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), event.getPlayer().getRemoteAddress(), "", "", TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()));
         });
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(player.getUniqueId()));
@@ -35,7 +35,7 @@ public class LoginListener {
             Optional<ICloudService> minecraftService = TeriumPlugin.getInstance().getFallback(player);
 
             if (minecraftService.isPresent()) {
-                if(minecraftService.get().isLocked()) {
+                if (minecraftService.get().isLocked()) {
                     player.disconnect(Component.text("§cThis service is locked!"));
                     return;
                 }

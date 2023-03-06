@@ -1,8 +1,6 @@
 package cloud.terium.cloudsystem.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -71,7 +69,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     }
 
     public void removeServiceId(ICloudServiceGroup serviceGroup, int id) {
-        cloudServiceIdCache.get(serviceGroup).remove((Object)id);
+        cloudServiceIdCache.get(serviceGroup).remove((Object) id);
     }
 
     public long gloablUsedMemory() {

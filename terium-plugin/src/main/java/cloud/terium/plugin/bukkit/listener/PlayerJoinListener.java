@@ -1,13 +1,8 @@
 package cloud.terium.plugin.bukkit.listener;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import com.destroystokyo.paper.profile.PlayerProfile;
-import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import lombok.SneakyThrows;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -34,7 +29,8 @@ public class PlayerJoinListener implements Listener {
                 JsonObject object = (JsonObject) new JsonParser().parse(new InputStreamReader(connection.getInputStream()));
                 JsonObject properties = (JsonObject) object.getAsJsonArray("properties").get(0);
                 cloudPlayer.updateSkinData(properties.get("value").getAsString(), properties.get("signature").getAsString());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
 
             cloudPlayer.update();
         });

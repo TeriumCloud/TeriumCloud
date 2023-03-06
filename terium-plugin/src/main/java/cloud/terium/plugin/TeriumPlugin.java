@@ -27,7 +27,6 @@ import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeFactory;
 import cloud.terium.teriumapi.node.INodeProvider;
-import cloud.terium.teriumapi.player.ICloudPlayer;
 import cloud.terium.teriumapi.player.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.*;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
@@ -226,5 +225,7 @@ public final class TeriumPlugin extends TeriumAPI {
         return configManager.getJson().get("prefix").getAsString();
     }
 
-    public String getVersion() { return "1.0.0-OXYGEN(DEVELOPMENT)"; }
+    public String getVersion() {
+        return "1.0.0-OXYGEN(DEVELOPMENT)";
+    }
 }

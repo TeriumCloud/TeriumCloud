@@ -3,7 +3,6 @@ package cloud.terium.plugin.bukkit;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.bukkit.listener.PlayerJoinListener;
 import cloud.terium.plugin.bukkit.listener.PlayerQuitListener;
-import cloud.terium.teriumapi.TeriumAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;

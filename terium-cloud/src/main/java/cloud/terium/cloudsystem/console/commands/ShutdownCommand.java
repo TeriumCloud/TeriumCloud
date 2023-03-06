@@ -19,13 +19,13 @@ public class ShutdownCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args.length == 2) {
-            if(args[0].equals("service")) {
+            if (args[0].equals("service")) {
                 TeriumCloud.getTerium().getServiceProvider().getCloudServiceByName(args[1]).ifPresentOrElse(ICloudService::shutdown, () -> {
                     Logger.log("Cannot find a cloud service with that name.", LogType.ERROR);
                 });
             }
 
-            if(args[0].equals("group")) {
+            if (args[0].equals("group")) {
                 TeriumCloud.getTerium().getServiceProvider().getCloudServicesByGroupName(args[1]).forEach(ICloudService::shutdown);
             }
 
@@ -38,10 +38,10 @@ public class ShutdownCommand extends Command {
 
     @Override
     public List<String> tabComplete(String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             return Arrays.asList("service", "group");
         }
-        if(args.length == 2) {
+        if (args.length == 2) {
             return args[0].equals("service") ? TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().stream().map(ICloudService::getServiceName).toList() : TeriumCloud.getTerium().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getGroupName).toList();
         }
         return super.tabComplete(args);
