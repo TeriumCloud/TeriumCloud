@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.jxnnik.terium.module'
+version = '1.0-SNAPSHOT'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven {url = 'https://repo.papermc.io/repository/maven-public/'}
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'com.velocitypowered:velocity-api:3.0.1'
+    compileOnly fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
+    compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
+
+    annotationProcessor fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

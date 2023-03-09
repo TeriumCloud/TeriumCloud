@@ -71,6 +71,12 @@ public class Node implements INode {
     }
 
     @Override
+    public void connect() {
+        // NOT SUPPORTED FOR MINECRAFT SERVICES
+        System.out.println("ERROR: This feature isn't supported yet for minecraft services");
+    }
+
+    @Override
     public void disconnect() {
         // NOT SUPPORTED FOR MINECRAFT SERVICES
         System.out.println("ERROR: This feature isn't supported yet for minecraft services");

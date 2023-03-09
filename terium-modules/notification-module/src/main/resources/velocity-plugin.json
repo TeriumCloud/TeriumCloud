@@ -1,0 +1,15 @@
+{
+  "id": "teriummodule-notification",
+  "name": "TeriumNotificationModule",
+  "version": "1.0.0-SNAPSHOT",
+  "authors": [
+    "Jxnnik(ByRaudy)"
+  ],
+  "dependencies": [
+    {
+      "id": "teriumplugin-velocity",
+      "optional": false
+    }
+  ],
+  "main": "dev.jxnnik.terium.module.velocity.NotificationVelocityStartup"
+}

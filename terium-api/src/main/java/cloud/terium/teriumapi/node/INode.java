@@ -67,6 +67,11 @@ public interface INode extends Serializable {
     void update();
 
     /**
+     * Use that methode to connect to the node.
+     */
+    void connect();
+
+    /**
      * Use that methode to disconnect the node.
      */
     void disconnect();

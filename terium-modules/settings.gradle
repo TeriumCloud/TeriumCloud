@@ -1,0 +1,3 @@
+rootProject.name = 'terium-modules'
+
+include("notification-module")

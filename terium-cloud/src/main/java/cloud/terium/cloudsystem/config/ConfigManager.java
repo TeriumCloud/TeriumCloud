@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,9 +33,19 @@ public class ConfigManager {
         if (!file.exists()) {
             this.json = new JsonObject();
             JsonObject master = new JsonObject();
+
+            String keyGenerateString = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+            StringBuilder generatedKey = new StringBuilder();
+            for (int i = 0; i < 30; i++) {
+                char randompassword = keyGenerateString.toCharArray()[new Random().nextInt(keyGenerateString.length())];
+                generatedKey.append(randompassword);
+            }
+
             master.addProperty("name", "Node-1");
             master.addProperty("ip", "127.0.0.1");
             master.addProperty("port", 4657);
+            master.addProperty("" +
+                    "", generatedKey.toString());
             json.add("informations", master);
             json.addProperty("promt", "§b%user%§f@terium => ");
             json.addProperty("memory", 5120);

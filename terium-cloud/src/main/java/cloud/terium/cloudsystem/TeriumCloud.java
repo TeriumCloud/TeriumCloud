@@ -20,6 +20,8 @@ import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.Logger;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -133,6 +135,7 @@ public class TeriumCloud extends TeriumAPI {
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != TeriumCloud.getTerium().getThisNode()).toList().size() + "")
                 .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();
+        this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName()));
 
         Signal.handle(new Signal("INT"), signal -> {
             cloudUtils.setRunning(false);

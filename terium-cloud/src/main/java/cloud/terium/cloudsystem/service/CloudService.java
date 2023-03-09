@@ -7,6 +7,7 @@ import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -102,6 +103,13 @@ public class CloudService implements ICloudService {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
             } catch (IOException ignored) {
+            }
+        });
+        TeriumCloud.getTerium().getModuleProvider().getAllModules().stream().filter(module -> module.getModuleType() == ModuleType.valueOf(getServiceType().name())).forEach(module -> {
+            try {
+                FileUtils.copyFileToDirectory(new File("modules//" + module.getFileName()), new File("servers//" + getServiceName() + "//plugins//"));
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         });
 
