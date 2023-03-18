@@ -1,6 +1,7 @@
 package cloud.terium.plugin.impl.pipe;
 
 import cloud.terium.networking.client.TeriumClient;
+import cloud.terium.networking.packet.PacketPlayOutReloadConfig;
 import cloud.terium.networking.packet.group.*;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
@@ -12,9 +13,11 @@ import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.impl.node.Node;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.teriumapi.events.config.ReloadConfigEvent;
 import cloud.terium.teriumapi.events.group.CloudGroupCreatedEvent;
 import cloud.terium.teriumapi.events.group.CloudGroupDeleteEvent;
 import cloud.terium.teriumapi.events.group.CloudGroupUpdatedEvent;
+import cloud.terium.teriumapi.events.group.CloudGroupsReloadEvent;
 import cloud.terium.teriumapi.events.node.NodeLoggedInEvent;
 import cloud.terium.teriumapi.events.node.NodeLoggedOutEvent;
 import cloud.terium.teriumapi.events.player.*;
@@ -173,6 +176,12 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                             }
                         }
                     }
+
+                    // reload
+                    if(packet instanceof PacketPlayOutReloadConfig)
+                        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new ReloadConfigEvent());
+                    if(packet instanceof PacketPlayOutGroupsReload)
+                        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudGroupsReloadEvent(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups()));
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

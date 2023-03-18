@@ -1,7 +1,9 @@
 package cloud.terium.module.notification.listener;
 
+import cloud.terium.module.notification.manager.ConfigManager;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
+import cloud.terium.teriumapi.events.config.ReloadConfigEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
@@ -29,5 +31,10 @@ public class ServiceListener implements Listener {
     public void handleCloudServiceStarting(CloudServiceStoppedEvent event) {
         NotificationVelocityStartup.getInstance().getProxyServer().getAllPlayers().stream().filter(player -> player.hasPermission("terium.notification")).forEach(player ->
                 player.sendMessage(MiniMessage.miniMessage().deserialize(NotificationVelocityStartup.getInstance().getConfigManager().getJson().get("stopped").getAsString().replace("%service%", event.getCloudService().getServiceName()).replace("%node%", event.getCloudService().getServiceNode().getName()))));
+    }
+
+    @Subscribe
+    public void handleReloadConfig(ReloadConfigEvent event) {
+        NotificationVelocityStartup.getInstance().setConfigManager(new ConfigManager());
     }
 }
