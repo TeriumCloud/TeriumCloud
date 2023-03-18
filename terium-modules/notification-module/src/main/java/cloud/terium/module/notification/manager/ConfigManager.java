@@ -20,7 +20,7 @@ public class ConfigManager {
     private JsonObject json;
 
     public ConfigManager() {
-        this.file = new File("modules/notification/config.json");
+        this.file = new File("../../modules/notification/config.json");
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
         this.initFile();
