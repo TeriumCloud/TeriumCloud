@@ -34,7 +34,7 @@ public class ModuleProvider implements IModuleProvider {
     public void loadModules() {
         File file = new File("modules//");
         if (!file.exists()) file.mkdirs();
-        Arrays.stream(file.listFiles()).toList().forEach(module -> loadModule(module.getPath()));
+        Arrays.stream(file.listFiles()).toList().stream().filter(file1 -> file1.getName().endsWith(".jar")).forEach(module -> loadModule(module.getPath()));
     }
 
     @SneakyThrows

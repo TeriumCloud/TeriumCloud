@@ -11,5 +11,5 @@
       "optional": false
     }
   ],
-  "main": "dev.jxnnik.terium.module.velocity.NotificationVelocityStartup"
+  "main": "cloud.terium.module.notification.velocity.NotificationVelocityStartup"
 }

@@ -15,6 +15,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     compileOnly 'com.velocitypowered:velocity-api:3.0.1'
     compileOnly fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
+    compileOnly fileTree(dir: '../../terium-framework/build/libs/', include: '*.jar')
     compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
 
     annotationProcessor fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
