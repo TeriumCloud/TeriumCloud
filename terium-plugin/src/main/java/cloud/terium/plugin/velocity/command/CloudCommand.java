@@ -29,12 +29,16 @@ public class CloudCommand {
         LiteralCommandNode<CommandSource> literalCommand = LiteralArgumentBuilder.<CommandSource>literal(name)
                 .executes(this::help)
                 .then(LiteralArgumentBuilder.<CommandSource>literal("list")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
                         .executes(this::list))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("modules")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
                         .executes(this::modules))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("groups")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
                         .executes(this::groups))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("service")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
                                 .executes(this::help)
@@ -46,6 +50,7 @@ public class CloudCommand {
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("info")
                                         .executes(this::serviceInfo))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("player")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("player", StringArgumentType.string())
                                 .executes(this::help)
                                 .suggests(this::playerSuggestion)
@@ -63,6 +68,11 @@ public class CloudCommand {
     }
 
     private int help(CommandContext<CommandSource> context) {
+        if(!context.getSource().hasPermission("terium.command")) {
+            context.getSource().sendMessage(Component.text("§cYou don't have enought permissions to execute this command!"));
+            return 1;
+        }
+
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#245dec:#00d4ff>terium-cloud</gradient> v" + TeriumPlugin.getInstance().getVersion()));
         context.getSource().sendMessage(Component.text(" "));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " list"));
