@@ -20,7 +20,6 @@
 - Multi-root
 - [Velocity](https://velocitypowered.com) support
 - [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
-- [Minestom](https://github.com/Minestom/Minestomt) support
 
 ## Links
 
@@ -46,7 +45,6 @@
 ## Supported Minecraft Versions
 
 - Paper 1.12.2 - 1.19.3
-- Minestom
 - Velocity & Velocity 3
 
 ## Thanks to
