@@ -16,6 +16,8 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.concurrent.CompletableFuture;
@@ -61,7 +63,7 @@ public class CloudCommand {
                                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
                                                 .suggests(this::serviceSuggestion)
                                                 .executes(this::sendPlayer))))
-                        .executes(this::groups))
+                        .executes(this::players))
                 .build();
 
         return new BrigadierCommand(literalCommand);
@@ -158,6 +160,17 @@ public class CloudCommand {
             });
         else
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There are no loaded service groups."));
+        return 1;
+    }
+
+    private int players(CommandContext<CommandSource> context) {
+        if (TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().size() > 0)
+            TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().forEach(player -> {
+                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + player.getUsername() + "(on <#91d177>" + player.getConnectedCloudService().orElseGet(null).getServiceName() + "<white>)")
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("§7Connect with " + player.getUsername() + "'s service.").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/server " + player.getConnectedCloudService().orElseGet(null).getServiceName())))));
+            });
+        else
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There are no players online."));
         return 1;
     }
 }
