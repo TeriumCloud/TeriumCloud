@@ -1,3 +1,4 @@
 rootProject.name = 'terium-modules'
 
 include("notification-module")
+include("syncproxy-module")

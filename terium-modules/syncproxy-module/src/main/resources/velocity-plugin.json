@@ -1,0 +1,15 @@
+{
+  "id": "teriummodule-syncproxy",
+  "name": "TeriumSyncproxyModule",
+  "version": "1.0.0-OXYGEN",
+  "authors": [
+    "Jxnnik(ByRaudy)"
+  ],
+  "dependencies": [
+    {
+      "id": "teriumplugin-velocity",
+      "optional": false
+    }
+  ],
+  "main": "cloud.terium.module.syncproxy.velocity.SyncproxyVelocityStartup"
+}

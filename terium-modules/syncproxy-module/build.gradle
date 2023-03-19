@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'eclipse'
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
 }
 
 group = 'cloud.terium.module'
-version = '1.0-SNAPSHOT'
+version = '1.0-OXYGEN'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -13,17 +15,16 @@ repositories {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
-    compileOnly 'com.velocitypowered:velocity-api:3.0.1'
+    compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
-    compileOnly fileTree(dir: '../../terium-framework/build/libs/', include: '*.jar')
     compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
 
-    annotationProcessor fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
-    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.1'
+    annotationProcessor fileTree(dir: '../../terium-api/build/libs/', include: '*.jar')
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 11
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -36,14 +37,5 @@ java {
 tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release = targetJavaVersion
-    }
-}
-
-processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
     }
 }
