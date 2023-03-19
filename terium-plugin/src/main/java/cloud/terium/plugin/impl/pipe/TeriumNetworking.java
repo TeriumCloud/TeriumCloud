@@ -3,6 +3,7 @@ package cloud.terium.plugin.impl.pipe;
 import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.PacketPlayOutReloadConfig;
 import cloud.terium.networking.packet.group.*;
+import cloud.terium.networking.packet.module.PacketPlayOutAddLoadedModule;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
@@ -10,6 +11,7 @@ import cloud.terium.networking.packet.player.*;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.plugin.TeriumPlugin;
+import cloud.terium.plugin.impl.module.LoadedModule;
 import cloud.terium.plugin.impl.node.Node;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
@@ -25,6 +27,8 @@ import cloud.terium.teriumapi.events.service.CloudServiceStartedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceUpdateEvent;
+import cloud.terium.teriumapi.module.ILoadedModule;
+import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.network.Packet;
 import cloud.terium.teriumapi.node.INode;
@@ -115,6 +119,12 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                         cloudPlayer.updateAddress(newPacket.address());
                         cloudPlayer.updateSkinData(newPacket.value(), newPacket.signature());
                         cloudPlayer.updateConnectedService(newPacket.parsedCloudService().orElseGet(null));
+                    }
+
+                    // module
+                    if(packet instanceof PacketPlayOutAddLoadedModule newPacket) {
+                        TeriumAPI.getTeriumAPI().getProvider().getModuleProvider().getAllModules().add(new LoadedModule(newPacket.name()
+                        , newPacket.fileName(), newPacket.author(), newPacket.version(), newPacket.description(), newPacket.mainClass(), newPacket.moduleType()));
                     }
 
                     // Event cast

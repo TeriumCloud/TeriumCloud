@@ -18,6 +18,7 @@ import cloud.terium.cloudsystem.event.events.service.template.TemplateDeleteEven
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;
+import cloud.terium.networking.packet.module.PacketPlayOutAddLoadedModule;
 import cloud.terium.networking.packet.node.*;
 import cloud.terium.networking.packet.player.*;
 import cloud.terium.networking.packet.service.*;
@@ -118,6 +119,11 @@ public class TeriumServer {
                                                                     cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));
                                                     TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceState().equals(ServiceState.ONLINE)).toList().forEach(cloudService ->
                                                             channelHandlerContext.channel().writeAndFlush(new PacketPlayOutSuccessfullyServiceStarted(cloudService.getServiceName(), cloudService.getServiceNode().getName())));
+
+                                                    // Modules
+                                                    TeriumCloud.getTerium().getModuleProvider().getAllModules().forEach(module -> channelHandlerContext.channel().writeAndFlush(
+                                                            new PacketPlayOutAddLoadedModule(module.getName(), module.getFileName(), module.getAuthor(), module.getVersion(), module.getDescription(), module.getMainClass(), module.getModuleType()
+                                                            )));
                                                 }
                                                 // player packets
                                                 if (packet instanceof PacketPlayOutCloudPlayerConnectedService newPacket)

@@ -3,16 +3,14 @@ package cloud.terium.plugin.impl.module;
 import cloud.terium.teriumapi.module.ILoadedModule;
 import cloud.terium.teriumapi.module.IModuleProvider;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ModuleProvider implements IModuleProvider {
 
-    private final HashMap<String, ILoadedModule> cachedLoadedModules;
+    private final List<ILoadedModule> cachedLoadedModules;
 
     public ModuleProvider() {
-        this.cachedLoadedModules = new HashMap<>();
+        this.cachedLoadedModules = new LinkedList<>();
     }
 
     @Override
@@ -28,6 +26,6 @@ public class ModuleProvider implements IModuleProvider {
 
     @Override
     public List<ILoadedModule> getAllModules() {
-        return cachedLoadedModules.values().stream().toList();
+        return cachedLoadedModules;
     }
 }

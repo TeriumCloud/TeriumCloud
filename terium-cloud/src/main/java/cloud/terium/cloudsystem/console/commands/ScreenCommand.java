@@ -27,6 +27,8 @@ public class ScreenCommand extends Command {
 
     @Override
     public List<String> tabComplete(String[] args) {
-        return TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().stream().map(ICloudService::getServiceName).toList();
+        if (args.length == 1)
+            return TeriumCloud.getTerium().getServiceProvider().getAllCloudServices().stream().map(ICloudService::getServiceName).toList();
+        return List.of();
     }
 }

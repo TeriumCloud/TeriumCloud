@@ -3,7 +3,7 @@
   "name": "TeriumPlugin",
   "version": "1.0.0-SNAPSHOT",
   "authors": [
-    "ByRaudy"
+    "Jxnnik(ByRaudy)"
   ],
   "dependencies": [],
   "main": "cloud.terium.plugin.velocity.TeriumVelocityStartup"
