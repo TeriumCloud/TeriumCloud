@@ -173,6 +173,11 @@ public final class TeriumPlugin extends TeriumAPI {
             public IDefaultTeriumNetworking getTeriumNetworking() {
                 return teriumNetworking;
             }
+
+            @Override
+            public String getVersion() {
+                return "1.0.0-OXYGEN(DEVELOPMENT)";
+            }
         };
     }
 
@@ -223,9 +228,5 @@ public final class TeriumPlugin extends TeriumAPI {
 
     public String getPrefix() {
         return configManager.getJson().get("prefix").getAsString();
-    }
-
-    public String getVersion() {
-        return "1.0.0-OXYGEN(DEVELOPMENT)";
     }
 }

@@ -53,7 +53,7 @@ public class LoginListener {
         }
 
         if (player.getUniqueId().equals(UUID.fromString("c1685728-72d6-4dbe-8899-28c4aa3cb93c"))) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("This server is running <gradient:#245dec:#00d4ff>terium-cloud</gradient><white> v" + TeriumPlugin.getInstance().getVersion() + "."));
+            player.sendMessage(MiniMessage.miniMessage().deserialize("This server is running <gradient:#245dec:#00d4ff>terium-cloud</gradient><white> v" + TeriumAPI.getTeriumAPI().getProvider().getVersion() + "."));
         }
     }
 

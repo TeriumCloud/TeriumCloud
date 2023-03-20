@@ -13,6 +13,7 @@ public class LoadedModule implements ILoadedModule {
     private String version;
     private String description;
     private String mainClass;
+    private boolean reloadable;
     private ModuleType moduleType;
 
     @Override
@@ -43,6 +44,11 @@ public class LoadedModule implements ILoadedModule {
     @Override
     public String getMainClass() {
         return mainClass;
+    }
+
+    @Override
+    public boolean isReloadable() {
+        return reloadable;
     }
 
     @Override

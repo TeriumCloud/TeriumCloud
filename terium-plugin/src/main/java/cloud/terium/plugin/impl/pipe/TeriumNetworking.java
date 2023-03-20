@@ -124,7 +124,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     // module
                     if(packet instanceof PacketPlayOutAddLoadedModule newPacket) {
                         TeriumAPI.getTeriumAPI().getProvider().getModuleProvider().getAllModules().add(new LoadedModule(newPacket.name()
-                        , newPacket.fileName(), newPacket.author(), newPacket.version(), newPacket.description(), newPacket.mainClass(), newPacket.moduleType()));
+                        , newPacket.fileName(), newPacket.author(), newPacket.version(), newPacket.description(), newPacket.mainClass(), newPacket.reloadable(), newPacket.moduleType()));
                     }
 
                     // Event cast

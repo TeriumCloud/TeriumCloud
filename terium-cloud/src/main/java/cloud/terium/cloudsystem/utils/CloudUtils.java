@@ -30,13 +30,17 @@ public class CloudUtils {
         this.playerList = new ArrayList<>();
 
         File data = new File("data//versions");
-        Logger.log("Downloading spigot.yml, velocity.toml and teriumcloud-plugin...");
         if (!data.exists()) {
+            Logger.log("Downloading spigot.yml, velocity.toml and teriumcloud-plugin...");
             try {
                 Logger.log("Trying to download 'spigot.yml'...");
-                FileUtils.copyURLToFile(new URL("version.getUrl()"), new File("data//versions//spigot.yml"));
+                FileUtils.copyURLToFile(new URL("https://file.io/xh4M7MjZ8kPV"), new File("data//versions//spigot.yml"));
                 Logger.log("Successfully to downloaded 'spigot.yml'.");
-            } catch (IOException exception) {
+                Thread.sleep(1000);
+                Logger.log("Trying to download 'spigot.yml'...");
+                FileUtils.copyURLToFile(new URL("https://file.io/RGka7SFWOF4Z"), new File("data//versions//velocity.toml"));
+                Logger.log("Successfully to downloaded 'velocity.toml'.");
+            } catch (IOException | InterruptedException exception) {
                 exception.printStackTrace();
             }
         }

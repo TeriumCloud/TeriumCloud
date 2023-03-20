@@ -1,5 +1,6 @@
 package cloud.terium.cloudsystem.module;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.module.ILoadedModule;
@@ -96,12 +97,18 @@ public class ModuleProvider implements IModuleProvider {
                                 }
 
                                 @Override
+                                public boolean isReloadable() {
+                                    return jsonObject.get("reloadable").getAsBoolean();
+                                }
+
+                                @Override
                                 public ModuleType getModuleType() {
                                     return ModuleType.valueOf(jsonObject.get("type").getAsString());
                                 }
                             });
 
-                            Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
+                            if (System.getProperty("module-reloading") == null)
+                                Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
                             executeModule(new File(path), jsonObject.get("main-class").getAsString(), "enable");
                             in.close();
                             return;
@@ -117,6 +124,14 @@ public class ModuleProvider implements IModuleProvider {
     public void unloadModule(ILoadedModule module) {
         loadedModuleCache.remove(module.getName());
         executeModule(new File("modules//" + module.getFileName()), module.getMainClass(), "disable");
+    }
+
+    public void reloadModule(ILoadedModule module) {
+        System.setProperty("module-reloading", "true");
+        TeriumCloud.getTerium().getModuleProvider().unloadModule(module);
+        TeriumCloud.getTerium().getModuleProvider().loadModule(new File("modules//" + module.getFileName()).getPath());
+        System.clearProperty("module-reloading");
+        Logger.log("Successfully reloaded module '" + module.getName() +  "'.", LogType.INFO);
     }
 
     @Override

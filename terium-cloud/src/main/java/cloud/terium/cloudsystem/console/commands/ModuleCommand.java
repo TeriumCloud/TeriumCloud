@@ -36,7 +36,10 @@ public class ModuleCommand extends Command {
 
             if (args.length == 2 && args[0].equalsIgnoreCase("disable")) {
                 Optional<ILoadedModule> cloudModule = TeriumCloud.getTerium().getModuleProvider().getModuleByName(args[1]);
-                cloudModule.ifPresentOrElse(module -> TeriumCloud.getTerium().getModuleProvider().unloadModule(module), () -> Logger.log("A module with this name isn't loaded"));
+                cloudModule.ifPresentOrElse(module -> {
+                    TeriumCloud.getTerium().getModuleProvider().unloadModule(module);
+                    Logger.log("Unloaded '" + module.getName() + "' by '" + module.getAuthor() + "' successfully!");
+                }, () -> Logger.log("A module with this name isn't loaded"));
             }
             return;
         }
@@ -55,7 +58,7 @@ public class ModuleCommand extends Command {
 
             case 2 -> {
                 if (args[0].equalsIgnoreCase("enable")) {
-                    return Arrays.stream(new File("modules//").listFiles()).map(File::getName).filter(s -> !TeriumCloud.getTerium().getModuleProvider().getAllModules().stream().map(ILoadedModule::getFileName).toList().contains(s)).toList();
+                    return Arrays.stream(new File("modules//").listFiles()).map(File::getName).filter(name -> name.endsWith(".jar")).filter(s -> !TeriumCloud.getTerium().getModuleProvider().getAllModules().stream().map(ILoadedModule::getFileName).toList().contains(s)).toList();
                 }
 
                 if (args[0].equalsIgnoreCase("disable")) {

@@ -122,7 +122,7 @@ public class TeriumServer {
 
                                                     // Modules
                                                     TeriumCloud.getTerium().getModuleProvider().getAllModules().forEach(module -> channelHandlerContext.channel().writeAndFlush(
-                                                            new PacketPlayOutAddLoadedModule(module.getName(), module.getFileName(), module.getAuthor(), module.getVersion(), module.getDescription(), module.getMainClass(), module.getModuleType()
+                                                            new PacketPlayOutAddLoadedModule(module.getName(), module.getFileName(), module.getAuthor(), module.getVersion(), module.getDescription(), module.getMainClass(), module.isReloadable(), module.getModuleType()
                                                             )));
                                                 }
                                                 // player packets

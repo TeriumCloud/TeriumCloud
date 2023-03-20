@@ -16,5 +16,7 @@ public interface ILoadedModule extends Serializable {
 
     String getMainClass();
 
+    boolean isReloadable();
+
     ModuleType getModuleType();
 }

@@ -43,6 +43,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import sun.misc.Signal;
@@ -53,13 +54,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
+@Setter
 public class TeriumCloud extends TeriumAPI {
 
     private static TeriumCloud terium;
     private final CloudUtils cloudUtils;
     private final CommandManager commandManager;
-    private final CloudConfig cloudConfig;
-    private final ConfigManager configManager;
+    private CloudConfig cloudConfig;
+    private ConfigManager configManager;
     private final ConsoleManager consoleManager;
     private final TeriumNetworkProvider networking;
     private final NodeProvider nodeProvider;
@@ -81,7 +83,6 @@ public class TeriumCloud extends TeriumAPI {
         terium = this;
         this.cloudUtils = new CloudUtils();
 
-        System.setProperty("org.jline.terminal.dumb", "true");
         Logger.log("""
                 §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
                 §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
@@ -147,6 +148,10 @@ public class TeriumCloud extends TeriumAPI {
     }
 
     public static void main(String[] args) {
+        if (args.length == 1 && args[0].equals("starup-node"))
+            System.setProperty("node", "true");
+
+        System.setProperty("org.jline.terminal.dumb", "true");
         new TeriumCloud();
     }
 
@@ -214,6 +219,11 @@ public class TeriumCloud extends TeriumAPI {
             @Override
             public IDefaultTeriumNetworking getTeriumNetworking() {
                 return networking;
+            }
+
+            @Override
+            public String getVersion() {
+                return cloudUtils.getVersion();
             }
         };
     }

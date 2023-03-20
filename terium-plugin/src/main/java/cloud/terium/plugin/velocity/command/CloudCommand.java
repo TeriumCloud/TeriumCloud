@@ -75,7 +75,7 @@ public class CloudCommand {
             return 1;
         }
 
-        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#245dec:#00d4ff>terium-cloud</gradient> v" + TeriumPlugin.getInstance().getVersion()));
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#245dec:#00d4ff>terium-cloud</gradient> v" + TeriumAPI.getTeriumAPI().getProvider().getVersion()));
         context.getSource().sendMessage(Component.text(" "));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " list"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " modules"));

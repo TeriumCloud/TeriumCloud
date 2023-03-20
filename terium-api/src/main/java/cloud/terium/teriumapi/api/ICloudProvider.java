@@ -76,4 +76,9 @@ public abstract class ICloudProvider {
      * Use this methode to get the IDefaultTeriumNetworking
      */
     public abstract IDefaultTeriumNetworking getTeriumNetworking();
+
+    /**
+     * Use this methode to get the current version of the cloud
+     */
+    public abstract String getVersion();
 }
