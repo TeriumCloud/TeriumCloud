@@ -1,6 +1,7 @@
 package cloud.terium.plugin.velocity.listener;
 
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerJoin;
+import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
@@ -75,6 +76,11 @@ public class LoginListener {
             cloudPlayer.updateAddress(event.getPlayer().getRemoteAddress());
             cloudPlayer.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getThisService());
             cloudPlayer.update();
+        });
+
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerQuit(event.getPlayer().getUniqueId()));
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> {
+            TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().remove(cloudPlayer);
         });
 
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
