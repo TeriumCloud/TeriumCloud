@@ -1,7 +1,7 @@
-package cloud.terium.module.notification.velocity;
+package cloud.terium.module.permission.notification.velocity;
 
-import cloud.terium.module.notification.listener.ServiceListener;
-import cloud.terium.module.notification.manager.ConfigManager;
+import cloud.terium.module.permission.notification.listener.ServiceListener;
+import cloud.terium.module.permission.notification.manager.ConfigManager;
 import cloud.terium.teriumapi.TeriumAPI;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;

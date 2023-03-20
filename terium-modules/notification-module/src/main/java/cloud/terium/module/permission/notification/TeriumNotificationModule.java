@@ -1,4 +1,4 @@
-package cloud.terium.module.notification;
+package cloud.terium.module.permission.notification;
 
 import cloud.terium.teriumapi.module.IModule;
 import cloud.terium.teriumapi.module.ModuleType;

@@ -1,6 +1,6 @@
-package cloud.terium.teriumapi.player.impl;
+package cloud.terium.teriumapi.entity.impl;
 
-import cloud.terium.teriumapi.player.ICloudPlayer;
+import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.AllArgsConstructor;
 

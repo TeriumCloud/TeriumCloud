@@ -3,8 +3,8 @@ package cloud.terium.cloudsystem.pipe;
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.utils.logger.Logger;
 import cloud.terium.teriumapi.console.LogType;
-import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
-import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
+import cloud.terium.teriumapi.pipe.Packet;
 import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;
 

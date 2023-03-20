@@ -1,7 +1,7 @@
 package cloud.terium.plugin.impl.player;
 
-import cloud.terium.teriumapi.player.ICloudPlayer;
-import cloud.terium.teriumapi.player.ICloudPlayerProvider;
+import cloud.terium.teriumapi.entity.ICloudPlayer;
+import cloud.terium.teriumapi.entity.ICloudPlayerProvider;
 
 import java.util.ArrayList;
 import java.util.List;

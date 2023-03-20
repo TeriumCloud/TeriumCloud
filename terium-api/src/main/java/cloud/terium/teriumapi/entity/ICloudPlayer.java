@@ -1,4 +1,4 @@
-package cloud.terium.teriumapi.player;
+package cloud.terium.teriumapi.entity;
 
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnect;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerUpdate;

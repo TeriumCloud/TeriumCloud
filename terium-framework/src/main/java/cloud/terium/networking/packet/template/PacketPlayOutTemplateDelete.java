@@ -1,7 +1,7 @@
 package cloud.terium.networking.packet.template;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.Optional;

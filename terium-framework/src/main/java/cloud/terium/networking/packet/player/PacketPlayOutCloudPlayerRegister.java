@@ -1,6 +1,6 @@
 package cloud.terium.networking.packet.player;
 
-import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.pipe.Packet;
 
 import java.net.InetSocketAddress;
 import java.util.UUID;

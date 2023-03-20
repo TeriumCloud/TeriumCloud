@@ -1,4 +1,4 @@
-package cloud.terium.teriumapi.network;
+package cloud.terium.teriumapi.pipe;
 
 import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;

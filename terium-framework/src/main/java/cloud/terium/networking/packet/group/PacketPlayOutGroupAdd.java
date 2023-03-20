@@ -1,6 +1,6 @@
 package cloud.terium.networking.packet.group;
 
-import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.ServiceType;
 
 import java.util.List;

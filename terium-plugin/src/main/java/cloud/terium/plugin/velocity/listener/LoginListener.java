@@ -6,7 +6,7 @@ import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.player.ICloudPlayer;
+import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;

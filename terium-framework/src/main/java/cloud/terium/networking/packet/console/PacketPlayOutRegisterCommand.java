@@ -1,7 +1,7 @@
 package cloud.terium.networking.packet.console;
 
 import cloud.terium.teriumapi.console.command.Command;
-import cloud.terium.teriumapi.network.Packet;
+import cloud.terium.teriumapi.pipe.Packet;
 
 public record PacketPlayOutRegisterCommand(Command command) implements Packet {
 

@@ -1,13 +1,13 @@
-package cloud.terium.module.notification.listener;
+package cloud.terium.module.permission.notification.listener;
 
-import cloud.terium.module.notification.manager.ConfigManager;
+import cloud.terium.module.permission.notification.manager.ConfigManager;
+import cloud.terium.module.permission.notification.velocity.NotificationVelocityStartup;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.events.config.ReloadConfigEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
-import cloud.terium.module.notification.velocity.NotificationVelocityStartup;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;

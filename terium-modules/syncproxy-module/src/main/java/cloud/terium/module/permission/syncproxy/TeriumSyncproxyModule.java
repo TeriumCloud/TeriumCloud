@@ -1,4 +1,4 @@
-package cloud.terium.module.syncproxy;
+package cloud.terium.module.permission.syncproxy;
 
 import cloud.terium.teriumapi.module.IModule;
 import cloud.terium.teriumapi.module.ModuleType;

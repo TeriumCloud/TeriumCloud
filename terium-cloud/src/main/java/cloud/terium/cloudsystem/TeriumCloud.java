@@ -20,7 +20,6 @@ import cloud.terium.cloudsystem.template.TemplateFactory;
 import cloud.terium.cloudsystem.template.TemplateProvider;
 import cloud.terium.cloudsystem.utils.CloudUtils;
 import cloud.terium.cloudsystem.utils.logger.Logger;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
@@ -30,11 +29,11 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.ICommandFactory;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.module.IModuleProvider;
-import cloud.terium.teriumapi.network.IDefaultTeriumNetworking;
+import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeFactory;
 import cloud.terium.teriumapi.node.INodeProvider;
-import cloud.terium.teriumapi.player.ICloudPlayerProvider;
+import cloud.terium.teriumapi.entity.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
@@ -148,7 +147,7 @@ public class TeriumCloud extends TeriumAPI {
     }
 
     public static void main(String[] args) {
-        if (args.length == 1 && args[0].equals("starup-node"))
+        if (args.length == 1 && args[0].equals("node"))
             System.setProperty("node", "true");
 
         System.setProperty("org.jline.terminal.dumb", "true");

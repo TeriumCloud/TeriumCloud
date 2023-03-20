@@ -4,9 +4,9 @@ import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerAdd;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.player.ICloudPlayer;
-import cloud.terium.teriumapi.player.ICloudPlayerProvider;
-import cloud.terium.teriumapi.player.impl.CloudPlayer;
+import cloud.terium.teriumapi.entity.ICloudPlayer;
+import cloud.terium.teriumapi.entity.ICloudPlayerProvider;
+import cloud.terium.teriumapi.entity.impl.CloudPlayer;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
