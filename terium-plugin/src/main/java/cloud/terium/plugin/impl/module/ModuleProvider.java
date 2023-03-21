@@ -1,5 +1,7 @@
 package cloud.terium.plugin.impl.module;
 
+import cloud.terium.networking.packet.module.PacketPlayOutLoadModule;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.module.ILoadedModule;
 import cloud.terium.teriumapi.module.IModuleProvider;
 
@@ -15,8 +17,7 @@ public class ModuleProvider implements IModuleProvider {
 
     @Override
     public void loadModule(String path) {
-        // NOT SUPPORTED FOR SERVER PROCESSES
-        // ONLY MAIN PROCESS(CLOUD-SYSTEM) IS SUPPORTED
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutLoadModule(path));
     }
 
     @Override
