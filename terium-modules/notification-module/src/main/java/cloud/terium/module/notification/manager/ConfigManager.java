@@ -1,4 +1,4 @@
-package cloud.terium.module.permission.notification.manager;
+package cloud.terium.module.notification.manager;
 
 import com.google.gson.*;
 

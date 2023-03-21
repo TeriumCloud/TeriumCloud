@@ -1,7 +1,7 @@
-package cloud.terium.module.permission.notification.listener;
+package cloud.terium.module.notification.listener;
 
-import cloud.terium.module.permission.notification.manager.ConfigManager;
-import cloud.terium.module.permission.notification.velocity.NotificationVelocityStartup;
+import cloud.terium.module.notification.manager.ConfigManager;
+import cloud.terium.module.notification.velocity.NotificationVelocityStartup;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.events.config.ReloadConfigEvent;
