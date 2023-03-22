@@ -163,7 +163,7 @@ public class CloudService implements ICloudService {
                 getServiceNode().getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyMap));
 
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().ip(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().port(), serviceGroup.getVersion() + ".jar", "nogui"};
+            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().master().get("ip").getAsString(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().master().get("port").getAsInt(), serviceGroup.getVersion() + ".jar", "nogui"};
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
             processBuilder.directory(this.folder);

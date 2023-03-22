@@ -43,12 +43,4 @@ public class NodeProvider implements INodeProvider {
     public Optional<INode> getNodeByName(String name) {
         return Optional.ofNullable(nodes.get(name));
     }
-
-    public void addClientToNode(INode node, TeriumClient client) {
-        nodeClients.put(node, client);
-    }
-
-    public TeriumClient getClientFromNode(INode node) {
-        return nodeClients.get(node);
-    }
 }

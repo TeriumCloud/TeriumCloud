@@ -13,7 +13,6 @@ import cloud.terium.cloudsystem.node.entity.CloudPlayerProvider;
 import cloud.terium.cloudsystem.node.module.ModuleProvider;
 import cloud.terium.cloudsystem.node.node.Node;
 import cloud.terium.cloudsystem.node.node.NodeFactory;
-import cloud.terium.cloudsystem.node.node.NodeListener;
 import cloud.terium.cloudsystem.node.node.NodeProvider;
 import cloud.terium.cloudsystem.node.pipe.TeriumNetworkProvider;
 import cloud.terium.cloudsystem.node.service.CloudServiceFactory;
@@ -101,7 +100,6 @@ public class NodeStartup extends TeriumAPI {
 
         this.eventProvider = new EventProvider();
         this.eventProvider.subscribeListener(new ConsoleListener());
-        this.eventProvider.subscribeListener(new NodeListener());
         this.eventProvider.subscribeListener(new CloudPlayerListener());
         this.eventProvider.subscribeListener(new CloudServiceListener());
 

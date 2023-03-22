@@ -1,13 +1,8 @@
 package cloud.terium.cloudsystem.node.template;
 
-import cloud.terium.cloudsystem.common.template.Template;
-import cloud.terium.cloudsystem.node.utils.Logger;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateProvider;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -18,18 +13,6 @@ public class TemplateProvider implements ITemplateProvider {
 
     public TemplateProvider() {
         this.templates = new CopyOnWriteArrayList<>();
-
-        new File("templates//").mkdirs();
-        new File("templates//Global//server").mkdirs();
-        new File("templates//Global//proxy").mkdirs();
-        loadTempaltes();
-    }
-
-    private void loadTempaltes() {
-        for (File file : new File("templates//").listFiles()) {
-            templates.add(new Template(file.getName(), Path.of(file.getPath())));
-            Logger.log("Successfully loaded template '" + file.getName() + "' with path '" + file.getPath() + "'", LogType.INFO);
-        }
     }
 
     @Override

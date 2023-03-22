@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.node.node;
 
 import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeFactory;
 import com.google.gson.JsonObject;
@@ -19,6 +20,7 @@ public class NodeFactory implements INodeFactory {
         NodeStartup.getNode().getConfigManager().getJson().get("nodes").getAsJsonObject().add(name, jsonObject);
         NodeStartup.getNode().getConfigManager().save();
         NodeStartup.getNode().getNodeProvider().registerNode(new Node(name, key, address));
+        NodeStartup.getNode().getNetworking().sendPacket(new PacketPlayOutNodeAdd(name, key, address, 128, false));
     }
 
     @Override

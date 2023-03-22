@@ -80,7 +80,6 @@ public class Node implements INode {
     public void connect() {
         try {
             this.client = TeriumFramework.createClient(address.getAddress().getHostAddress(), address.getPort());
-            NodeStartup.getNode().getNodeProvider().addClientToNode(this, client);
             Logger.log("Connected to node '" + name + "'.", LogType.INFO);
             NodeStartup.getNode().getNetworking().sendPacket(new PacketPlayOutNodeStarted(getName()));
         } catch (Exception exception) {
