@@ -19,13 +19,13 @@ public class CloudUtils {
     private final List<ICloudPlayer> playerList;
     private final String version;
     private boolean running;
-    private boolean setup;
+    private boolean firstStart;
     private boolean isInScreen;
 
     public CloudUtils() {
         this.running = true;
-        this.setup = false;
         this.isInScreen = false;
+        this.firstStart = false;
         this.version = "1.0.0-OXYGEN(DEVELOPMENT)";
         this.playerList = new ArrayList<>();
 

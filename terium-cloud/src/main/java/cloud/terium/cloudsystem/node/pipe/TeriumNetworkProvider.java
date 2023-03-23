@@ -47,6 +47,7 @@ import cloud.terium.teriumapi.template.impl.Template;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.SneakyThrows;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -56,8 +57,21 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
     private TeriumClient teriumClient;
 
+    @SneakyThrows
     public TeriumNetworkProvider() {
-        this.teriumClient = new TeriumClient(NodeStartup.getNode().getNodeConfig().ip(), NodeStartup.getNode().getNodeConfig().port());
+        try {
+            this.teriumClient = new TeriumClient(NodeStartup.getNode().getNodeConfig().master().get("ip").getAsString(), NodeStartup.getNode().getNodeConfig().master().get("port").getAsInt());
+        } catch (Exception exception) {
+            Logger.log("*************************************", LogType.ERROR);
+            Logger.log("The master server isn't online.", LogType.ERROR);
+            Logger.log("Please start the configurated master before start a node.", LogType.ERROR);
+            Logger.log("*************************************", LogType.ERROR);
+
+            Thread.sleep(5000);
+            System.exit(0);
+            return;
+        }
+
         Logger.log("Successfully started terium-client on " + NodeStartup.getNode().getNodeConfig().ip() + ":" + NodeStartup.getNode().getNodeConfig().port() + ".", LogType.INFO);
 
         getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
@@ -169,7 +183,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
                     // node packets
                     if (packet instanceof PacketPlayOutNodeStarted newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.masterKey()));
                     if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
                     if (packet instanceof PacketPlayOutNodeShutdowned newPacket)

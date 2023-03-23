@@ -10,8 +10,8 @@ public class NodeLoggedInEvent extends Event {
 
     private final String node;
 
-    public NodeLoggedInEvent(String node) {
+    public NodeLoggedInEvent(String node, String key) {
         this.node = node;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeStarted(node));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeStarted(node, key));
     }
 }

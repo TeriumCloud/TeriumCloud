@@ -1,5 +1,7 @@
 package cloud.terium.cloudsystem.cluster.config;
 
+import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.node.pipe.TeriumNetworkProvider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -53,6 +55,7 @@ public class ConfigManager {
             json.add("nodes", new JsonObject());
 
             save();
+            TeriumCloud.getTerium().getCloudUtils().setFirstStart(true);
         } else {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();

@@ -97,7 +97,6 @@ public class NodeStartup extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
-
         this.eventProvider = new EventProvider();
         this.eventProvider.subscribeListener(new ConsoleListener());
         this.eventProvider.subscribeListener(new CloudPlayerListener());
@@ -158,7 +157,7 @@ public class NodeStartup extends TeriumAPI {
     public boolean isDebugMode() {
         return nodeConfig.debugMode();
     }
-    
+
     @Override
     public ICloudProvider getProvider() {
         return new ICloudProvider() {
