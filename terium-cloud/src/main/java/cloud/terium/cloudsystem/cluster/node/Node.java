@@ -77,19 +77,6 @@ public class Node implements INode {
     }
 
     @Override
-    public void connect() {
-        try {
-            this.client = TeriumFramework.createClient(address.getAddress().getHostAddress(), address.getPort());
-            ClusterStartup.getCluster().getNodeProvider().addClientToNode(this, client);
-            Logger.log("Connected to node '" + name + "'.", LogType.INFO);
-            ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutNodeStarted(getName()));
-        } catch (Exception exception) {
-            this.client = null;
-            Logger.log("Connection to node '" + name + "' with ip '" + address.getAddress().getHostAddress() + ":" + address.getPort() + "' can't be created. (" + exception.getMessage() + ")", LogType.ERROR);
-        }
-    }
-
-    @Override
     public void disconnect() {
         Logger.log("Trying to disconnect node '" + name + "'...", LogType.INFO);
         client.getChannel().disconnect();

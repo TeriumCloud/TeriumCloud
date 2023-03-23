@@ -142,7 +142,6 @@ public class ClusterStartup extends TeriumAPI {
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != thisNode).toList().size() + "")
                 .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();
-        this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName()));
 
         Signal.handle(new Signal("INT"), signal -> {
             TeriumCloud.getTerium().getCloudUtils().setRunning(false);

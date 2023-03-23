@@ -6,7 +6,7 @@ import cloud.terium.teriumapi.node.INode;
 
 import java.util.Optional;
 
-public record PacketPlayOutNodeStarted(String node) implements Packet {
+public record PacketPlayOutNodeStarted(String node, String masterKey) implements Packet {
 
     public Optional<INode> parsedNode() {
         return TeriumAPI.getTeriumAPI().getProvider().getNodeProvider().getNodeByName(node);

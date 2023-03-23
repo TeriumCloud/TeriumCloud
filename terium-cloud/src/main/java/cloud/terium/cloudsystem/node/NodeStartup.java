@@ -140,7 +140,7 @@ public class NodeStartup extends TeriumAPI {
                  """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", nodeConfig.ip()).replace("%port%", nodeConfig.port() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();
-        this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName()));
+        this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName(), nodeConfig.master().get("key").getAsString()));
 
         Signal.handle(new Signal("INT"), signal -> {
             TeriumCloud.getTerium().getCloudUtils().setRunning(false);

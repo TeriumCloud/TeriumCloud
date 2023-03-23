@@ -63,7 +63,7 @@ public class ConfigManager {
     }
 
     public CloudConfig toCloudConfig() {
-        return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
+        return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(), json.get("informations").getAsJsonObject().get("key").getAsString(),
                 json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
                 json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("debug").getAsBoolean(),
                 json.get("nodes").getAsJsonObject());

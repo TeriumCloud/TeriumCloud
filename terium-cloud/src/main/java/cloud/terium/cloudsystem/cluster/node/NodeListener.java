@@ -16,7 +16,6 @@ public class NodeListener implements Listener {
     @Subscribe
     public void handleNodeLoggedIn(NodeLoggedInEvent event) {
         Logger.log("Node '" + event.getNode() + "' logged in with ip " + ClusterStartup.getCluster().getNodeProvider().getNodeByName(event.getNode()).orElseGet(null).getAddress().toString().replace("/", "") + ".", LogType.INFO);
-        ClusterStartup.getCluster().getNodeProvider().getNodeByName(event.getNode()).ifPresent(INode::connect);
     }
 
     @Subscribe
