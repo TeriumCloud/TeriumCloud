@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem.cluster.pipe;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
+import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.events.console.RegisterCommandEvent;
 import cloud.terium.cloudsystem.common.event.events.console.SendConsoleEvent;
 import cloud.terium.cloudsystem.common.event.events.group.*;
@@ -24,6 +25,7 @@ import cloud.terium.networking.packet.player.*;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
+import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -143,8 +145,16 @@ public class TeriumServer {
                                                     ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutCloudPlayerAdd(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService()));
 
                                                 // node packets
-                                                if (packet instanceof PacketPlayOutNodeStarted newPacket)
+                                                if (packet instanceof PacketPlayOutNodeStarted newPacket) {
+                                                    if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getThisNode().getKey())) {
+                                                        channelHandlerContext.channel().close().sync();
+                                                        Logger.log("A NOT REGISTERED NODE WANTS TO CONNECT TO YOUR CLUSTER", LogType.INFO);
+                                                        return;
+                                                    }
+
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.masterKey()));
+                                                    System.out.println("called");
+                                                }
                                                 if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
                                                 if (packet instanceof PacketPlayOutNodeShutdowned newPacket)
@@ -196,6 +206,7 @@ public class TeriumServer {
                                         @Override
                                         public void channelUnregistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.remove(channelHandlerContext.channel());
+                                            System.out.println("removed");
                                         }
 
                                         @Override

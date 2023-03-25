@@ -54,6 +54,8 @@ import java.io.File;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -106,7 +108,7 @@ public class NodeStartup extends TeriumAPI {
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
         this.nodeFactory = new NodeFactory();
-        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), nodeConfig.port()));
+        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), ThreadLocalRandom.current().nextInt(4000, 5000)));
         this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
@@ -133,11 +135,10 @@ public class NodeStartup extends TeriumAPI {
                   §a> §fLoaded %commands% commands successfully.
                   §a> §fLoaded %templates% templates successfully.
                   §a> §fLoaded %groups% groups successfully.
-                  §a> §fStarted terium-client on %ip%:%port%.
-                  §a> §fConnected with terium-server on %master-ip%:%master-port%.
+                  §a> §fConnected with terium-server on %ip%:%port%.
                                  
                  """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
-                .replace("%ip%", nodeConfig.ip()).replace("%port%", nodeConfig.port() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
+                .replace("%ip%", nodeConfig.master().get("ip").getAsString()).replace("%port%", nodeConfig.master().get("port").getAsInt() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();
         this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName(), nodeConfig.master().get("key").getAsString()));
 

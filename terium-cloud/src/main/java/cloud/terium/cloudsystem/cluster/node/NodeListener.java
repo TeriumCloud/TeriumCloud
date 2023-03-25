@@ -15,12 +15,12 @@ public class NodeListener implements Listener {
 
     @Subscribe
     public void handleNodeLoggedIn(NodeLoggedInEvent event) {
-        Logger.log("Node '" + event.getNode() + "' logged in with ip " + ClusterStartup.getCluster().getNodeProvider().getNodeByName(event.getNode()).orElseGet(null).getAddress().toString().replace("/", "") + ".", LogType.INFO);
+        Logger.log("Node '" + event.getNode() + "' sucessfully logged in.", LogType.INFO);
     }
 
     @Subscribe
     public void handleNodeShutdowned(NodeShutdownedEvent event) {
-        Logger.log("Node '" + event.getNode().getName() + "' logged out with ip " + event.getNode().getAddress().toString().replace("/", "") + ".", LogType.INFO);
+        Logger.log("Node '" + event.getNode().getName() + "' sucessfully logged out.", LogType.INFO);
         event.getNode().stop();
     }
 

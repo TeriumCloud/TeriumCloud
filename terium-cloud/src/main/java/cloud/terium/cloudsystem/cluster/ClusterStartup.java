@@ -108,7 +108,7 @@ public class ClusterStartup extends TeriumAPI {
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
         this.nodeFactory = new NodeFactory();
-        this.thisNode = new Node(cloudConfig.name(), "", new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
+        this.thisNode = new Node(cloudConfig.name(), cloudConfig.key(), new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
         this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();

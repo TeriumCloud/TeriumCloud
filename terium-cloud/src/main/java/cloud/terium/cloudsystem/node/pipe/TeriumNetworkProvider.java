@@ -72,8 +72,6 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
             return;
         }
 
-        Logger.log("Successfully started terium-client on " + NodeStartup.getNode().getNodeConfig().ip() + ":" + NodeStartup.getNode().getNodeConfig().port() + ".", LogType.INFO);
-
         getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {

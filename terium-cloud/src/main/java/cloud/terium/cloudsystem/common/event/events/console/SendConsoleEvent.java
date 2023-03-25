@@ -17,5 +17,6 @@ public class SendConsoleEvent extends Event {
         this.message = message;
         this.logType = logType;
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendConsole(message, logType));
+        System.out.println(this.getClass().getPackageName());
     }
 }

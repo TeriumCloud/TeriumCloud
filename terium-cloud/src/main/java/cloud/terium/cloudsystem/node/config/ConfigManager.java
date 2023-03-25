@@ -5,11 +5,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Random;
@@ -30,26 +32,19 @@ public class ConfigManager {
         this.initFile();
     }
 
+    @SneakyThrows
     private void initFile() {
         if (!file.exists()) {
             this.json = new JsonObject();
             JsonObject informations = new JsonObject();
 
-            String keyGenerateString = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
-            StringBuilder generatedKey = new StringBuilder();
-            for (int i = 0; i < 20; i++) {
-                char randompassword = keyGenerateString.toCharArray()[new Random().nextInt(keyGenerateString.length())];
-                generatedKey.append(randompassword);
-            }
-
             informations.addProperty("name", "Node-1");
             informations.addProperty("ip", "127.0.0.1");
-            informations.addProperty("port", 4657);
             json.add("informations", informations);
             json.addProperty("promt", "§b%user%§f@terium => ");
             json.addProperty("memory", 5120);
             json.addProperty("debug", false);
-            json.addProperty("serviceAddress", "127.0.0.1");
+            json.addProperty("serviceAddress", InetAddress.getLocalHost().getHostAddress());
 
             JsonObject masterInfos = new JsonObject();
             masterInfos.addProperty("name", "Master-1");
@@ -71,7 +66,7 @@ public class ConfigManager {
 
     public NodeConfig toNodeConfig() {
         return new NodeConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
-                json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
+                json.get("informations").getAsJsonObject().get("ip").getAsString(),
                 json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("debug").getAsBoolean(),
                 json.get("master").getAsJsonObject());
     }
