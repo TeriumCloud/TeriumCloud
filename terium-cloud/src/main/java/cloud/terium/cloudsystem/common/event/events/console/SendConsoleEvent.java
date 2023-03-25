@@ -1,6 +1,6 @@
 package cloud.terium.cloudsystem.common.event.events.console;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
@@ -16,7 +16,7 @@ public class SendConsoleEvent extends Event {
     public SendConsoleEvent(String message, LogType logType) {
         this.message = message;
         this.logType = logType;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendConsole(message, logType));
-        System.out.println(this.getClass().getPackageName());
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendConsole(message, logType));
     }
 }

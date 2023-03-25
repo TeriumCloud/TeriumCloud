@@ -1,7 +1,8 @@
 package cloud.terium.cloudsystem.common.event.events.service;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -34,6 +35,7 @@ public class ServiceCreateEvent extends Event {
         this.memory = memory;
         this.serviceId = serviceId;
         this.port = port;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateService(serviceName, serviceId, port, maxPlayers, memory, node.getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyCache));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateService(serviceName, serviceId, port, maxPlayers, memory, node.getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyCache));
     }
 }

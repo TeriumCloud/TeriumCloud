@@ -55,10 +55,7 @@ public class GroupCommand extends Command {
 
             if (args[0].equalsIgnoreCase("info")) {
                 if (args.length > 1) {
-                    if (args.length == 3)
-                        ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).ifPresentOrElse(cloudServiceGroup -> Logger.log(cloudServiceGroup.getInformationsFromJson(), LogType.INFO), () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
-                    else
-                        ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).ifPresentOrElse(cloudServiceGroup -> Logger.log(cloudServiceGroup.getInformations(), LogType.INFO), () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
+                    ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).ifPresentOrElse(cloudServiceGroup -> Logger.log(cloudServiceGroup.getInformationsFromJson(), LogType.INFO), () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
                 } else Logger.log("group info [name]", LogType.INFO);
                 return;
             }

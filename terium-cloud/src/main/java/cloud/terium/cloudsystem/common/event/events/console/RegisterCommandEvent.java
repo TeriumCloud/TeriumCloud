@@ -1,6 +1,6 @@
 package cloud.terium.cloudsystem.common.event.events.console;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.command.Command;
@@ -14,6 +14,7 @@ public class RegisterCommandEvent extends Event {
 
     public RegisterCommandEvent(Command command) {
         this.command = command;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutRegisterCommand(command));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutRegisterCommand(command));
     }
 }

@@ -1,7 +1,8 @@
 package cloud.terium.cloudsystem.common.event.events.service;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Event;
 import lombok.Getter;
 
@@ -32,7 +33,8 @@ public class ServiceAddEvent extends Event {
         this.templates = templates;
         this.propertyCache = propertyCache;
 
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(serviceName, serviceId, port, maxPlayers, memory,
-                node, serviceGroup, templates, propertyCache));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(serviceName, serviceId, port, maxPlayers, memory,
+                    node, serviceGroup, templates, propertyCache));
     }
 }

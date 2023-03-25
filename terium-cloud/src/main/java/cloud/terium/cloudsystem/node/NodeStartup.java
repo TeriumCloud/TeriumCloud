@@ -23,7 +23,9 @@ import cloud.terium.cloudsystem.node.service.group.ServiceGroupProvider;
 import cloud.terium.cloudsystem.node.template.TemplateFactory;
 import cloud.terium.cloudsystem.node.template.TemplateProvider;
 import cloud.terium.cloudsystem.node.utils.Logger;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -149,6 +151,7 @@ public class NodeStartup extends TeriumAPI {
 
         serviceProvider.startServiceCheck();
         serviceProvider.startServiceStopCheck();
+        System.out.println(getServiceProvider().getAllCloudServices().size());
     }
 
     public static NodeStartup getNode() {
@@ -257,6 +260,7 @@ public class NodeStartup extends TeriumAPI {
     @SneakyThrows
     public void shutdownCloud() {
         Logger.log("Trying to stop terium-cloud...", LogType.INFO);
+        getNetworking().sendPacket(new PacketPlayOutNodeShutdowned(thisNode.getName()));
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
         getServiceProvider().getAllCloudServices().forEach(ICloudService::shutdown);

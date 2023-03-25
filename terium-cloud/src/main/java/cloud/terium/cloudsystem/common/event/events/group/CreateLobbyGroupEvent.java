@@ -1,7 +1,8 @@
 package cloud.terium.cloudsystem.common.event.events.group;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.group.PacketPlayOutCreateLobbyGroup;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Event;
 import lombok.Getter;
 
@@ -36,6 +37,7 @@ public class CreateLobbyGroupEvent extends Event {
         this.memory = memory;
         this.minimalServices = minimalServices;
         this.maximalServices = maximalServices;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateLobbyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateLobbyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
     }
 }

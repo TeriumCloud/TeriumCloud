@@ -1,7 +1,8 @@
 package cloud.terium.cloudsystem.common.event.events.service;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.service.ServiceState;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class ServiceUpdateEvent extends Event {
         this.serviceState = serviceState;
         this.locked = locked;
         this.propertyCache = propertyCache;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(cloudService, players, memory, serviceState, locked, propertyCache));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutUpdateService(cloudService, players, memory, serviceState, locked, propertyCache));
     }
 }

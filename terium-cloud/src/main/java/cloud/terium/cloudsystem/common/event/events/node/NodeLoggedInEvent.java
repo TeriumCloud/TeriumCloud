@@ -1,7 +1,8 @@
 package cloud.terium.cloudsystem.common.event.events.node;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Event;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ public class NodeLoggedInEvent extends Event {
 
     public NodeLoggedInEvent(String node, String key) {
         this.node = node;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeStarted(node, key));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeStarted(node, key));
     }
 }

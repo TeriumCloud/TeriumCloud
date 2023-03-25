@@ -21,7 +21,6 @@ public class NodeListener implements Listener {
     @Subscribe
     public void handleNodeShutdowned(NodeShutdownedEvent event) {
         Logger.log("Node '" + event.getNode().getName() + "' sucessfully logged out.", LogType.INFO);
-        event.getNode().stop();
     }
 
     @Subscribe

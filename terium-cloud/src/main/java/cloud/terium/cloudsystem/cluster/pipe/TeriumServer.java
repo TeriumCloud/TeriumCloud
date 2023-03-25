@@ -153,7 +153,6 @@ public class TeriumServer {
                                                     }
 
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.masterKey()));
-                                                    System.out.println("called");
                                                 }
                                                 if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
@@ -206,7 +205,6 @@ public class TeriumServer {
                                         @Override
                                         public void channelUnregistered(ChannelHandlerContext channelHandlerContext) {
                                             channels.remove(channelHandlerContext.channel());
-                                            System.out.println("removed");
                                         }
 
                                         @Override

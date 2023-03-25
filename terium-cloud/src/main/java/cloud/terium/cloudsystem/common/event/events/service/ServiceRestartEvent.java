@@ -1,7 +1,8 @@
 package cloud.terium.cloudsystem.common.event.events.service;
 
-import cloud.terium.teriumapi.TeriumAPI;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRestart;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Event;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ public class ServiceRestartEvent extends Event {
 
     public ServiceRestartEvent(String cloudService) {
         this.cloudService = cloudService;
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceRestart(cloudService));
+        if (ClusterStartup.getCluster() != null)
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceRestart(cloudService));
     }
 }
