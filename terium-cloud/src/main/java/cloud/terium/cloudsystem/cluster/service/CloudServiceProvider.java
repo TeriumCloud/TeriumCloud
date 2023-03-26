@@ -28,7 +28,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
             @Override
             public void run() {
                 if (TeriumCloud.getTerium().getCloudUtils().isRunning() && gloablUsedMemory() < ClusterStartup.getCluster().getCloudConfig().memory()) {
-                    ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
+                    ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().stream().filter(serviceGroup -> serviceGroup.getGroupNode().getName().equals(ClusterStartup.getCluster().getProvider().getThisNode().getName())).forEach(group -> {
                         if (getCloudServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() &&
                                 getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) ||
                                         iCloudService.getServiceState().equals(ServiceState.PREPARING)).toList().size() < group.getMinServices()) {

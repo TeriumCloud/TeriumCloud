@@ -80,7 +80,8 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     }
 
     public void addService(ICloudService cloudService) {
-        cloudServiceCache.put(cloudService.getServiceName(), cloudService);
+        if (!cloudServiceCache.containsKey(cloudService.getServiceName()))
+            cloudServiceCache.put(cloudService.getServiceName(), cloudService);
     }
 
     public void removeService(ICloudService cloudService) {

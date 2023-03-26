@@ -8,7 +8,6 @@ import cloud.terium.cloudsystem.cluster.console.ConsoleListener;
 import cloud.terium.cloudsystem.cluster.console.ConsoleManager;
 import cloud.terium.cloudsystem.cluster.entity.CloudPlayerListener;
 import cloud.terium.cloudsystem.cluster.node.Node;
-import cloud.terium.cloudsystem.cluster.node.NodeFactory;
 import cloud.terium.cloudsystem.cluster.node.NodeListener;
 import cloud.terium.cloudsystem.cluster.node.NodeProvider;
 import cloud.terium.cloudsystem.cluster.pipe.TeriumNetworkProvider;
@@ -17,6 +16,7 @@ import cloud.terium.cloudsystem.cluster.service.CloudServiceListener;
 import cloud.terium.cloudsystem.cluster.service.CloudServiceProvider;
 import cloud.terium.cloudsystem.cluster.service.group.ServiceGroupFactory;
 import cloud.terium.cloudsystem.cluster.service.group.ServiceGroupProvider;
+import cloud.terium.cloudsystem.cluster.template.TemplateListener;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.cluster.entity.CloudPlayerProvider;
 import cloud.terium.cloudsystem.cluster.module.ModuleProvider;
@@ -24,7 +24,6 @@ import cloud.terium.cloudsystem.cluster.template.TemplateFactory;
 import cloud.terium.cloudsystem.cluster.template.TemplateProvider;
 import cloud.terium.cloudsystem.common.event.EventProvider;
 import cloud.terium.cloudsystem.common.screen.ScreenProvider;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -67,7 +66,6 @@ public class ClusterStartup extends TeriumAPI {
     private final ConsoleManager consoleManager;
     private final TeriumNetworkProvider networking;
     private final NodeProvider nodeProvider;
-    private final NodeFactory nodeFactory;
     private final ServiceGroupProvider serviceGroupProvider;
     private final ServiceGroupFactory serviceGroupFactory;
     private final CloudServiceProvider serviceProvider;
@@ -103,11 +101,11 @@ public class ClusterStartup extends TeriumAPI {
         this.eventProvider.subscribeListener(new NodeListener());
         this.eventProvider.subscribeListener(new CloudPlayerListener());
         this.eventProvider.subscribeListener(new CloudServiceListener());
+        this.eventProvider.subscribeListener(new TemplateListener());
 
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
-        this.nodeFactory = new NodeFactory();
         this.thisNode = new Node(cloudConfig.name(), cloudConfig.key(), new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
         this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
@@ -241,11 +239,6 @@ public class ClusterStartup extends TeriumAPI {
             @Override
             public ITemplateFactory getTemplateFactory() {
                 return templateFactory;
-            }
-
-            @Override
-            public INodeFactory getNodeFactory() {
-                return nodeFactory;
             }
 
             @Override

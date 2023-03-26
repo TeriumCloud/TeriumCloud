@@ -1,7 +1,6 @@
 package cloud.terium.teriumapi.api;
 
 import cloud.terium.teriumapi.console.command.ICommandFactory;
-import cloud.terium.teriumapi.node.INodeFactory;
 import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.template.ITemplateFactory;
@@ -25,12 +24,6 @@ public abstract class ICloudFactory {
      * The ITemplateFactory is usefull to create or delete templates
      */
     public abstract ITemplateFactory getTemplateFactory();
-
-    /*
-     * Use this methode to get the INodeFactory
-     * The INodeFactory is usefull to create or delete nodes.
-     */
-    public abstract INodeFactory getNodeFactory();
 
     /*
      * Use this methode to get the ICommandFactory

@@ -35,9 +35,10 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
-        if (event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()))
+        if (event.getNode().getName().equals(ClusterStartup.getCluster().getThisNode().getName()))
             new cloud.terium.cloudsystem.cluster.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
                     event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
+        else Logger.log("The service '" + event.getName() + "' is starting on node '" + event.getNode().getName() + "'.", LogType.INFO);
     }
 
     @Subscribe
@@ -60,7 +61,7 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceRemove(ServiceRemoveEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().getAllCloudServices().remove(ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()));
+        ClusterStartup.getCluster().getServiceProvider().removeService(ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).orElseGet(null));
     }
 
     @Subscribe

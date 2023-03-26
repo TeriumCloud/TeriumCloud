@@ -6,7 +6,6 @@ import cloud.terium.plugin.impl.console.CommandFactory;
 import cloud.terium.plugin.impl.console.ConsoleProvider;
 import cloud.terium.plugin.impl.event.EventProvider;
 import cloud.terium.plugin.impl.module.ModuleProvider;
-import cloud.terium.plugin.impl.node.NodeFactory;
 import cloud.terium.plugin.impl.node.NodeProvider;
 import cloud.terium.plugin.impl.pipe.TeriumNetworking;
 import cloud.terium.plugin.impl.player.CloudPlayerProvider;
@@ -25,7 +24,6 @@ import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.node.INodeFactory;
 import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.entity.ICloudPlayerProvider;
 import cloud.terium.teriumapi.service.*;
@@ -54,7 +52,6 @@ public final class TeriumPlugin extends TeriumAPI {
     private final ServiceGroupFactory serviceGroupFactory;
     private final ServiceGroupProvider serviceGroupProvider;
     // Node
-    private final NodeFactory nodeFactory;
     private final NodeProvider nodeProvider;
     // Template
     private final TemplateFactory templateFactory;
@@ -82,7 +79,6 @@ public final class TeriumPlugin extends TeriumAPI {
         this.serviceProvider = new ServiceProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceGroupProvider = new ServiceGroupProvider();
-        this.nodeFactory = new NodeFactory();
         this.nodeProvider = new NodeProvider();
         this.templateFactory = new TemplateFactory();
         this.templateProvider = new TemplateProvider();
@@ -197,11 +193,6 @@ public final class TeriumPlugin extends TeriumAPI {
             @Override
             public ITemplateFactory getTemplateFactory() {
                 return templateFactory;
-            }
-
-            @Override
-            public INodeFactory getNodeFactory() {
-                return nodeFactory;
             }
 
             @Override

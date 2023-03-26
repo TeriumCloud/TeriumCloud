@@ -1,15 +1,18 @@
 package cloud.terium.cloudsystem.cluster.console.commands;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
+import cloud.terium.cloudsystem.cluster.node.Node;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
+import com.google.gson.JsonObject;
 
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class NodeCommand extends Command {
 
@@ -21,38 +24,32 @@ public class NodeCommand extends Command {
     public void execute(String[] args) {
         if (args.length >= 1) {
             switch (args[0]) {
-                case "execute" -> {
-                    if (args.length > 1) {
-                        Optional<INode> cloudNode = ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[1]);
-                        cloudNode.ifPresentOrElse(node -> {
-                            if (args[2].equalsIgnoreCase("disconnect")) node.disconnect();
-                            if (args[2].equalsIgnoreCase("stop")) node.stop();
-                        }, () -> Logger.log("This node is currently not connected with this node.", LogType.ERROR));
-                    } else Logger.log("node execute [name] disconnect§7|§fstop", LogType.INFO);
-
-                    return;
-                }
                 case "add" -> {
-                    if (args.length >= 5) {
+                    if (args.length >= 3) {
                         try {
-                            ClusterStartup.getCluster().getNodeFactory().createNode(args[1], args[4], new InetSocketAddress(args[2], Integer.parseInt(args[3])));
+                            JsonObject newNode = new JsonObject();
+                            newNode.addProperty("name", args[1]);
+                            newNode.addProperty("ip", args[2]);
+                            ClusterStartup.getCluster().getCloudConfig().nodes().add(args[1], newNode);
+                            ClusterStartup.getCluster().getConfigManager().save();
+                            ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], "", args[2]));
+
                             Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
                         } catch (Exception exception) {
                             if (args.length == 6 && args[5].equalsIgnoreCase("--print")) exception.printStackTrace();
                             Logger.log("Error while creating new node.", LogType.ERROR);
                         }
-                    } else Logger.log("node add [name] [ip] [port] [key] (command)", LogType.INFO);
+                    } else Logger.log("node add [name] [ip] (command)", LogType.INFO);
 
                     return;
                 }
                 case "remove" -> {
                     if (args.length > 1) {
-                        Optional<INode> cloudNode = ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[1]);
-                        cloudNode.ifPresentOrElse(node -> {
-                            if (args[1].equalsIgnoreCase("--stop")) node.stop();
-                            ClusterStartup.getCluster().getNodeFactory().deleteNode(node);
+                        ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[1]).ifPresentOrElse(node -> {
+                            ClusterStartup.getCluster().getCloudConfig().nodes().remove(args[1]);
+                            ClusterStartup.getCluster().getConfigManager().save();
                         }, () -> Logger.log("A node with that name isn't registered.", LogType.ERROR));
-                    } else Logger.log("node remove [name] (command)", LogType.INFO);
+                    } else Logger.log("node remove [name]", LogType.INFO);
 
                     return;
                 }
@@ -81,7 +78,6 @@ public class NodeCommand extends Command {
             return;
         }
 
-        Logger.log("node execute [name] disconnect§7|§fstop | disconnect or stop a node", LogType.INFO);
         Logger.log("node add [name] [ip] [port] [key] (command) | add a node", LogType.INFO);
         Logger.log("node remove [name] | remove a node", LogType.INFO);
         Logger.log("node info [name] | see all informations about a node", LogType.INFO);

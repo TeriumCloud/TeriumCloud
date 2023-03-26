@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 public class NodeProvider implements INodeProvider {
@@ -36,8 +37,8 @@ public class NodeProvider implements INodeProvider {
         registerNode(ClusterStartup.getCluster().getThisNode());
 
         JsonObject jsonObject = ClusterStartup.getCluster().getCloudConfig().nodes();
-        ClusterStartup.getCluster().getCloudConfig().nodes().entrySet().forEach(jsonElement -> registerNode(new Node(jsonElement.getValue().getAsJsonObject().get("name").getAsString(), jsonElement.getValue().getAsJsonObject().get("key").getAsString(),
-                new InetSocketAddress(jsonElement.getValue().getAsJsonObject().get("address").getAsString(), jsonElement.getValue().getAsJsonObject().get("port").getAsInt()))));
+        ClusterStartup.getCluster().getCloudConfig().nodes().entrySet().forEach(jsonElement -> registerNode(new Node(jsonElement.getValue().getAsJsonObject().get("name").getAsString(), "",
+                new InetSocketAddress(jsonElement.getValue().getAsJsonObject().get("ip").getAsString(), ThreadLocalRandom.current().nextInt(2000, 6000)))));
     }
 
     @Override

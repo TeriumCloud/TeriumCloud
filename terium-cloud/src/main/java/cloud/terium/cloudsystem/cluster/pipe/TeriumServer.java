@@ -152,7 +152,7 @@ public class TeriumServer {
                                                         return;
                                                     }
 
-                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.masterKey()));
+                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.address(), newPacket.maxMemory(), newPacket.masterKey()));
                                                 }
                                                 if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));

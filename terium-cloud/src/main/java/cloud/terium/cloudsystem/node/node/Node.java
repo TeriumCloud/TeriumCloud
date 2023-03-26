@@ -77,15 +77,4 @@ public class Node implements INode {
     public void update() {
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeUpdate(getName(), usedMemory, maxMemory));
     }
-
-    @Override
-    public void disconnect() {
-        // NOT SUPPORTED FOR MINECRAFT SERVICES
-        System.out.println("ERROR: This feature isn't supported yet for minecraft services");
-    }
-
-    @Override
-    public void stop() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeShutdown(name));
-    }
 }

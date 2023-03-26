@@ -12,7 +12,6 @@ import cloud.terium.cloudsystem.node.entity.CloudPlayerListener;
 import cloud.terium.cloudsystem.node.entity.CloudPlayerProvider;
 import cloud.terium.cloudsystem.node.module.ModuleProvider;
 import cloud.terium.cloudsystem.node.node.Node;
-import cloud.terium.cloudsystem.node.node.NodeFactory;
 import cloud.terium.cloudsystem.node.node.NodeProvider;
 import cloud.terium.cloudsystem.node.pipe.TeriumNetworkProvider;
 import cloud.terium.cloudsystem.node.service.CloudServiceFactory;
@@ -21,11 +20,11 @@ import cloud.terium.cloudsystem.node.service.CloudServiceProvider;
 import cloud.terium.cloudsystem.node.service.group.ServiceGroupFactory;
 import cloud.terium.cloudsystem.node.service.group.ServiceGroupProvider;
 import cloud.terium.cloudsystem.node.template.TemplateFactory;
+import cloud.terium.cloudsystem.node.template.TemplateListener;
 import cloud.terium.cloudsystem.node.template.TemplateProvider;
 import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -36,7 +35,6 @@ import cloud.terium.teriumapi.entity.ICloudPlayerProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.node.INodeFactory;
 import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -57,7 +55,6 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
@@ -71,7 +68,6 @@ public class NodeStartup extends TeriumAPI {
     private final ConsoleManager consoleManager;
     private final TeriumNetworkProvider networking;
     private final NodeProvider nodeProvider;
-    private final NodeFactory nodeFactory;
     private final ServiceGroupProvider serviceGroupProvider;
     private final ServiceGroupFactory serviceGroupFactory;
     private final CloudServiceProvider serviceProvider;
@@ -102,16 +98,17 @@ public class NodeStartup extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
-        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), ThreadLocalRandom.current().nextInt(4000, 5000)));
+        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), ThreadLocalRandom.current().nextInt(4000, 5000)), nodeConfig.memory(), true);
         this.eventProvider = new EventProvider();
+
         this.eventProvider.subscribeListener(new ConsoleListener());
         this.eventProvider.subscribeListener(new CloudPlayerListener());
         this.eventProvider.subscribeListener(new CloudServiceListener());
+        this.eventProvider.subscribeListener(new TemplateListener());
 
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
-        this.nodeFactory = new NodeFactory();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceProvider = new CloudServiceProvider();
@@ -142,7 +139,7 @@ public class NodeStartup extends TeriumAPI {
                  """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", nodeConfig.master().get("ip").getAsString()).replace("%port%", nodeConfig.master().get("port").getAsInt() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();
-        this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName(), nodeConfig.master().get("key").getAsString()));
+        this.networking.sendPacket(new PacketPlayOutNodeStarted(thisNode.getName(), thisNode.getAddress(), thisNode.getMaxMemory(), nodeConfig.master().get("key").getAsString()));
 
         Signal.handle(new Signal("INT"), signal -> {
             TeriumCloud.getTerium().getCloudUtils().setRunning(false);
@@ -243,11 +240,6 @@ public class NodeStartup extends TeriumAPI {
             @Override
             public ITemplateFactory getTemplateFactory() {
                 return templateFactory;
-            }
-
-            @Override
-            public INodeFactory getNodeFactory() {
-                return nodeFactory;
             }
 
             @Override

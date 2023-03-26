@@ -73,15 +73,19 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
         }
 
         getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
+            private void accept(ITemplate template) {
+            }
+
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 try {
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
-                        NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.key(), newPacket.address()));
+                        NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.key(), newPacket.address(), newPacket.memory(), newPacket.connected()));
 
                     // Templates
-                    if (packet instanceof PacketPlayOutTemplateAdd newPacket)
-                        NodeStartup.getNode().getTemplateProvider().getAllTemplates().add(new Template(newPacket.name(), Path.of(newPacket.path())));
+                    if (packet instanceof PacketPlayOutTemplateAdd newPacket) {
+                        NodeStartup.getNode().getTemplateProvider().getTemplateByName(newPacket.name()).ifPresentOrElse(this::accept, () -> NodeStartup.getNode().getTemplateFactory().createTemplate(newPacket.name()));
+                    }
 
                     // Groups
                     if (packet instanceof PacketPlayOutGroupAdd newPacket) {
@@ -177,7 +181,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
                     // node packets
                     if (packet instanceof PacketPlayOutNodeStarted newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.masterKey()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.address(), newPacket.maxMemory(), newPacket.masterKey()));
                     if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
                     if (packet instanceof PacketPlayOutNodeShutdowned newPacket)

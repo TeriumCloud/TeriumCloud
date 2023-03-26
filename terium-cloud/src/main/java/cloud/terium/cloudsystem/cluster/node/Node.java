@@ -12,6 +12,7 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Node implements INode {
 
@@ -28,6 +29,22 @@ public class Node implements INode {
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = 0;
+    }
+
+    public Node(String name, String key, String address) {
+        this.name = name;
+        this.key = key;
+        this.address = new InetSocketAddress(address, ThreadLocalRandom.current().nextInt(2000, 6000));
+        this.usedMemory = 0;
+        this.maxMemory = 0;
+    }
+
+    public Node(String name, String key, InetSocketAddress address, long maxMemory) {
+        this.name = name;
+        this.key = key;
+        this.address = address;
+        this.usedMemory = 0;
+        this.maxMemory = maxMemory;
     }
 
     @Override
@@ -74,20 +91,5 @@ public class Node implements INode {
     @Override
     public void update() {
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutNodeUpdate(getName(), usedMemory, maxMemory));
-    }
-
-    @Override
-    public void disconnect() {
-        Logger.log("Trying to disconnect node '" + name + "'...", LogType.INFO);
-        client.getChannel().disconnect();
-        client.getChannel().writeAndFlush(new PacketPlayOutNodeShutdowned(getName()));
-        Logger.log("Successfully disconnected node '" + name + "'.", LogType.INFO);
-    }
-
-    @Override
-    public void stop() {
-        Logger.log("Trying to stop node '" + name + "'...", LogType.INFO);
-        client.getChannel().writeAndFlush(new PacketPlayOutNodeShutdown(getName()));
-        Logger.log("Successfully stopped node '" + name + "'.", LogType.INFO);
     }
 }
