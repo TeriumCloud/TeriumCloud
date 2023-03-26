@@ -27,8 +27,8 @@ import cloud.terium.networking.packet.node.*;
 import cloud.terium.networking.packet.player.*;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
+import cloud.terium.networking.packet.template.PacketPlayOutTemplateCreate;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
-import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.entity.impl.CloudPlayer;
@@ -77,7 +77,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 try {
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
-                        NodeStartup.getNode().getNodeProvider().registerNode(new Node(newPacket.name(), newPacket.key(), newPacket.address()));
+                        NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.key(), newPacket.address()));
 
                     // Templates
                     if (packet instanceof PacketPlayOutTemplateAdd newPacket)
@@ -174,10 +174,6 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     if (packet instanceof PacketPlayOutCloudPlayerUpdate newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new CloudPlayerUpdateEvent(newPacket.parsedCloudPlayer().orElseGet(null),
                                 newPacket.username(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.parsedCloudService().orElseGet(null)));
-                    if (packet instanceof PacketPlayOutCloudPlayerRegister newPacket)
-                        NodeStartup.getNode().getCloudPlayerProvider().registerPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService());
-                    if (packet instanceof PacketPlayOutCloudPlayerAdd newPacket)
-                        NodeStartup.getNode().getNetworking().sendPacket(new PacketPlayOutCloudPlayerAdd(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService()));
 
                     // node packets
                     if (packet instanceof PacketPlayOutNodeStarted newPacket)
@@ -185,7 +181,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
                     if (packet instanceof PacketPlayOutNodeShutdowned newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownedEvent(newPacket.parsedNode().orElseGet(null)));
+                        NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownedEvent(newPacket.node()));
                     if (packet instanceof PacketPlayOutNodeUpdate newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeUpdateEvent(newPacket.node(), newPacket.usedMemory(), newPacket.maxMemory()));
 
@@ -212,7 +208,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                         NodeStartup.getNode().getEventProvider().callEvent(new ReloadGroupsEvent());
 
                     // template events
-                    if (packet instanceof cloud.terium.networking.packet.template.PacketPlayOutTemplateCreate newPacket)
+                    if (packet instanceof PacketPlayOutTemplateCreate newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
                     if (packet instanceof PacketPlayOutTemplateDelete newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
@@ -234,6 +230,6 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
     @Override
     public void sendPacket(Packet packet) {
-        this.teriumClient.getChannel().writeAndFlush(packet);
+        getChannel().writeAndFlush(packet);
     }
 }

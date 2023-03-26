@@ -28,10 +28,6 @@ public class ReloadCommand extends Command {
         Logger.log("Reloading config.json...", LogType.INFO);
         NodeStartup.getNode().setConfigManager(new ConfigManager());
         NodeStartup.getNode().setNodeConfig(NodeStartup.getNode().getConfigManager().toNodeConfig());
-
-        Logger.log("Sending reloading packets...", LogType.INFO);
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutReloadConfig());
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupsReload());
         Thread.sleep(500);
         Logger.log("Successfully reloaded terium-cloud.", LogType.INFO);
     }

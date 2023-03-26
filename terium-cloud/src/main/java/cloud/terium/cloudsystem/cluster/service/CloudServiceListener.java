@@ -1,8 +1,9 @@
 package cloud.terium.cloudsystem.cluster.service;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
-import cloud.terium.cloudsystem.common.event.events.service.*;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
+import cloud.terium.cloudsystem.common.event.events.service.*;
+import cloud.terium.cloudsystem.node.NodeStartup;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
@@ -34,8 +35,9 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
-        new cloud.terium.cloudsystem.cluster.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
-                event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
+        if (event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()))
+            new cloud.terium.cloudsystem.cluster.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
+                    event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
     }
 
     @Subscribe

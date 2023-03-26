@@ -1,6 +1,6 @@
 package cloud.terium.cloudsystem.node.module;
 
-import cloud.terium.cloudsystem.cluster.utils.Logger;
+import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.module.ILoadedModule;
 import cloud.terium.teriumapi.module.IModule;

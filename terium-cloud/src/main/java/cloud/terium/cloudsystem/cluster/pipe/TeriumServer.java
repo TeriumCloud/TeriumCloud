@@ -157,7 +157,7 @@ public class TeriumServer {
                                                 if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
                                                 if (packet instanceof PacketPlayOutNodeShutdowned newPacket)
-                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownedEvent(newPacket.parsedNode().orElseGet(null)));
+                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownedEvent(newPacket.node()));
                                                 if (packet instanceof PacketPlayOutNodeUpdate newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeUpdateEvent(newPacket.node(), newPacket.usedMemory(), newPacket.maxMemory()));
 

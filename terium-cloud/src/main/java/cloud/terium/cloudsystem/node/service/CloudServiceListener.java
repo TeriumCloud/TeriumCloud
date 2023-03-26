@@ -34,8 +34,9 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
-        new cloud.terium.cloudsystem.node.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : NodeStartup.getNode().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
-                event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
+        if(event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()))
+            new cloud.terium.cloudsystem.node.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : NodeStartup.getNode().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
+                    event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
     }
 
     @Subscribe
@@ -58,7 +59,7 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceRemove(ServiceRemoveEvent event) {
-        NodeStartup.getNode().getServiceProvider().getAllCloudServices().remove(NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()));
+        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> NodeStartup.getNode().getServiceProvider().removeService(cloudService));
     }
 
     @Subscribe

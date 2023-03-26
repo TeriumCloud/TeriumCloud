@@ -18,9 +18,8 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     private final HashMap<ICloudServiceGroup, List<Integer>> cloudServiceIdCache;
 
     public CloudServiceProvider() {
-        this.cloudServiceCache = new HashMap<>();
-        this.cloudServiceIdCache = new HashMap<>();
-        NodeStartup.getNode().getServiceGroupProvider().getAllServiceGroups().forEach(cloudServiceGroup -> cloudServiceIdCache.put(cloudServiceGroup, new LinkedList<>()));
+        this.cloudServiceCache = new LinkedHashMap<>();
+        this.cloudServiceIdCache = new LinkedHashMap<>();
     }
 
     public void startServiceCheck() {
@@ -86,6 +85,10 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public void removeService(ICloudService cloudService) {
         cloudServiceCache.remove(cloudService.getServiceName(), cloudService);
+    }
+
+    public HashMap<ICloudServiceGroup, List<Integer>> getCloudServiceIdCache() {
+        return cloudServiceIdCache;
     }
 
     @Override

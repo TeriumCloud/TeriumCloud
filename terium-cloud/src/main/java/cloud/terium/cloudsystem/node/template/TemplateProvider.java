@@ -1,7 +1,7 @@
 package cloud.terium.cloudsystem.node.template;
 
-import cloud.terium.cloudsystem.common.template.Template;
 import cloud.terium.cloudsystem.node.utils.Logger;
+import cloud.terium.cloudsystem.common.template.Template;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateProvider;
@@ -18,6 +18,7 @@ public class TemplateProvider implements ITemplateProvider {
 
     public TemplateProvider() {
         this.templates = new CopyOnWriteArrayList<>();
+
         new File("templates//").mkdirs();
         new File("templates//Global//server").mkdirs();
         new File("templates//Global//proxy").mkdirs();

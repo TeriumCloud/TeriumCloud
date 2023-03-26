@@ -56,6 +56,7 @@ import java.io.File;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -101,6 +102,7 @@ public class NodeStartup extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
+        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), ThreadLocalRandom.current().nextInt(4000, 5000)));
         this.eventProvider = new EventProvider();
         this.eventProvider.subscribeListener(new ConsoleListener());
         this.eventProvider.subscribeListener(new CloudPlayerListener());
@@ -110,8 +112,6 @@ public class NodeStartup extends TeriumAPI {
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
         this.nodeFactory = new NodeFactory();
-        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), ThreadLocalRandom.current().nextInt(4000, 5000)));
-        this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceProvider = new CloudServiceProvider();
@@ -134,10 +134,10 @@ public class NodeStartup extends TeriumAPI {
                  §7> §fTerium by ByRaudy(Jannik H.)\s
                  §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                                  
-                  §a> §fLoaded %commands% commands successfully.
-                  §a> §fLoaded %templates% templates successfully.
-                  §a> §fLoaded %groups% groups successfully.
                   §a> §fConnected with terium-server on %ip%:%port%.
+                  §a> §fRecived %commands% commands successfully.
+                  §a> §fRecived %groups% groups successfully.
+                  §a> §fLoaded %templates% templates successfully.
                                  
                  """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", nodeConfig.master().get("ip").getAsString()).replace("%port%", nodeConfig.master().get("port").getAsInt() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
@@ -151,7 +151,7 @@ public class NodeStartup extends TeriumAPI {
 
         serviceProvider.startServiceCheck();
         serviceProvider.startServiceStopCheck();
-        System.out.println(getServiceProvider().getAllCloudServices().size());
+        NodeStartup.getNode().getServiceGroupProvider().getAllServiceGroups().forEach(cloudServiceGroup -> getServiceProvider().getCloudServiceIdCache().put(cloudServiceGroup, new LinkedList<>()));
     }
 
     public static NodeStartup getNode() {
@@ -260,15 +260,15 @@ public class NodeStartup extends TeriumAPI {
     @SneakyThrows
     public void shutdownCloud() {
         Logger.log("Trying to stop terium-cloud...", LogType.INFO);
-        getNetworking().sendPacket(new PacketPlayOutNodeShutdowned(thisNode.getName()));
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
-        getServiceProvider().getAllCloudServices().forEach(ICloudService::shutdown);
+        getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(thisNode.getName())).forEach(ICloudService::shutdown);
         Thread.sleep(500);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);
+        getNetworking().sendPacket(new PacketPlayOutNodeShutdowned(thisNode.getName()));
         getNetworking().getChannel().close().sync();
-        Logger.log("Successfully stopped terium-server.", LogType.INFO);
+        Logger.log("Successfully disconnected from terium-server.", LogType.INFO);
 
         FileUtils.deleteDirectory(new File("servers//"));
         Logger.log("Successfully deleted server folder.", LogType.INFO);

@@ -1,14 +1,8 @@
 package cloud.terium.cloudsystem.node.node;
 
-import cloud.terium.cloudsystem.node.utils.Logger;
-import cloud.terium.cloudsystem.node.NodeStartup;
-import cloud.terium.networking.TeriumFramework;
-import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
-import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
 
 import java.net.InetSocketAddress;
@@ -20,7 +14,16 @@ public class Node implements INode {
     private final InetSocketAddress address;
     private long usedMemory;
     private long maxMemory;
-    private TeriumClient client;
+    private boolean connected;
+
+    public Node(String name, String key, InetSocketAddress address, long maxMemory, boolean connected) {
+        this.name = name;
+        this.key = key;
+        this.address = address;
+        this.usedMemory = 0;
+        this.maxMemory = 0;
+        this.connected = connected;
+    }
 
     public Node(String name, String key, InetSocketAddress address) {
         this.name = name;
@@ -47,8 +50,7 @@ public class Node implements INode {
 
     @Override
     public boolean isConnected() {
-        if (client == null) return false;
-        return client.getChannel().isActive();
+        return connected;
     }
 
     @Override
@@ -73,21 +75,17 @@ public class Node implements INode {
 
     @Override
     public void update() {
-        NodeStartup.getNode().getNetworking().sendPacket(new PacketPlayOutNodeUpdate(getName(), usedMemory, maxMemory));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeUpdate(getName(), usedMemory, maxMemory));
     }
 
     @Override
     public void disconnect() {
-        Logger.log("Trying to disconnect node '" + name + "'...", LogType.INFO);
-        client.getChannel().disconnect();
-        client.getChannel().writeAndFlush(new PacketPlayOutNodeShutdowned(getName()));
-        Logger.log("Successfully disconnected node '" + name + "'.", LogType.INFO);
+        // NOT SUPPORTED FOR MINECRAFT SERVICES
+        System.out.println("ERROR: This feature isn't supported yet for minecraft services");
     }
 
     @Override
     public void stop() {
-        Logger.log("Trying to stop node '" + name + "'...", LogType.INFO);
-        client.getChannel().writeAndFlush(new PacketPlayOutNodeShutdown(getName()));
-        Logger.log("Successfully stopped node '" + name + "'.", LogType.INFO);
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutNodeShutdown(name));
     }
 }
