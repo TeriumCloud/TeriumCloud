@@ -25,21 +25,24 @@ public class NodeCommand extends Command {
         if (args.length >= 1) {
             switch (args[0]) {
                 case "add" -> {
-                    if (args.length >= 3) {
+                    if (args.length >= 4) {
                         try {
-                            JsonObject newNode = new JsonObject();
-                            newNode.addProperty("name", args[1]);
-                            newNode.addProperty("ip", args[2]);
-                            ClusterStartup.getCluster().getCloudConfig().nodes().add(args[1], newNode);
-                            ClusterStartup.getCluster().getConfigManager().save();
-                            ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], "", args[2]));
+                            ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[1]).ifPresentOrElse(node -> Logger.log("A node with that name is already registered!", LogType.ERROR), () -> {
+                                JsonObject newNode = new JsonObject();
+                                newNode.addProperty("name", args[1]);
+                                newNode.addProperty("ip", args[2]);
+                                newNode.addProperty("port", args[3]);
+                                ClusterStartup.getCluster().getCloudConfig().nodes().add(args[1], newNode);
+                                ClusterStartup.getCluster().getConfigManager().save();
+                                ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], "", new InetSocketAddress(args[2], Integer.parseInt(args[3]))));
 
-                            Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
+                                Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
+                            });
                         } catch (Exception exception) {
                             if (args.length == 6 && args[5].equalsIgnoreCase("--print")) exception.printStackTrace();
                             Logger.log("Error while creating new node.", LogType.ERROR);
                         }
-                    } else Logger.log("node add [name] [ip] (command)", LogType.INFO);
+                    } else Logger.log("node add [name] [ip] [port] (command)", LogType.INFO);
 
                     return;
                 }
@@ -78,7 +81,7 @@ public class NodeCommand extends Command {
             return;
         }
 
-        Logger.log("node add [name] [ip] [port] [key] (command) | add a node", LogType.INFO);
+        Logger.log("node add [name] [ip] [port] (command) | add a node", LogType.INFO);
         Logger.log("node remove [name] | remove a node", LogType.INFO);
         Logger.log("node info [name] | see all informations about a node", LogType.INFO);
         Logger.log("nodes list | a list of all loaded nodes with informations", LogType.INFO);

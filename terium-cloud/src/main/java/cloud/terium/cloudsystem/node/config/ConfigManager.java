@@ -40,6 +40,7 @@ public class ConfigManager {
 
             informations.addProperty("name", "Node-1");
             informations.addProperty("ip", "127.0.0.1");
+            informations.addProperty("port", 4658);
             json.add("informations", informations);
             json.addProperty("promt", "§b%user%§f@terium => ");
             json.addProperty("memory", 5120);
@@ -66,7 +67,7 @@ public class ConfigManager {
 
     public NodeConfig toNodeConfig() {
         return new NodeConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
-                json.get("informations").getAsJsonObject().get("ip").getAsString(),
+                json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
                 json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("debug").getAsBoolean(),
                 json.get("master").getAsJsonObject());
     }

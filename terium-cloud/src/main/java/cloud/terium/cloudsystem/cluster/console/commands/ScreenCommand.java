@@ -28,7 +28,7 @@ public class ScreenCommand extends Command {
     @Override
     public List<String> tabComplete(String[] args) {
         if (args.length == 1)
-            return ClusterStartup.getCluster().getServiceProvider().getAllCloudServices().stream().map(ICloudService::getServiceName).toList();
+            return ClusterStartup.getCluster().getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(ClusterStartup.getCluster().getProvider().getThisNode().getName())).map(ICloudService::getServiceName).toList();
         return List.of();
     }
 }

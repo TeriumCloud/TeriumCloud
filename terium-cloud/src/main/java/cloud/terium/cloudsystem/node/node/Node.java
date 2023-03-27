@@ -1,6 +1,5 @@
 package cloud.terium.cloudsystem.node.node;
 
-import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;

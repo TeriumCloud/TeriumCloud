@@ -24,6 +24,7 @@ import cloud.terium.cloudsystem.cluster.template.TemplateFactory;
 import cloud.terium.cloudsystem.cluster.template.TemplateProvider;
 import cloud.terium.cloudsystem.common.event.EventProvider;
 import cloud.terium.cloudsystem.common.screen.ScreenProvider;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -133,12 +134,12 @@ public class ClusterStartup extends TeriumAPI {
                      §a> §fLoaded %commands% commands successfully.
                      §a> §fLoaded %templates% templates successfully.
                      §a> §fLoaded %groups% groups successfully.
-                     §a> §fLoaded %loaded_nodes% and connected to %connected_nodes% nodes successfully.
+                     §a> §fLoaded %loaded_nodes% nodes successfully.
                      §a> §fStarted terium-server on %ip%:%port%.
                                     
                     """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != thisNode).toList().size() + "")
-                .replace("%connected_nodes%", nodeProvider.getNodeClients().values().size() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
+                .replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();
 
         Signal.handle(new Signal("INT"), signal -> {
@@ -253,7 +254,8 @@ public class ClusterStartup extends TeriumAPI {
         Logger.log("Trying to stop terium-cloud...", LogType.INFO);
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
-        getServiceProvider().getAllCloudServices().forEach(ICloudService::shutdown);
+        getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(thisNode.getName())).forEach(ICloudService::shutdown);
+        getNodeProvider().getNodeClients().keySet().forEach(node -> getNodeProvider().getClientFromNode(node).writeAndFlush(new PacketPlayOutNodeShutdown(node.getName())));
         Thread.sleep(500);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);

@@ -146,13 +146,20 @@ public class TeriumServer {
 
                                                 // node packets
                                                 if (packet instanceof PacketPlayOutNodeStarted newPacket) {
-                                                    if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getThisNode().getKey())) {
-                                                        channelHandlerContext.channel().close().sync();
+                                                    if(ClusterStartup.getCluster().getNodeProvider().getNodeByName(newPacket.node()).isEmpty()) {
                                                         Logger.log("A NOT REGISTERED NODE WANTS TO CONNECT TO YOUR CLUSTER", LogType.INFO);
                                                         return;
                                                     }
 
+                                                    if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getThisNode().getKey())) {
+                                                        channelHandlerContext.channel().close().sync();
+                                                        Logger.log("The master key isn't corrent.", LogType.ERROR);
+                                                        Logger.log("Closing connection from node '" + newPacket.node() + "'", LogType.ERROR);
+                                                        return;
+                                                    }
+
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.address(), newPacket.maxMemory(), newPacket.masterKey()));
+                                                    ClusterStartup.getCluster().getNodeProvider().addClientToNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), channelHandlerContext);
                                                 }
                                                 if (packet instanceof PacketPlayOutNodeShutdown newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));

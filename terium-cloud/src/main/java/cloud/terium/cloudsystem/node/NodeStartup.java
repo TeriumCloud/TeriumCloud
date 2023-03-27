@@ -44,6 +44,8 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
+import io.netty.channel.local.LocalAddress;
+import io.netty.resolver.InetSocketAddressResolver;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -51,6 +53,7 @@ import org.apache.commons.io.FileUtils;
 import sun.misc.Signal;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -98,7 +101,7 @@ public class NodeStartup extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
-        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(nodeConfig.ip(), ThreadLocalRandom.current().nextInt(4000, 5000)), nodeConfig.memory(), true);
+        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(InetAddress.getLocalHost(), nodeConfig.port()), nodeConfig.memory(), true);
         this.eventProvider = new EventProvider();
 
         this.eventProvider.subscribeListener(new ConsoleListener());
@@ -109,6 +112,7 @@ public class NodeStartup extends TeriumAPI {
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
+        this.nodeProvider.getAllNodes().add(thisNode);
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
         this.serviceProvider = new CloudServiceProvider();

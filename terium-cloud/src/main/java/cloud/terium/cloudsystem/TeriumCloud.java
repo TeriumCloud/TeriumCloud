@@ -24,7 +24,7 @@ public class TeriumCloud {
         System.setProperty("org.jline.terminal.dumb", "true");
         new TeriumCloud();
 
-        if((args.length == 1 && args[0].equals("--node"))) new NodeStartup();
+        if ((args.length >= 1 && args[0].equals("--node"))) new NodeStartup();
         else new ClusterStartup();
     }
 

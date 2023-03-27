@@ -21,20 +21,11 @@ public class Node implements INode {
     private final InetSocketAddress address;
     private long usedMemory;
     private long maxMemory;
-    private TeriumClient client;
 
     public Node(String name, String key, InetSocketAddress address) {
         this.name = name;
         this.key = key;
         this.address = address;
-        this.usedMemory = 0;
-        this.maxMemory = 0;
-    }
-
-    public Node(String name, String key, String address) {
-        this.name = name;
-        this.key = key;
-        this.address = new InetSocketAddress(address, ThreadLocalRandom.current().nextInt(2000, 6000));
         this.usedMemory = 0;
         this.maxMemory = 0;
     }
@@ -64,8 +55,8 @@ public class Node implements INode {
 
     @Override
     public boolean isConnected() {
-        if (client == null) return false;
-        return client.getChannel().isActive();
+        if (ClusterStartup.getCluster().getNodeProvider().getClientFromNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(name).orElseGet(null)) == null) return false;
+        return ClusterStartup.getCluster().getNodeProvider().getClientFromNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(name).orElseGet(null)).channel().isActive();
     }
 
     @Override

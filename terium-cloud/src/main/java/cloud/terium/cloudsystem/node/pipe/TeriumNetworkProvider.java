@@ -17,6 +17,7 @@ import cloud.terium.cloudsystem.common.event.events.service.template.TemplateDel
 import cloud.terium.cloudsystem.common.module.LoadedModule;
 import cloud.terium.cloudsystem.node.NodeStartup;
 import cloud.terium.cloudsystem.node.node.Node;
+import cloud.terium.cloudsystem.node.node.NodeProvider;
 import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
@@ -182,8 +183,12 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     // node packets
                     if (packet instanceof PacketPlayOutNodeStarted newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.address(), newPacket.maxMemory(), newPacket.masterKey()));
-                    if (packet instanceof PacketPlayOutNodeShutdown newPacket)
+                    if (packet instanceof PacketPlayOutNodeShutdown newPacket) {
+                        if(newPacket.node().equals(NodeStartup.getNode().getThisNode().getName()))
+                            NodeStartup.getNode().shutdownCloud();
+
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
+                    }
                     if (packet instanceof PacketPlayOutNodeShutdowned newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownedEvent(newPacket.node()));
                     if (packet instanceof PacketPlayOutNodeUpdate newPacket)

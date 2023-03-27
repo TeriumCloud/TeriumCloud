@@ -2,11 +2,11 @@ package cloud.terium.cloudsystem.cluster.node;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
-import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeProvider;
 import com.google.gson.JsonObject;
+import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 
 import java.net.InetSocketAddress;
@@ -14,13 +14,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 public class NodeProvider implements INodeProvider {
 
     private final HashMap<String, INode> nodes;
-    private final HashMap<INode, TeriumClient> nodeClients;
+    private final HashMap<INode, ChannelHandlerContext> nodeClients;
 
     public NodeProvider() {
         Logger.log("Loaded node-provider", LogType.INFO);
@@ -38,7 +37,7 @@ public class NodeProvider implements INodeProvider {
 
         JsonObject jsonObject = ClusterStartup.getCluster().getCloudConfig().nodes();
         ClusterStartup.getCluster().getCloudConfig().nodes().entrySet().forEach(jsonElement -> registerNode(new Node(jsonElement.getValue().getAsJsonObject().get("name").getAsString(), "",
-                new InetSocketAddress(jsonElement.getValue().getAsJsonObject().get("ip").getAsString(), ThreadLocalRandom.current().nextInt(2000, 6000)))));
+                new InetSocketAddress(jsonElement.getValue().getAsJsonObject().get("ip").getAsString(), jsonElement.getValue().getAsJsonObject().get("port").getAsInt()))));
     }
 
     @Override
@@ -51,11 +50,11 @@ public class NodeProvider implements INodeProvider {
         return Optional.ofNullable(nodes.get(name));
     }
 
-    public void addClientToNode(INode node, TeriumClient client) {
-        nodeClients.put(node, client);
+    public void addClientToNode(INode node, ChannelHandlerContext channel) {
+        nodeClients.put(node, channel);
     }
 
-    public TeriumClient getClientFromNode(INode node) {
+    public ChannelHandlerContext getClientFromNode(INode node) {
         return nodeClients.get(node);
     }
 }

@@ -14,7 +14,6 @@ public class NodeListener implements Listener {
     @Subscribe
     public void handleNodeLoggedIn(NodeLoggedInEvent event) {
         Logger.log("Node '" + event.getNode() + "' sucessfully logged in.", LogType.INFO);
-        ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(event.getNode(), event.getMasterKey(), event.getAddress(), event.getMaxMemory()));
     }
 
     @Subscribe
