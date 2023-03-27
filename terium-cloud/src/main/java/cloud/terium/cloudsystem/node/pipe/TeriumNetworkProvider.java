@@ -17,7 +17,6 @@ import cloud.terium.cloudsystem.common.event.events.service.template.TemplateDel
 import cloud.terium.cloudsystem.common.module.LoadedModule;
 import cloud.terium.cloudsystem.node.NodeStartup;
 import cloud.terium.cloudsystem.node.node.Node;
-import cloud.terium.cloudsystem.node.node.NodeProvider;
 import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.networking.client.TeriumClient;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
@@ -36,7 +35,6 @@ import cloud.terium.teriumapi.entity.impl.CloudPlayer;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
@@ -44,13 +42,11 @@ import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.service.impl.CloudService;
 import cloud.terium.teriumapi.template.ITemplate;
-import cloud.terium.teriumapi.template.impl.Template;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.SneakyThrows;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,18 +86,16 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
                     // Groups
                     if (packet instanceof PacketPlayOutGroupAdd newPacket) {
-                        List<INode> fallbackNodes = new ArrayList<>();
                         List<ITemplate> templates = new ArrayList<>();
-                        newPacket.fallbackNodes().forEach(s -> fallbackNodes.add(NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(s).orElseGet(null)));
                         newPacket.templates().forEach(s -> templates.add(NodeStartup.getNode().getProvider().getTemplateProvider().getTemplateByName(s).orElseGet(null)));
 
                         switch (newPacket.serviceType()) {
                             case Lobby ->
-                                    NodeStartup.getNode().getServiceGroupProvider().registerServiceGroup(new DefaultLobbyGroup(newPacket.name(), newPacket.groupTitle(), NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), fallbackNodes, templates, newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                    NodeStartup.getNode().getServiceGroupProvider().registerServiceGroup(new DefaultLobbyGroup(newPacket.name(), newPacket.groupTitle(), NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), templates, newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                             case Server ->
-                                    NodeStartup.getNode().getServiceGroupProvider().registerServiceGroup(new DefaultServerGroup(newPacket.name(), newPacket.groupTitle(), NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), fallbackNodes, templates, newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                    NodeStartup.getNode().getServiceGroupProvider().registerServiceGroup(new DefaultServerGroup(newPacket.name(), newPacket.groupTitle(), NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), templates, newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                             case Proxy ->
-                                    NodeStartup.getNode().getServiceGroupProvider().registerServiceGroup(new DefaultProxyGroup(newPacket.name(), newPacket.groupTitle(), NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), fallbackNodes, templates, newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                    NodeStartup.getNode().getServiceGroupProvider().registerServiceGroup(new DefaultProxyGroup(newPacket.name(), newPacket.groupTitle(), NodeStartup.getNode().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null), templates, newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                         }
                     }
 
@@ -202,15 +196,15 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
                     // group packets
                     if (packet instanceof PacketPlayOutCreateLobbyGroup newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(),  newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                     if (packet instanceof PacketPlayOutCreateProxyGroup newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                     if (packet instanceof PacketPlayOutCreateServerGroup newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                     if (packet instanceof PacketPlayOutGroupDelete newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.serviceGroup()));
                     if (packet instanceof PacketPlayOutGroupUpdate newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup(), newPacket.node(), newPacket.version(), newPacket.maximumPlayers(), newPacket.maintenance(), newPacket.isStatic(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                     if (packet instanceof PacketPlayOutGroupReload newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.serviceGroup()));
                     if (packet instanceof PacketPlayOutGroupsReload)

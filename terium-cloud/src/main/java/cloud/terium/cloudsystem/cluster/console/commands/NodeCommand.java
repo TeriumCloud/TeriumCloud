@@ -6,9 +6,17 @@ import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +59,9 @@ public class NodeCommand extends Command {
                         ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[1]).ifPresentOrElse(node -> {
                             ClusterStartup.getCluster().getCloudConfig().nodes().remove(args[1]);
                             ClusterStartup.getCluster().getConfigManager().save();
+                            ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().stream().filter(serviceGroup -> serviceGroup.getGroupNode().getName().equals(args[1])).forEach(serviceGroup -> {
+                                serviceGroup.setGroupNode(ClusterStartup.getCluster().getThisNode());
+                            });
                         }, () -> Logger.log("A node with that name isn't registered.", LogType.ERROR));
                     } else Logger.log("node remove [name]", LogType.INFO);
 

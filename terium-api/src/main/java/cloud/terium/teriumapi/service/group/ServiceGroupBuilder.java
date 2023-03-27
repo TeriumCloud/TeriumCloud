@@ -19,7 +19,6 @@ public class ServiceGroupBuilder {
     private final ServiceType serviceType;
     private String groupTitle = "Default service group";
     private INode node = TeriumAPI.getTeriumAPI().getProvider().getThisNode();
-    private List<INode> fallbackNodes = List.of();
     private List<ITemplate> templates;
     private String version = "paper-1.19.3";
     private int port = 0;
@@ -43,11 +42,6 @@ public class ServiceGroupBuilder {
 
     public ServiceGroupBuilder setNode(INode node) {
         this.node = node;
-        return this;
-    }
-
-    public ServiceGroupBuilder setFallbackNodes(List<INode> fallbackNodes) {
-        this.fallbackNodes = fallbackNodes;
         return this;
     }
 
@@ -105,16 +99,16 @@ public class ServiceGroupBuilder {
         ICloudServiceGroup cloudServiceGroup = null;
         switch (serviceType) {
             case Proxy -> {
-                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateProxyGroup(name, groupTitle, node.getName(), fallbackNodes.stream().map(INode::getName).toList(), templates.stream().map(ITemplate::getName).toList(), version, maintenance, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices));
-                cloudServiceGroup = new DefaultProxyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices);
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateProxyGroup(name, groupTitle, node.getName(), templates.stream().map(ITemplate::getName).toList(), version, maintenance, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices));
+                cloudServiceGroup = new DefaultProxyGroup(name, groupTitle, node, templates, version, maintenance, isStatic, port, maximumPlayers, memory, minimalServices, maximalServices);
             }
             case Lobby -> {
-                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateLobbyGroup(name, groupTitle, node.getName(), fallbackNodes.stream().map(INode::getName).toList(), templates.stream().map(ITemplate::getName).toList(), version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
-                cloudServiceGroup = new DefaultLobbyGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices);
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateLobbyGroup(name, groupTitle, node.getName(), templates.stream().map(ITemplate::getName).toList(), version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
+                cloudServiceGroup = new DefaultLobbyGroup(name, groupTitle, node, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices);
             }
             case Server -> {
-                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateServerGroup(name, groupTitle, node.getName(), fallbackNodes.stream().map(INode::getName).toList(), templates.stream().map(ITemplate::getName).toList(), version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
-                cloudServiceGroup = new DefaultServerGroup(name, groupTitle, node, fallbackNodes, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices);
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateServerGroup(name, groupTitle, node.getName(), templates.stream().map(ITemplate::getName).toList(), version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices));
+                cloudServiceGroup = new DefaultServerGroup(name, groupTitle, node, templates, version, maintenance, isStatic, maximumPlayers, memory, minimalServices, maximalServices);
             }
         }
         return cloudServiceGroup;

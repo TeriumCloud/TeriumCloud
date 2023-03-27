@@ -38,29 +38,11 @@ public interface ICloudServiceGroup extends Serializable {
     INode getGroupNode();
 
     /**
-     * Get the fallback nodes of the service group
-     *
-     * @return List<INode> This returns the fallback nodes of the service group as List<INode>.
-     */
-    List<INode> getGroupFallbackNode();
-
-    /**
-     * Add a node as fallback node to the service group
+     * Set the node of the service group
      *
      * @param node INode
      */
-    default void addFallbackNode(INode node) {
-        getGroupFallbackNode().add(node);
-    }
-
-    /**
-     * Remove a node as fallback node to the service group
-     *
-     * @param node INode
-     */
-    default void removeFallbackNode(INode node) {
-        getGroupFallbackNode().remove(node);
-    }
+    void setGroupNode(INode node);
 
     /**
      * Get the templates of the service group
@@ -222,7 +204,6 @@ public interface ICloudServiceGroup extends Serializable {
                 "   group_name: " + getGroupName() + "\n" +
                 "   group_title: " + getGroupTitle() + "\n" +
                 "   node: " + getGroupNode().getName() + "\n" +
-                "   fallback nodes: " + getGroupFallbackNode().stream().map(INode::getName).toList() + "\n" +
                 "   templates: " + getTemplates().stream().map(ITemplate::getName).toList() + "\n" +
                 "   version: " + getVersion() + "\n" +
                 "   servicetype: " + getServiceType() + "\n" +

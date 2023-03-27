@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public record PacketPlayOutCreateProxyGroup(String name, String groupTitle, String node, List<String> fallbackNodes,
+public record PacketPlayOutCreateProxyGroup(String name, String groupTitle, String node,
                                             List<String> templates,
                                             String version, boolean maintenance, boolean isStatic, int port,
                                             int maximumPlayers,
@@ -17,14 +17,6 @@ public record PacketPlayOutCreateProxyGroup(String name, String groupTitle, Stri
 
     public Optional<INode> parsedNode() {
         return TeriumAPI.getTeriumAPI().getProvider().getNodeProvider().getNodeByName(node);
-    }
-
-    public List<INode> parsedFallbackNodes() {
-        List<INode> nodeList = new ArrayList<>();
-        fallbackNodes.forEach(node -> {
-            nodeList.add(TeriumAPI.getTeriumAPI().getProvider().getNodeProvider().getNodeByName(node).orElseGet(null));
-        });
-        return nodeList;
     }
 
     public List<ITemplate> parsedTemplates() {

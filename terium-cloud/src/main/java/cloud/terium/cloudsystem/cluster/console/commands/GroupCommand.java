@@ -28,14 +28,14 @@ public class GroupCommand extends Command {
                         if (args.length == 6) {
                             switch (args[1]) {
                                 case "lobby" ->
-                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", ClusterStartup.getCluster().getThisNode(), List.of(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", ClusterStartup.getCluster().getThisNode(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
                                 case "server" ->
-                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createServerGroup(args[2], "Default server group", ClusterStartup.getCluster().getThisNode(), List.of(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createServerGroup(args[2], "Default server group", ClusterStartup.getCluster().getThisNode(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
                             }
                         } else Logger.log("group create lobby/server [name] [version] [static] [memory]", LogType.INFO);
                     } else {
                         if (args.length == 7) {
-                            ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createProxyGroup(args[2], "Default lobby group", ClusterStartup.getCluster().getThisNode(), List.of(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
+                            ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createProxyGroup(args[2], "Default lobby group", ClusterStartup.getCluster().getThisNode(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
                         } else Logger.log("group create proxy [name] [version] [static] [memory] [port]", LogType.INFO);
                     }
                 }
@@ -129,17 +129,13 @@ public class GroupCommand extends Command {
                         Optional<ICloudServiceGroup> cloudServiceGroup = ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]);
                         cloudServiceGroup.ifPresent(serviceGroup -> {
                             try {
-                                if (args[2].equalsIgnoreCase("fallback-node"))
-                                    serviceGroup.addFallbackNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[3]).orElseGet(null));
-                                else if (args[2].equalsIgnoreCase("template"))
+                                if (args[2].equalsIgnoreCase("template"))
                                     serviceGroup.addTemplate(ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(args[3]).orElseGet(null));
                                 ClusterStartup.getCluster().getServiceGroupProvider().updateServiceGroup(serviceGroup);
                             } catch (Exception exception) {
                                 exception.printStackTrace();
                                 if (exception.getMessage() == null) {
-                                    if (args[2].equalsIgnoreCase("fallback-node"))
-                                        Logger.log("A node with that name isn't registered.", LogType.ERROR);
-                                    else if (args[2].equalsIgnoreCase("template"))
+                                    if (args[2].equalsIgnoreCase("template"))
                                         Logger.log("A template with that name isn't registered.", LogType.ERROR);
                                 } else Logger.log("A service group with that name isn't registered.", LogType.ERROR);
                             }
@@ -154,17 +150,13 @@ public class GroupCommand extends Command {
                         Optional<ICloudServiceGroup> cloudServiceGroup = ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]);
                         cloudServiceGroup.ifPresent(serviceGroup -> {
                             try {
-                                if (args[2].equalsIgnoreCase("fallback-node"))
-                                    serviceGroup.removeFallbackNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[3]).orElseGet(null));
-                                else if (args[2].equalsIgnoreCase("template"))
+                                if (args[2].equalsIgnoreCase("template"))
                                     serviceGroup.removeTemplate(ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(args[3]).orElseGet(null));
                                 ClusterStartup.getCluster().getServiceGroupProvider().updateServiceGroup(serviceGroup);
                             } catch (Exception exception) {
                                 exception.printStackTrace();
                                 if (exception.getMessage() == null) {
-                                    if (args[2].equalsIgnoreCase("fallback-node"))
-                                        Logger.log("A node with that name isn't added to the service group.", LogType.ERROR);
-                                    else if (args[2].equalsIgnoreCase("template"))
+                                    if (args[2].equalsIgnoreCase("template"))
                                         Logger.log("A template with that name isn't added to the service group.", LogType.ERROR);
                                 } else Logger.log("A service group with that name isn't registered.", LogType.ERROR);
                             }
@@ -190,7 +182,7 @@ public class GroupCommand extends Command {
         Logger.log("group delete [name] | delete a service group", LogType.INFO);
         Logger.log("group info [name] (--json) | see all informations about a service group", LogType.INFO);
         Logger.log("group update [name] [maintenance/version/static/memory/maxplayers/minservices/maxservices] [value] (--shutdown) | update a service group", LogType.INFO);
-        Logger.log("group add/remove [name] [fallback-node/template] [value] | add or remove fallback node or template to a service group", LogType.INFO);
+        Logger.log("group add/remove [name] [template] [value] | add or remove fallback node or template to a service group", LogType.INFO);
         Logger.log("group list | a list of all loaded service groups with informations", LogType.INFO);
     }
 
@@ -228,15 +220,11 @@ public class GroupCommand extends Command {
                 }
 
                 if (args[0].equalsIgnoreCase("add")) {
-                    if (args[2].equalsIgnoreCase("fallback-node"))
-                        return ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().filter(node -> node != ClusterStartup.getCluster().getThisNode()).filter(node -> !ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).orElseGet(null).getGroupFallbackNode().contains(node)).map(INode::getName).toList();
                     if (args[2].equalsIgnoreCase("template"))
                         return ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().stream().filter(template -> !ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).orElseGet(null).getTemplates().contains(template)).map(ITemplate::getName).toList();
                 }
 
                 if (args[0].equalsIgnoreCase("remove")) {
-                    if (args[2].equalsIgnoreCase("fallback-node"))
-                        return ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).orElseGet(null).getGroupFallbackNode().stream().map(INode::getName).toList();
                     if (args[2].equalsIgnoreCase("template"))
                         return ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).orElseGet(null).getTemplates().stream().map(ITemplate::getName).toList();
                 }

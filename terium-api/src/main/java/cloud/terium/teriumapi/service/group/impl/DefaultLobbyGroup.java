@@ -26,8 +26,7 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private final ServiceType cloudServiceType = ServiceType.Lobby;
     private final String name;
     private final String groupTitle;
-    private final INode node;
-    private final List<INode> fallbackNodes;
+    private INode node;
     private final List<ITemplate> templates;
     private String version;
     private int maximumPlayers;
@@ -38,11 +37,10 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private int maximalServices;
 
     @SneakyThrows
-    public DefaultLobbyGroup(String name, String groupTitle, INode node, List<INode> fallbackNodes, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
+    public DefaultLobbyGroup(String name, String groupTitle, INode node, List<ITemplate> template, String version, boolean maintenance, boolean isStatic, int maximumPlayers, int memory, int minimalServices, int maximalServices) {
         this.name = name;
         this.groupTitle = groupTitle;
         this.node = node;
-        this.fallbackNodes = fallbackNodes;
         this.templates = template;
         this.version = version;
         this.maintenance = maintenance;
@@ -58,14 +56,11 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
         final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
         final JsonArray templateArray = new JsonArray();
-        final JsonArray fallbackNodesArray = new JsonArray();
         templates.forEach(template -> templateArray.add(template.getName()));
-        fallbackNodes.forEach(node -> fallbackNodesArray.add(node.getName()));
 
         json.addProperty("group_name", name);
         json.addProperty("group_title", groupTitle);
         json.addProperty("node", node.getName());
-        json.add("fallback_nodes", fallbackNodesArray);
         json.add("templates", templateArray);
         json.addProperty("version", version);
         json.addProperty("servicetype", cloudServiceType.name());
@@ -102,13 +97,8 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     }
 
     @Override
-    public List<INode> getGroupFallbackNode() {
-        return fallbackNodes;
-    }
-
-    @Override
-    public void addFallbackNode(INode node) {
-        fallbackNodes.add(node);
+    public void setGroupNode(INode node) {
+        this.node = node;
     }
 
     @Override
@@ -203,6 +193,6 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
 
     @Override
     public void update() {
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(getGroupName()));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(getGroupName(), node.getName(), version, maximumPlayers, maintenance, isStatic, memory, minimalServices, maximalServices));
     }
 }

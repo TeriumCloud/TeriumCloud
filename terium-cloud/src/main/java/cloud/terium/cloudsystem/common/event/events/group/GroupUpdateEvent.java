@@ -9,11 +9,18 @@ import lombok.Getter;
 @Getter
 public class GroupUpdateEvent extends Event {
 
-    private final String cloudServiceGroup;
+    private final String serviceGroup;
 
-    public GroupUpdateEvent(String cloudServiceGroup) {
-        this.cloudServiceGroup = cloudServiceGroup;
+    public GroupUpdateEvent(String serviceGroup, String node,
+                            String version,
+                            int maximumPlayers,
+                            boolean maintenance,
+                            boolean isStatic,
+                            int memory,
+                            int minimalServices,
+                            int maximalServices) {
+        this.serviceGroup = serviceGroup;
         if (ClusterStartup.getCluster() != null)
-            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(cloudServiceGroup));
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutGroupUpdate(serviceGroup, node, version, maximumPlayers, maintenance, isStatic, memory, minimalServices, maximalServices));
     }
 }

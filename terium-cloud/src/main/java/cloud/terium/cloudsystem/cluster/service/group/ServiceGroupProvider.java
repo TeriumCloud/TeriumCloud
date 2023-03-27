@@ -49,7 +49,6 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultProxyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         ClusterStartup.getCluster().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()).orElseGet(null),
-                        new LinkedList<>(ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
                         new LinkedList<>(ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
@@ -66,7 +65,6 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         ClusterStartup.getCluster().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()).orElseGet(null),
-                        new LinkedList<>(ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
                         new LinkedList<>(ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
@@ -82,7 +80,6 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
                         serviceGroup.get("group_title").getAsString(),
                         ClusterStartup.getCluster().getNodeProvider().getNodeByName(serviceGroup.get("node").getAsString()).orElseGet(null),
-                        new LinkedList<>(ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().filter(node -> serviceGroup.get("fallback_nodes").getAsJsonArray().toString().contains(node.getName())).toList()),
                         new LinkedList<>(ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().stream().filter(template -> serviceGroup.get("templates").getAsJsonArray().toString().contains(template.getName())).toList()),
                         serviceGroup.get("version").getAsString(),
                         serviceGroup.get("maintenance").getAsBoolean(),
@@ -104,10 +101,9 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
             final JsonObject serviceGroupJson = JsonParser.parseReader(reader).getAsJsonObject();
             final JsonArray templateArray = new JsonArray();
-            final JsonArray fallbackNodesArray = new JsonArray();
             serviceGroup.getTemplates().forEach(template -> templateArray.add(template.getName()));
-            serviceGroup.getGroupFallbackNode().forEach(node -> fallbackNodesArray.add(node.getName()));
 
+            serviceGroupJson.addProperty("node", serviceGroup.getGroupNode().getName());
             serviceGroupJson.addProperty("maintenance", serviceGroup.isMaintenance());
             serviceGroupJson.addProperty("static", serviceGroup.isStatic());
             serviceGroupJson.addProperty("version", serviceGroup.getVersion());
@@ -115,14 +111,13 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
             serviceGroupJson.addProperty("maximum_players", serviceGroup.getMaxPlayers());
             serviceGroupJson.addProperty("minimal_services", serviceGroup.getMinServices());
             serviceGroupJson.addProperty("maximal_services", serviceGroup.getMaxServices());
-            serviceGroupJson.add("fallback_nodes", fallbackNodesArray);
             serviceGroupJson.add("templates", templateArray);
             try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(serviceGroupJson, writer);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            ClusterStartup.getCluster().getEventProvider().callEvent(new GroupUpdateEvent(serviceGroup.getGroupName()));
+            ClusterStartup.getCluster().getEventProvider().callEvent(new GroupUpdateEvent(serviceGroup.getGroupName(), serviceGroup.getGroupNode().getName(), serviceGroup.getVersion(), serviceGroup.getMaxPlayers(), serviceGroup.isMaintenance(), serviceGroup.isStatic(), serviceGroup.getMemory(), serviceGroup.getMinServices(), serviceGroup.getMaxServices()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

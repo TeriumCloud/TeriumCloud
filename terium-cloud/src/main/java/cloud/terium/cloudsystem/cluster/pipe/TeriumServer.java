@@ -107,7 +107,7 @@ public class TeriumServer {
 
                                                     // Groups
                                                     ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().forEach(group -> channelHandlerContext.channel().writeAndFlush(
-                                                            new PacketPlayOutGroupAdd(group.getGroupName(), group.getGroupTitle(), group.getGroupNode().getName(), group.getGroupFallbackNode().stream().map(INode::getName).toList(), group.getTemplates().stream().map(ITemplate::getName).toList(), group.getServiceType(), group.getVersion(),
+                                                            new PacketPlayOutGroupAdd(group.getGroupName(), group.getGroupTitle(), group.getGroupNode().getName(), group.getTemplates().stream().map(ITemplate::getName).toList(), group.getServiceType(), group.getVersion(),
                                                                     group.isMaintenance(), group.isStatic(), group.hasPort(), group.getPort(), group.getMaxPlayers(), group.getMemory(), group.getMinServices(), group.getMaxServices())));
 
                                                     // Players
@@ -179,15 +179,15 @@ public class TeriumServer {
 
                                                 // group packets
                                                 if (packet instanceof PacketPlayOutCreateLobbyGroup newPacket)
-                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                                                 if (packet instanceof PacketPlayOutCreateProxyGroup newPacket)
-                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                                                 if (packet instanceof PacketPlayOutCreateServerGroup newPacket)
-                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.fallbackNodes(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new CreateServerGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                                                 if (packet instanceof PacketPlayOutGroupDelete newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new DeleteGroupEvent(newPacket.serviceGroup()));
                                                 if (packet instanceof PacketPlayOutGroupUpdate newPacket)
-                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup()));
+                                                    ClusterStartup.getCluster().getEventProvider().callEvent(new GroupUpdateEvent(newPacket.serviceGroup(), newPacket.node(), newPacket.version(), newPacket.maximumPlayers(), newPacket.maintenance(), newPacket.isStatic(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                                                 if (packet instanceof PacketPlayOutGroupReload newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ReloadGroupEvent(newPacket.serviceGroup()));
                                                 if (packet instanceof PacketPlayOutGroupsReload)
