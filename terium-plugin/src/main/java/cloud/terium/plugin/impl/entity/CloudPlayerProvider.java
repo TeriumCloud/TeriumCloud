@@ -1,4 +1,4 @@
-package cloud.terium.plugin.impl.player;
+package cloud.terium.plugin.impl.entity;
 
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.entity.ICloudPlayerProvider;

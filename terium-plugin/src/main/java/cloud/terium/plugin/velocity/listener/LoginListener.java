@@ -7,7 +7,9 @@ import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
+import cloud.terium.teriumapi.entity.impl.CloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
+import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
@@ -22,13 +24,16 @@ import java.util.UUID;
 
 public class LoginListener {
 
+    private void accept(ICloudPlayer cloudPlayer) {
+    }
+
     @Subscribe
     public void handleLogin(LoginEvent event) {
         Player player = event.getPlayer();
         Optional<ICloudPlayer> iCloudPlayer = TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId());
-        iCloudPlayer.ifPresentOrElse(cloudPlayer -> {
-        }, () -> {
+        iCloudPlayer.ifPresentOrElse(this::accept, () -> {
             TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerRegister(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), event.getPlayer().getRemoteAddress(), "", "", TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()));
+            TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), event.getPlayer().getRemoteAddress(), "", "", Optional.of(TeriumAPI.getTeriumAPI().getProvider().getThisService())));
         });
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(player.getUniqueId()));
 
@@ -69,8 +74,9 @@ public class LoginListener {
         TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> cloudPlayer.updateConnectedService(cloudService.orElseGet(null)));
     }
 
-    @Subscribe
+    @Subscribe(order = PostOrder.LAST)
     public void handleDisconnect(DisconnectEvent event) {
+        System.out.println(":) 2");
         TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> {
             cloudPlayer.updateUsername(event.getPlayer().getUsername());
             cloudPlayer.updateAddress(event.getPlayer().getRemoteAddress());

@@ -1,4 +1,4 @@
-package cloud.terium.module.permission.syncproxy.manager;
+package cloud.terium.module.syncproxy.manager;
 
 import com.google.gson.*;
 

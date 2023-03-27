@@ -8,7 +8,7 @@ import cloud.terium.plugin.impl.event.EventProvider;
 import cloud.terium.plugin.impl.module.ModuleProvider;
 import cloud.terium.plugin.impl.node.NodeProvider;
 import cloud.terium.plugin.impl.pipe.TeriumNetworking;
-import cloud.terium.plugin.impl.player.CloudPlayerProvider;
+import cloud.terium.plugin.impl.entity.CloudPlayerProvider;
 import cloud.terium.plugin.impl.service.ServiceFactory;
 import cloud.terium.plugin.impl.service.ServiceProvider;
 import cloud.terium.plugin.impl.service.group.ServiceGroupFactory;

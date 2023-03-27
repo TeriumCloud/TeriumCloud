@@ -1,6 +1,6 @@
-package cloud.terium.module.permission.syncproxy.velocity.listener;
+package cloud.terium.module.syncproxy.velocity.listener;
 
-import cloud.terium.module.permission.syncproxy.velocity.SyncproxyVelocityStartup;
+import cloud.terium.module.syncproxy.velocity.SyncproxyVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;

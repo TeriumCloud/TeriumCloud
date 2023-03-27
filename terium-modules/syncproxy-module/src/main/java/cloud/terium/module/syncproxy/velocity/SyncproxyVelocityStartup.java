@@ -1,9 +1,9 @@
-package cloud.terium.module.permission.syncproxy.velocity;
+package cloud.terium.module.syncproxy.velocity;
 
-import cloud.terium.module.permission.syncproxy.manager.ConfigManager;
-import cloud.terium.module.permission.syncproxy.listener.CloudListener;
-import cloud.terium.module.permission.syncproxy.velocity.listener.ProxyPingListener;
-import cloud.terium.module.permission.syncproxy.velocity.listener.ServerConnectedListener;
+import cloud.terium.module.syncproxy.manager.ConfigManager;
+import cloud.terium.module.syncproxy.listener.CloudListener;
+import cloud.terium.module.syncproxy.velocity.listener.ProxyPingListener;
+import cloud.terium.module.syncproxy.velocity.listener.ServerConnectedListener;
 import cloud.terium.teriumapi.TeriumAPI;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;

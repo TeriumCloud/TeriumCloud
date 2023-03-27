@@ -1,7 +1,7 @@
-package cloud.terium.module.permission.syncproxy.listener;
+package cloud.terium.module.syncproxy.listener;
 
-import cloud.terium.module.permission.syncproxy.manager.ConfigManager;
-import cloud.terium.module.permission.syncproxy.velocity.SyncproxyVelocityStartup;
+import cloud.terium.module.syncproxy.manager.ConfigManager;
+import cloud.terium.module.syncproxy.velocity.SyncproxyVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
@@ -15,15 +15,14 @@ public class CloudListener implements Listener {
     public void handleCloudPlayerJoin(CloudPlayerJoinEvent event) {
         if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().isMaintenance()) {
             if (!SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("whitelist").getAsJsonArray().toString().contains(event.getCloudPlayer().getUsername())) {
-                SyncproxyVelocityStartup.getInstance().getProxyServer().getPlayer(event.getCloudPlayer().getUniqueId()).orElseGet(null)
-                        .disconnect(MiniMessage.miniMessage().deserialize(SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("maintenance.message").getAsString()));
+                SyncproxyVelocityStartup.getInstance().getProxyServer().getPlayer(event.getCloudPlayer().getUniqueId()).ifPresent(player -> player.disconnect(MiniMessage.miniMessage().deserialize(SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("maintenance.message").getAsString())));
             }
         }
 
         if (SyncproxyVelocityStartup.getInstance().getProxyServer().getPlayerCount() >= TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().getMaxPlayers() &&
                 SyncproxyVelocityStartup.getInstance().getProxyServer().getPlayer(event.getCloudPlayer().getUniqueId()).orElseGet(null).hasPermission("terium.full_kick")) {
             SyncproxyVelocityStartup.getInstance().getProxyServer().getPlayer(event.getCloudPlayer().getUniqueId()).ifPresent(player ->
-                    player.disconnect(MiniMessage.miniMessage().deserialize(SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("maintenance.message").getAsString())));
+                    player.disconnect(MiniMessage.miniMessage().deserialize(SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("full_kick.message").getAsString())));
         }
     }
 
