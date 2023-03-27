@@ -30,12 +30,9 @@ public class LoginListener {
     @Subscribe
     public void handleLogin(LoginEvent event) {
         Player player = event.getPlayer();
-        Optional<ICloudPlayer> iCloudPlayer = TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId());
-        iCloudPlayer.ifPresentOrElse(this::accept, () -> {
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(player.getUniqueId()).ifPresentOrElse(this::accept, () -> {
             TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerRegister(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), event.getPlayer().getRemoteAddress(), "", "", TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()));
-            TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().add(new CloudPlayer(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), event.getPlayer().getRemoteAddress(), "", "", Optional.of(TeriumAPI.getTeriumAPI().getProvider().getThisService())));
         });
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(player.getUniqueId()));
 
         if (!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllLobbyServices().isEmpty()) {
             Optional<ICloudService> minecraftService = TeriumPlugin.getInstance().getFallback(player);
@@ -72,11 +69,11 @@ public class LoginListener {
                 .orElse(null));
 
         TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> cloudPlayer.updateConnectedService(cloudService.orElseGet(null)));
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerJoin(event.getPlayer().getUniqueId()));
     }
 
     @Subscribe(order = PostOrder.LAST)
     public void handleDisconnect(DisconnectEvent event) {
-        System.out.println(":) 2");
         TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> {
             cloudPlayer.updateUsername(event.getPlayer().getUsername());
             cloudPlayer.updateAddress(event.getPlayer().getRemoteAddress());

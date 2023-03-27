@@ -143,6 +143,9 @@ public class TeriumServer {
                                                     ClusterStartup.getCluster().getCloudPlayerProvider().registerPlayer(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService());
                                                 if (packet instanceof PacketPlayOutCloudPlayerAdd newPacket)
                                                     ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutCloudPlayerAdd(newPacket.username(), newPacket.uniquedId(), newPacket.address(), newPacket.value(), newPacket.signature(), newPacket.cloudService()));
+                                                if (packet instanceof PacketPlayOutCloudPlayerDisconnect) {
+                                                    channels.forEach(targetChannel -> targetChannel.writeAndFlush(packet));
+                                                }
 
                                                 // node packets
                                                 if (packet instanceof PacketPlayOutNodeStarted newPacket) {

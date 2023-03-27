@@ -1,6 +1,7 @@
 package cloud.terium.teriumapi.entity;
 
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnect;
+import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerDisconnect;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerUpdate;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -99,6 +100,15 @@ public interface ICloudPlayer extends Serializable {
      */
     default void connectWithService(ICloudService cloudService) {
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnect(getUniqueId(), cloudService.getServiceName()));
+    }
+
+    /**
+     * Kick a cloud player from the network.
+     *
+     * @param message This is the message that sees the player on the kick screen.
+     */
+    default void disconnect(String message) {
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerDisconnect(getUniqueId(), message));
     }
 
     /**
