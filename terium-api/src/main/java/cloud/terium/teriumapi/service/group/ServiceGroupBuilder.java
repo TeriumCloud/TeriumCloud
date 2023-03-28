@@ -32,7 +32,6 @@ public class ServiceGroupBuilder {
     public ServiceGroupBuilder(String name, ServiceType serviceType) {
         this.name = name;
         this.serviceType = serviceType;
-        this.templates = List.of(TeriumAPI.getTeriumAPI().getFactory().getTemplateFactory().createTemplate(name));
     }
 
     public ServiceGroupBuilder setGroupTitle(String groupTitle) {
@@ -95,6 +94,8 @@ public class ServiceGroupBuilder {
             throw new NullPointerException("name cannot be null");
         if (serviceType == null)
             throw new NullPointerException("cloud service type cannot be null");
+        if(templates == null)
+            templates = List.of(TeriumAPI.getTeriumAPI().getFactory().getTemplateFactory().createTemplate(name));
 
         ICloudServiceGroup cloudServiceGroup = null;
         switch (serviceType) {
