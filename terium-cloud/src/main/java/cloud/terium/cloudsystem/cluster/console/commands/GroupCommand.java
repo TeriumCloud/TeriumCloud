@@ -2,6 +2,7 @@ package cloud.terium.cloudsystem.cluster.console.commands;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
+import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
@@ -208,15 +209,15 @@ public class GroupCommand extends Command {
             }
             case 4 -> {
                 if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
-                    return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "minestom");
+                    return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> name.startsWith("paper")).toList();
                 if (args[1].equalsIgnoreCase("proxy"))
-                    return Arrays.asList("velocity-3", "velocity", "waterfall", "bungeecord");
+                    return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> !name.startsWith("paper")).toList();
 
                 if (args[0].equalsIgnoreCase("update")) {
                     if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
                         return Arrays.asList("true", "false");
                     else if (args[2].equalsIgnoreCase("version"))
-                        return Arrays.asList("paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2", "minestom");
+                        return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> name.startsWith("paper")).toList();
                 }
 
                 if (args[0].equalsIgnoreCase("add")) {
