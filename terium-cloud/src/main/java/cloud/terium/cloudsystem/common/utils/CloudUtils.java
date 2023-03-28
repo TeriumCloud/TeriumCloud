@@ -34,12 +34,16 @@ public class CloudUtils {
             Logger.log("Downloading spigot.yml, velocity.toml and teriumcloud-plugin...");
             try {
                 Logger.log("Trying to download 'spigot.yml'...");
-                FileUtils.copyURLToFile(new URL("https://file.io/xh4M7MjZ8kPV"), new File("data//versions//spigot.yml"));
+                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/spigot.yml"), new File("data//versions//spigot.yml"));
                 Logger.log("Successfully to downloaded 'spigot.yml'.");
                 Thread.sleep(1000);
-                Logger.log("Trying to download 'spigot.yml'...");
-                FileUtils.copyURLToFile(new URL("https://file.io/RGka7SFWOF4Z"), new File("data//versions//velocity.toml"));
+                Logger.log("Trying to download 'velocity.toml'...");
+                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/velocity.toml"), new File("data//versions//velocity.toml"));
                 Logger.log("Successfully to downloaded 'velocity.toml'.");
+                Thread.sleep(1000);
+                Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
+                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+                Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
             } catch (IOException | InterruptedException exception) {
                 exception.printStackTrace();
             }
