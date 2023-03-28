@@ -21,11 +21,7 @@ public class StartCommand extends Command {
             return;
         }
 
-        if(args.length == 2) {
-            for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-                ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[0]).ifPresentOrElse(serviceGroup -> ClusterStartup.getCluster().getServiceFactory().createService(serviceGroup), () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
-            }
-        }
+        Logger.log("start [group] | start a service by group", LogType.INFO);
     }
 
     @Override

@@ -25,12 +25,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class CloudService implements ICloudService {
 
@@ -78,7 +76,7 @@ public class CloudService implements ICloudService {
         this.name = serviceName;
         this.serviceType = serviceType;
         this.serviceState = ServiceState.PREPARING;
-        this.templates = templates;
+        this.templates = new ArrayList<>(templates);
         this.folder = serviceGroup.isStatic() ? new File("static//" + getServiceName()) : new File("servers//" + getServiceName());
         this.propertyMap = new HashMap<>();
         this.port = port;
@@ -86,7 +84,7 @@ public class CloudService implements ICloudService {
         this.maxMemory = maxMemory;
         this.usedMemory = 0;
         this.onlinePlayers = 0;
-        templates.addAll(serviceGroup.getTemplates());
+        this.templates.addAll(serviceGroup.getTemplates());
         ClusterStartup.getCluster().getScreenProvider().addCloudService(this);
         ClusterStartup.getCluster().getServiceProvider().addService(this);
         ClusterStartup.getCluster().getServiceProvider().putServiceId(cloudServiceGroup, serviceId);
@@ -128,8 +126,7 @@ public class CloudService implements ICloudService {
         }
 
         if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
-            Logger.log("The service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
-
+            Logger.log("Service '" + getServiceName() + "' is starting.", LogType.INFO);
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
             properties.setProperty("server-name", getServiceName());
@@ -153,7 +150,7 @@ public class CloudService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
-            Logger.log("The service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
+            Logger.log("Service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
