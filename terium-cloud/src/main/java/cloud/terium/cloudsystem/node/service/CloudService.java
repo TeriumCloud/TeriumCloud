@@ -119,7 +119,7 @@ public class CloudService implements ICloudService {
         });
         if (!hasJarFile.get()) {
             try {
-                FileUtils.copyURLToFile(new URL(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")).getUrl()), new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
+                FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
