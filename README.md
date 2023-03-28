@@ -29,12 +29,23 @@
 - [Discord Support](https://discord.com/invite/5VrY59sffQ)
 - SpigotMC
 
-## Installation
+## Installation (MASTER/CLUSTER)
 
-- Download the .zip folder and move the terium-cloud.jar and the start.sh/start.bat file to your folder
-- Give the start.sh file '777' rights (Only on linux systems)
-- Execute start.sh (if you have a Windows system execute the start.bat file)
-- TODO: Write here
+- Download the .zip folder and move the terium-OXYGEN.jar and the start-master.sh file to your folder
+- Give the start-master.sh file '777' rights (Only on linux systems)
+- Execute start-master.sh
+- Everything will be downloaded and created automatically.
+- Now you can create groups and more. Have fun!
+
+## Installation (WRAPPER/NODE)
+
+- Download the .zip folder and move the terium-OXYGEN.jar and the start-node.sh file to your folder
+- Give the start-node.sh file '777' rights (Only on linux systems)
+- Execute start-node.sh
+- Everything will be downloaded and created automatically.
+- Add all informations about your master in the config.json under "master".
+- Now you need to go into your master console and type: "node add CURRENT-NODE-NAME YOUR-IP YOUR-PORT"
+- After that you execute the start-node.sh again and enjoy your mulit-root action!
 
 ## Supported Java Versions
 
