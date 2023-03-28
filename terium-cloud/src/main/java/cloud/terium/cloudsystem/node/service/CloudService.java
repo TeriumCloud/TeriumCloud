@@ -1,9 +1,9 @@
 package cloud.terium.cloudsystem.node.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.cloudsystem.node.NodeStartup;
 import cloud.terium.cloudsystem.node.utils.Logger;
+import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
@@ -79,7 +79,7 @@ public class CloudService implements ICloudService {
         this.serviceType = serviceType;
         this.serviceState = ServiceState.PREPARING;
         this.templates = templates;
-        this.folder = new File("servers//" + getServiceName());
+        this.folder = serviceGroup.isStatic() ? new File("static//" + getServiceName()) : new File("servers//" + getServiceName());
         this.propertyMap = new HashMap<>();
         this.port = port;
         this.maxPlayers = maxPlayers;
@@ -99,7 +99,7 @@ public class CloudService implements ICloudService {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
+        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
@@ -163,7 +163,7 @@ public class CloudService implements ICloudService {
                 getServiceNode().getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyMap));
 
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().master().get("ip").getAsString(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().master().get("port").getAsInt(), serviceGroup.getVersion() + ".jar", "nogui"};
+            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().master().get("ip").getAsString(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().master().get("port").getAsString(), serviceGroup.getVersion() + ".jar", "nogui"};
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
             processBuilder.directory(this.folder);
@@ -205,7 +205,8 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void delete() {
         NodeStartup.getNode().getServiceProvider().removeServiceId(serviceGroup, serviceId);
-        FileUtils.deleteDirectory(folder);
+        if (!serviceGroup.isStatic())
+            FileUtils.deleteDirectory(folder);
         NodeStartup.getNode().getServiceProvider().removeService(this);
     }
 

@@ -79,7 +79,7 @@ public class CloudService implements ICloudService {
         this.serviceType = serviceType;
         this.serviceState = ServiceState.PREPARING;
         this.templates = templates;
-        this.folder = new File("servers//" + getServiceName());
+        this.folder = serviceGroup.isStatic() ? new File("static//" + getServiceName()) : new File("servers//" + getServiceName());
         this.propertyMap = new HashMap<>();
         this.port = port;
         this.maxPlayers = maxPlayers;
@@ -99,7 +99,7 @@ public class CloudService implements ICloudService {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), new File("servers//" + getServiceName() + "//plugins//"));
+        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
@@ -205,7 +205,8 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void delete() {
         ClusterStartup.getCluster().getServiceProvider().removeServiceId(serviceGroup, serviceId);
-        FileUtils.deleteDirectory(folder);
+        if (!serviceGroup.isStatic())
+            FileUtils.deleteDirectory(folder);
         ClusterStartup.getCluster().getServiceProvider().removeService(this);
     }
 
