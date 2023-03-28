@@ -99,7 +99,7 @@ public class TeriumServer {
                                                 if (packet instanceof PacketPlayOutServiceRegister newPacket) {
                                                     // Nodes
                                                     ClusterStartup.getCluster().getNodeProvider().getAllNodes().forEach(node -> channelHandlerContext.channel().writeAndFlush(
-                                                            new PacketPlayOutNodeAdd(node.getName(), node.getKey(), node.getAddress(), node.getMaxMemory(), node.isConnected())));
+                                                            new PacketPlayOutNodeAdd(node.getName(), node.getAddress(), node.getMaxMemory(), node.isConnected())));
 
                                                     // Templates
                                                     ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().forEach(template -> channelHandlerContext.channel().writeAndFlush(
@@ -116,10 +116,10 @@ public class TeriumServer {
                                                             )));
 
                                                     // Services
-                                                    ClusterStartup.getCluster().getServiceProvider().getAllCloudServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
+                                                    ClusterStartup.getCluster().getServiceProvider().getAllServices().forEach(cloudService -> channelHandlerContext.channel().writeAndFlush(
                                                             new PacketPlayOutServiceAdd(cloudService.getServiceName(), cloudService.getServiceId(), cloudService.getPort(), cloudService.getMaxPlayers(), cloudService.getMaxMemory(), cloudService.getServiceNode().getName(), cloudService.getServiceGroup().getGroupName(),
                                                                     cloudService.getTemplates().stream().map(ITemplate::getName).toList(), cloudService.getPropertyMap())));
-                                                    ClusterStartup.getCluster().getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceState().equals(ServiceState.ONLINE)).toList().forEach(cloudService ->
+                                                    ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceState().equals(ServiceState.ONLINE)).toList().forEach(cloudService ->
                                                             channelHandlerContext.channel().writeAndFlush(new PacketPlayOutSuccessfullyServiceStarted(cloudService.getServiceName(), cloudService.getServiceNode().getName())));
 
                                                     // Modules
@@ -154,7 +154,7 @@ public class TeriumServer {
                                                         return;
                                                     }
 
-                                                    if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getThisNode().getKey())) {
+                                                    if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getCloudConfig().key())) {
                                                         channelHandlerContext.channel().close().sync();
                                                         Logger.log("The master key isn't corrent.", LogType.ERROR);
                                                         Logger.log("Closing connection from node '" + newPacket.node() + "'", LogType.ERROR);

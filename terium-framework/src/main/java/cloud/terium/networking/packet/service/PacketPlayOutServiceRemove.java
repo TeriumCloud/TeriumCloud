@@ -9,6 +9,6 @@ import java.util.Optional;
 public record PacketPlayOutServiceRemove(String serviceName) implements Packet {
 
     public Optional<ICloudService> parsedCloudService() {
-        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(serviceName);
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(serviceName);
     }
 }

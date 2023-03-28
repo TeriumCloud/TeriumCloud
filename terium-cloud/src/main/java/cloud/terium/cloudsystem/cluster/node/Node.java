@@ -17,22 +17,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Node implements INode {
 
     private final String name;
-    private final String key;
     private final InetSocketAddress address;
     private long usedMemory;
     private long maxMemory;
 
-    public Node(String name, String key, InetSocketAddress address) {
+    public Node(String name, InetSocketAddress address) {
         this.name = name;
-        this.key = key;
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = 0;
     }
 
-    public Node(String name, String key, InetSocketAddress address, long maxMemory) {
+    public Node(String name, InetSocketAddress address, long maxMemory) {
         this.name = name;
-        this.key = key;
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = maxMemory;
@@ -41,11 +38,6 @@ public class Node implements INode {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getKey() {
-        return key;
     }
 
     @Override

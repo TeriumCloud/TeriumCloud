@@ -9,24 +9,21 @@ import java.net.InetSocketAddress;
 public class Node implements INode {
 
     private final String name;
-    private final String key;
     private final InetSocketAddress address;
     private long usedMemory;
     private long maxMemory;
     private boolean connected;
 
-    public Node(String name, String key, InetSocketAddress address, long maxMemory, boolean connected) {
+    public Node(String name, InetSocketAddress address, long maxMemory, boolean connected) {
         this.name = name;
-        this.key = key;
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = 0;
         this.connected = connected;
     }
 
-    public Node(String name, String key, InetSocketAddress address) {
+    public Node(String name, InetSocketAddress address) {
         this.name = name;
-        this.key = key;
         this.address = address;
         this.usedMemory = 0;
         this.maxMemory = 0;
@@ -35,11 +32,6 @@ public class Node implements INode {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getKey() {
-        return key;
     }
 
     @Override

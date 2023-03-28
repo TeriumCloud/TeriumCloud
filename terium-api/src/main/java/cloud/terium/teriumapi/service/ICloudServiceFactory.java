@@ -26,8 +26,8 @@ public interface ICloudServiceFactory {
      * Create a service with defined service name, cloud template, service type, service id and port
      *
      * @param serviceName
-     * @param iCloudServiceGroup
-     * @param iTemplate
+     * @param serviceGroup
+     * @param templates
      * @param serviceId
      * @param maxPlayers
      * @param memory
@@ -38,7 +38,7 @@ public interface ICloudServiceFactory {
      * Create a service with defined service name and service group
      *
      * @param serviceName
-     * @param iCloudServiceGroup
+     * @param serviceGroup
      */
     void createService(String serviceName, ICloudServiceGroup serviceGroup);
 
@@ -46,8 +46,8 @@ public interface ICloudServiceFactory {
      * Create a service with defined service name, service group and template
      *
      * @param serviceName
-     * @param iCloudServiceGroup
-     * @param iTemplate
+     * @param serviceGroup
+     * @param templates
      */
     void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates);
 }

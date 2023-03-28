@@ -13,13 +13,6 @@ public interface INode extends Serializable {
     String getName();
 
     /**
-     * Get the node key of the node
-     *
-     * @return String
-     */
-    String getKey();
-
-    /**
      * Get the address of the node
      *
      * @return InetSocketAddress

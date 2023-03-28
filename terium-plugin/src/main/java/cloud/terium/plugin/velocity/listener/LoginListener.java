@@ -43,7 +43,7 @@ public class LoginListener {
                     return;
                 }
 
-                TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
+                TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
                     cloudService.setOnlinePlayers(TeriumVelocityStartup.getInstance().getProxyServer().getPlayerCount() + 1);
                     cloudService.update();
                 });
@@ -86,7 +86,7 @@ public class LoginListener {
             TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().remove(cloudPlayer);
         });
 
-        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
             cloudService.setOnlinePlayers(TeriumVelocityStartup.getInstance().getProxyServer().getPlayerCount());
             cloudService.update();
         });

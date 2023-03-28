@@ -10,7 +10,7 @@ import java.util.Optional;
 public record PacketPlayOutServiceStart(String serviceName, String node) implements Packet {
 
     public Optional<ICloudService> parsedCloudService() {
-        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(serviceName);
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(serviceName);
     }
 
     public Optional<INode> parsedNode() {

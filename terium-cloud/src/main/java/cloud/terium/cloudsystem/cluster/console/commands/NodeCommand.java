@@ -42,7 +42,7 @@ public class NodeCommand extends Command {
                                 newNode.addProperty("port", args[3]);
                                 ClusterStartup.getCluster().getCloudConfig().nodes().add(args[1], newNode);
                                 ClusterStartup.getCluster().getConfigManager().save();
-                                ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], "", new InetSocketAddress(args[2], Integer.parseInt(args[3]))));
+                                ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], new InetSocketAddress(args[2], Integer.parseInt(args[3]))));
 
                                 Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
                             });

@@ -77,7 +77,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 try {
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
-                        NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.key(), newPacket.address(), newPacket.memory(), newPacket.connected()));
+                        NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.address(), newPacket.memory(), newPacket.connected()));
 
                     // Templates
                     if (packet instanceof PacketPlayOutTemplateAdd newPacket) {
@@ -102,16 +102,16 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     // Services
                     if (packet instanceof PacketPlayOutServiceAdd newPacket) {
                         NodeStartup.getNode().getServiceProvider().addService(new CloudService(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates()));
-                        NodeStartup.getNode().getProvider().getEventProvider().callEvent(new CloudServiceStartingEvent(NodeStartup.getNode().getProvider().getServiceProvider().getCloudServiceByName(newPacket.serviceName()).orElseGet(null)));
+                        NodeStartup.getNode().getProvider().getEventProvider().callEvent(new CloudServiceStartingEvent(NodeStartup.getNode().getProvider().getServiceProvider().getServiceByName(newPacket.serviceName()).orElseGet(null)));
                     }
                     if (packet instanceof PacketPlayOutServiceRemove newPacket) {
-                        NodeStartup.getNode().getProvider().getServiceProvider().getCloudServiceByName(newPacket.serviceName()).ifPresentOrElse(cloudService -> NodeStartup.getNode().getProvider().getEventProvider().callEvent(new CloudServiceStoppedEvent(newPacket.parsedCloudService().orElseGet(null))), () -> {
+                        NodeStartup.getNode().getProvider().getServiceProvider().getServiceByName(newPacket.serviceName()).ifPresentOrElse(cloudService -> NodeStartup.getNode().getProvider().getEventProvider().callEvent(new CloudServiceStoppedEvent(newPacket.parsedCloudService().orElseGet(null))), () -> {
                             System.out.println("Service with that name isn't registered!");
                         });
                         newPacket.parsedCloudService().ifPresent(cloudService -> NodeStartup.getNode().getServiceProvider().removeService(cloudService));
                     }
                     if (packet instanceof PacketPlayOutUpdateService newPacket) {
-                        NodeStartup.getNode().getProvider().getServiceProvider().getCloudServiceByName(newPacket.serviceName()).ifPresent(cloudService -> {
+                        NodeStartup.getNode().getProvider().getServiceProvider().getServiceByName(newPacket.serviceName()).ifPresent(cloudService -> {
                             cloudService.setUsedMemory((long) newPacket.memory());
                             cloudService.setServiceState(newPacket.serviceState());
                             cloudService.setOnlinePlayers(newPacket.players());

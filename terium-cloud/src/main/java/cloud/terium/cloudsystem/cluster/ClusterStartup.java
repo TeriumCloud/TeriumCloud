@@ -107,7 +107,7 @@ public class ClusterStartup extends TeriumAPI {
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
-        this.thisNode = new Node(cloudConfig.name(), cloudConfig.key(), new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
+        this.thisNode = new Node(cloudConfig.name(), new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
         this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
@@ -254,7 +254,7 @@ public class ClusterStartup extends TeriumAPI {
         Logger.log("Trying to stop terium-cloud...", LogType.INFO);
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
-        getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(thisNode.getName())).forEach(ICloudService::shutdown);
+        getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(thisNode.getName())).forEach(ICloudService::shutdown);
         getNodeProvider().getNodeClients().keySet().forEach(node -> getNodeProvider().getClientFromNode(node).writeAndFlush(new PacketPlayOutNodeShutdown(node.getName())));
         Thread.sleep(500);
         Logger.log("Successfully stopped all services.", LogType.INFO);

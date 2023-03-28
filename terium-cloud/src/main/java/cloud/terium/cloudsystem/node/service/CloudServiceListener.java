@@ -15,7 +15,7 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceUpdate(ServiceUpdateEvent event) {
-        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> {
+        NodeStartup.getNode().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> {
             cloudService.setServiceState(event.getServiceState());
             cloudService.setLocked(event.isLocked());
             cloudService.setUsedMemory((long) event.getMemory());
@@ -41,12 +41,12 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceForceStop(ServiceForceStopEvent event) {
-        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(ICloudService::forceShutdown);
+        NodeStartup.getNode().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(ICloudService::forceShutdown);
     }
 
     @Subscribe
     public void handleServiceForceStop(ServiceStopEvent event) {
-        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(ICloudService::shutdown);
+        NodeStartup.getNode().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(ICloudService::shutdown);
     }
 
     @Subscribe
@@ -59,16 +59,16 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceRemove(ServiceRemoveEvent event) {
-        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> NodeStartup.getNode().getServiceProvider().removeService(cloudService));
+        NodeStartup.getNode().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> NodeStartup.getNode().getServiceProvider().removeService(cloudService));
     }
 
     @Subscribe
     public void handleServiceLock(ServiceLockEvent event) {
-        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(true));
+        NodeStartup.getNode().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(true));
     }
 
     @Subscribe
     public void handleServiceLock(ServiceUnlockEvent event) {
-        NodeStartup.getNode().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(false));
+        NodeStartup.getNode().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(false));
     }
 }

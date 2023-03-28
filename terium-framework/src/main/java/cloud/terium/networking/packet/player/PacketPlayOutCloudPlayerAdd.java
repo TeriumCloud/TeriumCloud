@@ -12,6 +12,6 @@ public record PacketPlayOutCloudPlayerAdd(String username, UUID uniquedId, InetS
                                           String signature, String cloudService) implements Packet {
 
     public Optional<ICloudService> parsedCloudService() {
-        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(cloudService);
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(cloudService);
     }
 }

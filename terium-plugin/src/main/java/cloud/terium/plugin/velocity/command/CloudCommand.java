@@ -91,22 +91,22 @@ public class CloudCommand {
     }
 
     private CompletableFuture<Suggestions> serviceSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
-        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceType() != ServiceType.Proxy).forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceType() != ServiceType.Proxy).forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
         return suggestionsBuilder.buildFuture();
     }
 
     private CompletableFuture<Suggestions> serviceAllSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
-        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
         return suggestionsBuilder.buildFuture();
     }
 
     private int shutdownService(CommandContext<CommandSource> context) {
-        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)).ifPresent(ICloudService::shutdown);
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(context.getArgument("service", String.class)).ifPresent(ICloudService::shutdown);
         return 1;
     }
 
     private int serviceInfo(CommandContext<CommandSource> context) {
-        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)).ifPresentOrElse(cloudService -> {
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(context.getArgument("service", String.class)).ifPresentOrElse(cloudService -> {
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Information about '" + cloudService.getServiceName() + "':"));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Name: " + cloudService.getServiceName()));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Id: " + cloudService.getServiceId()));
@@ -127,7 +127,7 @@ public class CloudCommand {
     }
 
     private int sendPlayer(CommandContext<CommandSource> context) {
-        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(context.getArgument("player", String.class)).ifPresent(cloudPlayer -> cloudPlayer.connectWithService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(context.getArgument("service", String.class)).orElseGet(null)));
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(context.getArgument("player", String.class)).ifPresent(cloudPlayer -> cloudPlayer.connectWithService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(context.getArgument("service", String.class)).orElseGet(null)));
         return 1;
     }
 
@@ -135,7 +135,7 @@ public class CloudCommand {
         context.getSource().sendMessage(Component.text(" "));
         TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Services from group '<#96908c>" + group.getGroupName() + "<white>':"));
-            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServicesByGroupName(group.getGroupName()).forEach(service ->
+            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(group.getGroupName()).forEach(service ->
                     context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "- Name: <#c49b9b>" + service.getServiceName() + "<white> | State: " + "<" + service.getServiceState().getHex() + ">" + service.getServiceState() + "<white> | Players: <#a7c7d6>" + service.getOnlinePlayers() + "<white>/<#a79ed9>" + service.getMaxPlayers() + "<white>")));
 
             context.getSource().sendMessage(Component.text(" "));

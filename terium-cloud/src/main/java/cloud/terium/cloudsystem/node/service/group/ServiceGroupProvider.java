@@ -33,7 +33,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
     @Override
     public int getOnlineServicesFromServiceGroup(String groupName) {
-        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServicesByGroupName(groupName).size();
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(groupName).size();
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ListCommand extends Command {
         Logger.log("", LogType.INFO);
         ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
             Logger.log("Services from group '" + group.getGroupName() + "':", LogType.INFO);
-            ClusterStartup.getCluster().getServiceProvider().getCloudServicesByGroupName(group.getGroupName()).forEach(service ->
+            ClusterStartup.getCluster().getServiceProvider().getServicesByGroupName(group.getGroupName()).forEach(service ->
                     Logger.log("- Name: " + service.getServiceName() + " | State: " + service.getServiceState() + " | Players: " + service.getOnlinePlayers() + "/" + service.getMaxPlayers(), LogType.INFO));
 
             Logger.log("", LogType.INFO);

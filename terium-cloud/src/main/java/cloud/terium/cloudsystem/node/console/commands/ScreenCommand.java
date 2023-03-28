@@ -18,7 +18,7 @@ public class ScreenCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args.length == 1) {
-            NodeStartup.getNode().getServiceProvider().getCloudServiceByName(args[0]).ifPresentOrElse(cloudService -> ((CloudService) cloudService).toggleScreen(), () -> Logger.log("A screen with that name isn't registered.", LogType.ERROR));
+            NodeStartup.getNode().getServiceProvider().getServiceByName(args[0]).ifPresentOrElse(cloudService -> ((CloudService) cloudService).toggleScreen(), () -> Logger.log("A screen with that name isn't registered.", LogType.ERROR));
             return;
         }
 
@@ -28,7 +28,7 @@ public class ScreenCommand extends Command {
     @Override
     public List<String> tabComplete(String[] args) {
         if (args.length == 1)
-            return NodeStartup.getNode().getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(NodeStartup.getNode().getThisNode().getName())).map(ICloudService::getServiceName).toList();
+            return NodeStartup.getNode().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(NodeStartup.getNode().getThisNode().getName())).map(ICloudService::getServiceName).toList();
         return List.of();
     }
 }

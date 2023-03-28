@@ -44,8 +44,6 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
-import io.netty.channel.local.LocalAddress;
-import io.netty.resolver.InetSocketAddressResolver;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -58,7 +56,6 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -101,7 +98,7 @@ public class NodeStartup extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
-        this.thisNode = new Node(nodeConfig.name(), "", new InetSocketAddress(InetAddress.getLocalHost(), nodeConfig.port()), nodeConfig.memory(), true);
+        this.thisNode = new Node(nodeConfig.name(), new InetSocketAddress(InetAddress.getLocalHost(), nodeConfig.port()), nodeConfig.memory(), true);
         this.eventProvider = new EventProvider();
 
         this.eventProvider.subscribeListener(new ConsoleListener());
@@ -258,7 +255,7 @@ public class NodeStartup extends TeriumAPI {
         Logger.log("Trying to stop terium-cloud...", LogType.INFO);
 
         TeriumCloud.getTerium().getCloudUtils().setRunning(false);
-        getServiceProvider().getAllCloudServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(thisNode.getName())).forEach(ICloudService::shutdown);
+        getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(thisNode.getName())).forEach(ICloudService::shutdown);
         Thread.sleep(500);
         Logger.log("Successfully stopped all services.", LogType.INFO);
         Thread.sleep(1000);

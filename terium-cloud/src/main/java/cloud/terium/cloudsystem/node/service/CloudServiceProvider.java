@@ -28,8 +28,8 @@ public class CloudServiceProvider implements ICloudServiceProvider {
             public void run() {
                 if (TeriumCloud.getTerium().getCloudUtils().isRunning() && gloablUsedMemory() < NodeStartup.getNode().getNodeConfig().memory()) {
                     NodeStartup.getNode().getServiceGroupProvider().getAllServiceGroups().stream().filter(serviceGroup -> serviceGroup.getGroupNode().getName().equals(NodeStartup.getNode().getProvider().getThisNode().getName())).forEach(group -> {
-                        if (getCloudServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() &&
-                                getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) ||
+                        if (getServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() &&
+                                getServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) ||
                                         iCloudService.getServiceState().equals(ServiceState.PREPARING)).toList().size() < group.getMinServices()) {
                             NodeStartup.getNode().getServiceFactory().createService(group);
                         }
@@ -45,8 +45,8 @@ public class CloudServiceProvider implements ICloudServiceProvider {
             public void run() {
                 if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
                     NodeStartup.getNode().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
-                        if (getCloudServicesByGroupName(group.getGroupName()).size() > group.getMinServices()) {
-                            getCloudServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) && iCloudService.getOnlinePlayers() == 0).sorted(Comparator.comparing(ICloudService::getServiceId).reversed()).findFirst().ifPresent(ICloudService::shutdown);
+                        if (getServicesByGroupName(group.getGroupName()).size() > group.getMinServices()) {
+                            getServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) && iCloudService.getOnlinePlayers() == 0).sorted(Comparator.comparing(ICloudService::getServiceId).reversed()).findFirst().ifPresent(ICloudService::shutdown);
                         }
                     });
                 }
@@ -56,7 +56,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {
         AtomicInteger integer = new AtomicInteger(1);
-        for (int i = 0; i < getCloudServicesByGroupName(cloudServiceGroup.getGroupName()).size(); i++) {
+        for (int i = 0; i < getServicesByGroupName(cloudServiceGroup.getGroupName()).size(); i++) {
             if (cloudServiceIdCache.get(cloudServiceGroup).contains(integer.get())) {
                 integer.getAndIncrement();
             }
@@ -74,7 +74,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public long gloablUsedMemory() {
         AtomicLong globalUsedMemory = new AtomicLong();
-        NodeStartup.getNode().getServiceProvider().getAllCloudServices().forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
+        NodeStartup.getNode().getServiceProvider().getAllServices().forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
 
         return globalUsedMemory.get();
     }
@@ -93,17 +93,17 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     }
 
     @Override
-    public Optional<ICloudService> getCloudServiceByName(String serviceName) {
+    public Optional<ICloudService> getServiceByName(String serviceName) {
         return Optional.ofNullable(cloudServiceCache.get(serviceName));
     }
 
     @Override
-    public List<ICloudService> getCloudServicesByGroupName(String serviceGroup) {
+    public List<ICloudService> getServicesByGroupName(String serviceGroup) {
         return cloudServiceCache.values().stream().filter(cloudService -> cloudService.getServiceGroup().getGroupName().equals(serviceGroup)).toList();
     }
 
     @Override
-    public List<ICloudService> getCloudServicesByGroupTitle(String groupTitle) {
+    public List<ICloudService> getServicesByGroupTitle(String groupTitle) {
         return cloudServiceCache.values().stream().filter(cloudService -> cloudService.getServiceGroup().getGroupTitle().equals(groupTitle)).toList();
     }
 
@@ -113,7 +113,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
     }
 
     @Override
-    public List<ICloudService> getAllCloudServices() {
+    public List<ICloudService> getAllServices() {
         return cloudServiceCache.values().stream().toList();
     }
 }

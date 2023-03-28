@@ -17,17 +17,17 @@ public class ServiceProvider implements ICloudServiceProvider {
     }
 
     @Override
-    public Optional<ICloudService> getCloudServiceByName(String serviceName) {
+    public Optional<ICloudService> getServiceByName(String serviceName) {
         return cachedServices.stream().filter(cloudService -> cloudService.getServiceName().equals(serviceName)).findAny();
     }
 
     @Override
-    public List<ICloudService> getCloudServicesByGroupName(String serviceGroup) {
+    public List<ICloudService> getServicesByGroupName(String serviceGroup) {
         return cachedServices.stream().filter(cloudService -> cloudService.getServiceGroup().getGroupName().equals(serviceGroup)).toList();
     }
 
     @Override
-    public List<ICloudService> getCloudServicesByGroupTitle(String groupTitle) {
+    public List<ICloudService> getServicesByGroupTitle(String groupTitle) {
         return cachedServices.stream().filter(cloudService -> cloudService.getServiceGroup().getGroupTitle().equals(groupTitle)).toList();
     }
 
@@ -37,7 +37,7 @@ public class ServiceProvider implements ICloudServiceProvider {
     }
 
     @Override
-    public List<ICloudService> getAllCloudServices() {
+    public List<ICloudService> getAllServices() {
         return cachedServices;
     }
 }

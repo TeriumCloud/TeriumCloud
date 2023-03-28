@@ -16,7 +16,7 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceUpdate(ServiceUpdateEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> {
+        ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> {
             cloudService.setServiceState(event.getServiceState());
             cloudService.setLocked(event.isLocked());
             cloudService.setUsedMemory((long) event.getMemory());
@@ -43,12 +43,12 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceForceStop(ServiceForceStopEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(ICloudService::forceShutdown);
+        ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(ICloudService::forceShutdown);
     }
 
     @Subscribe
     public void handleServiceForceStop(ServiceStopEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(ICloudService::shutdown);
+        ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(ICloudService::shutdown);
     }
 
     @Subscribe
@@ -61,16 +61,16 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceRemove(ServiceRemoveEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().removeService(ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).orElseGet(null));
+        ClusterStartup.getCluster().getServiceProvider().removeService(ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).orElseGet(null));
     }
 
     @Subscribe
     public void handleServiceLock(ServiceLockEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(true));
+        ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(true));
     }
 
     @Subscribe
     public void handleServiceLock(ServiceUnlockEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(false));
+        ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).ifPresent(cloudService -> cloudService.setLocked(false));
     }
 }

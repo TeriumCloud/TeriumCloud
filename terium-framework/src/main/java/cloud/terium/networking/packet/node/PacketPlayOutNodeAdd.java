@@ -4,6 +4,6 @@ import cloud.terium.teriumapi.pipe.Packet;
 
 import java.net.InetSocketAddress;
 
-public record PacketPlayOutNodeAdd(String name, String key, InetSocketAddress address, long memory,
+public record PacketPlayOutNodeAdd(String name, InetSocketAddress address, long memory,
                                    boolean connected) implements Packet {
 }

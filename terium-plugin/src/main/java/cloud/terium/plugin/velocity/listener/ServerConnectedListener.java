@@ -23,7 +23,7 @@ public class ServerConnectedListener {
 
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnectedService(player.getUniqueId(), event.getServer().getServerInfo().getName()));
         cloudPlayer.ifPresent(cloudPlayer1 -> {
-            cloudPlayer1.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(event.getServer().getServerInfo().getName()).orElseGet(null));
+            cloudPlayer1.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(event.getServer().getServerInfo().getName()).orElseGet(null));
             cloudPlayer1.update();
         });
     }

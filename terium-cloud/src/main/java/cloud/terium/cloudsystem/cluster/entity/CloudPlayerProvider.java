@@ -19,7 +19,7 @@ public class CloudPlayerProvider implements ICloudPlayerProvider {
     private final List<ICloudPlayer> onlinePlayers = new ArrayList<>();
 
     public void registerPlayer(String username, UUID uniquedId, InetSocketAddress address, String value, String signature, String cloudService) {
-        onlinePlayers.add(new CloudPlayer(username, uniquedId, address, value, signature, ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(cloudService)));
+        onlinePlayers.add(new CloudPlayer(username, uniquedId, address, value, signature, ClusterStartup.getCluster().getServiceProvider().getServiceByName(cloudService)));
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerAdd(username, uniquedId, address, value, signature, cloudService));
     }
 

@@ -117,7 +117,7 @@ public final class TeriumPlugin extends TeriumAPI {
         return new ICloudProvider() {
             @Override
             public ICloudService getThisService() {
-                return getServiceProvider().getCloudServiceByName(thisName).orElseGet(null);
+                return getServiceProvider().getServiceByName(thisName).orElseGet(null);
             }
 
             @Override
@@ -207,7 +207,7 @@ public final class TeriumPlugin extends TeriumAPI {
     }
 
     public @NotNull Optional<ICloudService> getFallback(final Player player) {
-        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllCloudServices().stream()
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream()
                 .filter(service -> service.getServiceState().equals(ServiceState.ONLINE))
                 .filter(service -> !service.getServiceGroup().getServiceType().equals(ServiceType.Proxy))
                 .filter(service -> service.getServiceGroup().getServiceType().equals(ServiceType.Lobby))

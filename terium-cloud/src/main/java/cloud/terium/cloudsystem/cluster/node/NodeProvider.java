@@ -36,7 +36,7 @@ public class NodeProvider implements INodeProvider {
         registerNode(ClusterStartup.getCluster().getThisNode());
 
         JsonObject jsonObject = ClusterStartup.getCluster().getCloudConfig().nodes();
-        ClusterStartup.getCluster().getCloudConfig().nodes().entrySet().forEach(jsonElement -> registerNode(new Node(jsonElement.getValue().getAsJsonObject().get("name").getAsString(), "",
+        ClusterStartup.getCluster().getCloudConfig().nodes().entrySet().forEach(jsonElement -> registerNode(new Node(jsonElement.getValue().getAsJsonObject().get("name").getAsString(),
                 new InetSocketAddress(jsonElement.getValue().getAsJsonObject().get("ip").getAsString(), jsonElement.getValue().getAsJsonObject().get("port").getAsInt()))));
     }
 

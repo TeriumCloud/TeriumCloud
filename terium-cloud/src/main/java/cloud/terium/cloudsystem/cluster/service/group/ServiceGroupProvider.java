@@ -130,7 +130,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
 
     @Override
     public int getOnlineServicesFromServiceGroup(String groupName) {
-        return ClusterStartup.getCluster().getServiceProvider().getCloudServicesByGroupName(groupName).size();
+        return ClusterStartup.getCluster().getServiceProvider().getServicesByGroupName(groupName).size();
     }
 
     @Override

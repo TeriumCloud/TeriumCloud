@@ -17,6 +17,6 @@ public record PacketPlayOutCloudPlayerUpdate(UUID uniquedId, String username, In
     }
 
     public Optional<ICloudService> parsedCloudService() {
-        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getCloudServiceByName(cloudService);
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(cloudService);
     }
 }

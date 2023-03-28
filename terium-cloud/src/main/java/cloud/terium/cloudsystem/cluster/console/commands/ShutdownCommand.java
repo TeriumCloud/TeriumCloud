@@ -20,13 +20,13 @@ public class ShutdownCommand extends Command {
     public void execute(String[] args) {
         if (args.length == 2) {
             if (args[0].equals("service")) {
-                ClusterStartup.getCluster().getServiceProvider().getCloudServiceByName(args[1]).ifPresentOrElse(ICloudService::shutdown, () -> {
+                ClusterStartup.getCluster().getServiceProvider().getServiceByName(args[1]).ifPresentOrElse(ICloudService::shutdown, () -> {
                     Logger.log("Cannot find a cloud service with that name.", LogType.ERROR);
                 });
             }
 
             if (args[0].equals("group")) {
-                ClusterStartup.getCluster().getServiceProvider().getCloudServicesByGroupName(args[1]).forEach(ICloudService::shutdown);
+                ClusterStartup.getCluster().getServiceProvider().getServicesByGroupName(args[1]).forEach(ICloudService::shutdown);
             }
 
             return;
@@ -42,7 +42,7 @@ public class ShutdownCommand extends Command {
             return Arrays.asList("service", "group");
         }
         if (args.length == 2) {
-            return args[0].equals("service") ? ClusterStartup.getCluster().getServiceProvider().getAllCloudServices().stream().map(ICloudService::getServiceName).toList() : ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getGroupName).toList();
+            return args[0].equals("service") ? ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().map(ICloudService::getServiceName).toList() : ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getGroupName).toList();
         }
         return super.tabComplete(args);
     }
