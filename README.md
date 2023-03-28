@@ -17,7 +17,7 @@
 - Template-System
 - Basic and simple api
 - Module system
-- Multi-root
+- Multi-root (Master/Wrapper)
 - [Velocity](https://velocitypowered.com) support
 - [Paper](https://papermc.io) support (1.12.2, 1.16.5, 1.17.1, 1.18.2 and 1.19.3)
 
@@ -35,7 +35,7 @@
 - Give the start-master.sh file '777' rights (Only on linux systems)
 - Execute start-master.sh
 - Everything will be downloaded and created automatically.
-- Now you can create groups and more. Have fun!
+- Now you can create groups, start services and more. Have fun!
 
 ## Installation (WRAPPER/NODE)
 
