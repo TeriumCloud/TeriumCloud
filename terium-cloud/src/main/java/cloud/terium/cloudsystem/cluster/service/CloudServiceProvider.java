@@ -65,6 +65,10 @@ public class CloudServiceProvider implements ICloudServiceProvider {
         return integer.get();
     }
 
+    public void createEmptyListForGroup(ICloudServiceGroup serviceGroup) {
+        cloudServiceIdCache.put(serviceGroup, new LinkedList<>());
+    }
+
     public void putServiceId(ICloudServiceGroup serviceGroup, int id) {
         cloudServiceIdCache.get(serviceGroup).add(id);
     }

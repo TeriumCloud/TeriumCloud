@@ -39,6 +39,8 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
     public void registerServiceGroup(ICloudServiceGroup serviceGroup) {
         serviceGroups.add(serviceGroup);
         serviceGroupCache.put(serviceGroup.getGroupName(), serviceGroup);
+        ClusterStartup.getCluster().getServiceProvider().createEmptyListForGroup(serviceGroup);
+        Logger.log("Successfully created service-group '" + serviceGroup.getGroupName() + "'.", LogType.INFO);
     }
 
     @SneakyThrows
