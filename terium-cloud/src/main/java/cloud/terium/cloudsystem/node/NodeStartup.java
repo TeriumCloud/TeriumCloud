@@ -51,10 +51,10 @@ import org.apache.commons.io.FileUtils;
 import sun.misc.Signal;
 
 import java.io.File;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import java.net.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Enumeration;
 import java.util.LinkedList;
 
 @Getter
@@ -62,6 +62,7 @@ import java.util.LinkedList;
 public class NodeStartup extends TeriumAPI {
 
     private static NodeStartup node;
+    private final String ipAddress;
     private final CommandManager commandManager;
     private NodeConfig nodeConfig;
     private ConfigManager configManager;
@@ -83,6 +84,12 @@ public class NodeStartup extends TeriumAPI {
     @SneakyThrows
     public NodeStartup() {
         node = this;
+
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress("google.com", 80));
+            ipAddress = socket.getLocalAddress().getHostAddress();
+        }
+
         TeriumCloud.getTerium().getCloudUtils();
         Logger.log("""
                 §f_______ _______  ______ _____ _     _ _______ §b__   _  _____  ______  _______
@@ -98,7 +105,7 @@ public class NodeStartup extends TeriumAPI {
         this.configManager = new ConfigManager();
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
-        this.thisNode = new Node(nodeConfig.name(), new InetSocketAddress(InetAddress.getLocalHost(), nodeConfig.port()), nodeConfig.memory(), true);
+        this.thisNode = new Node(nodeConfig.name(), new InetSocketAddress(ipAddress, nodeConfig.port()), nodeConfig.memory(), true);
         this.eventProvider = new EventProvider();
 
         this.eventProvider.subscribeListener(new ConsoleListener());

@@ -150,11 +150,14 @@ public class TeriumServer {
                                                 // node packets
                                                 if (packet instanceof PacketPlayOutNodeStarted newPacket) {
                                                     if(ClusterStartup.getCluster().getNodeProvider().getNodeByName(newPacket.node()).isEmpty()) {
-                                                        Logger.log("A NOT REGISTERED NODE WANTS TO CONNECT TO YOUR CLUSTER", LogType.INFO);
+                                                        channelHandlerContext.writeAndFlush(new PacketPlayOutNodeShutdown(newPacket.node()));
+                                                        channelHandlerContext.channel().close().sync();
+                                                        Logger.log("A NOT REGISTERED NODE WANTS TO CONNECT TO YOUR CLUSTER (Address: " + newPacket.address().getAddress().getHostAddress() + ")", LogType.INFO);
                                                         return;
                                                     }
 
                                                     if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getCloudConfig().key())) {
+                                                        channelHandlerContext.writeAndFlush(new PacketPlayOutNodeShutdown(newPacket.node()));
                                                         channelHandlerContext.channel().close().sync();
                                                         Logger.log("The master key isn't corrent.", LogType.ERROR);
                                                         Logger.log("Closing connection from node '" + newPacket.node() + "'", LogType.ERROR);
