@@ -32,6 +32,20 @@ public interface ICloudService extends Serializable {
     int getPort();
 
     /**
+     * Get the ICloudServiceGroup of the serivce
+     *
+     * @return ICloudServiceGroup This returns the ICloudServiceGroup of the service.
+     */
+    ICloudServiceGroup getServiceGroup();
+
+    /**
+     * Get the INode of the serivce
+     *
+     * @return INode This returns the INode of the service.
+     */
+    INode getServiceNode();
+
+    /**
      * Get the templates of the current service
      *
      * @return int This returns all templates of the service as list.
@@ -76,11 +90,6 @@ public interface ICloudService extends Serializable {
     void setUsedMemory(long usedMemory);
 
     /**
-     * Update every change by api to cloud.
-     */
-    void update();
-
-    /**
      * Get the max memory of the service
      *
      * @return int This returns the maximal memory of the service as int.
@@ -88,21 +97,6 @@ public interface ICloudService extends Serializable {
     default int getMaxMemory() {
         return getServiceGroup().getMemory();
     }
-
-    /**
-     * Get the ICloudServiceGroup of the serivce
-     *
-     * @return ICloudServiceGroup This returns the ICloudServiceGroup of the service.
-     */
-    ICloudServiceGroup getServiceGroup();
-
-    /**
-     * Get the INode of the serivce
-     *
-     * @return INode This returns the INode of the service.
-     */
-    INode getServiceNode();
-
 
     /**
      * Get the ServiceState of the service
@@ -188,6 +182,11 @@ public interface ICloudService extends Serializable {
     default boolean isPreparing() {
         return getServiceState() == ServiceState.PREPARING;
     }
+
+    /**
+     * Update every change by api to cloud.
+     */
+    void update();
 
     /**
      * Shutdown this service.
