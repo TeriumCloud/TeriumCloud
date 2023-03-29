@@ -23,11 +23,11 @@
 
 ## Links
 
-- Latest Release
-- Documentation
+- [Latest Release](https://github.com/TeriumCloud/Terium/releases)
+- [Documentation](https://github.com/TeriumCloud/Terium/wiki)
 - [GitHub repo](https://github.com/TeriumCloud/Terium)
 - [Discord Support](https://discord.com/invite/5VrY59sffQ)
-- SpigotMC
+- [SpigotMC](https://www.spigotmc.org/resources/teriumcloud.108875/)
 
 ## Installation (MASTER/CLUSTER)
 
