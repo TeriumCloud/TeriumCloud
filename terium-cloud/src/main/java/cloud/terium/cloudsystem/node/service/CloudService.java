@@ -106,7 +106,7 @@ public class CloudService implements ICloudService {
         });
         NodeStartup.getNode().getModuleProvider().getAllModules().stream().filter(module -> module.getModuleType() == ModuleType.valueOf(getServiceType().name())).forEach(module -> {
             try {
-                FileUtils.copyFileToDirectory(new File("modules//" + module.getFileName()), new File("servers//" + getServiceName() + "//plugins//"));
+                FileUtils.copyFileToDirectory(new File("modules//" + module.getFileName()), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
@@ -119,7 +119,7 @@ public class CloudService implements ICloudService {
         });
         if (!hasJarFile.get()) {
             try {
-                FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
+                FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
