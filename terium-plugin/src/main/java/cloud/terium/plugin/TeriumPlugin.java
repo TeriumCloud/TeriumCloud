@@ -1,5 +1,6 @@
 package cloud.terium.plugin;
 
+import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
 import cloud.terium.networking.packet.service.PacketPlayOutSuccessfullyServiceStarted;
 import cloud.terium.plugin.impl.config.ConfigManager;
 import cloud.terium.plugin.impl.console.CommandFactory;
@@ -94,6 +95,7 @@ public final class TeriumPlugin extends TeriumAPI {
             @Override
             public void run() {
                 teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(getProvider().getThisService().getServiceName(), getProvider().getThisNode().getName()));
+                teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
                 getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
                 getTeriumAPI().getProvider().getThisService().update();
 
@@ -172,7 +174,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public String getVersion() {
-                return "1.0-OXYGEN";
+                return "1.1-OXYGEN";
             }
         };
     }

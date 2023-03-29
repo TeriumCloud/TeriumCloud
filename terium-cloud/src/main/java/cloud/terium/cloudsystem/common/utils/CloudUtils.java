@@ -26,7 +26,7 @@ public class CloudUtils {
         this.running = true;
         this.isInScreen = false;
         this.firstStart = false;
-        this.version = "1.0-OXYGEN";
+        this.version = "1.1-OXYGEN";
         this.playerList = new ArrayList<>();
 
         File data = new File("data//versions");

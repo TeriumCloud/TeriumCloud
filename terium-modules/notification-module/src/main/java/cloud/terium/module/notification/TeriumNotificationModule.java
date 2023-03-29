@@ -5,7 +5,7 @@ import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.module.annotation.Module;
 import lombok.Getter;
 
-@Module(name = "notification-module", author = "Jxnnik(ByRaudy)", version = "1.0-OXYGEN", description = "", reloadable = false, moduleType = ModuleType.Proxy)
+@Module(name = "notification-module", author = "Jxnnik(ByRaudy)", version = "1.1-OXYGEN", description = "", reloadable = false, moduleType = ModuleType.Proxy)
 @Getter
 public final class TeriumNotificationModule implements IModule {
 
