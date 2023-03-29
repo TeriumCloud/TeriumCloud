@@ -21,11 +21,13 @@ public class CloudUtils {
     private boolean running;
     private boolean firstStart;
     private boolean isInScreen;
+    private boolean versionGotChecked;
 
     public CloudUtils() {
         this.running = true;
         this.isInScreen = false;
         this.firstStart = false;
+        this.versionGotChecked = false;
         this.version = "1.1-OXYGEN";
         this.playerList = new ArrayList<>();
 

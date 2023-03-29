@@ -1,5 +1,6 @@
 package cloud.terium.cloudsystem.cluster.pipe;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.events.console.RegisterCommandEvent;
@@ -16,6 +17,7 @@ import cloud.terium.cloudsystem.common.event.events.player.CloudPlayerQuitEvent;
 import cloud.terium.cloudsystem.common.event.events.service.*;
 import cloud.terium.cloudsystem.common.event.events.service.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.common.event.events.service.template.TemplateDeleteEvent;
+import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;
@@ -27,7 +29,6 @@ import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
@@ -149,7 +150,7 @@ public class TeriumServer {
 
                                                 // node packets
                                                 if (packet instanceof PacketPlayOutNodeStarted newPacket) {
-                                                    if(ClusterStartup.getCluster().getNodeProvider().getNodeByName(newPacket.node()).isEmpty()) {
+                                                    if (ClusterStartup.getCluster().getNodeProvider().getNodeByName(newPacket.node()).isEmpty()) {
                                                         channelHandlerContext.writeAndFlush(new PacketPlayOutNodeShutdown(newPacket.node()));
                                                         channelHandlerContext.channel().close().sync();
                                                         Logger.log("A NOT REGISTERED NODE WANTS TO CONNECT TO YOUR CLUSTER (Address: " + newPacket.address().getAddress().getHostAddress() + ")", LogType.INFO);
@@ -201,6 +202,16 @@ public class TeriumServer {
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
                                                 if (packet instanceof PacketPlayOutTemplateDelete newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
+
+                                                // util
+                                                if (packet instanceof PacketPlayOutCheckVersion newPacket && !TeriumCloud.getTerium().getCloudUtils().isVersionGotChecked()) {
+                                                    if (!newPacket.version().equals(ClusterStartup.getCluster().getProvider().getVersion())) {
+                                                        Logger.log("You are running the §cold §fversion of terium-cloud!", LogType.WARINING);
+                                                        Logger.log("Download the new version here: https://terium.cloud/download", LogType.WARINING);
+                                                    }
+
+                                                    TeriumCloud.getTerium().getCloudUtils().setVersionGotChecked(true);
+                                                }
                                             } catch (Exception exception) {
                                                 channels.forEach(targetChannel -> {
                                                     if (targetChannel != channelHandlerContext.channel()) {
