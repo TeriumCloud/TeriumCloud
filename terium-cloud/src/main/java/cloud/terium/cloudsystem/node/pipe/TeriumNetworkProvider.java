@@ -142,7 +142,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     if (packet instanceof PacketPlayOutServiceAdd newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new ServiceAddEvent(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.node(), newPacket.serviceGroup(), newPacket.templates(), newPacket.propertyCache()));
                     if (packet instanceof PacketPlayOutCreateService newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates(), newPacket.propertyCache()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new ServiceCreateEvent(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates(), newPacket.propertyCache(), newPacket.type()));
                     if (packet instanceof PacketPlayOutServiceForceShutdown newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.serviceName()));
                     if (packet instanceof PacketPlayOutServiceLock newPacket)

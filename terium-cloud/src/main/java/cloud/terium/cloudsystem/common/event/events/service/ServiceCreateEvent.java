@@ -24,8 +24,9 @@ public class ServiceCreateEvent extends Event {
     private final int memory;
     private final int serviceId;
     private final int port;
+    private final String type;
 
-    public ServiceCreateEvent(String serviceName, int serviceId, int port, int maxPlayers, int memory, INode node, ICloudServiceGroup serviceGroup, List<ITemplate> templates, HashMap<String, Object> propertyCache) {
+    public ServiceCreateEvent(String serviceName, int serviceId, int port, int maxPlayers, int memory, INode node, ICloudServiceGroup serviceGroup, List<ITemplate> templates, HashMap<String, Object> propertyCache, String type) {
         this.name = serviceName;
         this.node = node;
         this.serviceGroup = serviceGroup;
@@ -35,7 +36,8 @@ public class ServiceCreateEvent extends Event {
         this.memory = memory;
         this.serviceId = serviceId;
         this.port = port;
+        this.type = type;
         if (ClusterStartup.getCluster() != null)
-            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateService(serviceName, serviceId, port, maxPlayers, memory, node.getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyCache));
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateService(serviceName, serviceId, port, maxPlayers, memory, node.getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyCache, type));
     }
 }

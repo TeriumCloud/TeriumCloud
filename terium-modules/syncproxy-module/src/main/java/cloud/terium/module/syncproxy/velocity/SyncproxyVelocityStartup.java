@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.util.concurrent.TimeUnit;
+
 @Getter
 @Setter
 public class SyncproxyVelocityStartup {
@@ -34,6 +36,7 @@ public class SyncproxyVelocityStartup {
         proxyServer.getEventManager().register(this, new ProxyPingListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
+        proxyServer.getScheduler().buildTask(this, () -> TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService("MyService", TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName("Lobby").orElseGet(null))).delay(2, TimeUnit.SECONDS).schedule();
     }
 
     public static SyncproxyVelocityStartup getInstance() {

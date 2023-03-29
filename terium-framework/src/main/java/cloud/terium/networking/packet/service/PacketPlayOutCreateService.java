@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public record PacketPlayOutCreateService(String serviceName, int serviceId, int port, int maxPlayers, int memory,
                                          String node, String serviceGroup, List<String> templates,
-                                         HashMap<String, Object> propertyCache) implements Packet {
+                                         HashMap<String, Object> propertyCache, String type) implements Packet {
 
     public Optional<ICloudServiceGroup> parsedServiceGroup() {
         return TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(serviceGroup);

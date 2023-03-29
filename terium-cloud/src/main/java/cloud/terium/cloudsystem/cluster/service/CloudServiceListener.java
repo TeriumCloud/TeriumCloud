@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.cluster.service;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.events.service.*;
-import cloud.terium.cloudsystem.node.NodeStartup;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
@@ -35,10 +34,17 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
-        if (event.getNode().getName().equals(ClusterStartup.getCluster().getThisNode().getName()))
-            new cloud.terium.cloudsystem.cluster.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
-                    event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
-        else Logger.log("The service '" + event.getName() + "' is starting on node '" + event.getNode().getName() + "'.", LogType.INFO);
+        if (event.getNode().getName().equals(ClusterStartup.getCluster().getThisNode().getName())) {
+            switch (event.getType()) {
+                case "group_only" -> ClusterStartup.getCluster().getServiceFactory().createService(event.getServiceGroup());
+                case "group_with_templates" -> ClusterStartup.getCluster().getServiceFactory().createService(event.getServiceGroup(), event.getTemplates());
+                case "full" -> ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates(), event.getServiceId(), event.getMaxPlayers(), event.getMemory());
+                case "group_with_custom_name" -> ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup());
+                case "group_template_and_custom_name" -> ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates());
+            }
+            /*new cloud.terium.cloudsystem.cluster.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
+                    event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();*/
+        } else Logger.log("The service '" + event.getName() + "' is starting on node '" + event.getNode().getName() + "'.", LogType.INFO);
     }
 
     @Subscribe
