@@ -1,6 +1,9 @@
 package cloud.terium.cloudsystem.node.config;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.cluster.utils.Logger;
+import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.teriumapi.console.LogType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -14,7 +17,6 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,13 +41,14 @@ public class ConfigManager {
             JsonObject informations = new JsonObject();
 
             informations.addProperty("name", "Node-1");
-            informations.addProperty("ip", "127.0.0.1");
+            informations.addProperty("ip", NodeStartup.getNode().getIpAddress());
             informations.addProperty("port", 4658);
             json.add("informations", informations);
             json.addProperty("promt", "§b%user%§f@terium => ");
             json.addProperty("memory", 5120);
             json.addProperty("debug", false);
-            json.addProperty("serviceAddress", InetAddress.getLocalHost().getHostAddress());
+            json.addProperty("serviceAddress", NodeStartup.getNode().getIpAddress());
+            json.addProperty("splitter", "-");
 
             JsonObject masterInfos = new JsonObject();
             masterInfos.addProperty("name", "Master-1");
@@ -65,11 +68,24 @@ public class ConfigManager {
         }
     }
 
+    @SneakyThrows
     public NodeConfig toNodeConfig() {
-        return new NodeConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
-                json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
-                json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("debug").getAsBoolean(),
-                json.get("master").getAsJsonObject());
+        try {
+            return new NodeConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
+                    json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
+                    json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("splitter").getAsString(), json.get("debug").getAsBoolean(),
+                    json.get("master").getAsJsonObject());
+        } catch (Exception exception) {
+            Logger.log("*************************************", LogType.ERROR);
+            Logger.log(" ", LogType.ERROR);
+            Logger.log("Your config.json seems old! Please delete it to regenerate it.", LogType.ERROR);
+            Logger.log(" ", LogType.ERROR);
+            Logger.log("*************************************", LogType.ERROR);
+            Thread.sleep(2000);
+            System.exit(0);
+        }
+
+        return null;
     }
 
     public void save() {

@@ -1,11 +1,14 @@
 package cloud.terium.cloudsystem.cluster.config;
 
 import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.node.pipe.TeriumNetworkProvider;
+import cloud.terium.teriumapi.console.LogType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +55,7 @@ public class ConfigManager {
             json.addProperty("memory", 5120);
             json.addProperty("debug", false);
             json.addProperty("serviceAddress", "127.0.0.1");
+            json.addProperty("splitter", "-");
             json.add("nodes", new JsonObject());
 
             save();
@@ -65,11 +69,24 @@ public class ConfigManager {
         }
     }
 
+    @SneakyThrows
     public CloudConfig toCloudConfig() {
-        return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(), json.get("informations").getAsJsonObject().get("key").getAsString(),
-                json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
-                json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("debug").getAsBoolean(),
-                json.get("nodes").getAsJsonObject());
+        try {
+            return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(), json.get("informations").getAsJsonObject().get("key").getAsString(),
+                    json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
+                    json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("splitter").getAsString(),
+                    json.get("debug").getAsBoolean(), json.get("nodes").getAsJsonObject());
+        } catch (Exception exception) {
+            Logger.log("*************************************", LogType.ERROR);
+            Logger.log(" ", LogType.ERROR);
+            Logger.log("Your config.json seems old! Please delete it to regenerate it.", LogType.ERROR);
+            Logger.log(" ", LogType.ERROR);
+            Logger.log("*************************************", LogType.ERROR);
+            Thread.sleep(2000);
+            System.exit(0);
+        }
+
+        return null;
     }
 
     public void save() {

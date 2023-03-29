@@ -259,7 +259,7 @@ public class CloudService implements ICloudService {
 
     @Override
     public String getServiceName() {
-        return getServiceId() > 9 ? name + "-" + getServiceId() : name + "-0" + getServiceId();
+        return getServiceId() > 9 ? name + ClusterStartup.getCluster().getCloudConfig().splitter() + getServiceId() : name + ClusterStartup.getCluster().getCloudConfig().splitter() + "0" + getServiceId();
     }
 
     @Override
