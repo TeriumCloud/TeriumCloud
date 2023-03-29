@@ -21,17 +21,12 @@ public class TeriumBukkitStartup extends JavaPlugin {
         instance = this;
 
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin...");
-        try {
-            new TeriumPlugin();
-            PluginManager pluginManager = Bukkit.getPluginManager();
-            pluginManager.registerEvents(new PlayerJoinListener(), this);
-            pluginManager.registerEvents(new PlayerQuitListener(), this);
-            pluginManager.registerEvents(new PlayerCommandPreprocessListener(), this);
+        new TeriumPlugin();
 
-            Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin successed...");
-        } catch (Exception exception) {
-            Bukkit.getConsoleSender().sendMessage("§cStartup of bukkit terium-plugin failed...");
-            Bukkit.getConsoleSender().sendMessage("§7Exception message§f: §c" + exception.getMessage());
-        }
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerQuitListener(), this);
+        pluginManager.registerEvents(new PlayerCommandPreprocessListener(), this);
+        Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin successed...");
     }
 }
