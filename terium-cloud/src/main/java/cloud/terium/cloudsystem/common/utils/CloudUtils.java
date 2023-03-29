@@ -4,10 +4,10 @@ import cloud.terium.cloudsystem.common.utils.logger.Logger;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ public class CloudUtils {
     private boolean isInScreen;
     private boolean versionGotChecked;
 
+    @SneakyThrows
     public CloudUtils() {
         this.running = true;
         this.isInScreen = false;
@@ -34,23 +35,20 @@ public class CloudUtils {
         File data = new File("data//versions");
         if (!data.exists()) {
             Logger.log("Downloading spigot.yml, velocity.toml and teriumcloud-plugin...");
-            try {
-                Logger.log("Trying to download 'spigot.yml'...");
-                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/spigot.yml"), new File("data//versions//spigot.yml"));
-                Logger.log("Successfully to downloaded 'spigot.yml'.");
-                Thread.sleep(1000);
-                Logger.log("Trying to download 'velocity.toml'...");
-                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/velocity.toml"), new File("data//versions//velocity.toml"));
-                Logger.log("Successfully to downloaded 'velocity.toml'.");
-                Thread.sleep(1000);
-                Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
-                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
-                Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
-            } catch (IOException | InterruptedException exception) {
-                exception.printStackTrace();
-            }
+            Logger.log("Trying to download 'spigot.yml'...");
+            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/spigot.yml"), new File("data//versions//spigot.yml"));
+            Logger.log("Successfully to downloaded 'spigot.yml'.");
+            Thread.sleep(1000);
+            Logger.log("Trying to download 'velocity.toml'...");
+            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/velocity.toml"), new File("data//versions//velocity.toml"));
+            Logger.log("Successfully to downloaded 'velocity.toml'.");
+            Thread.sleep(1000);
         }
         data.mkdirs();
+
+        Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
+        FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+        Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
     }
 
     public long getUsedMemory() {
