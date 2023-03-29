@@ -1,15 +1,11 @@
 package cloud.terium.plugin.bukkit.listener;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class PlayerJoinListener implements Listener {
 
@@ -23,12 +19,8 @@ public class PlayerJoinListener implements Listener {
             cloudPlayer.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getThisService());
 
             try {
-                URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + event.getPlayer().getUniqueId().toString().replace("-", "") + "?unsigned=false");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                if (connection.getResponseCode() == 204) return;
-                JsonObject object = (JsonObject) new JsonParser().parse(new InputStreamReader(connection.getInputStream()));
-                JsonObject properties = (JsonObject) object.getAsJsonArray("properties").get(0);
-                cloudPlayer.updateSkinData(properties.get("value").getAsString(), properties.get("signature").getAsString());
+                Property prop = ((GameProfile) event.getPlayer().getClass().getDeclaredMethod("getProfile").invoke(event.getPlayer())).getProperties().get("textures").iterator().next();
+                cloudPlayer.updateSkinData(prop.getValue(), prop.getSignature());
             } catch (Exception ignored) {
             }
 

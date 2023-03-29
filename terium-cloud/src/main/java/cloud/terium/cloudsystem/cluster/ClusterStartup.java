@@ -35,7 +35,6 @@ import cloud.terium.teriumapi.entity.ICloudPlayerProvider;
 import cloud.terium.teriumapi.event.IEventProvider;
 import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.node.INode;
-import cloud.terium.teriumapi.node.INodeFactory;
 import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.service.ICloudService;
