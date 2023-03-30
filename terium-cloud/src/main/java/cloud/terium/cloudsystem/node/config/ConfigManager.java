@@ -74,8 +74,8 @@ public class ConfigManager {
         try {
             return new NodeConfig(json.get("informations").getAsJsonObject().get("name").getAsString(),
                     json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
-                    json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("splitter").getAsString(), json.get("debug").getAsBoolean(),
-                    json.get("checkUpdates").getAsBoolean(), json.get("master").getAsJsonObject());
+                    json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("splitter").getAsString(),
+                    json.get("checkUpdates").getAsBoolean(), json.get("debug").getAsBoolean(), json.get("master").getAsJsonObject());
         } catch (Exception exception) {
             Logger.log("*************************************", LogType.ERROR);
             Logger.log(" ", LogType.ERROR);

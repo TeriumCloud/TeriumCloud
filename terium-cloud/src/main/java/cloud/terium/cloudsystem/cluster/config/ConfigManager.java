@@ -76,7 +76,7 @@ public class ConfigManager {
             return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(), json.get("informations").getAsJsonObject().get("key").getAsString(),
                     json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
                     json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("splitter").getAsString(),
-                    json.get("debug").getAsBoolean(), json.get("checkUpdates").getAsBoolean(), json.get("nodes").getAsJsonObject());
+                    json.get("checkUpdates").getAsBoolean(), json.get("debug").getAsBoolean(), json.get("nodes").getAsJsonObject());
         } catch (Exception exception) {
             Logger.log("*************************************", LogType.ERROR);
             Logger.log(" ", LogType.ERROR);
