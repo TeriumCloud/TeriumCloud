@@ -28,7 +28,6 @@ import cloud.terium.teriumapi.events.service.CloudServiceStartedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceUpdateEvent;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.ServiceType;
@@ -135,8 +134,19 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudGroupCreatedEvent(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(newPacket.name()).orElseGet(null)));
                     if (packet instanceof PacketPlayOutGroupDelete newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudGroupDeleteEvent(newPacket.parsedServiceGroup().orElseGet(null)));
-                    if (packet instanceof PacketPlayOutGroupUpdate newPacket)
+                    if (packet instanceof PacketPlayOutGroupUpdate newPacket) {
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudGroupUpdatedEvent(newPacket.parsedServiceGroup().orElseGet(null)));
+                        newPacket.parsedServiceGroup().ifPresent(serviceGroup -> {
+                            serviceGroup.setGroupNode(TeriumAPI.getTeriumAPI().getProvider().getNodeProvider().getNodeByName(newPacket.node()).orElseGet(null));
+                            serviceGroup.setMemory(newPacket.memory());
+                            serviceGroup.setVersion(newPacket.version());
+                            serviceGroup.setStatic(newPacket.isStatic());
+                            serviceGroup.setMaintenance(newPacket.maintenance());
+                            serviceGroup.setMaxPlayer(newPacket.maximumPlayers());
+                            serviceGroup.setMinServices(newPacket.minimalServices());
+                            serviceGroup.setMaxServices(newPacket.maximalServices());
+                        });
+                    }
                     // node
                     if (packet instanceof PacketPlayOutNodeStarted newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.parsedNode().orElseGet(null)));

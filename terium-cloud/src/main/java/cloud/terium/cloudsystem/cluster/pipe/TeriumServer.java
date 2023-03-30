@@ -205,7 +205,7 @@ public class TeriumServer {
 
                                                 // util
                                                 if (packet instanceof PacketPlayOutCheckVersion newPacket && !TeriumCloud.getTerium().getCloudUtils().isVersionGotChecked()) {
-                                                    if (!newPacket.version().equals(ClusterStartup.getCluster().getProvider().getVersion())) {
+                                                    if (!newPacket.version().equals(ClusterStartup.getCluster().getProvider().getVersion()) && ClusterStartup.getCluster().getCloudConfig().checkUpdate()) {
                                                         Logger.log("You are running the §cold §fversion of terium-cloud!", LogType.WARINING);
                                                         Logger.log("Download the new version here: https://terium.cloud/download", LogType.WARINING);
                                                     }

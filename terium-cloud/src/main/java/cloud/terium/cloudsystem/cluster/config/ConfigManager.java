@@ -54,6 +54,7 @@ public class ConfigManager {
             json.addProperty("promt", "§b%user%§f@terium => ");
             json.addProperty("memory", 5120);
             json.addProperty("debug", false);
+            json.addProperty("checkUpdates", true);
             json.addProperty("serviceAddress", "127.0.0.1");
             json.addProperty("splitter", "-");
             json.add("nodes", new JsonObject());
@@ -75,7 +76,7 @@ public class ConfigManager {
             return new CloudConfig(json.get("informations").getAsJsonObject().get("name").getAsString(), json.get("informations").getAsJsonObject().get("key").getAsString(),
                     json.get("informations").getAsJsonObject().get("ip").getAsString(), json.get("informations").getAsJsonObject().get("port").getAsInt(),
                     json.get("memory").getAsInt(), json.get("serviceAddress").getAsString(), json.get("promt").getAsString(), json.get("splitter").getAsString(),
-                    json.get("debug").getAsBoolean(), json.get("nodes").getAsJsonObject());
+                    json.get("debug").getAsBoolean(), json.get("checkUpdates").getAsBoolean(), json.get("nodes").getAsJsonObject());
         } catch (Exception exception) {
             Logger.log("*************************************", LogType.ERROR);
             Logger.log(" ", LogType.ERROR);

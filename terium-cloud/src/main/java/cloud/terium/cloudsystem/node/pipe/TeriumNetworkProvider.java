@@ -1,5 +1,7 @@
 package cloud.terium.cloudsystem.node.pipe;
 
+import cloud.terium.cloudsystem.TeriumCloud;
+import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.common.event.events.console.RegisterCommandEvent;
 import cloud.terium.cloudsystem.common.event.events.console.SendConsoleEvent;
 import cloud.terium.cloudsystem.common.event.events.group.*;
@@ -19,6 +21,7 @@ import cloud.terium.cloudsystem.node.NodeStartup;
 import cloud.terium.cloudsystem.node.node.Node;
 import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.networking.client.TeriumClient;
+import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;
@@ -215,6 +218,17 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                         NodeStartup.getNode().getEventProvider().callEvent(new TemplateCreateEvent(newPacket.name()));
                     if (packet instanceof PacketPlayOutTemplateDelete newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new TemplateDeleteEvent(newPacket.template()));
+
+                    // utils
+                    // util
+                    if (packet instanceof PacketPlayOutCheckVersion newPacket && !TeriumCloud.getTerium().getCloudUtils().isVersionGotChecked()) {
+                        if (!newPacket.version().equals(NodeStartup.getNode().getProvider().getVersion()) && NodeStartup.getNode().getNodeConfig().checkUpdate()) {
+                            Logger.log("You are running the §cold §fversion of terium-cloud!", LogType.WARINING);
+                            Logger.log("Download the new version here: https://terium.cloud/download", LogType.WARINING);
+                        }
+
+                        TeriumCloud.getTerium().getCloudUtils().setVersionGotChecked(true);
+                    }
                 } catch (Exception ignored) {}
             }
         });

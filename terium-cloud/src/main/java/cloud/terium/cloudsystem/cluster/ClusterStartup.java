@@ -52,6 +52,7 @@ import sun.misc.Signal;
 
 import java.io.File;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -117,6 +118,12 @@ public class ClusterStartup extends TeriumAPI {
         this.moduleProvider = new ModuleProvider();
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
+
+        if(cloudConfig.checkUpdate()) {
+            Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
+            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+            Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
+        }
 
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
         Thread.sleep(1000);

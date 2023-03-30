@@ -29,7 +29,7 @@ public class CloudUtils {
         this.isInScreen = false;
         this.firstStart = false;
         this.versionGotChecked = false;
-        this.version = "1.1-OXYGEN";
+        this.version = "1.2-OXYGEN";
         this.playerList = new ArrayList<>();
 
         File data = new File("data//versions");
@@ -43,12 +43,11 @@ public class CloudUtils {
             FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/velocity.toml"), new File("data//versions//velocity.toml"));
             Logger.log("Successfully to downloaded 'velocity.toml'.");
             Thread.sleep(1000);
+            Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
+            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+            Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
         }
         data.mkdirs();
-
-        Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
-        FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
-        Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
     }
 
     public long getUsedMemory() {

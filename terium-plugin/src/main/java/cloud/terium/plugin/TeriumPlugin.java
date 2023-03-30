@@ -174,7 +174,7 @@ public final class TeriumPlugin extends TeriumAPI {
 
             @Override
             public String getVersion() {
-                return "1.1-OXYGEN";
+                return "1.2-OXYGEN";
             }
         };
     }

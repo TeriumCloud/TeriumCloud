@@ -127,6 +127,12 @@ public class NodeStartup extends TeriumAPI {
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
+        if(nodeConfig.checkUpdate()) {
+            Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
+            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+            Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
+        }
+
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
         Thread.sleep(1000);
 
