@@ -160,7 +160,7 @@ public class TeriumServer {
                                                     if (!newPacket.masterKey().equals(ClusterStartup.getCluster().getCloudConfig().key())) {
                                                         channelHandlerContext.writeAndFlush(new PacketPlayOutNodeShutdown(newPacket.node()));
                                                         channelHandlerContext.channel().close().sync();
-                                                        Logger.log("The master key isn't corrent.", LogType.ERROR);
+                                                        Logger.log("The master key isn't correct.", LogType.ERROR);
                                                         Logger.log("Closing connection from node '" + newPacket.node() + "'", LogType.ERROR);
                                                         return;
                                                     }
