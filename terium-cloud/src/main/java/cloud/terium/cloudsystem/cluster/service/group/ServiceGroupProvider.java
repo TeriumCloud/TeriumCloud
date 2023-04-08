@@ -3,6 +3,7 @@ package cloud.terium.cloudsystem.cluster.service.group;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.events.group.GroupUpdateEvent;
+import cloud.terium.networking.packet.group.PacketPlayOutGroupAdd;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -10,6 +11,7 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
+import cloud.terium.teriumapi.template.ITemplate;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -40,6 +42,9 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
         serviceGroups.add(serviceGroup);
         serviceGroupCache.put(serviceGroup.getGroupName(), serviceGroup);
         ClusterStartup.getCluster().getServiceProvider().createEmptyListForGroup(serviceGroup);
+        ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutGroupAdd(serviceGroup.getGroupName(), serviceGroup.getGroupTitle(), serviceGroup.getGroupNode().getName(),
+                serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), serviceGroup.getServiceType(), serviceGroup.getVersion(), serviceGroup.isMaintenance(), serviceGroup.isStatic(),
+                serviceGroup.hasPort(), serviceGroup.getPort(), serviceGroup.getMaxPlayers(), serviceGroup.getMemory(), serviceGroup.getMinServices(), serviceGroup.getMaxServices()));
         Logger.log("Successfully created service-group '" + serviceGroup.getGroupName() + "'.", LogType.INFO);
     }
 

@@ -3,6 +3,7 @@ package cloud.terium.cloudsystem.cluster.template;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.template.Template;
+import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.ITemplateFactory;
@@ -25,6 +26,7 @@ public class TemplateFactory implements ITemplateFactory {
         file.mkdirs();
         Template template = new Template(name, Path.of(file.getPath()));
         ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().add(template);
+        ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutTemplateAdd(name, file.getPath()));
         Logger.log("Successfully created template '" + name + "'.", LogType.INFO);
         return template;
     }
