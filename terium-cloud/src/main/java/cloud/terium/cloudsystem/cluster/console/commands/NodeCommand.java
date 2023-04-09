@@ -3,6 +3,7 @@ package cloud.terium.cloudsystem.cluster.console.commands;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.node.Node;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeAdd;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.node.INode;
@@ -43,6 +44,7 @@ public class NodeCommand extends Command {
                                 ClusterStartup.getCluster().getCloudConfig().nodes().add(args[1], newNode);
                                 ClusterStartup.getCluster().getConfigManager().save();
                                 ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], new InetSocketAddress(args[2], Integer.parseInt(args[3]))));
+                                ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutNodeAdd(args[1], new InetSocketAddress(args[2], Integer.parseInt(args[3])), 0, false));
 
                                 Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
                             });
