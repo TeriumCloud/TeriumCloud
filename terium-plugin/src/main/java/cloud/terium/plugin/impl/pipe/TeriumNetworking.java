@@ -11,6 +11,7 @@ import cloud.terium.networking.packet.player.*;
 import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.plugin.TeriumPlugin;
+import cloud.terium.plugin.bukkit.TeriumBukkitStartup;
 import cloud.terium.plugin.impl.module.LoadedModule;
 import cloud.terium.plugin.impl.node.Node;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
@@ -44,6 +45,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
@@ -206,6 +208,14 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                             if (packet instanceof PacketPlayOutCloudPlayerConnect packetConnect) {
                                 TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(packetConnect.cloudPlayer()).ifPresent(player -> player.createConnectionRequest(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetConnect.cloudService()).orElse(null)).connect());
                             }
+
+                            if (packet instanceof PacketPlayOutServiceExecuteCommand newPacket)
+                                if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName().equals(newPacket.cloudService()))
+                                    TeriumVelocityStartup.getInstance().executeCommand(newPacket.command());
+                        } else {
+                            if (packet instanceof PacketPlayOutServiceExecuteCommand newPacket)
+                                if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName().equals(newPacket.cloudService()))
+                                    TeriumBukkitStartup.getInstance().executeCommand(newPacket.command());
                         }
                     }
 

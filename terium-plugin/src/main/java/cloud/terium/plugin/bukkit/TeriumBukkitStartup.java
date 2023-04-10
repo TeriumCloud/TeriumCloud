@@ -29,4 +29,8 @@ public class TeriumBukkitStartup extends JavaPlugin {
         pluginManager.registerEvents(new PlayerCommandPreprocessListener(), this);
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin successed...");
     }
+
+    public void executeCommand(String command) {
+        Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command);
+    }
 }

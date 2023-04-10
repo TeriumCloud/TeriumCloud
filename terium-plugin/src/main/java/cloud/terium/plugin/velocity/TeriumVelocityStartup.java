@@ -7,12 +7,8 @@ import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @Getter
 public class TeriumVelocityStartup {
@@ -46,5 +42,9 @@ public class TeriumVelocityStartup {
             System.out.println("§cStartup of velocity terium-plugin failed.");
             System.out.println("§7Exception message§f: §c" + exception.getMessage());
         }
+    }
+
+    public void executeCommand(String command) {
+        TeriumVelocityStartup.getInstance().getProxyServer().getCommandManager().executeAsync(TeriumVelocityStartup.getInstance().getProxyServer().getConsoleCommandSource(), command);
     }
 }

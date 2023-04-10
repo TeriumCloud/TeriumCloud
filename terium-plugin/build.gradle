@@ -15,6 +15,7 @@ repositories {
 dependencies {
     compileOnly group: 'net.kyori', name: 'adventure-text-minimessage', version: '4.10.1'
     compileOnly 'com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'io.github.waterfallmc:waterfall-api:1.19-R0.1-SNAPSHOT'
     compileOnly 'com.velocitypowered:velocity-api:3.0.1'
     compileOnly 'org.projectlombok:lombok:1.18.24'
 
