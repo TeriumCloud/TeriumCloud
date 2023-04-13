@@ -205,6 +205,7 @@ public class CloudService implements ICloudService {
 
     public void toggleScreen() {
         if (!TeriumCloud.getTerium().getCloudUtils().isInScreen()) {
+            NodeStartup.getNode().getConsoleManager().clearScreen();
             outputThread = new Thread(() -> {
                 String line = null;
                 BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -224,18 +225,18 @@ public class CloudService implements ICloudService {
                 }
             });
             if (NodeStartup.getNode().getScreenProvider().getLogsFromService(this) != null) {
-                NodeStartup.getNode().getScreenProvider().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
+                NodeStartup.getNode().getScreenProvider().getLogsFromService(this).forEach(Logger::log);
             }
-            Logger.log("You're now inside of " + getServiceName() + ".", LogType.INFO);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(true);
             NodeStartup.getNode().getScreenProvider().setCurrentScreen(this);
             outputThread.start();
         } else {
             outputThread.stop();
+            NodeStartup.getNode().getConsoleManager().clearScreen();
             NodeStartup.getNode().getScreenProvider().setCurrentScreen(null);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(false);
-            Logger.log("You left the screen from " + getServiceName() + ".", LogType.INFO);
-            Logger.logAllCachedLogs();
+            cloud.terium.cloudsystem.cluster.utils.Logger.logAllLoggedMessags();
+            cloud.terium.cloudsystem.cluster.utils.Logger.logAllCachedLogs();
         }
     }
 

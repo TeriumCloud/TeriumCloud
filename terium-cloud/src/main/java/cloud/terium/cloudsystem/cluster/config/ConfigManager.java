@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ConfigManager {
 
@@ -52,7 +53,7 @@ public class ConfigManager {
             informations.addProperty("key", generatedKey.toString());
             json.add("informations", informations);
             json.addProperty("promt", "§b%user%§f@terium => ");
-            json.addProperty("memory", 5120);
+            json.addProperty("memory", ThreadLocalRandom.current().nextDouble(3000, 7000));
             json.addProperty("debug", false);
             json.addProperty("checkUpdates", true);
             json.addProperty("serviceAddress", "127.0.0.1");

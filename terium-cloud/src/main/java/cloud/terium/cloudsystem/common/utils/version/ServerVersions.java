@@ -24,7 +24,13 @@ public enum ServerVersions {
     PAPER_1_15_2("paper-1.15.2", "https://api.papermc.io/v2/projects/paper/versions/1.15.2/"),
     PAPER_1_14_4("paper-1.14.4", "https://api.papermc.io/v2/projects/paper/versions/1.14.4/"),
     PAPER_1_13_2("paper-1.13.2", "https://api.papermc.io/v2/projects/paper/versions/1.13.2/"),
-    PAPER_1_12_2("paper-1.12.2", "https://api.papermc.io/v2/projects/paper/versions/1.12.2/");
+    PAPER_1_12_2("paper-1.12.2", "https://api.papermc.io/v2/projects/paper/versions/1.12.2/"),
+    PURPUR_1_16_5("purpur-1.16.6", "https://api.purpurmc.org/v2/purpur/1.16.5/"),
+    PURPUR_1_17_1("purpur-1.17.1", "https://api.purpurmc.org/v2/purpur/1.17.1/"),
+    PURPUR_1_18_2("purpur-1.18.2", "https://api.purpurmc.org/v2/purpur/1.18.2/"),
+    PURPUR_1_19_2("purpur-1.19.2", "https://api.purpurmc.org/v2/purpur/1.19.2/"),
+    PURPUR_1_19_3("purpur-1.19.3", "https://api.purpurmc.org/v2/purpur/1.19.3/"),
+    PURPUR_1_19_4("purpur-1.19.4", "https://api.purpurmc.org/v2/purpur/1.19.4/");
 
     private final String name;
     private final String url;
@@ -47,8 +53,15 @@ public enum ServerVersions {
             response.append(line);
         }
         bufferedReader.close();
-        JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonArray();
-        int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
-        return serverVersion.getUrl() + "builds/" + latestBuild + "/downloads/" + serverVersion.getName() + "-" + latestBuild + ".jar";
+
+        if (serverVersion.getName().startsWith("purpur-")) {
+            JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonObject().get("all").getAsJsonArray();
+            int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
+            return serverVersion.getUrl() + latestBuild + "/download";
+        } else {
+            JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonArray();
+            int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
+            return serverVersion.getUrl() + "builds/" + latestBuild + "/downloads/" + serverVersion.getName() + "-" + latestBuild + ".jar";
+        }
     }
 }
