@@ -18,7 +18,7 @@
 - Basic and simple api
 - Module system
 - Multi-root (Master/Wrapper)
-- [Velocity](https://velocitypowered.com) and [Waterfall](https://papermc.io/downloads/waterfall) support
+- [Velocity](https://velocitypowered.com) support
 - [Paper](https://papermc.io) support (1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3, 1.19.4)
 
 ## Links
@@ -56,7 +56,7 @@
 ## Supported Minecraft Versions
 
 - Paper 1.12.2 - 1.19.3
-- Waterfall & Velocity 3
+- Velocity 3
 
 ## Thanks to
 
