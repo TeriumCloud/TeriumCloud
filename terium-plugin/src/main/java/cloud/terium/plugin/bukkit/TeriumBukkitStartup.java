@@ -17,20 +17,24 @@ public class TeriumBukkitStartup extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        new TeriumPlugin();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
-
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin...");
-        new TeriumPlugin();
 
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         pluginManager.registerEvents(new PlayerCommandPreprocessListener(), this);
+
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin successed...");
     }
 
     public void executeCommand(String command) {
-        Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command);
+        Bukkit.getScheduler().runTask(this, () -> Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command));
     }
 }

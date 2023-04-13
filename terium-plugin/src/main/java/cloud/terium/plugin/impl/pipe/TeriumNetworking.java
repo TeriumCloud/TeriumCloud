@@ -191,7 +191,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                                         return;
                                     }
 
-                                    TeriumVelocityStartup.getInstance().getProxyServer().registerServer(new ServerInfo(packetAdd.serviceName(), new InetSocketAddress("127.0.0.1", packetAdd.parsedCloudService().orElseGet(null).getPort())));
+                                    TeriumVelocityStartup.getInstance().getProxyServer().registerServer(new ServerInfo(packetAdd.serviceName(), new InetSocketAddress(packetAdd.parsedNode().orElseGet(null).getAddress().getAddress().getHostAddress(), packetAdd.parsedCloudService().orElseGet(null).getPort())));
                                 }
                             }
 
