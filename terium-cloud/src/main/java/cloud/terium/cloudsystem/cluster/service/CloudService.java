@@ -28,7 +28,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class CloudService implements ICloudService {
 
@@ -156,10 +155,14 @@ public class CloudService implements ICloudService {
                 getServiceNode().getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyMap));
 
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "nogui"};
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            String[] command = null;
+            if (serviceType == ServiceType.Proxy)
+                command = new String[]{"java", "-Xmx" + serviceGroup.getMemory() + "m", "-Dfile.encoding=UTF-8", "-Dlog4j2.formatMsgNoLookups=true", "-Djline.terminal=jline.UnsupportedTerminal", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar"};
+            else
+                command = new String[]{"java", "-Xmx" + serviceGroup.getMemory() + "m", "-Dfile.encoding=UTF-8", "-Dlog4j2.formatMsgNoLookups=true", "-Djline.terminal=jline.UnsupportedTerminal", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "--nogui", "--nojline", "--noconsole"};
+            ProcessBuilder processBuilder = new ProcessBuilder(command)
+                    .directory(this.folder);
 
-            processBuilder.directory(this.folder);
             try {
                 this.process = processBuilder.start();
             } catch (IOException exception) {
@@ -205,6 +208,7 @@ public class CloudService implements ICloudService {
 
     public void toggleScreen() {
         if (!TeriumCloud.getTerium().getCloudUtils().isInScreen()) {
+            ClusterStartup.getCluster().getConsoleManager().clearScreen();
             outputThread = new Thread(() -> {
                 String line = null;
                 BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -224,17 +228,17 @@ public class CloudService implements ICloudService {
                 }
             });
             if (ClusterStartup.getCluster().getScreenProvider().getLogsFromService(this) != null) {
-                ClusterStartup.getCluster().getScreenProvider().getLogsFromService(this).forEach(log -> Logger.log(log, LogType.SCREEN));
+                ClusterStartup.getCluster().getScreenProvider().getLogsFromService(this).forEach(Logger::log);
             }
-            Logger.log("You're now inside of " + getServiceName() + ".", LogType.INFO);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(true);
             ClusterStartup.getCluster().getScreenProvider().setCurrentScreen(this);
             outputThread.start();
         } else {
             outputThread.stop();
+            ClusterStartup.getCluster().getConsoleManager().clearScreen();
             ClusterStartup.getCluster().getScreenProvider().setCurrentScreen(null);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(false);
-            Logger.log("You left the screen from " + getServiceName() + ".", LogType.INFO);
+            Logger.logAllLoggedMessags();
             Logger.logAllCachedLogs();
         }
     }

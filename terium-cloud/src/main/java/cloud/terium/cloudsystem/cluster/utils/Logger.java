@@ -4,7 +4,6 @@ import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.common.utils.logger.LoggerColors;
 import cloud.terium.teriumapi.console.LogType;
-import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +12,7 @@ import java.util.List;
 
 public class Logger {
 
+    private static final List<String> loggedMessages = new ArrayList<>();
     private static final List<String> savedLogs = new ArrayList<>();
 
     public static void log(String message, LogType logType) {
@@ -25,6 +25,9 @@ public class Logger {
             ClusterStartup.getCluster().getConsoleManager().getLineReader().printAbove(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + message)));
         else
             System.out.println(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + message)));
+
+        if (logType != LogType.SCREEN)
+            loggedMessages.add(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + message)));
     }
 
     public static void log(String message) {
@@ -32,11 +35,21 @@ public class Logger {
             ClusterStartup.getCluster().getConsoleManager().getLineReader().printAbove(LoggerColors.replaceColorCodes(message));
         else
             System.out.println(LoggerColors.replaceColorCodes(message));
+        if (!message.contains("\u001B[36mSCREEN\u001B[0m: "))
+            loggedMessages.add(LoggerColors.replaceColorCodes(LoggerColors.replaceColorCodes(message)));
     }
 
-    @SneakyThrows
-    public static void licenseLog(String message, LogType logType) {
-        System.out.println(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + message)));
+    public static void logAllLoggedMessags() {
+        loggedMessages.forEach(log -> {
+            if (ClusterStartup.getCluster().getConsoleManager() != null)
+                ClusterStartup.getCluster().getConsoleManager().getLineReader().printAbove(log);
+            else System.out.println(log);
+        });
+        logAllCachedLogs();
+    }
+
+    public static void clearAllLoggedMessags() {
+        loggedMessages.clear();
     }
 
     public static void logAllCachedLogs() {

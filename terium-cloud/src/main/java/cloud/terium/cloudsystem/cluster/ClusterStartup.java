@@ -129,6 +129,7 @@ public class ClusterStartup extends TeriumAPI {
         Thread.sleep(1000);
 
         consoleManager.clearScreen();
+        Logger.clearAllLoggedMessags();
         Logger.log("""
                     §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
                     §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
