@@ -14,7 +14,6 @@ import java.net.URL;
 @Getter
 public enum ServerVersions {
     VELOCITY_3_2_0_SNAPSHOT("velocity-3.2.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/"),
-    WATERFALL_1_19("waterfall-1.19", "https://api.papermc.io/v2/projects/waterfall/versions/1.19/"),
     PAPER_1_19_4("paper-1.19.4", "https://api.papermc.io/v2/projects/paper/versions/1.19.4/"),
     PAPER_1_19_3("paper-1.19.3", "https://api.papermc.io/v2/projects/paper/versions/1.19.3/"),
     PAPER_1_19_2("paper-1.19.2", "https://api.papermc.io/v2/projects/paper/versions/1.19.2/"),

@@ -209,9 +209,9 @@ public class GroupCommand extends Command {
             }
             case 4 -> {
                 if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
-                    return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> name.startsWith("paper")).toList();
+                    return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> name.startsWith("paper") || name.startsWith("purpur")).toList();
                 if (args[1].equalsIgnoreCase("proxy"))
-                    return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> !name.startsWith("paper")).toList();
+                    return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> !name.startsWith("paper")).filter(name -> !name.startsWith("purpur")).toList();
 
                 if (args[0].equalsIgnoreCase("update")) {
                     if (args[2].equalsIgnoreCase("maintenance") || args[2].equalsIgnoreCase("static"))
