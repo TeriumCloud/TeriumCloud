@@ -19,7 +19,7 @@
 - Module system
 - Multi-root (Master/Wrapper)
 - [Velocity](https://velocitypowered.com) support
-- [Paper](https://papermc.io) support (1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3, 1.19.4)
+- [Paper](https://papermc.io) and [Purpur](https://purpurmc.org/) support
 
 ## Links
 
@@ -27,7 +27,6 @@
 - [Documentation](https://github.com/TeriumCloud/Terium/wiki)
 - [GitHub repo](https://github.com/TeriumCloud/Terium)
 - [Discord Support](https://discord.com/invite/5VrY59sffQ)
-- [SpigotMC](https://www.spigotmc.org/resources/teriumcloud.108875/)
 
 ## Installation (MASTER/CLUSTER)
 
@@ -55,7 +54,8 @@
 
 ## Supported Minecraft Versions
 
-- Paper 1.12.2 - 1.19.3
+- Paper 1.12.2 - 1.19.4
+- Purpur 1.16.5 - 1.19.4
 - Velocity 3
 
 ## Thanks to
