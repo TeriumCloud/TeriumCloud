@@ -1,8 +1,8 @@
 package cloud.terium.cloudsystem.node.service;
 
 import cloud.terium.cloudsystem.common.event.events.service.*;
-import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
@@ -32,14 +32,19 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
-        if(event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()))
+        if (event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()))
             switch (event.getType()) {
-            case "group_only" -> NodeStartup.getNode().getServiceFactory().createService(event.getServiceGroup());
-            case "group_with_templates" -> NodeStartup.getNode().getServiceFactory().createService(event.getServiceGroup(), event.getTemplates());
-            case "full" -> NodeStartup.getNode().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates(), event.getServiceId(), event.getMaxPlayers(), event.getMemory());
-            case "group_with_custom_name" -> NodeStartup.getNode().getServiceFactory().createService(event.getName(), event.getServiceGroup());
-            case "group_template_and_custom_name" -> NodeStartup.getNode().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates());
-        }
+                case "group_only" ->
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getServiceGroup()).start();
+                case "group_with_templates" ->
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getServiceGroup(), event.getTemplates()).start();
+                case "full" ->
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getPort(), event.getMaxPlayers(), event.getMemory()).start();
+                case "group_with_custom_name" ->
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getServiceGroup().getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getServiceGroup().hasPort() ? event.getServiceGroup().getPort() : event.getPort(), event.getMaxPlayers(), event.getMemory()).start();
+                case "group_template_and_custom_name" ->
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getServiceGroup().hasPort() ? event.getServiceGroup().getPort() : event.getPort(), event.getMaxPlayers(), event.getMemory()).start();
+            }
     }
 
     @Subscribe
@@ -56,8 +61,6 @@ public class CloudServiceListener implements Listener {
     public void handleServiceLoggedIn(ServiceLoggedInEvent event) {
         if (NodeStartup.getNode().getThisNode().getName().equals(event.getNode()))
             Logger.log("Service '" + event.getCloudService() + "' successfully started.", LogType.INFO);
-        else
-            Logger.log("Service '" + event.getCloudService() + "' successfully started on node '" + event.getNode() + "'.", LogType.INFO);
     }
 
     @Subscribe

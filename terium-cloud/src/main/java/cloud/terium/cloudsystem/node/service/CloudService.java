@@ -89,7 +89,6 @@ public class CloudService implements ICloudService {
 
     @SneakyThrows
     public void start() {
-        Logger.log(serviceType == ServiceType.Proxy ? "Serivce '" + getServiceName() + "' is starting on port " + port + "." : "Service '" + getServiceName() + "' is starting.", LogType.INFO);
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
@@ -235,8 +234,8 @@ public class CloudService implements ICloudService {
             NodeStartup.getNode().getConsoleManager().clearScreen();
             NodeStartup.getNode().getScreenProvider().setCurrentScreen(null);
             TeriumCloud.getTerium().getCloudUtils().setInScreen(false);
-            cloud.terium.cloudsystem.cluster.utils.Logger.logAllLoggedMessags();
-            cloud.terium.cloudsystem.cluster.utils.Logger.logAllCachedLogs();
+            Logger.logAllLoggedMessags();
+            Logger.logAllCachedLogs();
         }
     }
 

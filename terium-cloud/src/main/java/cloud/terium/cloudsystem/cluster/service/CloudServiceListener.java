@@ -45,10 +45,8 @@ public class CloudServiceListener implements Listener {
                 case "group_template_and_custom_name" ->
                         ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates());
             }
-            /*new cloud.terium.cloudsystem.cluster.service.CloudService(event.getTemplates(), event.getServiceGroup(), event.getServiceId() != -1 ? event.getServiceId() : ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(event.getServiceGroup()),
-                    event.getPort() != -1 ? event.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();*/
-        } else
-            Logger.log("The service '" + event.getName() + "' is starting on node '" + event.getNode().getName() + "'.", LogType.INFO);
+        } else if (ClusterStartup.getCluster().isDebugMode())
+            Logger.log("The service '" + (event.getServiceId() > 9 ? event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + event.getServiceId() : event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + "0" + event.getServiceId()) + "' is starting on node '" + event.getNode().getName() + "'.", LogType.INFO);
     }
 
     @Subscribe

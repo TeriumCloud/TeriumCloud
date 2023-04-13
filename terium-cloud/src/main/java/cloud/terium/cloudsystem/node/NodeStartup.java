@@ -48,6 +48,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.jline.utils.Log;
 import sun.misc.Signal;
 
 import java.io.File;
@@ -134,21 +135,22 @@ public class NodeStartup extends TeriumAPI {
         }
 
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         consoleManager.clearScreen();
+        Logger.clearAllLoggedMessags();
         Logger.log("""
                 §f_______ _______  ______ _____ _     _ _______ §b__   _  _____  ______  _______
                  §f  |    |______ |_____/   |   |     | |  |  | §b| \\  | |     | |     \\ |______
                  §f  |    |______ |    \\_ __|__ |_____| |  |  | §b|  \\_| |_____| |_____/ |______ §7[§f%version%§7]
                                                                                                  \s
-                 §7> §fTerium by ByRaudy(Jannik H.)\s
-                 §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
+                §7> §fTerium by ByRaudy(Jannik H.)\s
+                §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                                  
-                  §a> §fConnected with terium-server on %ip%:%port%.
-                  §a> §fRecived %commands% commands successfully.
-                  §a> §fRecived %groups% groups successfully.
-                  §a> §fLoaded %templates% templates successfully.
+                 §a> §fConnected with terium-server on %ip%:%port%.
+                 §a> §fRecived %commands% commands successfully.
+                 §a> §fRecived %groups% groups successfully.
+                 §a> §fLoaded %templates% templates successfully.
                                  
                  """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", nodeConfig.master().get("ip").getAsString()).replace("%port%", nodeConfig.master().get("port").getAsInt() + "").replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));

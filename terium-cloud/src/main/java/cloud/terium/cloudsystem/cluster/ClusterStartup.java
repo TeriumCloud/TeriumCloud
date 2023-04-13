@@ -126,7 +126,7 @@ public class ClusterStartup extends TeriumAPI {
         }
 
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         consoleManager.clearScreen();
         Logger.clearAllLoggedMessags();

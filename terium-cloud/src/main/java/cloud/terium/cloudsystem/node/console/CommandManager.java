@@ -26,7 +26,6 @@ public class CommandManager implements ICommandFactory {
         registerCommand(new HelpCommand());
         registerCommand(new StopCommand());
         registerCommand(new ClearCommand());
-        registerCommand(new TemplateCommand());
         registerCommand(new ModuleCommand());
         registerCommand(new ListCommand());
         registerCommand(new ScreenCommand());
