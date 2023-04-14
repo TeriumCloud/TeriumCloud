@@ -2,8 +2,11 @@ package cloud.terium.cloudsystem.cluster.console;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
+import cloud.terium.cloudsystem.cluster.service.CloudService;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.logger.LoggerColors;
+import cloud.terium.networking.packet.service.PacketPlayOutServiceExecuteCommand;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.IConsoleProvider;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
@@ -55,6 +58,7 @@ public class ConsoleManager implements IConsoleProvider {
             while (true) {
                 String input = null;
                 Command command;
+
                 if (TeriumCloud.getTerium().getCloudUtils().isRunning()) {
                     try {
                         input = lineReader.readLine(LoggerColors.replaceColorCodes(ClusterStartup.getCluster().getCloudConfig().promt().replace("%user%", username())
@@ -66,14 +70,22 @@ public class ConsoleManager implements IConsoleProvider {
                     input = lineReader.readLine("");
                 }
 
-                try {
-                    if ((command = ClusterStartup.getCluster().getCommandManager().getCommand(input.split(" ")[0])) != null || (command = ClusterStartup.getCluster().getCommandManager().getCommandByAlias(input.split(" ")[0])) != null) {
-                        final String[] args = input.split(" ");
-                        command.execute(Arrays.copyOfRange(args, 1, args.length));
+                if (!TeriumCloud.getTerium().getCloudUtils().isInScreen() && TeriumCloud.getTerium().getCloudUtils().isRunning()) {
+                    try {
+                        if ((command = ClusterStartup.getCluster().getCommandManager().getCommand(input.split(" ")[0])) != null || (command = ClusterStartup.getCluster().getCommandManager().getCommandByAlias(input.split(" ")[0])) != null) {
+                            final String[] args = input.split(" ");
+                            command.execute(Arrays.copyOfRange(args, 1, args.length));
+                        }
+                    } catch (Exception exception) {
+                        Logger.log("terium-cloud found a error: " + exception.getMessage(), LogType.ERROR);
+                        exception.printStackTrace();
                     }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                    Logger.log("terium-cloud found a error: " + exception.getMessage(), LogType.ERROR);
+                } else {
+                    if (input.startsWith("exit")) {
+                        ((CloudService) ClusterStartup.getCluster().getScreenProvider().getCurrentScreen()).toggleScreen();
+                        lineReader.getHistory().iterator(lineReader.getHistory().last() - 1).remove();
+                    } else
+                        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceExecuteCommand(ClusterStartup.getCluster().getScreenProvider().getCurrentScreen().getServiceName(), input));
                 }
             }
         });

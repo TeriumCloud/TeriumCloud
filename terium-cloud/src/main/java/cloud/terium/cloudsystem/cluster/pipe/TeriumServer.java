@@ -42,7 +42,9 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -221,8 +223,14 @@ public class TeriumServer {
                                             }
                                         }
 
+                                        @SneakyThrows
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
+                                            if (ClusterStartup.getCluster().getNetworking().getAllowedAddresses().contains(((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress())) {
+                                                channelHandlerContext.channel().close().sync();
+                                                return;
+                                            }
+
                                             channels.add(channelHandlerContext.channel());
                                         }
 

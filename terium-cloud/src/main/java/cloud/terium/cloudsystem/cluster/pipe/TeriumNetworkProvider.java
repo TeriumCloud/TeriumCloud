@@ -8,13 +8,19 @@ import cloud.terium.teriumapi.pipe.Packet;
 import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
     private final TeriumServer teriumServer;
+    private final List<String> allowedAddresses;
 
     public TeriumNetworkProvider() {
         Logger.log("Trying to start terium-server...", LogType.INFO);
         this.teriumServer = new TeriumServer(ClusterStartup.getCluster().getCloudConfig().ip(), ClusterStartup.getCluster().getCloudConfig().port());
+        this.allowedAddresses = new LinkedList<>();
         Logger.log("Successfully started terium-server on " + ClusterStartup.getCluster().getCloudConfig().ip() + ":" + ClusterStartup.getCluster().getCloudConfig().port() + ".", LogType.INFO);
     }
 
@@ -31,5 +37,9 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
     @Override
     public void sendPacket(Packet packet) {
         this.teriumServer.getChannels().stream().filter(channel -> channel != this.teriumServer.getChannel()).forEach(channel -> channel.writeAndFlush(packet));
+    }
+
+    public List<String> getAllowedAddresses() {
+        return allowedAddresses;
     }
 }

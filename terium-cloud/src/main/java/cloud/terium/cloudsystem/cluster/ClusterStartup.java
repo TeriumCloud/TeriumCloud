@@ -119,6 +119,9 @@ public class ClusterStartup extends TeriumAPI {
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
+        ClusterStartup.getCluster().getCloudConfig().nodes().keySet().forEach(key -> this.networking.getAllowedAddresses().add(ClusterStartup.getCluster().getCloudConfig().nodes().get(key).getAsJsonObject().get("ip").getAsString()));
+        this.networking.getAllowedAddresses().add(thisNode.getAddress().getAddress().getHostAddress());
+
         if(cloudConfig.checkUpdate()) {
             Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
             FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));

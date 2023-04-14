@@ -1,5 +1,6 @@
 package cloud.terium.cloudsystem.cluster.console;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.teriumapi.console.command.Command;
 import org.jline.reader.Candidate;
@@ -20,42 +21,49 @@ public class ConsoleCompleter implements Completer {
 
         List<String> suggestions = null;
         String[] arguments = input.split(" ");
-        try {
-            if (!input.contains(" ")) {
-                Collection<String> registeredCommands = ClusterStartup.getCluster().getCommandManager().getBuildedCommands().keySet();
-                String tests = arguments[arguments.length - 1];
-                List<String> result = new ArrayList<>();
-                for (final String s : registeredCommands) {
-                    if (s != null && (tests.trim().isEmpty() || s.toLowerCase().contains(tests.toLowerCase()))) {
-                        result.add(s);
+
+        if (!TeriumCloud.getTerium().getCloudUtils().isInScreen()) {
+            try {
+                if (!input.contains(" ")) {
+                    Collection<String> registeredCommands = ClusterStartup.getCluster().getCommandManager().getBuildedCommands().keySet();
+                    String tests = arguments[arguments.length - 1];
+                    List<String> result = new ArrayList<>();
+                    for (final String s : registeredCommands) {
+                        if (s != null && (tests.trim().isEmpty() || s.toLowerCase().contains(tests.toLowerCase()))) {
+                            result.add(s);
+                        }
+                    }
+
+                    if (result.isEmpty() && !registeredCommands.isEmpty()) {
+                        result.addAll(registeredCommands);
+                    }
+
+                    suggestions = result;
+                } else {
+                    Command command = ClusterStartup.getCluster().getCommandManager().getBuildedCommands().get(arguments[0]);
+                    if (arguments.length > 1) {
+                        if (input.endsWith(" ")) {
+                            arguments = Arrays.copyOfRange(arguments, 1, arguments.length + 1);
+                            arguments[arguments.length - 1] = "";
+                        } else {
+                            arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+                        }
+                    }
+
+                    if (command != null) {
+                        suggestions = command.tabComplete(arguments);
                     }
                 }
-
-                if (result.isEmpty() && !registeredCommands.isEmpty()) {
-                    result.addAll(registeredCommands);
-                }
-
-                suggestions = result;
-            } else {
-                Command command = ClusterStartup.getCluster().getCommandManager().getBuildedCommands().get(arguments[0]);
-                if (arguments.length > 1) {
-                    if (input.endsWith(" ")) {
-                        arguments = Arrays.copyOfRange(arguments, 1, arguments.length + 1);
-                        arguments[arguments.length - 1] = "";
-                    } else {
-                        arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
-                    }
-                }
-
-                if (command != null) {
-                    suggestions = command.tabComplete(arguments);
-                }
+            } catch (Exception ignored) {
             }
-        } catch (Exception ignored) {
+
+            if (suggestions == null || suggestions.isEmpty()) return;
+
+            suggestions.stream().map(Candidate::new).forEach(list::add);
+        } else {
+            suggestions = new ArrayList<>();
+            suggestions.add("exit");
+            suggestions.stream().map(Candidate::new).forEach(list::add);
         }
-
-        if (suggestions == null || suggestions.isEmpty()) return;
-
-        suggestions.stream().map(Candidate::new).forEach(list::add);
     }
 }
