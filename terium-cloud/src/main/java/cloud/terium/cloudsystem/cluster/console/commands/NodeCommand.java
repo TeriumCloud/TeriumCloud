@@ -40,7 +40,7 @@ public class NodeCommand extends Command {
                                 JsonObject newNode = new JsonObject();
                                 newNode.addProperty("name", args[1]);
                                 newNode.addProperty("ip", args[2]);
-                                newNode.addProperty("port", args[3]);
+                                newNode.addProperty("port", Integer.parseInt(args[3]));
                                 ClusterStartup.getCluster().getCloudConfig().nodes().add(args[1], newNode);
                                 ClusterStartup.getCluster().getConfigManager().save();
                                 ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], new InetSocketAddress(args[2], Integer.parseInt(args[3]))));
