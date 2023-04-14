@@ -157,11 +157,10 @@ public class CloudService implements ICloudService {
         this.thread = new Thread(() -> {
             String[] command = null;
             if (serviceType == ServiceType.Proxy)
-                command = new String[]{"java", "-Xmx" + serviceGroup.getMemory() + "m", "-Dfile.encoding=UTF-8", "-Dlog4j2.formatMsgNoLookups=true", "-Djline.terminal=jline.UnsupportedTerminal", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar"};
+                command = new String[]{"java", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=50", "-XX:-UseAdaptiveSizePolicy", "-XX:CompileThreshold=100", "-Dio.netty.recycler.maxCapacity=0", "-Dio.netty.recycler.maxCapacity.default=0", "-Djline.terminal=jline.UnsupportedTerminal", "-Xmx" + serviceGroup.getMemory() + "m", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar"};
             else
-                command = new String[]{"java", "-Xmx" + serviceGroup.getMemory() + "m", "-Dfile.encoding=UTF-8", "-Dlog4j2.formatMsgNoLookups=true", "-Djline.terminal=jline.UnsupportedTerminal", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "--nogui", "--nojline", "--noconsole"};
-            ProcessBuilder processBuilder = new ProcessBuilder(command)
-                    .directory(this.folder);
+                command = new String[]{"java", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=50", "-XX:-UseAdaptiveSizePolicy", "-XX:CompileThreshold=100", "-Dio.netty.recycler.maxCapacity=0", "-Dio.netty.recycler.maxCapacity.default=0", "-Djline.terminal=jline.UnsupportedTerminal", "-Xmx" + serviceGroup.getMemory() + "m", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + ClusterStartup.getCluster().getCloudConfig().ip(), "-Dnetty-port=" + ClusterStartup.getCluster().getCloudConfig().port(), serviceGroup.getVersion() + ".jar", "--nogui", "--nojline", "--noconsole"};
+            ProcessBuilder processBuilder = new ProcessBuilder(command).directory(this.folder);
 
             try {
                 this.process = processBuilder.start();
