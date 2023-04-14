@@ -81,10 +81,9 @@ public class ConsoleManager implements IConsoleProvider {
                         exception.printStackTrace();
                     }
                 } else {
-                    if (input.startsWith("exit")) {
+                    if (input.startsWith("exit"))
                         ((CloudService) ClusterStartup.getCluster().getScreenProvider().getCurrentScreen()).toggleScreen();
-                        lineReader.getHistory().iterator(lineReader.getHistory().last() - 1).remove();
-                    } else
+                    else
                         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceExecuteCommand(ClusterStartup.getCluster().getScreenProvider().getCurrentScreen().getServiceName(), input));
                 }
             }
