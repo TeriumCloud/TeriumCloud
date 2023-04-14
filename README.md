@@ -7,8 +7,7 @@
 
 ## Why Terium?
 
-#### Terium has a lot of useful features like: Multi-root, simple api, a module system where you can write your own modules and many more.
-
+#### Terium has a lot of useful features like: Multi-root, simple api, a module system where you can write your own modules and many more. Our template system is very advanced, and multiple templates can be used for one service group.
 #### You can install Terium in a few seconds with no complications and errors.
 
 ## All features
@@ -54,9 +53,9 @@
 
 ## Supported Minecraft Versions
 
-- Paper 1.12.2 - 1.19.4
-- Purpur 1.16.5 - 1.19.4
-- Velocity 3
+- [Paper](https://papermc.io) 1.12.2 - 1.19.4
+- [Purpur](https://purpurmc.org/) 1.16.5 - 1.19.4
+- [Velocity](https://velocitypowered.com)
 
 ## Thanks to
 
