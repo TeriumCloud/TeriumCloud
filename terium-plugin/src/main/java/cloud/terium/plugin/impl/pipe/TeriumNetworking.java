@@ -45,7 +45,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
@@ -181,7 +180,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudServiceStartedEvent(newPacket.parsedCloudService().orElseGet(null)));
                     if (packet instanceof PacketPlayOutUpdateService newPacket)
-                        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudServiceUpdateEvent(newPacket.parsedCloudService().orElseGet(null), newPacket.locked(), newPacket.serviceState(), newPacket.players(), (long) newPacket.memory()));
+                        newPacket.parsedCloudService().ifPresent(cloudService -> TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudServiceUpdateEvent(cloudService, newPacket.locked(), newPacket.serviceState(), newPacket.players(), (long) newPacket.memory())));
 
                     if (TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(TeriumPlugin.getInstance().getThisName()).isPresent()) {
                         if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceType().equals(ServiceType.Proxy)) {
