@@ -9,14 +9,15 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
+    maven {url = 'https://repo.jxnnik.dev/releases'}
 }
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation project(":terium-api")
-    implementation project(":terium-framework")
+    implementation 'cloud.terium:terium-api:latest'
+    implementation 'cloud.terium:terium-framework:latest'
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.jline:jline:3.21.0'

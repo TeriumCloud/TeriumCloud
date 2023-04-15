@@ -77,10 +77,10 @@ public class GroupCommand extends Command {
                                 }
                                 case "version" -> {
                                     if (!serviceGroup.getServiceType().equals(ServiceType.Proxy)) {
-                                        if (Arrays.asList("paper-1.19.4", "paper-1.19.3", "paper-1.19.2", "paper-1.18.2", "paper-1.17.1", "paper-1.16.5", "paper-1.15.2", "paper-1.14.4", "paper-1.13.2", "paper-1.12.2").contains(args[3]))
+                                        if (Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> name.startsWith("paper") || name.startsWith("purpur")).toList().contains(args[3]))
                                             serviceGroup.setVersion(args[3]);
                                     } else {
-                                        if (Arrays.asList("bungeecord", "waterfall", "velocity", "velocity-3").contains(args[3]))
+                                        if (Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> !name.startsWith("paper")).filter(name -> !name.startsWith("purpur")).toList().contains(args[3]))
                                             serviceGroup.setVersion(args[3]);
                                     }
                                 }

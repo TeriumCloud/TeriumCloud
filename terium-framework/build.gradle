@@ -8,13 +8,14 @@ version = '1.0.0'
 
 repositories {
     mavenCentral()
+    maven {url = 'https://repo.jxnnik.dev/releases'}
 }
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    compileOnly project(":terium-api")
+    implementation 'cloud.terium:terium-api:latest'
     compileOnly 'commons-io:commons-io:2.6'
     implementation 'io.netty:netty-all:4.1.79.Final'
 }

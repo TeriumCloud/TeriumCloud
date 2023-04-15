@@ -9,12 +9,13 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
+    maven {url = 'https://repo.jxnnik.dev/releases'}
 }
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     compileOnly 'org.jline:jline:3.21.0'
-    implementation project(":terium-framework")
+    implementation 'cloud.terium:terium-framework:latest'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.79.Final'

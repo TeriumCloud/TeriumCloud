@@ -8,7 +8,6 @@ import cloud.terium.teriumapi.pipe.Packet;
 import io.netty.channel.Channel;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
