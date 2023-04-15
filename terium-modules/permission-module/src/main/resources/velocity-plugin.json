@@ -1,6 +1,6 @@
 {
-  "id": "teriummodule-syncproxy",
-  "name": "TeriumSyncproxyModule",
+  "id": "teriummodule-permission",
+  "name": "TeriumPermissionModule",
   "version": "1.2-OXYGEN",
   "authors": [
     "Jxnnik(ByRaudy)"
@@ -11,5 +11,5 @@
       "optional": false
     }
   ],
-  "main": "cloud.terium.module.syncproxy.velocity.SyncproxyVelocityStartup"
+  "main": "cloud.terium.module.permission.velocity.PermissionVelocityStartup"
 }

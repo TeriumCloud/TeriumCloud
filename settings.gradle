@@ -1,7 +1,20 @@
 rootProject.name = 'terium-cloud'
 
-include("terium-api")
-include("terium-cloud")
-include("terium-plugin")
-include("terium-framework")
-include("terium-modules")
+include('terium-api')
+include('terium-cloud')
+include('terium-plugin')
+include('terium-modules')
+include('terium-framework')
+
+initializeSubProjects("terium-modules",
+"notification-module",
+"permission-module",
+"syncproxy-module")
+
+void initializeSubProjects(String rootProject, String... names) {
+    for (final def name in names) {
+        include(rootProject + ":" + name)
+        project(":" + rootProject + ":" + name).setName(name)
+        project(":" + rootProject + ":" + name).setProjectDir(file(rootProject + "/" + name))
+    }
+}

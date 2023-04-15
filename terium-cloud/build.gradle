@@ -15,8 +15,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation fileTree(dir: '../terium-api/build/libs', include: '*.jar')
-    implementation fileTree(dir: '../terium-framework/build/libs', include: '*.jar')
+    implementation project(":terium-api")
+    implementation project(":terium-framework")
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.jline:jline:3.21.0'
