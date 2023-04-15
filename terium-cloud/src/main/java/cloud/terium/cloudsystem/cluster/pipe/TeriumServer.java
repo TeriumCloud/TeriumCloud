@@ -226,7 +226,7 @@ public class TeriumServer {
                                         @SneakyThrows
                                         @Override
                                         public void channelRegistered(ChannelHandlerContext channelHandlerContext) {
-                                            if (ClusterStartup.getCluster().getNetworking().getAllowedAddresses().contains(((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress())) {
+                                            if (!ClusterStartup.getCluster().getNetworking().getAllowedAddresses().contains(((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress())) {
                                                 channelHandlerContext.channel().close().sync();
                                                 return;
                                             }
