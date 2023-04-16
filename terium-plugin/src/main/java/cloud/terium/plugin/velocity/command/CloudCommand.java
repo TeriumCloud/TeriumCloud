@@ -31,16 +31,16 @@ public class CloudCommand {
         LiteralCommandNode<CommandSource> literalCommand = LiteralArgumentBuilder.<CommandSource>literal(name)
                 .executes(this::help)
                 .then(LiteralArgumentBuilder.<CommandSource>literal("list")
-                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.list") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::list))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("modules")
-                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.modules") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::modules))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("groups")
-                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.groups") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::groups))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("service")
-                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.service") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
                                 .executes(this::help)
@@ -52,7 +52,7 @@ public class CloudCommand {
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("info")
                                         .executes(this::serviceInfo))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("player")
-                        .requires(commandSource -> commandSource.hasPermission("terium.command"))
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.player") || commandSource.hasPermission("terium.command.*"))
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("player", StringArgumentType.string())
                                 .executes(this::help)
                                 .suggests(this::playerSuggestion)
@@ -70,7 +70,8 @@ public class CloudCommand {
     }
 
     private int help(CommandContext<CommandSource> context) {
-        if(!context.getSource().hasPermission("terium.command")) {
+        if(!context.getSource().hasPermission("terium.command.service") || !context.getSource().hasPermission("terium.command.player") || !context.getSource().hasPermission("terium.command.*")
+        || !context.getSource().hasPermission("terium.command.groups") || !context.getSource().hasPermission("terium.command.modules") || !context.getSource().hasPermission("terium.command.list")) {
             context.getSource().sendMessage(Component.text("§cYou don't have enought permissions to execute this command!"));
             return 1;
         }
