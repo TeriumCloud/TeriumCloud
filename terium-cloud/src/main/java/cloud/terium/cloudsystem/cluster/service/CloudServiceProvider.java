@@ -36,6 +36,8 @@ public class CloudServiceProvider implements ICloudServiceProvider {
                         }
                     });
                 }
+
+                ClusterStartup.getCluster().getThisNode().setUsedMemory(gloablUsedMemory());
             }
         }, 0, 1000);
     }

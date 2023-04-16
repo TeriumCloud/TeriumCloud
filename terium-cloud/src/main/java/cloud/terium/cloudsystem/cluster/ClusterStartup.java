@@ -91,7 +91,7 @@ public class ClusterStartup extends TeriumAPI {
                     §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                     """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
         Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Welcome to terium-cloud!"));
-        Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "terium-cloud is starting phase §6one §7of the startup... Please wait a small while."));
+        Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "terium-cloud is starting phase §6one §fof the startup... Please wait a small while."));
 
         this.configManager = new ConfigManager();
         this.cloudConfig = configManager.toCloudConfig();
@@ -107,7 +107,7 @@ public class ClusterStartup extends TeriumAPI {
         this.templateProvider = new TemplateProvider();
         this.templateFactory = new TemplateFactory();
         this.nodeProvider = new NodeProvider();
-        this.thisNode = new Node(cloudConfig.name(), new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()));
+        this.thisNode = new Node(cloudConfig.name(), new InetSocketAddress(cloudConfig.ip(), cloudConfig.port()), cloudConfig.memory());
         this.nodeProvider.registerNodes();
         this.serviceGroupProvider = new ServiceGroupProvider();
         this.serviceGroupFactory = new ServiceGroupFactory();
