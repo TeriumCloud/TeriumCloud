@@ -27,7 +27,7 @@ public class TemplateFactory implements ITemplateFactory {
         Template template = new Template(name, Path.of(file.getPath()));
         ClusterStartup.getCluster().getTemplateProvider().getAllTemplates().add(template);
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutTemplateAdd(name, file.getPath()));
-        Logger.log("Successfully created template '" + name + "'.", LogType.INFO);
+        Logger.log("Successfully created template '§b" + name + "§f'.", LogType.INFO);
         return template;
     }
 

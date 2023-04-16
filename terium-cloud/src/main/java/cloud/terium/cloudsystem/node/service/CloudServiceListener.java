@@ -60,7 +60,7 @@ public class CloudServiceListener implements Listener {
     @Subscribe
     public void handleServiceLoggedIn(ServiceLoggedInEvent event) {
         if (NodeStartup.getNode().getThisNode().getName().equals(event.getNode()))
-            Logger.log("Service '" + event.getCloudService() + "' successfully started.", LogType.INFO);
+            Logger.log("Service '§b" + event.getCloudService() + "§f' successfully started.", LogType.INFO);
     }
 
     @Subscribe

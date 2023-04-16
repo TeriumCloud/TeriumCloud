@@ -22,16 +22,16 @@ public class TemplateCommand extends Command {
             switch (args[0]) {
                 case "create" -> {
                     if (args.length > 1) {
-                        Logger.log("Trying to create template '" + args[1] + "'...", LogType.INFO);
+                        Logger.log("Trying to create template '§b" + args[1] + "§f'...", LogType.INFO);
                         ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[1]);
                     } else Logger.log("template create [name] | create a new template", LogType.INFO);
                     return;
                 }
                 case "delete" -> {
                     if (args.length > 1) {
-                        Logger.log("Trying to delete template '" + args[1] + "'...", LogType.INFO);
+                        Logger.log("Trying to delete template '§b" + args[1] + "§f'...", LogType.INFO);
                         ClusterStartup.getCluster().getTemplateFactory().deleteTemplate(args[1]);
-                        Logger.log("Successfully deleted template '" + args[1] + "'.", LogType.INFO);
+                        Logger.log("Successfully deleted template '§b" + args[1] + "§f'.", LogType.INFO);
                     } else Logger.log("template delete [name] | delete a template", LogType.INFO);
                     return;
                 }
@@ -39,7 +39,7 @@ public class TemplateCommand extends Command {
                     if (args.length > 1) {
                         Optional<ITemplate> cloudTemplate = ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(args[1]);
                         cloudTemplate.ifPresentOrElse(template -> {
-                            Logger.log("Informations of template '" + template.getName() + "':", LogType.INFO);
+                            Logger.log("Informations of template '§b" + template.getName() + "§f':", LogType.INFO);
                             Logger.log("Name: " + template.getName() + " - Path: " + template.getPath().toString(), LogType.INFO);
                         }, () -> Logger.log("A template with that name isn't registered.", LogType.ERROR));
                     } else Logger.log("template info [name] | see all informations about a template", LogType.INFO);

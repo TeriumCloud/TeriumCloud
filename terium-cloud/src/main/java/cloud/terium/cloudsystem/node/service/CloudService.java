@@ -121,7 +121,7 @@ public class CloudService implements ICloudService {
         }
 
         if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
-            Logger.log("Service '" + getServiceName() + "' is starting.", LogType.INFO);
+            Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
             properties.setProperty("server-name", getServiceName());
@@ -145,7 +145,7 @@ public class CloudService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
-            Logger.log("Service '" + getServiceName() + "' is starting on port " + port + ".", LogType.INFO);
+            Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
             this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
@@ -176,7 +176,7 @@ public class CloudService implements ICloudService {
             NodeStartup.getNode().getScreenProvider().removeCloudService(this);
             NodeStartup.getNode().getNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
             delete();
-            Logger.log("Successfully stopped service '" + getServiceName() + "'.", LogType.INFO);
+            Logger.log("Successfully stopped service '§b" + getServiceName() + "§f'.", LogType.INFO);
         });
         this.thread.start();
     }
@@ -188,7 +188,7 @@ public class CloudService implements ICloudService {
 
     public void shutdown() {
         if (NodeStartup.getNode().isDebugMode())
-            Logger.log("Trying to stop service '" + getServiceName() + "'... [CloudService#shutdown]", LogType.INFO);
+            Logger.log("Trying to stop service '§b" + getServiceName() + "§f'... [CloudService#shutdown]", LogType.INFO);
         if (process != null)
             process.destroyForcibly();
         thread.interrupt();

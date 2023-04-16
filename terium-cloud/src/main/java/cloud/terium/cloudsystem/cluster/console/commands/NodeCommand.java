@@ -46,7 +46,7 @@ public class NodeCommand extends Command {
                                 ClusterStartup.getCluster().getNodeProvider().registerNode(new Node(args[1], new InetSocketAddress(args[2], Integer.parseInt(args[3]))));
                                 ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutNodeAdd(args[1], new InetSocketAddress(args[2], Integer.parseInt(args[3])), 0, false));
 
-                                Logger.log("Successfully added node '" + args[1] + "'.", LogType.INFO);
+                                Logger.log("Successfully added node '§b" + args[1] + "§f'.", LogType.INFO);
                             });
                         } catch (Exception exception) {
                             if (args.length == 6 && args[5].equalsIgnoreCase("--print")) exception.printStackTrace();

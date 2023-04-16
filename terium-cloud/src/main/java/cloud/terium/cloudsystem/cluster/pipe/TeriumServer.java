@@ -163,7 +163,7 @@ public class TeriumServer {
                                                         channelHandlerContext.writeAndFlush(new PacketPlayOutNodeShutdown(newPacket.node()));
                                                         channelHandlerContext.channel().close().sync();
                                                         Logger.log("The master key isn't correct.", LogType.ERROR);
-                                                        Logger.log("Closing connection from node '" + newPacket.node() + "'", LogType.ERROR);
+                                                        Logger.log("Closing connection from node '§b" + newPacket.node() + "§f'", LogType.ERROR);
                                                         return;
                                                     }
 

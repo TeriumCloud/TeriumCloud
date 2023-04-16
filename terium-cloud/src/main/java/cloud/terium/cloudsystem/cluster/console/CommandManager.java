@@ -74,6 +74,6 @@ public class CommandManager implements ICommandFactory {
                 buildedCommands.put(alias, command);
             }
         }
-        Logger.log("Loaded commmand '" + command.getCommand() + "'", LogType.INFO);
+        Logger.log("Loaded commmand '§b" + command.getCommand() + "§f'", LogType.INFO);
     }
 }

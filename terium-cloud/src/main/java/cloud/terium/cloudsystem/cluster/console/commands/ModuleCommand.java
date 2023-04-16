@@ -38,7 +38,7 @@ public class ModuleCommand extends Command {
                 Optional<ILoadedModule> cloudModule = ClusterStartup.getCluster().getModuleProvider().getModuleByName(args[1]);
                 cloudModule.ifPresentOrElse(module -> {
                     ClusterStartup.getCluster().getModuleProvider().unloadModule(module);
-                    Logger.log("Unloaded '" + module.getName() + "' by '" + module.getAuthor() + "' successfully!");
+                    Logger.log("Unloaded '§b" + module.getName() + "§f' by '§b" + module.getAuthor() + "§f' successfully!");
                 }, () -> Logger.log("A module with this name isn't loaded"));
             }
             return;

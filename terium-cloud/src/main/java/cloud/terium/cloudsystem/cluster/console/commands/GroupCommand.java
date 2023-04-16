@@ -48,7 +48,7 @@ public class GroupCommand extends Command {
                     ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[1]).ifPresentOrElse(cloudServiceGroup -> {
                         ClusterStartup.getCluster().getServiceGroupFactory().deleteServiceGroup(cloudServiceGroup);
                         ClusterStartup.getCluster().getTemplateFactory().deleteTemplate(args[1]);
-                        Logger.log("Successfully deleted service group '" + args[1] + "'.", LogType.INFO);
+                        Logger.log("Successfully deleted service group '§b" + args[1] + "§f'.", LogType.INFO);
                     }, () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
                 } else Logger.log("group delete [name]", LogType.INFO);
                 return;
@@ -114,7 +114,7 @@ public class GroupCommand extends Command {
                                 }
                             }
                             ClusterStartup.getCluster().getServiceGroupProvider().updateServiceGroup(serviceGroup);
-                            Logger.log("Successfully updated service group '" + args[1] + "'.", LogType.INFO);
+                            Logger.log("Successfully updated service group '§b" + args[1] + "§f'.", LogType.INFO);
                         }, () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
 
                     }

@@ -45,7 +45,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutGroupAdd(serviceGroup.getGroupName(), serviceGroup.getGroupTitle(), serviceGroup.getGroupNode().getName(),
                 serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), serviceGroup.getServiceType(), serviceGroup.getVersion(), serviceGroup.isMaintenance(), serviceGroup.isStatic(),
                 serviceGroup.hasPort(), serviceGroup.getPort(), serviceGroup.getMaxPlayers(), serviceGroup.getMemory(), serviceGroup.getMinServices(), serviceGroup.getMaxServices()));
-        Logger.log("Successfully created service-group '" + serviceGroup.getGroupName() + "'.", LogType.INFO);
+        Logger.log("Successfully created service-group '§b" + serviceGroup.getGroupName() + "§f'.", LogType.INFO);
     }
 
     @SneakyThrows
@@ -100,7 +100,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
             }
         }
 
-        Logger.log("Loaded service-group '" + serviceGroup.get("group_name").getAsString() + "' successfully.", LogType.INFO);
+        Logger.log("Loaded service-group '§b" + serviceGroup.get("group_name").getAsString() + "§f' successfully.", LogType.INFO);
     }
 
     public void updateServiceGroup(ICloudServiceGroup serviceGroup) {

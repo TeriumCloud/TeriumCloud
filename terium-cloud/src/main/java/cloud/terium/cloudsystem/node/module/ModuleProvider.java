@@ -107,7 +107,7 @@ public class ModuleProvider implements IModuleProvider {
                             });
 
                             if (System.getProperty("module-reloading") == null)
-                                Logger.log("Loaded module '" + jsonObject.get("name").getAsString() + "' by '" + jsonObject.get("author").getAsString() + "' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
+                                Logger.log("Loaded module '§b" + jsonObject.get("name").getAsString() + "§f' by '§b" + jsonObject.get("author").getAsString() + "§f' v" + jsonObject.get("version").getAsString() + ".", LogType.INFO);
                             executeModule(new File(path), jsonObject.get("main-class").getAsString(), "enable");
                             in.close();
                             return;
@@ -130,7 +130,7 @@ public class ModuleProvider implements IModuleProvider {
         unloadModule(module);
         loadModule(new File("modules//" + module.getFileName()).getPath());
         System.clearProperty("module-reloading");
-        Logger.log("Successfully reloaded module '" + module.getName() +  "'.", LogType.INFO);
+        Logger.log("Successfully reloaded module '§b" + module.getName() +  "§f'.", LogType.INFO);
     }
 
     @Override

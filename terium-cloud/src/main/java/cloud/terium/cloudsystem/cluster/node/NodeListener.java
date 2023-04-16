@@ -13,12 +13,12 @@ public class NodeListener implements Listener {
 
     @Subscribe
     public void handleNodeLoggedIn(NodeLoggedInEvent event) {
-        Logger.log("Node '" + event.getNode() + "' sucessfully logged in.", LogType.INFO);
+        Logger.log("Node '§b" + event.getNode() + "§f' sucessfully logged in.", LogType.INFO);
     }
 
     @Subscribe
     public void handleNodeShutdowned(NodeShutdownedEvent event) {
-        Logger.log("Node '" + event.getNode() + "' sucessfully logged out.", LogType.INFO);
+        Logger.log("Node '§b" + event.getNode() + "§f' sucessfully logged out.", LogType.INFO);
     }
 
     @Subscribe

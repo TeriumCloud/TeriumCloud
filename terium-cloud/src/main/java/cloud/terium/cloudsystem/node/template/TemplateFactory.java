@@ -25,7 +25,7 @@ public class TemplateFactory implements ITemplateFactory {
         file.mkdirs();
         Template template = new Template(name, Path.of(file.getPath()));
         NodeStartup.getNode().getTemplateProvider().getAllTemplates().add(template);
-        Logger.log("Successfully created template '" + name + "'.", LogType.INFO);
+        Logger.log("Successfully created template '§b" + name + "§f'.", LogType.INFO);
         return template;
     }
 

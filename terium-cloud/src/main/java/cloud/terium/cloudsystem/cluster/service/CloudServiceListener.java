@@ -46,7 +46,7 @@ public class CloudServiceListener implements Listener {
                         ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates());
             }
         } else if (ClusterStartup.getCluster().isDebugMode())
-            Logger.log("The service '" + (event.getServiceId() > 9 ? event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + event.getServiceId() : event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + "0" + event.getServiceId()) + "' is starting on node '" + event.getNode().getName() + "'.", LogType.INFO);
+            Logger.log("The service '§b" + (event.getServiceId() > 9 ? event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + event.getServiceId() : event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + "0" + event.getServiceId()) + "§f' is starting on node '§b" + event.getNode().getName() + "§f'.", LogType.INFO);
     }
 
     @Subscribe
@@ -62,9 +62,9 @@ public class CloudServiceListener implements Listener {
     @Subscribe
     public void handleServiceLoggedIn(ServiceLoggedInEvent event) {
         if (ClusterStartup.getCluster().getThisNode().getName().equals(event.getNode()))
-            Logger.log("Service '" + event.getCloudService() + "' successfully started.", LogType.INFO);
+            Logger.log("Service '§b" + event.getCloudService() + "§f' successfully started.", LogType.INFO);
         else
-            Logger.log("Service '" + event.getCloudService() + "' successfully started on node '" + event.getNode() + "'.", LogType.INFO);
+            Logger.log("Service '§b" + event.getCloudService() + "§f' successfully started on node '§b" + event.getNode() + "§f'.", LogType.INFO);
     }
 
     @Subscribe

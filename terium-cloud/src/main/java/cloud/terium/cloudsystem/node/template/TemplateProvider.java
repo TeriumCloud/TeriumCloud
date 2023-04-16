@@ -28,7 +28,7 @@ public class TemplateProvider implements ITemplateProvider {
     private void loadTempaltes() {
         for (File file : new File("templates//").listFiles()) {
             templates.add(new Template(file.getName(), Path.of(file.getPath())));
-            Logger.log("Successfully loaded template '" + file.getName() + "' with path '" + file.getPath() + "'", LogType.INFO);
+            Logger.log("Successfully loaded template '§b" + file.getName() + "§f' with path '§b" + file.getPath() + "§f'", LogType.INFO);
         }
     }
 
