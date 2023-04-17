@@ -6,6 +6,7 @@ import cloud.terium.cloudsystem.common.event.events.service.*;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
+import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.impl.CloudService;
 
@@ -47,6 +48,8 @@ public class CloudServiceListener implements Listener {
             }
         } else if (ClusterStartup.getCluster().isDebugMode())
             Logger.log("The service '§b" + (event.getServiceId() > 9 ? event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + event.getServiceId() : event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + "0" + event.getServiceId()) + "§f' is starting on node '§b" + event.getNode().getName() + "§f'.", LogType.INFO);
+
+        ClusterStartup.getCluster().getEventProvider().callEvent(new CloudServiceStartingEvent(ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getName()).orElseGet(null)));
     }
 
     @Subscribe

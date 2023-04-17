@@ -100,7 +100,7 @@ public class CloudService implements ICloudService {
             } catch (IOException ignored) {
             }
         });
-        ClusterStartup.getCluster().getModuleProvider().getAllModules().stream().filter(module -> module.getModuleType() == ModuleType.valueOf(getServiceType().name())).forEach(module -> {
+        ClusterStartup.getCluster().getModuleProvider().getAllModules().stream().filter(module -> module.getModuleType() == ModuleType.valueOf(getServiceType().name()) || module.getModuleType() == ModuleType.ALL).forEach(module -> {
             try {
                 FileUtils.copyFileToDirectory(new File("modules//" + module.getFileName()), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
             } catch (IOException exception) {
