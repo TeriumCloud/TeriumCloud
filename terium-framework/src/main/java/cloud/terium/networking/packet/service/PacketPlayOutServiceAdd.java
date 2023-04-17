@@ -23,6 +23,6 @@ public record PacketPlayOutServiceAdd(String serviceName, int serviceId, int por
     }
 
     public List<ITemplate> parsedTemplates() {
-        return TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getAllTemplates();
+        return TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getAllTemplates().stream().map(ITemplate::getName).filter(templates::contains).toList().stream().map(s -> TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(s).orElseGet(null)).toList();
     }
 }
