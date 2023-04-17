@@ -1,5 +1,8 @@
 package cloud.terium.module.permission.permission.user;
 
+import cloud.terium.module.permission.TeriumPermissionModule;
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Optional;
@@ -15,6 +18,16 @@ public class PermissionUserManager {
 
     public void registerUser(PermissionUser permissionUser) {
         loadedUsers.put(permissionUser.uniquedId(), permissionUser);
+    }
+
+    public void registerNewUser(PermissionUser permissionUser) {
+        loadedUsers.put(permissionUser.uniquedId(), permissionUser);
+        JsonObject playerObject = new JsonObject();
+        playerObject.addProperty("username", permissionUser.name());
+        playerObject.addProperty("uuid", permissionUser.uniquedId().toString());
+        playerObject.addProperty("group", permissionUser.permissionGroup().name());
+        TeriumPermissionModule.getInstance().getUserFileManager().getJson().add(permissionUser.name(), playerObject);
+        TeriumPermissionModule.getInstance().getUserFileManager().save();
     }
 
     public Optional<PermissionUser> getUserByName(String name) {

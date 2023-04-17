@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,20 +41,17 @@ public class UserFileManager {
         if (file.exists()) {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();
-                List<String> permissions = new ArrayList<>();
-                List<String> includedGroups = new ArrayList<>();
-                json.get("permissions").getAsJsonArray().forEach(jsonElement -> permissions.add(jsonElement.getAsString()));
-                json.get("includedGroups").getAsJsonArray().forEach(jsonElement -> includedGroups.add(jsonElement.getAsString()));
-
-                TeriumPermissionModule.getInstance().getPermissionGroupManager().registerGroup(new PermissionGroup(json.get("name").getAsString(),
-                        json.get("prefix").getAsString(), json.get("suffix").getAsString(), json.get("tablist").getAsString(), json.get("chatColor").getAsString(),
-                        json.get("property").getAsInt(), permissions, includedGroups));
-                System.out.println("Successfully loaded all players.");
+                this.json.keySet().forEach(key -> {
+                    JsonObject playerObject = this.json.get(key).getAsJsonObject();
+                    PermissionUser permissionUser = new PermissionUser(playerObject.get("username").getAsString(), UUID.fromString(playerObject.get("uuid").getAsString()), TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(playerObject.get("group").getAsString()).orElseGet(null));
+                    TeriumPermissionModule.getInstance().getPermissionUserManager().registerUser(permissionUser);
+                });
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         } else {
-            System.out.println("An error was found while loading all player data.");
+            this.json = new JsonObject();
+            save();
         }
     }
 

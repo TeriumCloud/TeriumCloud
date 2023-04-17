@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,20 +39,45 @@ public class GroupFileManager {
         if (file.exists()) {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();
-                List<String> permissions = new ArrayList<>();
-                List<String> includedGroups = new ArrayList<>();
+                List<String> permissions = new LinkedList<>();
+                List<String> includedGroups = new LinkedList<>();
                 json.get("permissions").getAsJsonArray().forEach(jsonElement -> permissions.add(jsonElement.getAsString()));
                 json.get("includedGroups").getAsJsonArray().forEach(jsonElement -> includedGroups.add(jsonElement.getAsString()));
 
-                TeriumPermissionModule.getInstance().getPermissionGroupManager().registerGroup(new PermissionGroup(json.get("name").getAsString(),
-                        json.get("prefix").getAsString(), json.get("suffix").getAsString(), json.get("tablist").getAsString(), json.get("chatColor").getAsString(),
-                        json.get("property").getAsInt(), permissions, includedGroups));
-                System.out.println("Successfully loaded group '" + groupName + "'.");
+                TeriumPermissionModule.getInstance().getPermissionGroupManager().registerGroup(
+                        new PermissionGroup(json.get("name").getAsString(),
+                                json.get("prefix").getAsString(), json.get("suffix").getAsString(), json.get("chatColor").getAsString(),
+                                json.get("property").getAsInt(), json.get("default").getAsBoolean(), permissions, includedGroups));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        } else {
-            System.out.println("No group with name '" + groupName + "' founded.");
+        }
+    }
+
+    public void createFile(PermissionGroup permissionGroup) {
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+
+        if (!file.exists()) {
+            this.json = new JsonObject();
+            this.json.addProperty("name", permissionGroup.name());
+            this.json.addProperty("prefix", permissionGroup.prefix());
+            this.json.addProperty("suffix", permissionGroup.suffix());
+            this.json.addProperty("chatColor", permissionGroup.chatColor());
+            this.json.addProperty("property", permissionGroup.property());
+            this.json.addProperty("default", permissionGroup.standard());
+
+            JsonArray permissions = new JsonArray();
+            permissionGroup.permissions().forEach(permissions::add);
+
+            JsonArray includedGroups = new JsonArray();
+            permissionGroup.includedGroups().forEach(includedGroups::add);
+
+            this.json.add("permissions", permissions);
+            this.json.add("includedGroups", includedGroups);
+
+            save();
         }
     }
 
