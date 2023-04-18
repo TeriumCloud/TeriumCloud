@@ -20,7 +20,7 @@ public class TeriumPermissionBaseVelocity implements PermissionProvider {
         public Tristate getPermissionValue(String permission) {
             if (TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).isEmpty()) return Tristate.fromBoolean(false);
 
-            return Tristate.fromBoolean(TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).orElseGet(null).permissionGroup().permissions().contains(permission) || TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).orElseGet(null).permissionGroup().permissions().contains("*"));
+            return Tristate.fromBoolean(TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).orElseGet(null).getPermissionGroup().permissions().contains(permission) || TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).orElseGet(null).getPermissionGroup().permissions().contains("*"));
         }
     }
 }

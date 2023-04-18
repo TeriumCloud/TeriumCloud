@@ -2,6 +2,7 @@ package cloud.terium.module.permission.velocity;
 
 import cloud.terium.module.permission.TeriumPermissionModule;
 import cloud.terium.module.permission.permission.base.TeriumPermissionBaseVelocity;
+import cloud.terium.module.permission.velocity.command.CloudPermissionsCommand;
 import cloud.terium.module.permission.velocity.listener.LoginListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -35,6 +36,7 @@ public class PermissionVelocityStartup {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         proxyServer.getEventManager().register(this, new LoginListener());
         proxyServer.getEventManager().register(this, new PermissionSetup());
+        proxyServer.getCommandManager().register(new CloudPermissionsCommand().build("cperms"));
 
         proxyServer.getScheduler().buildTask(this, () -> new TeriumPermissionModule().onEnable()).delay(1, TimeUnit.SECONDS).schedule();
     }

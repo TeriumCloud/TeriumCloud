@@ -19,7 +19,7 @@ public class TeriumPermissionBaseBukkit extends PermissibleBase {
 
     @Override
     public boolean hasPermission(@NotNull String inName) {
-        PermissionGroup permissionGroup = TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).orElseGet(null).permissionGroup();
+        PermissionGroup permissionGroup = TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(player.getUniqueId()).orElseGet(null).getPermissionGroup();
         if (Arrays.asList("bukkit.command.version", "bukkit.command.plugins").contains(inName)) return true;
 
         if (permissionGroup.permissions().contains("-" + inName)) return false;

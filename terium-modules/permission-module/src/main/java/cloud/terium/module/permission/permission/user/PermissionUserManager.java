@@ -17,24 +17,24 @@ public class PermissionUserManager {
     }
 
     public void registerUser(PermissionUser permissionUser) {
-        loadedUsers.put(permissionUser.uniquedId(), permissionUser);
+        loadedUsers.put(permissionUser.getUniquedId(), permissionUser);
     }
 
     public void registerNewUser(PermissionUser permissionUser) {
-        loadedUsers.put(permissionUser.uniquedId(), permissionUser);
+        loadedUsers.put(permissionUser.getUniquedId(), permissionUser);
         JsonObject playerObject = new JsonObject();
-        playerObject.addProperty("username", permissionUser.name());
-        playerObject.addProperty("uuid", permissionUser.uniquedId().toString());
-        playerObject.addProperty("group", permissionUser.permissionGroup().name());
-        TeriumPermissionModule.getInstance().getUserFileManager().getJson().add(permissionUser.name(), playerObject);
+        playerObject.addProperty("username", permissionUser.getName());
+        playerObject.addProperty("uuid", permissionUser.getUniquedId().toString());
+        playerObject.addProperty("group", permissionUser.getPermissionGroup().name());
+        TeriumPermissionModule.getInstance().getUserFileManager().getJson().add(permissionUser.getName(), playerObject);
         TeriumPermissionModule.getInstance().getUserFileManager().save();
     }
 
     public Optional<PermissionUser> getUserByName(String name) {
-        return loadedUsers.values().stream().filter(permissionUser -> permissionUser.name().equals(name)).findAny();
+        return loadedUsers.values().stream().filter(permissionUser -> permissionUser.getName().equals(name)).findAny();
     }
 
     public Optional<PermissionUser> getUserByUniquedId(UUID uuid) {
-        return loadedUsers.values().stream().filter(permissionUser -> permissionUser.uniquedId().equals(uuid)).findAny();
+        return loadedUsers.values().stream().filter(permissionUser -> permissionUser.getUniquedId().equals(uuid)).findAny();
     }
 }

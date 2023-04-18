@@ -19,7 +19,7 @@ dependencies {
     compileOnly 'io.github.waterfallmc:waterfall-api:1.19-R0.1-SNAPSHOT'
     compileOnly 'com.velocitypowered:velocity-api:3.0.1'
     compileOnly 'org.projectlombok:lombok:1.18.26'
-
+    compileOnly 'net.kyori:adventure-text-minimessage:4.13.0'
     compileOnly 'cloud.terium:terium-api:latest'
 
     annotationProcessor 'cloud.terium:terium-api:latest'
