@@ -26,17 +26,17 @@ public class GroupCommand extends Command {
             if (args[0].equalsIgnoreCase("create")) {
                 if (args.length > 1) {
                     if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server")) {
-                        if (args.length == 6) {
+                        if (args.length == 6 || args.length == 7) {
                             switch (args[1]) {
                                 case "lobby" ->
-                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", ClusterStartup.getCluster().getThisNode(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createLobbyGroup(args[2], "Default lobby group", args[6] == null ? ClusterStartup.getCluster().getThisNode() : ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[6].replace("-node=", "")).orElseGet(null), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
                                 case "server" ->
-                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createServerGroup(args[2], "Default server group", ClusterStartup.getCluster().getThisNode(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
+                                        ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createServerGroup(args[2], "Default server group", args[6] == null ? ClusterStartup.getCluster().getThisNode() : ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[6].replace("-node=", "")).orElseGet(null), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], false, Boolean.parseBoolean(args[4]), 20, Integer.parseInt(args[5]), 1, 1));
                             }
                         } else Logger.log("group create lobby/server [name] [version] [static] [memory]", LogType.INFO);
                     } else {
-                        if (args.length == 7) {
-                            ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createProxyGroup(args[2], "Default proxy group", ClusterStartup.getCluster().getThisNode(), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
+                        if (args.length == 7 || args.length == 8) {
+                            ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createProxyGroup(args[2], "Default proxy group", args[7] == null ? ClusterStartup.getCluster().getThisNode() : ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[7].replace("-node=", "")).orElseGet(null), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
                         } else Logger.log("group create proxy [name] [version] [static] [memory] [port]", LogType.INFO);
                     }
                 }
@@ -233,6 +233,16 @@ public class GroupCommand extends Command {
             case 5 -> {
                 if (args[0].equalsIgnoreCase("update")) {
                     return List.of("--shutdown");
+                }
+            }
+            case 7 -> {
+                if((args[1].equalsIgnoreCase("server") || args[1].equalsIgnoreCase("lobby")) && args[0].equalsIgnoreCase("create")) {
+                    return ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().map(node -> "-node=" + node.getName()).toList();
+                }
+            }
+            case 8 -> {
+                if(args[1].equalsIgnoreCase("proxy") && args[0].equalsIgnoreCase("create")) {
+                    return ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().map(node -> "-node=" + node.getName()).toList();
                 }
             }
         }
