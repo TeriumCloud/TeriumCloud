@@ -18,7 +18,7 @@ public class ListCommand extends Command {
         ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
             Logger.log("Services from group '§b" + group.getGroupName() + "§f':", LogType.INFO);
             ClusterStartup.getCluster().getServiceProvider().getServicesByGroupName(group.getGroupName()).forEach(service ->
-                    Logger.log("- Name: " + service.getServiceName() + " | State: " + service.getServiceState() + " | Players: " + service.getOnlinePlayers() + "/" + service.getMaxPlayers(), LogType.INFO));
+                    Logger.log(" §7● §fName: " + service.getServiceName() + " | State: " + service.getServiceState() + " | Players: " + service.getOnlinePlayers() + "/" + service.getMaxPlayers(), LogType.INFO));
 
             Logger.log("", LogType.INFO);
         });
