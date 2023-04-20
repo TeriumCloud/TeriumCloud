@@ -5,6 +5,7 @@ import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
+import cloud.terium.networking.packet.service.PacketPlayOutServiceExecuteCommand;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.console.LogType;
@@ -27,7 +28,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -195,13 +195,16 @@ public class CloudService implements ICloudService {
     public void shutdown() {
         if (ClusterStartup.getCluster().isDebugMode())
             Logger.log("Trying to stop service '§b" + getServiceName() + "§f'... [CloudService#shutdown]", LogType.INFO);
-        if (process != null) {
-            //sending stop to the process input instead of crashing service instance
-            PrintWriter writer = new PrintWriter(process.getOutputStream());
-            writer.println("stop");
-            //process.destroy(); maybe Thread.sleep(4000); without blocking the mainthread?
-        }
-        thread.interrupt();
+        ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutServiceExecuteCommand(getServiceName(), "stop"));
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (process != null)
+                    process.destroyForcibly();
+                if (!thread.isInterrupted())
+                    thread.interrupt();
+            }
+        }, 4000);
     }
 
     @SneakyThrows
