@@ -193,8 +193,12 @@ public class CloudService implements ICloudService {
     public void shutdown() {
         if (ClusterStartup.getCluster().isDebugMode())
             Logger.log("Trying to stop service '§b" + getServiceName() + "§f'... [CloudService#shutdown]", LogType.INFO);
-        if (process != null)
-            process.destroyForcibly();
+        if (process != null) {
+            //sending stop to the process input instead of crashing service instance
+            PrintWriter writer = new PrintWriter(process.getOutputStream());
+            writer.println("stop");
+            //process.destroy(); maybe Thread.sleep(4000); without blocking the mainthread?
+        }
         thread.interrupt();
     }
 

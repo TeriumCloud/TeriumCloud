@@ -37,7 +37,7 @@ public class TeriumVelocityStartup {
             proxyServer.getEventManager().register(this, new LoginListener());
             proxyServer.getEventManager().register(this, new ServerConnectedListener());
 
-            System.out.println("§aStartup of velocity terium-plugin successed.");
+            System.out.println("§aStartup of velocity terium-plugin succeed...");
         } catch (Exception exception) {
             System.out.println("§cStartup of velocity terium-plugin failed.");
             System.out.println("§7Exception message§f: §c" + exception.getMessage());
