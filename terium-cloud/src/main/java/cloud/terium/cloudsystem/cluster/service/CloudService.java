@@ -8,6 +8,7 @@ import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -155,6 +156,7 @@ public class CloudService implements ICloudService {
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), serviceId, port, maxPlayers, getMaxMemory(),
                 getServiceNode().getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), propertyMap));
 
+        ClusterStartup.getCluster().getEventProvider().callEvent(new CloudServiceStartingEvent(this));
         this.thread = new Thread(() -> {
             String[] command = null;
             if (serviceType == ServiceType.Proxy)

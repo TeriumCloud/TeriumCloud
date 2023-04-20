@@ -18,6 +18,7 @@ import cloud.terium.cloudsystem.common.event.events.service.*;
 import cloud.terium.cloudsystem.common.event.events.service.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.common.event.events.service.template.TemplateDeleteEvent;
 import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
+import cloud.terium.networking.packet.PacketPlayOutSendCustomPacket;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
 import cloud.terium.networking.packet.group.*;

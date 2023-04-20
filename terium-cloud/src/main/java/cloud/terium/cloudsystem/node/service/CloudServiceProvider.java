@@ -2,6 +2,7 @@ package cloud.terium.cloudsystem.node.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -35,6 +36,9 @@ public class CloudServiceProvider implements ICloudServiceProvider {
                         }
                     });
                 }
+
+                NodeStartup.getNode().getThisNode().setUsedMemory(gloablUsedMemory());
+                NodeStartup.getNode().getThisNode().update();
             }
         }, 0, 1000);
     }
@@ -78,7 +82,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public long gloablUsedMemory() {
         AtomicLong globalUsedMemory = new AtomicLong();
-        NodeStartup.getNode().getServiceProvider().getAllServices().forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
+        NodeStartup.getNode().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(NodeStartup.getNode().getThisNode().getName())).forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
 
         return globalUsedMemory.get();
     }

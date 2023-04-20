@@ -14,7 +14,6 @@ initializeSubProjects("terium-modules",
 void initializeSubProjects(String rootProject, String... names) {
     for (final def name in names) {
         include(rootProject + ":" + name)
-        project(":" + rootProject + ":" + name).setName(name)
-        project(":" + rootProject + ":" + name).setProjectDir(file(rootProject + "/" + name))
+        findProject(":" + rootProject + ":" + name).setName(name)
     }
 }

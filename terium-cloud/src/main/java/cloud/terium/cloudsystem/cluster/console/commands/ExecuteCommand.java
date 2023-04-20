@@ -1,13 +1,11 @@
 package cloud.terium.cloudsystem.cluster.console.commands;
 
-import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceExecuteCommand;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.service.ICloudService;
-import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class ExecuteCommand extends Command {
     @Override
     public List<String> tabComplete(String[] args) {
         if (args.length == 1) {
-            return ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().map(ICloudService::getServiceName).toList();
+            return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream().map(ICloudService::getServiceName).toList();
         }
 
         return super.tabComplete(args);

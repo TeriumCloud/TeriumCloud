@@ -38,6 +38,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
                 }
 
                 ClusterStartup.getCluster().getThisNode().setUsedMemory(gloablUsedMemory());
+                ClusterStartup.getCluster().getThisNode().update();
             }
         }, 0, 1000);
     }
@@ -81,7 +82,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public long gloablUsedMemory() {
         AtomicLong globalUsedMemory = new AtomicLong();
-        ClusterStartup.getCluster().getServiceProvider().getAllServices().forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
+        ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(ClusterStartup.getCluster().getThisNode().getName())).forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
 
         return globalUsedMemory.get();
     }

@@ -29,8 +29,13 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
     }
 
     @Override
-    public void addHandler(SimpleChannelInboundHandler<Packet> handler) {
+    public void addHandler(SimpleChannelInboundHandler<Object> handler) {
         getChannel().pipeline().addLast(handler);
+    }
+
+    @Override
+    public void addHandler(String name, SimpleChannelInboundHandler<Object> handler)  {
+        getChannel().pipeline().addLast(name, handler);
     }
 
     @Override

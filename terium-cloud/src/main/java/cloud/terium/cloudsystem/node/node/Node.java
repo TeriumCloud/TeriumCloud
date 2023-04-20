@@ -18,7 +18,7 @@ public class Node implements INode {
         this.name = name;
         this.address = address;
         this.usedMemory = 0;
-        this.maxMemory = 0;
+        this.maxMemory = maxMemory;
         this.connected = connected;
     }
 

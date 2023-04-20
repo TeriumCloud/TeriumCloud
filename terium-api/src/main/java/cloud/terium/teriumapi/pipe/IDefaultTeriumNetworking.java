@@ -7,7 +7,9 @@ public interface IDefaultTeriumNetworking {
 
     Channel getChannel();
 
-    void addHandler(SimpleChannelInboundHandler<Packet> handler);
+    void addHandler(SimpleChannelInboundHandler<Object> handler);
+
+    void addHandler(String name, SimpleChannelInboundHandler<Object> handler);
 
     void sendPacket(Packet packet);
 }

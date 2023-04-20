@@ -58,7 +58,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
     @SneakyThrows
     public TeriumNetworking() {
         teriumClient = new TeriumClient(System.getProperty("netty-address"), Integer.parseInt(System.getProperty("netty-port")));
-        getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
+        addHandler(new SimpleChannelInboundHandler<>() {
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 // Nodes
@@ -236,8 +236,13 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
         return teriumClient.getChannel();
     }
 
-    public void addHandler(SimpleChannelInboundHandler<Packet> handler) {
+    public void addHandler(SimpleChannelInboundHandler<Object> handler) {
         getChannel().pipeline().addLast(handler);
+    }
+
+    @Override
+    public void addHandler(String name, SimpleChannelInboundHandler<Object> handler)  {
+        getChannel().pipeline().addLast(name, handler);
     }
 
     @Override

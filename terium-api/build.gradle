@@ -1,21 +1,26 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+}
+
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'cloud.terium'
-version = '1.2-OXYGEN'
+version = '1.3-OXYGEN'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    maven {url = 'https://repo.jxnnik.dev/releases'}
 }
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     compileOnly 'org.jline:jline:3.21.0'
-    implementation 'cloud.terium:terium-framework:latest'
+    compileOnly fileTree(dir: '../terium-framework/build/libs', include: '*.jar')
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.79.Final'

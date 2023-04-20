@@ -48,8 +48,6 @@ public class CloudServiceListener implements Listener {
             }
         } else if (ClusterStartup.getCluster().isDebugMode())
             Logger.log("The service '§b" + (event.getServiceId() > 9 ? event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + event.getServiceId() : event.getName() + ClusterStartup.getCluster().getCloudConfig().splitter() + "0" + event.getServiceId()) + "§f' is starting on node '§b" + event.getNode().getName() + "§f'.", LogType.INFO);
-
-        ClusterStartup.getCluster().getEventProvider().callEvent(new CloudServiceStartingEvent(ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getName()).orElseGet(null)));
     }
 
     @Subscribe
