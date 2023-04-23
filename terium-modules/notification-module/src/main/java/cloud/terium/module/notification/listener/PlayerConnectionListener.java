@@ -6,6 +6,7 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.events.player.CloudPlayerJoinEvent;
+import cloud.terium.teriumapi.events.player.CloudPlayerQuitEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerServiceConnectedEvent;
 
 public class PlayerConnectionListener implements Listener {
@@ -26,7 +27,7 @@ public class PlayerConnectionListener implements Listener {
      * if the "logPlayerConnections" option is enabled in the config.json configuration file, the cloud console will print a notification when they disconect from the network
      */
     @Subscribe
-    public void onPlayerDisconnect(CloudPlayerJoinEvent event) {
+    public void onPlayerDisconnect(CloudPlayerQuitEvent event) {
         if (NotificationVelocityStartup.getInstance().getConfigManager().getJson().get("logPlayerConnections").getAsBoolean()) {
             TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole(String.format("%s (%s) diconnected from the network", event.getCloudPlayer().getUsername(), event.getCloudPlayer().getUniqueId()), LogType.INFO);
         }
