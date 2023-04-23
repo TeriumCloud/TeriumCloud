@@ -1,6 +1,9 @@
 package cloud.terium.module.notification.manager;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,8 +38,9 @@ public class ConfigManager {
             json.addProperty("starting", "<gray>[<#FB8148>☀<gray>] <white>%service%");
             json.addProperty("started", "<gray>[<#0EF269>✔<gray>] <white>%service%");
             json.addProperty("stopped", "<gray>[<#D00609>✘<gray>] <white>%service%");
-
+            json.addProperty("logPlayerConnections", true);
             save();
+
         } else {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();

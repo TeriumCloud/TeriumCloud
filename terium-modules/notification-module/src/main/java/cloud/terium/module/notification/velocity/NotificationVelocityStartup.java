@@ -1,5 +1,6 @@
 package cloud.terium.module.notification.velocity;
 
+import cloud.terium.module.notification.listener.PlayerConnectionListener;
 import cloud.terium.module.notification.listener.ServiceListener;
 import cloud.terium.module.notification.manager.ConfigManager;
 import cloud.terium.teriumapi.TeriumAPI;
@@ -32,6 +33,7 @@ public class NotificationVelocityStartup {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new ServiceListener());
+        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new PlayerConnectionListener());
     }
 
     public void setConfigManager(ConfigManager configManager) {
