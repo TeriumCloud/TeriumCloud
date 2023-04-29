@@ -111,9 +111,9 @@ public class CloudCommand {
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(context.getArgument("service", String.class)).ifPresentOrElse(cloudService -> {
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Information about '" + cloudService.getServiceName() + "':"));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<gray>● <aqua>" + cloudService.getServiceName() + "<white>:"));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>ID: #" + cloudService.getServiceId() + " <gray>| <white>State: " + cloudService.getServiceState()));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Type: " + cloudService.getServiceType() + " <gray>| <white>Templates: " + cloudService.getTemplates().stream().map(ITemplate::getName).toList()));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Host: " + cloudService.getServiceGroup().getGroupNode().getAddress().getAddress().getHostAddress() + ":" + cloudService.getPort() + " <gray>| <white>Players: " + cloudService.getOnlinePlayers() + "/" + cloudService.getMaxPlayers()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>ID: #" + cloudService.getServiceId() + " <gray>| <white>State: " + "<" + cloudService.getServiceState().getHex() + ">" + cloudService.getServiceState()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Type: <#87a19c>" + cloudService.getServiceType() + " <gray>| <white>Templates: " + cloudService.getTemplates().stream().map(ITemplate::getName).toList()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Host: <red>" + cloudService.getServiceGroup().getGroupNode().getAddress().getAddress().getHostAddress() + ":" + cloudService.getPort() + " <gray>| <white>Players: <#a7c7d6>" + cloudService.getOnlinePlayers() + "<white>/<#a79ed9>" + cloudService.getMaxPlayers() + "<white>"));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Memory: " + cloudService.getUsedMemory() + "/" + cloudService.getMaxMemory()));
             if (cloudService.getPropertyMap() == null || cloudService.getPropertyMap().keySet().isEmpty()) {
                 context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Properties: <red>None"));
@@ -143,7 +143,7 @@ public class CloudCommand {
         TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Services from group '<#96908c>" + group.getGroupName() + "<white>':"));
             TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(group.getGroupName()).forEach(service ->
-                    context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + " §7● §fName: <#c49b9b>" + service.getServiceName() + "<white> | State: " + "<" + service.getServiceState().getHex() + ">" + service.getServiceState() + "<white> | Players: <#a7c7d6>" + service.getOnlinePlayers() + "<white>/<#a79ed9>" + service.getMaxPlayers() + "<white>")));
+                    context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Name: <#c49b9b>" + service.getServiceName() + "<white> | State: " + "<" + service.getServiceState().getHex() + ">" + service.getServiceState() + "<white> | Players: <#a7c7d6>" + service.getOnlinePlayers() + "<white>/<#a79ed9>" + service.getMaxPlayers() + "<white>")));
 
             context.getSource().sendMessage(Component.text(" "));
         });
