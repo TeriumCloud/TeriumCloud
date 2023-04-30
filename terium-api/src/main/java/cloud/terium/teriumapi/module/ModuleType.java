@@ -7,4 +7,5 @@ public enum ModuleType implements Serializable {
     Lobby,
     Server,
     ALL,
+    CLOUD_ONLY;
 }
