@@ -35,6 +35,7 @@ import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.entity.impl.CloudPlayer;
+import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
@@ -72,13 +73,15 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
             return;
         }
 
-        getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
+        addHandler(new SimpleChannelInboundHandler<>() {
             private void accept(ITemplate template) {
             }
 
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 try {
+                    NodeStartup.getNode().getEventProvider().callEvent(new PacketIncomingEvent(getChannel(), packet));
+
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
                         NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.address(), newPacket.memory(), newPacket.connected()));
 

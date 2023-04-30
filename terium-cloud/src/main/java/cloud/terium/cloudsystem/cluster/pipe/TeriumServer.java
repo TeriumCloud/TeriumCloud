@@ -18,9 +18,9 @@ import cloud.terium.cloudsystem.common.event.events.service.*;
 import cloud.terium.cloudsystem.common.event.events.service.template.TemplateCreateEvent;
 import cloud.terium.cloudsystem.common.event.events.service.template.TemplateDeleteEvent;
 import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
-import cloud.terium.networking.packet.PacketPlayOutSendCustomPacket;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
+import cloud.terium.networking.packet.custom.PacketPlayOutSendInteger;
 import cloud.terium.networking.packet.group.*;
 import cloud.terium.networking.packet.module.PacketPlayOutAddLoadedModule;
 import cloud.terium.networking.packet.node.*;
@@ -29,6 +29,7 @@ import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.template.ITemplate;
@@ -77,6 +78,8 @@ public class TeriumServer {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                                             try {
+                                                ClusterStartup.getCluster().getEventProvider().callEvent(new PacketIncomingEvent(channel, packet));
+
                                                 // service packets
                                                 if (packet instanceof PacketPlayOutServiceAdd newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceAddEvent(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.maxPlayers(), newPacket.memory(), newPacket.node(), newPacket.serviceGroup(), newPacket.templates(), newPacket.propertyCache()));
