@@ -1,6 +1,7 @@
 package cloud.terium.cloudsystem;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
+import cloud.terium.cloudsystem.common.pipe.NetworkHandlerProvider;
 import cloud.terium.cloudsystem.common.utils.CloudUtils;
 import cloud.terium.cloudsystem.node.NodeStartup;
 import lombok.Getter;
@@ -13,11 +14,13 @@ public class TeriumCloud {
 
     private static TeriumCloud terium;
     private final CloudUtils cloudUtils;
+    private final NetworkHandlerProvider networkHandlerProvider;
 
     @SneakyThrows
     public TeriumCloud() {
         terium = this;
         this.cloudUtils = new CloudUtils();
+        this.networkHandlerProvider = new NetworkHandlerProvider();
     }
 
     public static void main(String[] args) {

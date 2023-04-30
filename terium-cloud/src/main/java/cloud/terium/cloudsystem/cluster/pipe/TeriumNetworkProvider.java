@@ -1,8 +1,10 @@
 package cloud.terium.cloudsystem.cluster.pipe;
 
+import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.teriumapi.console.LogType;
+import cloud.terium.teriumapi.pipe.Handler;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.pipe.Packet;
 import io.netty.channel.Channel;
@@ -29,13 +31,8 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
     }
 
     @Override
-    public void addHandler(SimpleChannelInboundHandler<Object> handler) {
-        getChannel().pipeline().addLast(handler);
-    }
-
-    @Override
-    public void addHandler(String name, SimpleChannelInboundHandler<Object> handler)  {
-        getChannel().pipeline().addLast(name, handler);
+    public void addHandler(Handler handler) {
+        TeriumCloud.getTerium().getNetworkHandlerProvider().addHandler(handler);
     }
 
     @Override

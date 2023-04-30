@@ -1,4 +1,4 @@
-package cloud.terium.networking.packet.custom;
+package cloud.terium.teriumapi.pipe.packets;
 
 import cloud.terium.teriumapi.pipe.Packet;
 

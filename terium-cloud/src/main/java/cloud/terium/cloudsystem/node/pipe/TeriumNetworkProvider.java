@@ -39,6 +39,7 @@ import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
+import cloud.terium.teriumapi.pipe.Handler;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
@@ -73,14 +74,15 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
             return;
         }
 
-        addHandler(new SimpleChannelInboundHandler<>() {
+        getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
             private void accept(ITemplate template) {
             }
 
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 try {
-                    NodeStartup.getNode().getEventProvider().callEvent(new PacketIncomingEvent(getChannel(), packet));
+                    if(packet instanceof Packet newPacket)
+                        TeriumCloud.getTerium().getNetworkHandlerProvider().callSendingPacket(newPacket);
 
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
                         NodeStartup.getNode().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.address(), newPacket.memory(), newPacket.connected()));
@@ -244,13 +246,8 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
     }
 
     @Override
-    public void addHandler(SimpleChannelInboundHandler<Object> handler) {
-        getChannel().pipeline().addLast(handler);
-    }
-
-    @Override
-    public void addHandler(String name, SimpleChannelInboundHandler<Object> handler)  {
-        getChannel().pipeline().addLast(name, handler);
+    public void addHandler(Handler handler) {
+        TeriumCloud.getTerium().getNetworkHandlerProvider().addHandler(handler);
     }
 
     @Override

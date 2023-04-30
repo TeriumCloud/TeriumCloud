@@ -30,6 +30,7 @@ import cloud.terium.teriumapi.events.service.CloudServiceStartedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceUpdateEvent;
+import cloud.terium.teriumapi.pipe.Handler;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.ServiceType;
@@ -47,24 +48,38 @@ import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TeriumNetworking implements IDefaultTeriumNetworking {
 
     private final TeriumClient teriumClient;
+    private final List<Handler> handlers;
 
     @SneakyThrows
     public TeriumNetworking() {
         teriumClient = new TeriumClient(System.getProperty("netty-address"), Integer.parseInt(System.getProperty("netty-port")));
-        addHandler(new SimpleChannelInboundHandler<>() {
+        this.handlers = new ArrayList<>();
+        getChannel().pipeline().addLast(new SimpleChannelInboundHandler<>() {
+            @SneakyThrows
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 // Nodes
                 try {
-                    TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new PacketIncomingEvent(getChannel(), packet));
+                    for (Handler handler : handlers) {
+                        Method method = handler.getClass().getDeclaredMethod("onReceive", Object.class);
+
+                        try {
+                            method.invoke(handler, packet);
+                        } catch (IllegalAccessException | InvocationTargetException exception) {
+                            exception.printStackTrace();
+                        }
+                    }
 
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
                         TeriumAPI.getTeriumAPI().getProvider().getNodeProvider().getAllNodes().add(new Node(newPacket.name(), newPacket.address(), newPacket.memory(), newPacket.connected()));
@@ -226,11 +241,13 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new ReloadConfigEvent());
                     if (packet instanceof PacketPlayOutGroupsReload)
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudGroupsReloadEvent(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups()));
-                } catch (Exception exception) {
+                } catch (
+                        Exception exception) {
                     exception.printStackTrace();
                 }
             }
         });
+
         sendPacket(new PacketPlayOutServiceRegister());
     }
 
@@ -239,13 +256,9 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
         return teriumClient.getChannel();
     }
 
-    public void addHandler(SimpleChannelInboundHandler<Object> handler) {
-        getChannel().pipeline().addLast(handler);
-    }
-
     @Override
-    public void addHandler(String name, SimpleChannelInboundHandler<Object> handler)  {
-        getChannel().pipeline().addLast(name, handler);
+    public void addHandler(Handler handler) {
+        handlers.add(handler);
     }
 
     @Override

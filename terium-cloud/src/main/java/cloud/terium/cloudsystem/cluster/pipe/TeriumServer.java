@@ -20,7 +20,6 @@ import cloud.terium.cloudsystem.common.event.events.service.template.TemplateDel
 import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
 import cloud.terium.networking.packet.console.PacketPlayOutRegisterCommand;
 import cloud.terium.networking.packet.console.PacketPlayOutSendConsole;
-import cloud.terium.networking.packet.custom.PacketPlayOutSendInteger;
 import cloud.terium.networking.packet.group.*;
 import cloud.terium.networking.packet.module.PacketPlayOutAddLoadedModule;
 import cloud.terium.networking.packet.node.*;
@@ -31,6 +30,7 @@ import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
+import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
@@ -78,7 +78,8 @@ public class TeriumServer {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                                             try {
-                                                ClusterStartup.getCluster().getEventProvider().callEvent(new PacketIncomingEvent(channel, packet));
+                                                if(packet instanceof Packet newPacket)
+                                                    TeriumCloud.getTerium().getNetworkHandlerProvider().callSendingPacket(newPacket);
 
                                                 // service packets
                                                 if (packet instanceof PacketPlayOutServiceAdd newPacket)
