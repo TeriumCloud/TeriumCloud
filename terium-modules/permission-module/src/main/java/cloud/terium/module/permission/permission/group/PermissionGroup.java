@@ -2,7 +2,6 @@ package cloud.terium.module.permission.permission.group;
 
 import cloud.terium.module.permission.utils.ApplicationType;
 import cloud.terium.teriumapi.TeriumAPI;
-import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.List;

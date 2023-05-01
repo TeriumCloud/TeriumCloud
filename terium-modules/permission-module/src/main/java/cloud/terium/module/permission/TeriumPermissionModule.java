@@ -1,6 +1,7 @@
 package cloud.terium.module.permission;
 
 import cloud.terium.module.permission.cloud.CloudListener;
+import cloud.terium.module.permission.cloud.PermissionPipeHandler;
 import cloud.terium.module.permission.permission.group.GroupFileManager;
 import cloud.terium.module.permission.permission.group.PermissionGroupManager;
 import cloud.terium.module.permission.permission.user.PermissionUserManager;
@@ -11,12 +12,14 @@ import cloud.terium.teriumapi.module.IModule;
 import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.module.annotation.Module;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.util.Arrays;
 
 @Module(name = "permission", author = "Jxnnik(ByRaudy)", version = "1.3-OXYGEN", description = "", reloadable = true, moduleType = ModuleType.ALL)
 @Getter
+@Setter
 public class TeriumPermissionModule implements IModule {
 
     private static TeriumPermissionModule instance;
@@ -37,6 +40,8 @@ public class TeriumPermissionModule implements IModule {
         if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
             TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
         }
+
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().addHandler(new PermissionPipeHandler());
     }
 
     @Override
