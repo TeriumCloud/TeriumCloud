@@ -40,8 +40,7 @@ public class TeriumPermissionModule implements IModule {
         if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
             TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
         }
-
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().addHandler(new PermissionPipeHandler());
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().addHandler(new PermissionPipeHandler(TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN));
     }
 
     @Override
