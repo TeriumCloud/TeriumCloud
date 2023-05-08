@@ -17,12 +17,15 @@ public class PermissionGroupManager {
         this.loadedGroups = new LinkedHashMap<>();
         if (!new File("modules/permission/groups").exists()) {
             new File("modules/permission/groups").mkdirs();
-            createPermissionGroup("default", "§7§lDEFAULT ", "", "WHITE", 99, true, new LinkedList<>(), new LinkedList<>());
-            createPermissionGroup("Admin", "§4§lADMIN ", "", "WHITE", 10, false, Arrays.asList("*", "terium.command.*"), new LinkedList<>());
+            createPermissionGroup("default", "<gray><bold>DEFAULT</bold> ", "", "WHITE", 99, true, new LinkedList<>(), new LinkedList<>());
+            createPermissionGroup("Admin", "<dark_red><bold>ADMIN</bold> ", "", "WHITE", 10, false, Arrays.asList("*", "terium.command.*"), new LinkedList<>());
         }
     }
 
     public void registerGroup(PermissionGroup permissionGroup) {
+        if(loadedGroups.containsKey(permissionGroup.name()))
+            loadedGroups.remove(permissionGroup);
+
         loadedGroups.put(permissionGroup.name(), permissionGroup);
     }
 
@@ -30,6 +33,13 @@ public class PermissionGroupManager {
                                                  int property, boolean standard, List<String> permissions,
                                                  List<String> includedGroups) {
         PermissionGroup permissionGroup = new PermissionGroup(name, prefix, suffix, chatColor, property, standard, permissions, includedGroups);
+        registerGroup(permissionGroup);
+        new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN).createFile(permissionGroup);
+        return permissionGroup;
+    }
+
+    public PermissionGroup createPermissionGroup(String name) {
+        PermissionGroup permissionGroup = new PermissionGroup(name, "§f§l" + name, "", "WHITE", 99, false, new LinkedList<>(), new LinkedList<>());
         registerGroup(permissionGroup);
         new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN).createFile(permissionGroup);
         return permissionGroup;

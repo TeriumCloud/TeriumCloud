@@ -1,10 +1,12 @@
 package cloud.terium.module.permission.velocity.command;
 
 import cloud.terium.module.permission.TeriumPermissionModule;
+import cloud.terium.module.permission.permission.group.PermissionGroup;
 import cloud.terium.module.permission.velocity.PermissionVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendString;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -17,11 +19,15 @@ import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import javax.print.DocFlavor;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class CloudPermissionsCommand {
 
@@ -40,6 +46,25 @@ public class CloudPermissionsCommand {
                                                 .executes(this::help)
                                                 .suggests(this::groupSuggestion)
                                                 .executes(this::userSetGroup)))))
+                .then(LiteralArgumentBuilder.<CommandSource>literal("group")
+                        .executes(this::help)
+                        .then(RequiredArgumentBuilder.<CommandSource, String>argument("group", StringArgumentType.string())
+                                .executes(this::groupInfo)
+                                .suggests(this::groupSuggestion)
+                                .then(LiteralArgumentBuilder.<CommandSource>literal("create")
+                                        .executes(this::help)
+                                        .then(RequiredArgumentBuilder.<CommandSource, String>argument("name", StringArgumentType.string())
+                                                .executes(this::help)
+                                                .executes(this::createGroup)))
+                                .then(LiteralArgumentBuilder.<CommandSource>literal("add")
+                                        .executes(this::help)
+                                        .then(LiteralArgumentBuilder.<CommandSource>literal("permission")
+                                                .executes(this::help)
+                                                .then(RequiredArgumentBuilder.<CommandSource, String>argument("permission", StringArgumentType.string())
+                                                        .executes(this::addPermission)))))
+                )
+                .then(LiteralArgumentBuilder.<CommandSource>literal("groups")
+                        .executes(this::groupList))
                 .build();
 
         return new BrigadierCommand(commandNode);
@@ -49,7 +74,7 @@ public class CloudPermissionsCommand {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("All <#06bdf8>/cperms <white>commands:"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>user <user>"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>user <user> setgroup <group>"));
-        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>group list"));
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>groups"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>group <group>"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>group <group> create"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(" <gray>● <#06bdf8>/cperms <white>group <group> add permission <permission>"));
@@ -98,6 +123,67 @@ public class CloudPermissionsCommand {
             PermissionVelocityStartup.getInstance().getProxyServer().getPlayer(context.getArgument("user", String.class)).ifPresent(player -> player.disconnect(Component.text("New Rank: " + permissionGroup.name())));
             PermissionVelocityStartup.getInstance().getProxyServer().getScheduler().buildTask(PermissionVelocityStartup.getInstance(), () -> TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap))).delay(1, TimeUnit.SECONDS).schedule();
         }, () -> context.getSource().sendMessage(Component.text("§cThis group isn't registered."))), () -> context.getSource().sendMessage(Component.text("§cThis user isn't registered.")));
+
+        return 1;
+    }
+
+    private int groupList(CommandContext<CommandSource> context) {
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("All <#06bdf8>loaded <white>permission groups:"));
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getLoadedGroups().values().stream().sorted(Comparator.comparing(PermissionGroup::name)).forEach(permissionGroup -> {
+            Component component = MiniMessage.miniMessage().deserialize("  <gray>● <#06bdf8>" + permissionGroup.name());
+            component.clickEvent(ClickEvent.runCommand("/cperms group " + permissionGroup.name()));
+            component.hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("§fClick to get more information.")));
+
+            context.getSource().sendMessage(component);
+        });
+
+        return 1;
+    }
+
+    private int createGroup(CommandContext<CommandSource> context) {
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("name", String.class)).ifPresentOrElse(permissionGroup -> context.getSource().sendMessage(Component.text("§cA group with that name is already registered.")), () -> {
+            TeriumPermissionModule.getInstance().getPermissionGroupManager().createPermissionGroup(context.getArgument("name", String.class));
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("packet_type", "create_group");
+            hashMap.put("group_name", context.getArgument("name", String.class));
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap));
+
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully create group <#06bdf8>" + context.getArgument("name", String.class) + "<gray>."));
+        });
+        return 1;
+    }
+
+    private int groupInfo(CommandContext<CommandSource> context) {
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionGroup -> {
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Information about <#06bdf8>" + permissionGroup.name() + "<white>:"));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Prefix: " + permissionGroup.prefix()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Suffix: " + permissionGroup.suffix()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Chat color: " + permissionGroup.chatColor()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Standar: " + (permissionGroup.standard() ? "<green>Yes" : "<red>No")));
+            if (permissionGroup.permissions().isEmpty()) {
+                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Permissions: <red>None"));
+            } else {
+                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Permissions: <green>" + permissionGroup.permissions().size()));
+                permissionGroup.permissions().forEach(s -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("     <gray>● <white>" + s)));
+            }
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Included groups: " + permissionGroup.includedGroups()));
+
+        }, () -> context.getSource().sendMessage(Component.text("§cThis user isn't registered.")));
+
+        return 1;
+    }
+
+    private int addPermission(CommandContext<CommandSource> context) {
+        TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionUser -> {
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Information about <#06bdf8>" + permissionUser.getName() + "<white>:"));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>UUID: " + permissionUser.getUniquedId()));
+
+            Component component = MiniMessage.miniMessage().deserialize("  <gray>● <white>Group: " + permissionUser.getPermissionGroup().name());
+            component.clickEvent(ClickEvent.runCommand("/cperms group " + permissionUser.getPermissionGroup().name()));
+            component.hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("§fClick to get more information.")));
+
+            context.getSource().sendMessage(component);
+        }, () -> context.getSource().sendMessage(Component.text("§cThis user isn't registered.")));
 
         return 1;
     }
