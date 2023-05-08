@@ -31,6 +31,10 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.pipe.Packet;
+import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
+import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendInteger;
+import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendLong;
+import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendString;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.template.ITemplate;
 import io.netty.bootstrap.ServerBootstrap;
@@ -80,6 +84,10 @@ public class TeriumServer {
                                             try {
                                                 if(packet instanceof Packet newPacket)
                                                     TeriumCloud.getTerium().getNetworkHandlerProvider().callSendingPacket(newPacket);
+
+                                                if(packet instanceof Packet newPacket)
+                                                    if(newPacket instanceof PacketPlayOutSendString || newPacket instanceof PacketPlayOutSendHashMap || newPacket instanceof PacketPlayOutSendInteger || newPacket instanceof PacketPlayOutSendLong)
+                                                        ClusterStartup.getCluster().getNetworking().sendPacket(newPacket);
 
                                                 // service packets
                                                 if (packet instanceof PacketPlayOutServiceAdd newPacket)

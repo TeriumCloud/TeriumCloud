@@ -37,10 +37,8 @@ public class TeriumPermissionModule implements IModule {
 
         this.userFileManager = new UserFileManager(TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN);
         this.userFileManager.loadFile();
-        if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
-            TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
-        }
-        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().addHandler(new PermissionPipeHandler(TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN));
+        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().addHandler(new PermissionPipeHandler());
     }
 
     @Override

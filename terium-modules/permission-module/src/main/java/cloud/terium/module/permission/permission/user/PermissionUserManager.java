@@ -16,6 +16,9 @@ public class PermissionUserManager {
     }
 
     public void registerUser(PermissionUser permissionUser) {
+        if(loadedUsers.containsKey(permissionUser.getUniquedId()))
+            loadedUsers.remove(permissionUser.getUniquedId());
+
         loadedUsers.put(permissionUser.getUniquedId(), permissionUser);
     }
 
