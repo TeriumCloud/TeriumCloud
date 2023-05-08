@@ -39,7 +39,7 @@ public class PermissionGroupManager {
     }
 
     public PermissionGroup createPermissionGroup(String name) {
-        PermissionGroup permissionGroup = new PermissionGroup(name, "§f§l" + name, "", "WHITE", 99, false, new LinkedList<>(), new LinkedList<>());
+        PermissionGroup permissionGroup = new PermissionGroup(name, "<white><bold>" + name + "<bold>", "", "WHITE", 99, false, new LinkedList<>(), new LinkedList<>());
         registerGroup(permissionGroup);
         new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN).createFile(permissionGroup);
         return permissionGroup;

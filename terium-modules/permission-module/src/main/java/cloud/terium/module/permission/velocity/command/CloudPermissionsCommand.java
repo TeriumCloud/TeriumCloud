@@ -52,10 +52,7 @@ public class CloudPermissionsCommand {
                                 .executes(this::groupInfo)
                                 .suggests(this::groupSuggestion)
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("create")
-                                        .executes(this::help)
-                                        .then(RequiredArgumentBuilder.<CommandSource, String>argument("name", StringArgumentType.string())
-                                                .executes(this::help)
-                                                .executes(this::createGroup)))
+                                        .executes(this::createGroup))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("add")
                                         .executes(this::help)
                                         .then(LiteralArgumentBuilder.<CommandSource>literal("permission")
@@ -141,14 +138,14 @@ public class CloudPermissionsCommand {
     }
 
     private int createGroup(CommandContext<CommandSource> context) {
-        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("name", String.class)).ifPresentOrElse(permissionGroup -> context.getSource().sendMessage(Component.text("§cA group with that name is already registered.")), () -> {
-            TeriumPermissionModule.getInstance().getPermissionGroupManager().createPermissionGroup(context.getArgument("name", String.class));
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionGroup -> context.getSource().sendMessage(Component.text("§cA group with that name is already registered.")), () -> {
+            TeriumPermissionModule.getInstance().getPermissionGroupManager().createPermissionGroup(context.getArgument("group", String.class));
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("packet_type", "create_group");
-            hashMap.put("group_name", context.getArgument("name", String.class));
+            hashMap.put("group_name", context.getArgument("group", String.class));
             TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap));
 
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully create group <#06bdf8>" + context.getArgument("name", String.class) + "<gray>."));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully create group <#06bdf8>" + context.getArgument("group", String.class) + "<gray>."));
         });
         return 1;
     }
