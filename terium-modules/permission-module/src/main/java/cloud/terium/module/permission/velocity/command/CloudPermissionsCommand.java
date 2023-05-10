@@ -156,7 +156,7 @@ public class CloudPermissionsCommand {
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Prefix: " + permissionGroup.prefix()));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Suffix: " + permissionGroup.suffix()));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Chat color: " + permissionGroup.chatColor()));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Standar: " + (permissionGroup.standard() ? "<green>Yes" : "<red>No")));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Standard: " + (permissionGroup.standard() ? "<green>Yes" : "<red>No")));
             if (permissionGroup.permissions().isEmpty()) {
                 context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Permissions: <red>None"));
             } else {
@@ -172,14 +172,12 @@ public class CloudPermissionsCommand {
 
     private int addPermission(CommandContext<CommandSource> context) {
         TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionUser -> {
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Information about <#06bdf8>" + permissionUser.getName() + "<white>:"));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>UUID: " + permissionUser.getUniquedId()));
-
-            Component component = MiniMessage.miniMessage().deserialize("  <gray>● <white>Group: " + permissionUser.getPermissionGroup().name());
-            component.clickEvent(ClickEvent.runCommand("/cperms group " + permissionUser.getPermissionGroup().name()));
-            component.hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("§fClick to get more information.")));
-
-            context.getSource().sendMessage(component);
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("packet_type", "add_permission");
+            hashMap.put("group_name", context.getArgument("group", String.class));
+            hashMap.put("permission", context.getArgument("permission", String.class));
+            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully added permission <gray>'<#06bdf8>" + context.getArgument("permission", String.class) + "<gray>' <green>to group <gray>'<#06bdf8>" + context.getArgument("group", String.class) + "<gray>'."));
         }, () -> context.getSource().sendMessage(Component.text("§cThis user isn't registered.")));
 
         return 1;

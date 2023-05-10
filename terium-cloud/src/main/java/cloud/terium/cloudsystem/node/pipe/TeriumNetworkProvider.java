@@ -35,7 +35,6 @@ import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.entity.impl.CloudPlayer;
-import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStoppedEvent;

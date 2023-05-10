@@ -24,7 +24,6 @@ import cloud.terium.teriumapi.events.group.CloudGroupUpdatedEvent;
 import cloud.terium.teriumapi.events.group.CloudGroupsReloadEvent;
 import cloud.terium.teriumapi.events.node.NodeLoggedInEvent;
 import cloud.terium.teriumapi.events.node.NodeLoggedOutEvent;
-import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.*;
 import cloud.terium.teriumapi.events.service.CloudServiceStartedEvent;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;

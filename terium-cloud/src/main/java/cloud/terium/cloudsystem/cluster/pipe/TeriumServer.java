@@ -28,7 +28,6 @@ import cloud.terium.networking.packet.service.*;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateAdd;
 import cloud.terium.networking.packet.template.PacketPlayOutTemplateDelete;
 import cloud.terium.teriumapi.console.LogType;
-import cloud.terium.teriumapi.events.pipe.PacketIncomingEvent;
 import cloud.terium.teriumapi.events.player.CloudPlayerUpdateEvent;
 import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
