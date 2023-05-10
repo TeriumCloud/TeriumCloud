@@ -58,8 +58,14 @@ public class CloudPermissionsCommand {
                                         .then(LiteralArgumentBuilder.<CommandSource>literal("permission")
                                                 .executes(this::help)
                                                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("permission", StringArgumentType.string())
-                                                        .executes(this::addPermission)))))
-                )
+                                                        .executes(this::addPermission))))
+                                .then(LiteralArgumentBuilder.<CommandSource>literal("remove")
+                                        .executes(this::help)
+                                        .then(LiteralArgumentBuilder.<CommandSource>literal("permission")
+                                                .executes(this::help)
+                                                .then(RequiredArgumentBuilder.<CommandSource, String>argument("permission", StringArgumentType.string())
+                                                        .suggests(this::permissionSuggest)
+                                                        .executes(this::removePermission))))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("groups")
                         .executes(this::groupList))
                 .build();
@@ -88,6 +94,11 @@ public class CloudPermissionsCommand {
 
     private CompletableFuture<Suggestions> groupSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
         TeriumPermissionModule.getInstance().getPermissionGroupManager().getLoadedGroups().values().forEach(permissionGroup -> suggestionsBuilder.suggest(permissionGroup.name()));
+        return suggestionsBuilder.buildFuture();
+    }
+
+    private CompletableFuture<Suggestions> permissionSuggest(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).get().permissions().forEach(suggestionsBuilder::suggest);
         return suggestionsBuilder.buildFuture();
     }
 
@@ -171,14 +182,31 @@ public class CloudPermissionsCommand {
     }
 
     private int addPermission(CommandContext<CommandSource> context) {
-        TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionUser -> {
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionGroup -> {
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("packet_type", "add_permission");
             hashMap.put("group_name", context.getArgument("group", String.class));
             hashMap.put("permission", context.getArgument("permission", String.class));
             TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully added permission <gray>'<#06bdf8>" + context.getArgument("permission", String.class) + "<gray>' <green>to group <gray>'<#06bdf8>" + context.getArgument("group", String.class) + "<gray>'."));
-        }, () -> context.getSource().sendMessage(Component.text("§cThis user isn't registered.")));
+        }, () -> context.getSource().sendMessage(Component.text("§cThis group isn't registered.")));
+
+        return 1;
+    }
+
+    private int removePermission(CommandContext<CommandSource> context) {
+        TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionGroup -> {
+            if(permissionGroup.permissions().contains(context.getArgument("permission", String.class))) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("packet_type", "remove_permission");
+                hashMap.put("group_name", context.getArgument("group", String.class));
+                hashMap.put("permission", context.getArgument("permission", String.class));
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap));
+                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully removed permission <gray>'<#06bdf8>" + context.getArgument("permission", String.class) + "<gray>' <green>to group <gray>'<#06bdf8>" + context.getArgument("group", String.class) + "<gray>'."));
+            } else {
+                context.getSource().sendMessage(Component.text("§4This permission isn't registered on the group."));
+            }
+        }, () -> context.getSource().sendMessage(Component.text("§cThis group isn't registered.")));
 
         return 1;
     }

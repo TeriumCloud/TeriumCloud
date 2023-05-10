@@ -53,7 +53,7 @@ public class PermissionGroupManager {
         return loadedGroups.values().stream().filter(PermissionGroup::standard).findAny();
     }
 
-    public JsonObject getGroupJsonConfig(String group, ApplicationType applicationType) {
-        return new GroupFileManager(group, applicationType).getJson();
+    public GroupFileManager getGroupJsonConfig(String group, ApplicationType applicationType) {
+        return new GroupFileManager(group, applicationType);
     }
 }
