@@ -2,6 +2,7 @@ package cloud.terium.module.permission;
 
 import cloud.terium.module.permission.cloud.CloudListener;
 import cloud.terium.module.permission.cloud.PermissionPipeHandler;
+import cloud.terium.module.permission.manager.ConfigManager;
 import cloud.terium.module.permission.permission.group.GroupFileManager;
 import cloud.terium.module.permission.permission.group.PermissionGroupManager;
 import cloud.terium.module.permission.permission.user.PermissionUserManager;
@@ -25,6 +26,7 @@ import java.util.Arrays;
 public class TeriumPermissionModule implements IModule {
 
     private static TeriumPermissionModule instance;
+    private ConfigManager configManager;
     private PermissionGroupManager permissionGroupManager;
     private PermissionUserManager permissionUserManager;
     private UserFileManager userFileManager;
@@ -36,6 +38,7 @@ public class TeriumPermissionModule implements IModule {
     @Override
     public void onEnable() {
         instance = this;
+        this.configManager = new ConfigManager();
         this.permissionGroupManager = new PermissionGroupManager();
         this.permissionUserManager = new PermissionUserManager();
 
@@ -53,6 +56,7 @@ public class TeriumPermissionModule implements IModule {
 
     public void reload() {
         TeriumPermissionModule.getInstance().getUserFileManager().loadFile();
+        TeriumPermissionModule.getInstance().setConfigManager(new ConfigManager());
 
         if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
             TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> {
