@@ -126,7 +126,7 @@ public class CloudPermissionsCommand {
             hashMap.put("group_name", permissionGroup.name());
 
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("<green>Successfully set group of <#06bdf8>" + permissionUser.getName() + " <green>to <#06bdf8>" + permissionGroup.name() + "<gray>."));
-            PermissionVelocityStartup.getInstance().getProxyServer().getPlayer(context.getArgument("user", String.class)).ifPresent(player -> player.disconnect(MiniMessage.miniMessage().deserialize(TeriumPermissionModule.getInstance().getConfigManager().getJson().get("new_rank.message").getAsString().replace("%rank%", permissionGroup.name()))));
+            PermissionVelocityStartup.getInstance().getProxyServer().getPlayer(context.getArgument("user", String.class)).ifPresent(player -> player.sendMessage(MiniMessage.miniMessage().deserialize(TeriumPermissionModule.getInstance().getConfigManager().getJson().get("new_rank.message").getAsString().replace("%rank%", permissionGroup.name()))));
             PermissionVelocityStartup.getInstance().getProxyServer().getScheduler().buildTask(PermissionVelocityStartup.getInstance(), () -> TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendHashMap(hashMap))).delay(1, TimeUnit.SECONDS).schedule();
         }, () -> context.getSource().sendMessage(Component.text("§cThis group isn't registered."))), () -> context.getSource().sendMessage(Component.text("§cThis user isn't registered.")));
 
