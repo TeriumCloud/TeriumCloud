@@ -44,8 +44,6 @@ public class InfoCommand extends Command {
                             });
                         }
                     });
-
-                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName("Lobby-01").ifPresent(cloudService -> cloudService.addProperty("test", true));
                     return;
                 }
             }
