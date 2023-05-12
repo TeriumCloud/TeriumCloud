@@ -1,5 +1,5 @@
 [![Banner](https://i.imgur.com/xypsvWn.png)](https://terium.cloud)
-[![Version](https://img.shields.io/badge/Terium%20Version-OXYGEN--v1.2-blue?style=for-the-badge&logo=appveyor)](https://terium.cloud/download/terium-1.4-OXYGEN.zip) [![Discord](https://img.shields.io/badge/Discord%20Server-JOIN%20NOW-%237289da?style=for-the-badge&logo=discord)](https://discord.com/invite/5VrY59sffQ) [![Twitter](https://img.shields.io/twitter/follow/teriumcloud?color=%231DA1F2&logo=twitter&style=for-the-badge)](https://twitter.com/@teriumcloud)
+[![Version](https://img.shields.io/badge/Terium%20Version-OXYGEN--v1.4-blue?style=for-the-badge&logo=appveyor)](https://terium.cloud/download/terium-1.4-OXYGEN.zip) [![Discord](https://img.shields.io/badge/Discord%20Server-JOIN%20NOW-%237289da?style=for-the-badge&logo=discord)](https://discord.com/invite/5VrY59sffQ) [![Twitter](https://img.shields.io/twitter/follow/teriumcloud?color=%231DA1F2&logo=twitter&style=for-the-badge)](https://twitter.com/@teriumcloud)
 
 ## Terium
 
