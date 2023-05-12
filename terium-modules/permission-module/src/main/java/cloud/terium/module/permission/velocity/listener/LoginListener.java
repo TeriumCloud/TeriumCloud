@@ -9,6 +9,7 @@ public class LoginListener {
 
     @Subscribe
     public void handleLogin(LoginEvent event) {
-        TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(event.getPlayer().getUniqueId()).ifPresentOrElse(player -> {}, () -> TeriumPermissionModule.getInstance().getPermissionUserManager().registerNewUser(new PermissionUser(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), TeriumPermissionModule.getInstance().getPermissionGroupManager().getDefaultGroup().orElseGet(null))));
+        TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(event.getPlayer().getUniqueId()).ifPresentOrElse(player -> {
+        }, () -> TeriumPermissionModule.getInstance().getPermissionUserManager().registerNewUser(new PermissionUser(event.getPlayer().getUniqueId(), event.getPlayer().getUsername(), TeriumPermissionModule.getInstance().getPermissionGroupManager().getDefaultGroup().orElseGet(null))));
     }
 }

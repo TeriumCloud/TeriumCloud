@@ -1,7 +1,6 @@
 package cloud.terium.module.permission.permission.user;
 
 import cloud.terium.module.permission.TeriumPermissionModule;
-import cloud.terium.module.permission.permission.group.PermissionGroup;
 import cloud.terium.module.permission.utils.ApplicationType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,8 +13,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,7 +40,7 @@ public class UserFileManager {
                 this.json = JsonParser.parseReader(reader).getAsJsonObject();
                 this.json.keySet().forEach(key -> {
                     JsonObject playerObject = this.json.get(key).getAsJsonObject();
-                    PermissionUser permissionUser = new PermissionUser(playerObject.get("username").getAsString(), UUID.fromString(playerObject.get("uuid").getAsString()), TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(playerObject.get("group").getAsString()).orElseGet(null));
+                    PermissionUser permissionUser = new PermissionUser(UUID.fromString(playerObject.get("uuid").getAsString()), playerObject.get("username").getAsString(), TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(playerObject.get("group").getAsString()).orElseGet(null));
                     TeriumPermissionModule.getInstance().getPermissionUserManager().registerUser(permissionUser);
                 });
             } catch (IOException ex) {

@@ -1,12 +1,11 @@
 package cloud.terium.module.permission.cloud;
 
 import cloud.terium.module.permission.TeriumPermissionModule;
-import cloud.terium.module.permission.permission.group.GroupFileManager;
 import cloud.terium.module.permission.permission.group.PermissionGroup;
-import cloud.terium.module.permission.utils.ApplicationType;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.pipe.Handler;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
+import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendString;
 
 import java.util.LinkedList;
 import java.util.UUID;
@@ -15,6 +14,11 @@ public class PermissionPipeHandler implements Handler {
 
     @Override
     public void onReceive(Object object) {
+        if (object instanceof PacketPlayOutSendString packet) {
+            if (packet.string().equals("reload_system"))
+                TeriumPermissionModule.getInstance().reload();
+        }
+
         if (object instanceof PacketPlayOutSendHashMap packet) {
             if (packet.hashMap().containsValue("update_user")) {
                 TeriumPermissionModule.getInstance().getPermissionUserManager().getUserByUniquedId(UUID.fromString((String) packet.hashMap().get("uuid"))).ifPresent(permissionUser ->

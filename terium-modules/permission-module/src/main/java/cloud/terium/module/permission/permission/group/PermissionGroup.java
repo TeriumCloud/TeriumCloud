@@ -30,7 +30,7 @@ public record PermissionGroup(String name, String prefix, String suffix, String 
             GroupFileManager groupFileManager = new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN);
             groupFileManager.loadFile();
             groupFileManager.getJson().get("permissions").getAsJsonArray().forEach(jsonElement -> {
-                if(jsonElement.getAsString().equals(permission)) {
+                if (jsonElement.getAsString().equals(permission)) {
                     JsonArray jsonArray = groupFileManager.getJson().get("permissions").getAsJsonArray().deepCopy();
                     jsonArray.remove(jsonElement);
                     groupFileManager.getJson().add("permissions", jsonArray);

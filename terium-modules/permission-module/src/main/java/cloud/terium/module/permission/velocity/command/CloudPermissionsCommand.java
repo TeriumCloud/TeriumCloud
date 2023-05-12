@@ -6,7 +6,6 @@ import cloud.terium.module.permission.velocity.PermissionVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendString;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -19,15 +18,12 @@ import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import javax.print.DocFlavor;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class CloudPermissionsCommand {
 
@@ -68,6 +64,8 @@ public class CloudPermissionsCommand {
                                                         .executes(this::removePermission))))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("groups")
                         .executes(this::groupList))
+                .then(LiteralArgumentBuilder.<CommandSource>literal("reload")
+                        .executes(this::reload))
                 .build();
 
         return new BrigadierCommand(commandNode);
@@ -196,7 +194,7 @@ public class CloudPermissionsCommand {
 
     private int removePermission(CommandContext<CommandSource> context) {
         TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionGroup -> {
-            if(permissionGroup.permissions().contains(context.getArgument("permission", String.class))) {
+            if (permissionGroup.permissions().contains(context.getArgument("permission", String.class))) {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("packet_type", "remove_permission");
                 hashMap.put("group_name", context.getArgument("group", String.class));
@@ -208,6 +206,11 @@ public class CloudPermissionsCommand {
             }
         }, () -> context.getSource().sendMessage(Component.text("§cThis group isn't registered.")));
 
+        return 1;
+    }
+
+    private int reload(CommandContext<CommandSource> context) {
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutSendString("reload_system"));
         return 1;
     }
 }

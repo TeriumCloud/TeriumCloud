@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PermissionUser implements Serializable {
 
-    private String name;
     private final UUID uniquedId;
+    private String name;
     private PermissionGroup permissionGroup;
 }

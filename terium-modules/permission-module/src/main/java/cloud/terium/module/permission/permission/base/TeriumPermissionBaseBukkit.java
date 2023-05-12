@@ -2,7 +2,6 @@ package cloud.terium.module.permission.permission.base;
 
 import cloud.terium.module.permission.TeriumPermissionModule;
 import cloud.terium.module.permission.permission.group.PermissionGroup;
-import cloud.terium.module.permission.permission.user.PermissionUser;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissibleBase;
 import org.jetbrains.annotations.NotNull;

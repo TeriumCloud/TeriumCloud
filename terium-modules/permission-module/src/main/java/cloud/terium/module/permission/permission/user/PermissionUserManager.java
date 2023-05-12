@@ -5,7 +5,10 @@ import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
 import com.google.gson.JsonObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Optional;
+import java.util.UUID;
 
 public class PermissionUserManager {
 
@@ -16,7 +19,7 @@ public class PermissionUserManager {
     }
 
     public void registerUser(PermissionUser permissionUser) {
-        if(loadedUsers.containsKey(permissionUser.getUniquedId()))
+        if (loadedUsers.containsKey(permissionUser.getUniquedId()))
             loadedUsers.remove(permissionUser.getUniquedId());
 
         loadedUsers.put(permissionUser.getUniquedId(), permissionUser);
