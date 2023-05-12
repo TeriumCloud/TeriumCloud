@@ -2,6 +2,7 @@ package cloud.terium.module.permission.permission.group;
 
 import cloud.terium.module.permission.utils.ApplicationType;
 import cloud.terium.teriumapi.TeriumAPI;
+import com.google.gson.JsonArray;
 
 import java.io.Serializable;
 import java.util.List;
@@ -29,8 +30,11 @@ public record PermissionGroup(String name, String prefix, String suffix, String 
             GroupFileManager groupFileManager = new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN);
             groupFileManager.loadFile();
             groupFileManager.getJson().get("permissions").getAsJsonArray().forEach(jsonElement -> {
-                if(jsonElement.getAsString().equals(permission))
-                    groupFileManager.getJson().get("permissions").getAsJsonArray().remove(jsonElement);
+                if(jsonElement.getAsString().equals(permission)) {
+                    JsonArray jsonArray = groupFileManager.getJson().get("permissions").getAsJsonArray().deepCopy();
+                    jsonArray.remove(jsonElement);
+                    groupFileManager.getJson().add("permissions", jsonArray);
+                }
             });
             groupFileManager.save();
         }

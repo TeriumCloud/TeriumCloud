@@ -30,7 +30,7 @@ public class PermissionPipeHandler implements Handler {
             }
 
             if (packet.hashMap().containsValue("create_group")) {
-                TeriumPermissionModule.getInstance().getPermissionGroupManager().registerGroup(new PermissionGroup((String) packet.hashMap().get("group_name"), "§f§l" + packet.hashMap().get("group_name"), "", "WHITE", 99, false, new LinkedList<>(), new LinkedList<>()));
+                TeriumPermissionModule.getInstance().getPermissionGroupManager().registerGroup(new PermissionGroup((String) packet.hashMap().get("group_name"), "<white><bold>" + packet.hashMap().get("group_name") + "</bold>", "", "WHITE", 99, false, new LinkedList<>(), new LinkedList<>()));
             }
 
             if (packet.hashMap().containsValue("add_permission")) {
