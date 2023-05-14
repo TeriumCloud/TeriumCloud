@@ -186,7 +186,13 @@ public class CloudService implements ICloudService {
 
     @Override
     public void forceShutdown() {
-        shutdown();
+        if (NodeStartup.getNode().isDebugMode())
+            Logger.log("Trying to stop service '§b" + getServiceName() + "§f'... [CloudService#forceShutdown]", LogType.INFO);
+
+        if (process != null)
+            process.destroyForcibly();
+
+        thread.interrupt();
     }
 
     public void shutdown() {
