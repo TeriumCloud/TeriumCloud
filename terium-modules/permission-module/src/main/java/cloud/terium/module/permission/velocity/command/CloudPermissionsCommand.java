@@ -19,6 +19,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -156,8 +157,8 @@ public class CloudPermissionsCommand {
     private int groupInfo(CommandContext<CommandSource> context) {
         TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(permissionGroup -> {
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("Information about <#06bdf8>" + permissionGroup.name() + "<white>:"));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Prefix: " + permissionGroup.prefix()));
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Suffix: " + permissionGroup.suffix()));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Prefix: ").append(LegacyComponentSerializer.legacyAmpersand().deserialize(permissionGroup.prefix())));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Suffix: ").append(LegacyComponentSerializer.legacyAmpersand().deserialize(permissionGroup.suffix())));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Chat color: " + permissionGroup.chatColor()));
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Standard: " + (permissionGroup.standard() ? "<green>Yes" : "<red>No")));
             if (permissionGroup.permissions().isEmpty()) {
