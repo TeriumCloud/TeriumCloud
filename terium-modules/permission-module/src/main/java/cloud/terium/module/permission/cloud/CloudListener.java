@@ -22,7 +22,8 @@ public class CloudListener implements Listener {
     @Subscribe
     public void handleCloudServiceStarting(CloudServiceStartingEvent event) {
         if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
-            FileUtils.copyDirectory(new File("modules/permission"), new File("servers/" + event.getCloudService().getServiceName() + "/modules/permission"));
+            if (event.getCloudService().getServiceGroup().isStatic()) FileUtils.copyDirectory(new File("modules/permission"), new File("static/" + event.getCloudService().getServiceName() + "/modules/permission"));
+            else FileUtils.copyDirectory(new File("modules/permission"), new File("servers/" + event.getCloudService().getServiceName() + "/modules/permission"));
         }
     }
 }
