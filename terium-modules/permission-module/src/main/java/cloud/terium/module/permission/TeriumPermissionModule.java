@@ -42,8 +42,9 @@ public class TeriumPermissionModule implements IModule {
         this.permissionGroupManager = new PermissionGroupManager();
         this.permissionUserManager = new PermissionUserManager();
 
-        Arrays.stream(new File("modules/permission/groups").listFiles()).toList().forEach(file -> new GroupFileManager(file.getName().replace(".json", ""), ApplicationType.MODULE).loadFile());
+        Arrays.stream(new File((TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? "" : "../../") + "modules/permission/groups").listFiles()).toList().forEach(file -> new GroupFileManager(file.getName().replace(".json", ""), ApplicationType.MODULE).loadFile());
 
+        this.permissionGroupManager.loadIcludedGroupPermissions();
         this.userFileManager = new UserFileManager(TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN);
         this.userFileManager.loadFile();
         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
@@ -58,15 +59,7 @@ public class TeriumPermissionModule implements IModule {
         TeriumPermissionModule.getInstance().getUserFileManager().loadFile();
         TeriumPermissionModule.getInstance().setConfigManager(new ConfigManager());
 
-        if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
-            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> {
-                try {
-                    FileUtils.copyDirectory(new File("modules/permission"), new File("servers/" + cloudService.getServiceName() + "/modules/permission"));
-                } catch (IOException ignored) {
-                }
-            });
-        }
-
-        Arrays.stream(new File("modules/permission/groups").listFiles()).toList().forEach(file -> new GroupFileManager(file.getName().replace(".json", ""), ApplicationType.MODULE).loadFile());
+        Arrays.stream(new File((TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? "" : "../../") + "modules/permission/groups").listFiles()).toList().forEach(file -> new GroupFileManager(file.getName().replace(".json", ""), TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN).loadFile());
+        this.permissionGroupManager.loadIcludedGroupPermissions();
     }
 }

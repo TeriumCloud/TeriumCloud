@@ -28,6 +28,12 @@ public class PermissionGroupManager {
         loadedGroups.put(permissionGroup.name(), permissionGroup);
     }
 
+    public void loadIcludedGroupPermissions() {
+        loadedGroups.values().forEach(permissionGroup -> permissionGroup.includedGroups().forEach(name -> {
+            getGroupByName(name).ifPresent(permissionGroup1 -> permissionGroup1.permissions().forEach(permissionGroup::addPermission));
+        }));
+    }
+
     public PermissionGroup createPermissionGroup(String name, String prefix, String suffix, String chatColor,
                                                  int property, boolean standard, List<String> permissions,
                                                  List<String> includedGroups) {

@@ -13,13 +13,15 @@ public record PermissionGroup(String name, String prefix, String suffix, String 
 
 
     public void addPermission(String permission) {
-        this.permissions.add(permission);
+        if(!permissions.contains(permission)) {
+            this.permissions.add(permission);
 
-        if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null) {
-            GroupFileManager groupFileManager = new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN);
-            groupFileManager.loadFile();
-            groupFileManager.getJson().get("permissions").getAsJsonArray().add(permission);
-            groupFileManager.save();
+            if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null && !permissions.contains(permission)) {
+                GroupFileManager groupFileManager = new GroupFileManager(name, TeriumAPI.getTeriumAPI().getProvider().getThisService() == null ? ApplicationType.MODULE : ApplicationType.PLUGIN);
+                groupFileManager.loadFile();
+                groupFileManager.getJson().get("permissions").getAsJsonArray().add(permission);
+                groupFileManager.save();
+            }
         }
     }
 
