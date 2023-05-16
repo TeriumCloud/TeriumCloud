@@ -2,6 +2,7 @@ package cloud.terium.module.permission.cloud;
 
 import cloud.terium.module.permission.TeriumPermissionModule;
 import cloud.terium.module.permission.permission.group.PermissionGroup;
+import cloud.terium.module.permission.permission.user.PermissionUser;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.pipe.Handler;
 import cloud.terium.teriumapi.pipe.packets.PacketPlayOutSendHashMap;
@@ -31,6 +32,11 @@ public class PermissionPipeHandler implements Handler {
                             }
                         }));
 
+            }
+
+            if(packet.hashMap().containsValue("user_add")) {
+                PermissionUser permissionUser = new PermissionUser((UUID) packet.hashMap().get("uuid"), (String) packet.hashMap().get("username"), TeriumPermissionModule.getInstance().getPermissionGroupManager().getGroupByName((String) packet.hashMap().get("group")).orElseGet(null));
+                TeriumPermissionModule.getInstance().getPermissionUserManager().registerUser(permissionUser);
             }
 
             if (packet.hashMap().containsValue("create_group")) {
