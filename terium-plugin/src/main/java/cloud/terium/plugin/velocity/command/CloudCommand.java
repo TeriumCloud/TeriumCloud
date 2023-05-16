@@ -1,5 +1,7 @@
 package cloud.terium.plugin.velocity.command;
 
+import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
+import cloud.terium.networking.packet.service.PacketPlayOutServiceStart;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
@@ -15,6 +17,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
+import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -65,6 +68,11 @@ public class CloudCommand {
                                                 .suggests(this::serviceSuggestion)
                                                 .executes(this::sendPlayer))))
                         .executes(this::players))
+                .then(LiteralArgumentBuilder.<CommandSource>literal("start")
+                        .executes(this::help)
+                        .then(RequiredArgumentBuilder.<CommandSource, String>argument("group", StringArgumentType.string())
+                                .suggests(this::groupSuggestion)
+                                .executes(this::startService)))
                 .build();
 
         return new BrigadierCommand(literalCommand);
@@ -99,6 +107,11 @@ public class CloudCommand {
 
     private CompletableFuture<Suggestions> serviceAllSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
+        return suggestionsBuilder.buildFuture();
+    }
+
+    private CompletableFuture<Suggestions> groupSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
+        TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getGroupName()));
         return suggestionsBuilder.buildFuture();
     }
 
@@ -178,6 +191,14 @@ public class CloudCommand {
             });
         else
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There are no players online."));
+        return 1;
+    }
+
+    private int startService(CommandContext<CommandSource> context) {
+        TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(serviceGroup -> {
+            TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceGroup);
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<white>Trying to start one new service of group <gray>'<#00d4ff>" + serviceGroup.getGroupName() + "<gray>'."));
+        }, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no service group with that name.")));
         return 1;
     }
 }
