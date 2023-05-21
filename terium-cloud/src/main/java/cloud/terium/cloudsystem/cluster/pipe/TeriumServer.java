@@ -97,8 +97,13 @@ public class TeriumServer {
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceForceStopEvent(newPacket.serviceName()));
                                                 if (packet instanceof PacketPlayOutServiceLock newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceLockEvent(newPacket.serviceName()));
-                                                if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket)
+                                                if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket) {
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceLoggedInEvent(newPacket.serviceName(), newPacket.node()));
+
+                                                    if(!ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(newPacket.parsedCloudService()).isEmpty()) {
+                                                        channelHandlerContext.writeAndFlush(new PacketPlayOutServiceAddProperties(newPacket.serviceName(), ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(newPacket.parsedCloudService())));
+                                                    }
+                                                }
                                                 if (packet instanceof PacketPlayOutServiceRemove newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceRemoveEvent(newPacket.serviceName()));
                                                 if (packet instanceof PacketPlayOutServiceRestart newPacket)

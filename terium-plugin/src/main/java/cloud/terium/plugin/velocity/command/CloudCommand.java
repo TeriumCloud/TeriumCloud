@@ -73,6 +73,14 @@ public class CloudCommand {
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("group", StringArgumentType.string())
                                 .suggests(this::groupSuggestion)
                                 .executes(this::startService)))
+                .then(LiteralArgumentBuilder.<CommandSource>literal("copy")
+                        .executes(this::help)
+                        .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
+                                .suggests(this::serviceSuggestion)
+                                .executes(this::help)
+                                .then(RequiredArgumentBuilder.<CommandSource, String>argument("template", StringArgumentType.string())
+                                        .suggests(this::templateSuggestion)
+                                        .executes(this::copyService))))
                 .build();
 
         return new BrigadierCommand(literalCommand);
@@ -112,6 +120,11 @@ public class CloudCommand {
 
     private CompletableFuture<Suggestions> groupSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
         TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getGroupName()));
+        return suggestionsBuilder.buildFuture();
+    }
+
+    private CompletableFuture<Suggestions> templateSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
+        TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getAllTemplates().forEach(template -> suggestionsBuilder.suggest(template.getName()));
         return suggestionsBuilder.buildFuture();
     }
 
@@ -198,6 +211,13 @@ public class CloudCommand {
         TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(serviceGroup -> {
             TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceGroup);
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<white>Trying to start one new service of group <gray>'<#00d4ff>" + serviceGroup.getGroupName() + "<gray>'."));
+        }, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no service group with that name.")));
+        return 1;
+    }
+
+    private int copyService(CommandContext<CommandSource> context) {
+        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(context.getArgument("service", String.class)).ifPresentOrElse(cloudService -> {
+            TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(context.getArgument("template", String.class)).ifPresentOrElse(cloudService::copy, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no template with that name.")));
         }, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no service group with that name.")));
         return 1;
     }

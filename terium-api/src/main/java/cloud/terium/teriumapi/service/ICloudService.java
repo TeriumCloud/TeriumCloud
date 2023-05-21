@@ -1,10 +1,13 @@
 package cloud.terium.teriumapi.service;
 
+import cloud.terium.networking.packet.service.PacketPlayOutCopyServiceToTemplate;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
@@ -181,6 +184,10 @@ public interface ICloudService extends Serializable {
      */
     default boolean isPreparing() {
         return getServiceState() == ServiceState.PREPARING;
+    }
+
+    default void copy(ITemplate template) {
+        TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCopyServiceToTemplate(getServiceName(), template.getPath().toString()));
     }
 
     /**

@@ -121,6 +121,9 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                             cloudService.setLocked(newPacket.locked());
                         });
                     }
+                    if(packet instanceof PacketPlayOutServiceAddProperties newPacket) {
+                        newPacket.propertiesCache().forEach((s, o) -> TeriumAPI.getTeriumAPI().getProvider().getThisService().addProperty(s, o));
+                    }
 
                     // Players
                     if (packet instanceof PacketPlayOutCloudPlayerAdd newPacket) {
