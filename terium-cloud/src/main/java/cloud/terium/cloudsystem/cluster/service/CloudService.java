@@ -8,6 +8,7 @@ import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceExecuteCommand;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.module.ModuleType;
@@ -350,6 +351,11 @@ public class CloudService implements ICloudService {
     @Override
     public void addProperty(String name, Object property) {
         this.propertyMap.put(name, property);
+        if(!isOnline()) {
+            if(ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(this).isEmpty())
+                ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().put(this, new HashMap<>());
+            else ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(this).put(name, property);
+        }
     }
 
     @Override
