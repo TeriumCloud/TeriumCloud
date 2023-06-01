@@ -351,11 +351,6 @@ public class CloudService implements ICloudService {
     @Override
     public void addProperty(String name, Object property) {
         this.propertyMap.put(name, property);
-        if(!isOnline()) {
-            if(ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(this).isEmpty())
-                ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().put(this, new HashMap<>());
-            else ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(this).put(name, property);
-        }
     }
 
     @Override

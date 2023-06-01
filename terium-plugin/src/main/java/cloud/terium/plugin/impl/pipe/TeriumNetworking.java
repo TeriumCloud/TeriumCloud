@@ -119,10 +119,13 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                             cloudService.setServiceState(newPacket.serviceState());
                             cloudService.setOnlinePlayers(newPacket.players());
                             cloudService.setLocked(newPacket.locked());
+                            newPacket.propertyCache().forEach(cloudService::addProperty);
                         });
                     }
+
                     if(packet instanceof PacketPlayOutServiceAddProperties newPacket) {
                         newPacket.propertiesCache().forEach((s, o) -> TeriumAPI.getTeriumAPI().getProvider().getThisService().addProperty(s, o));
+                        TeriumAPI.getTeriumAPI().getProvider().getThisService().update();
                     }
 
                     // Players

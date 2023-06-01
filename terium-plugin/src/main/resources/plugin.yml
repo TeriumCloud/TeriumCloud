@@ -2,3 +2,6 @@ name: terium-plugin
 version: '1.4-OXYGEN'
 main: cloud.terium.plugin.bukkit.TeriumBukkitStartup
 author: ByRaudy
+
+commands:
+  info:

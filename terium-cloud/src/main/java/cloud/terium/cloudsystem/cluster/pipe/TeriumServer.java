@@ -81,11 +81,11 @@ public class TeriumServer {
                                         @Override
                                         protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                                             try {
-                                                if(packet instanceof Packet newPacket)
+                                                if (packet instanceof Packet newPacket)
                                                     TeriumCloud.getTerium().getNetworkHandlerProvider().callSendingPacket(newPacket);
 
-                                                if(packet instanceof Packet newPacket)
-                                                    if(newPacket instanceof PacketPlayOutSendString || newPacket instanceof PacketPlayOutSendHashMap || newPacket instanceof PacketPlayOutSendInteger || newPacket instanceof PacketPlayOutSendLong)
+                                                if (packet instanceof Packet newPacket)
+                                                    if (newPacket instanceof PacketPlayOutSendString || newPacket instanceof PacketPlayOutSendHashMap || newPacket instanceof PacketPlayOutSendInteger || newPacket instanceof PacketPlayOutSendLong)
                                                         ClusterStartup.getCluster().getNetworking().sendPacket(newPacket);
 
                                                 // service packets
@@ -100,9 +100,7 @@ public class TeriumServer {
                                                 if (packet instanceof PacketPlayOutSuccessfullyServiceStarted newPacket) {
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceLoggedInEvent(newPacket.serviceName(), newPacket.node()));
 
-                                                    if(!ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(newPacket.parsedCloudService()).isEmpty()) {
-                                                        channelHandlerContext.writeAndFlush(new PacketPlayOutServiceAddProperties(newPacket.serviceName(), ClusterStartup.getCluster().getServiceProvider().getPreaddedPropertiesCache().get(newPacket.parsedCloudService())));
-                                                    }
+                                                    channelHandlerContext.writeAndFlush(new PacketPlayOutServiceAddProperties(newPacket.serviceName(), newPacket.parsedCloudService().get().getPropertyMap()));
                                                 }
                                                 if (packet instanceof PacketPlayOutServiceRemove newPacket)
                                                     ClusterStartup.getCluster().getEventProvider().callEvent(new ServiceRemoveEvent(newPacket.serviceName()));

@@ -16,12 +16,10 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     private final HashMap<String, ICloudService> cloudServiceCache;
     private final HashMap<ICloudServiceGroup, List<Integer>> cloudServiceIdCache;
-    private final HashMap<ICloudService, HashMap<String, Object>> preaddedPropertiesCache;
 
     public CloudServiceProvider() {
         this.cloudServiceCache = new HashMap<>();
         this.cloudServiceIdCache = new HashMap<>();
-        this.preaddedPropertiesCache = new HashMap<>();
         ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().forEach(cloudServiceGroup -> cloudServiceIdCache.put(cloudServiceGroup, new LinkedList<>()));
     }
 
@@ -95,10 +93,6 @@ public class CloudServiceProvider implements ICloudServiceProvider {
 
     public void removeService(ICloudService cloudService) {
         cloudServiceCache.remove(cloudService.getServiceName(), cloudService);
-    }
-
-    public HashMap<ICloudService, HashMap<String, Object>> getPreaddedPropertiesCache() {
-        return preaddedPropertiesCache;
     }
 
     @Override
