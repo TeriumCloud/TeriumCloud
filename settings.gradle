@@ -9,8 +9,7 @@ include('terium-framework')
 initializeSubProjects("terium-modules",
 "notification-module",
 "permission-module",
-"syncproxy-module",
-"private-server-module")
+"syncproxy-module")
 
 void initializeSubProjects(String rootProject, String... names) {
     for (final def name in names) {

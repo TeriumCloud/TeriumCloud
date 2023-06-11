@@ -1,3 +1,0 @@
-name: private-server-module
-version: '${version}'
-main: cloud.terium.module.privateserver.bukkit.BukkitPrivateServerStartup

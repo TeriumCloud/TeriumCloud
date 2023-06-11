@@ -3,4 +3,3 @@ rootProject.name = 'terium-modules'
 include("notification-module")
 include("syncproxy-module")
 include("permission-module")
-include("private-server-module")

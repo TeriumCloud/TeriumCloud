@@ -314,6 +314,11 @@ public class CloudService implements ICloudService {
     }
 
     @Override
+    public int getMaxMemory() {
+        return maxMemory;
+    }
+
+    @Override
     public void update() {
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutUpdateService(getServiceName(), getOnlinePlayers(), getUsedMemory(), getServiceState(), isLocked(), getPropertyMap()));
     }
