@@ -12,6 +12,6 @@ public class Logger {
     }
 
     public static void log(String message, LogType logType) {
-        System.out.println(LoggerColors.replaceColorCodes("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + message));
+        System.out.println(LoggerColors.replaceColorCodes("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + "§f" + message));
     }
 }

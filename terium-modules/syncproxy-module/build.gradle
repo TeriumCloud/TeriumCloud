@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'cloud.terium.module'
-version = '1.4-OXYGEN'
+version = '1.5-OXYGEN'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
