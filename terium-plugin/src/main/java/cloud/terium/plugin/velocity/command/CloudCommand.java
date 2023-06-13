@@ -101,10 +101,6 @@ public class CloudCommand {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " groups"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " service <service> shutdown|stop|info"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " player <player> kick|connect (service)"));
-        new ServiceBuilder("test", 1)
-                .setServiceGroup(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName("Lobby").get())
-                .addProperty("adolf", "is ein hu")
-                .build();
         return 1;
     }
 
