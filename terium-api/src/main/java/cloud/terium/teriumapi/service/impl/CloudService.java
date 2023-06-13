@@ -43,6 +43,19 @@ public class CloudService implements ICloudService {
         this.propertyCache = propertyCache;
     }
 
+    public CloudService(String serviceName, int serviceId, int port, int memory, INode node, ICloudServiceGroup iCloudServiceGroup, List<ITemplate> templates) {
+        this.serviceName = serviceName;
+        this.serviceId = serviceId;
+        this.port = port;
+        this.node = node;
+        this.iCloudServiceGroup = iCloudServiceGroup;
+        this.templates = templates;
+        this.onlinePlayers = 0;
+        this.usedMemory = memory;
+        this.serviceState = ServiceState.PREPARING;
+        this.propertyCache = new HashMap<>();
+    }
+
     public CloudService(String serviceName, int serviceId, int port, INode node, ICloudServiceGroup iCloudServiceGroup, List<ITemplate> templates, boolean online) {
         this.serviceName = serviceName;
         this.serviceId = serviceId;

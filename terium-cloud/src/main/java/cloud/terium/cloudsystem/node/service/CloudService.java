@@ -68,6 +68,10 @@ public class CloudService implements ICloudService {
     }
 
     public CloudService(String serviceName, List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, ServiceType serviceType, int serviceId, int port, int maxPlayers, int maxMemory) {
+        this(cloudServiceGroup.getGroupName(), templates, cloudServiceGroup, cloudServiceGroup.getServiceType(), serviceId, port, maxPlayers, cloudServiceGroup.getMemory(), new HashMap<>());
+    }
+
+    public CloudService(String serviceName, List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, ServiceType serviceType, int serviceId, int port, int maxPlayers, int maxMemory, HashMap<String, Object> propertyMap) {
         this.serviceGroup = cloudServiceGroup;
         this.serviceId = serviceId;
         this.name = serviceName;
@@ -75,7 +79,7 @@ public class CloudService implements ICloudService {
         this.serviceState = ServiceState.PREPARING;
         this.templates = new ArrayList<>(templates);
         this.folder = serviceGroup.isStatic() ? new File("static//" + getServiceName()) : new File("servers//" + getServiceName());
-        this.propertyMap = new HashMap<>();
+        this.propertyMap = propertyMap;
         this.port = port;
         this.maxPlayers = maxPlayers;
         this.maxMemory = maxMemory;

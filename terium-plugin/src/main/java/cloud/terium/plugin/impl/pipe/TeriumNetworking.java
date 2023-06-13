@@ -104,7 +104,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
 
                     // Services
                     if (packet instanceof PacketPlayOutServiceAdd newPacket) {
-                        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().add(new CloudService(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates()));
+                        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().add(new CloudService(newPacket.serviceName(), newPacket.serviceId(), newPacket.port(), newPacket.memory(), newPacket.parsedNode().orElseGet(null), newPacket.parsedServiceGroup().orElseGet(null), newPacket.parsedTemplates(), newPacket.propertyCache()));
                         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new CloudServiceStartingEvent(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(newPacket.serviceName()).orElseGet(null)));
                     }
                     if (packet instanceof PacketPlayOutServiceRemove newPacket) {

@@ -60,6 +60,16 @@ public class ServiceBuilder {
         return this;
     }
 
+    public ServiceBuilder addProperty(String name, Object property) {
+        this.propertyCache.put(name, property);
+        return this;
+    }
+
+    public ServiceBuilder removeProperty(String name) {
+        this.propertyCache.remove(name);
+        return this;
+    }
+
     public void build() {
         if (serviceName == null)
             throw new NullPointerException("service name cannot be null");
@@ -68,6 +78,6 @@ public class ServiceBuilder {
         if (templates == null)
             templates = new LinkedList<>(serviceGroup.getTemplates());
 
-        TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceName, serviceGroup, templates, serviceId, maximumPlayers, maxMemory);
+        TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceName, serviceGroup, templates, serviceId, maximumPlayers, maxMemory, propertyCache);
     }
 }

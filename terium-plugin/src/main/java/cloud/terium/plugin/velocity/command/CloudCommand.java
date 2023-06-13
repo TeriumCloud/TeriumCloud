@@ -7,6 +7,7 @@ import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ServiceBuilder;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -100,6 +101,10 @@ public class CloudCommand {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " groups"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " service <service> shutdown|stop|info"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " player <player> kick|connect (service)"));
+        new ServiceBuilder("test", 1)
+                .setServiceGroup(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName("Lobby").get())
+                .addProperty("adolf", "is ein hu")
+                .build();
         return 1;
     }
 

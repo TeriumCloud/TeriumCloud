@@ -3,6 +3,7 @@ package cloud.terium.teriumapi.service;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface ICloudServiceFactory {
@@ -33,6 +34,19 @@ public interface ICloudServiceFactory {
      * @param memory
      */
     void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates, int serviceId, int maxPlayers, int memory);
+
+    /**
+     * Create a service with defined service name, cloud template, service type, service id, port and own property cache
+     *
+     * @param serviceName
+     * @param serviceGroup
+     * @param templates
+     * @param serviceId
+     * @param maxPlayers
+     * @param memory
+     * @param propertyCache
+     */
+    void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates, int serviceId, int maxPlayers, int memory, HashMap<String, Object> propertyCache);
 
     /**
      * Create a service with defined service name and service group
