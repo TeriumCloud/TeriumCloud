@@ -1,0 +1,15 @@
+{
+  "id": "teriummodule-hubcommand",
+  "name": "TeriumHubCommandModule",
+  "version": "1.5-OXYGEN",
+  "authors": [
+    "veteex"
+  ],
+  "dependencies": [
+    {
+      "id": "teriumplugin-velocity",
+      "optional": false
+    }
+  ],
+  "main": "cloud.terium.module.hubcommand.velocity.HubModuleStartup"
+}
