@@ -4,44 +4,22 @@ plugins {
 
 group = 'cloud.terium.module'
 version = '1.5-OXYGEN'
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
+    maven {url = 'https://repo.papermc.io/repository/maven-public/'}
+    maven { url = uri("https://repo.jxnnik.dev/releases") }
 }
 
 dependencies {
-compileOnly "com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT"
-}
+    compileOnly 'com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'com.velocitypowered:velocity-api:3.0.1'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'net.kyori:adventure-text-minimessage:4.13.0'
+    compileOnly 'cloud.terium:terium-api:1.5-OXYGEN'
 
-def targetJavaVersion = 8
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
-    }
-}
-
-processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
-    }
+    annotationProcessor 'cloud.terium:terium-api:1.5-OXYGEN'
+    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 }

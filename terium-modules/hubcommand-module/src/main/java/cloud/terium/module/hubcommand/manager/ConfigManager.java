@@ -35,9 +35,9 @@ public class ConfigManager {
 
         if (!file.exists()) {
             json = new JsonObject();
-            json.addProperty("unavailable.message", "§cThere is no free lobby available");
-            json.addProperty("successful.message", "§cYou have been successfully sent to the lobby.");
-            json.addProperty("already.message", "§cYou are already on a lobby");
+            json.addProperty("unavailable.message", "§cThere is no free lobby available.");
+            json.addProperty("successful.message", "§aYou have been successfully sent to the lobby.");
+            json.addProperty("already.message", "§cYou are already on a lobby-server.");
             save();
         } else {
             try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
