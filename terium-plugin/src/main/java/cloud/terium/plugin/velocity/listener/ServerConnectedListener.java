@@ -19,12 +19,11 @@ public class ServerConnectedListener {
     @Subscribe
     public void handleServerConnected(final @NotNull ServerConnectedEvent event) {
         Player player = event.getPlayer();
-        Optional<ICloudPlayer> cloudPlayer = TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId());
 
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCloudPlayerConnectedService(player.getUniqueId(), event.getServer().getServerInfo().getName()));
-        cloudPlayer.ifPresent(cloudPlayer1 -> {
-            cloudPlayer1.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(event.getServer().getServerInfo().getName()).orElseGet(null));
-            cloudPlayer1.update();
+        TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(event.getPlayer().getUniqueId()).ifPresent(cloudPlayer -> {
+            cloudPlayer.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(event.getServer().getServerInfo().getName()).orElseGet(null));
+            cloudPlayer.update();
         });
     }
 
@@ -34,7 +33,7 @@ public class ServerConnectedListener {
             TeriumPlugin.getInstance().getFallback(event.getPlayer()).flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
                     .ifPresent(registeredServer -> {
                         if (event.getServer() != null && event.getServer().getServerInfo().getName().equals(registeredServer.getServerInfo().getName())) {
-                            event.setResult(KickedFromServerEvent.Notify.create(event.getServerKickReason().orElse(Component.empty())));
+                            event.setResult(KickedFromServerEvent.Notify.create(event.getServerKickReason().orElse(event.getServerKickReason().orElse(Component.empty()))));
                         } else {
                             event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer));
                         }
