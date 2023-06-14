@@ -1,15 +1,12 @@
 package cloud.terium.plugin.velocity.command;
 
-import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
-import cloud.terium.networking.packet.service.PacketPlayOutServiceStart;
 import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ICloudService;
-import cloud.terium.teriumapi.service.ServiceBuilder;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -18,7 +15,6 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.velocitypowered.api.command.BrigadierCommand;
-import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -48,14 +44,16 @@ public class CloudCommand {
                         .requires(commandSource -> commandSource.hasPermission("terium.command.service") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
-                                .executes(this::help)
-                                .suggests(this::serviceAllSuggestion)
+                                .executes(this::serviceInfo)
+                                .suggests((context, builder) -> {
+                                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> builder.suggest(cloudService.getServiceName()));
+                                    return builder.buildFuture();
+                                })
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("shutdown")
                                         .executes(this::shutdownService))
                                 .then(LiteralArgumentBuilder.<CommandSource>literal("stop")
                                         .executes(this::shutdownService))
-                                .then(LiteralArgumentBuilder.<CommandSource>literal("info")
-                                        .executes(this::serviceInfo))))
+                        ))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("player")
                         .requires(commandSource -> commandSource.hasPermission("terium.command.player") || commandSource.hasPermission("terium.command.*"))
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("player", StringArgumentType.string())
@@ -73,11 +71,17 @@ public class CloudCommand {
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("group", StringArgumentType.string())
                                 .suggests(this::groupSuggestion)
-                                .executes(this::startService)))
+                                .executes(this::help)
+                                .then(RequiredArgumentBuilder.<CommandSource, Integer>argument("count", IntegerArgumentType.integer())
+                                        .suggests((context, builder) -> builder.suggest(1).suggest(2).buildFuture())
+                                        .executes(this::startService))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("copy")
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
-                                .suggests(this::serviceSuggestion)
+                                .suggests((context, builder) -> {
+                                    TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> builder.suggest(cloudService.getServiceName()));
+                                    return builder.buildFuture();
+                                })
                                 .executes(this::help)
                                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("template", StringArgumentType.string())
                                         .suggests(this::templateSuggestion)
@@ -88,8 +92,8 @@ public class CloudCommand {
     }
 
     private int help(CommandContext<CommandSource> context) {
-        if(!context.getSource().hasPermission("terium.command.service") || !context.getSource().hasPermission("terium.command.player") || !context.getSource().hasPermission("terium.command.*")
-        || !context.getSource().hasPermission("terium.command.groups") || !context.getSource().hasPermission("terium.command.modules") || !context.getSource().hasPermission("terium.command.list")) {
+        if (!context.getSource().hasPermission("terium.command.service") || !context.getSource().hasPermission("terium.command.player") || !context.getSource().hasPermission("terium.command.*")
+                || !context.getSource().hasPermission("terium.command.groups") || !context.getSource().hasPermission("terium.command.modules") || !context.getSource().hasPermission("terium.command.list")) {
             context.getSource().sendMessage(Component.text("§cYou don't have enought permissions to execute this command!"));
             return 1;
         }
@@ -99,7 +103,9 @@ public class CloudCommand {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " list"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " modules"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " groups"));
-        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " service <service> shutdown|stop|info"));
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " start <group>"));
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " copy <service> <template>"));
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " service <service> shutdown|stop"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " player <player> kick|connect (service)"));
         return 1;
     }
@@ -111,11 +117,6 @@ public class CloudCommand {
 
     private CompletableFuture<Suggestions> serviceSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceType() != ServiceType.Proxy).forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
-        return suggestionsBuilder.buildFuture();
-    }
-
-    private CompletableFuture<Suggestions> serviceAllSuggestion(CommandContext<CommandSource> context, SuggestionsBuilder suggestionsBuilder) {
-        TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().forEach(cloudService -> suggestionsBuilder.suggest(cloudService.getServiceName()));
         return suggestionsBuilder.buildFuture();
     }
 
@@ -145,7 +146,7 @@ public class CloudCommand {
             if (cloudService.getPropertyMap() == null || cloudService.getPropertyMap().keySet().isEmpty()) {
                 context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Properties: <red>None"));
             } else {
-                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Properties: <lime>" + cloudService.getPropertyMap().keySet().size()));
+                context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("  <gray>● <white>Properties: <green>" + cloudService.getPropertyMap().keySet().size()));
                 cloudService.getPropertyMap().keySet().forEach(s -> {
                     context.getSource().sendMessage(MiniMessage.miniMessage().deserialize("     <gray>● <white>" + s + ": <yellow>" + cloudService.getPropertyMap().get(s)));
                 });
@@ -201,7 +202,7 @@ public class CloudCommand {
         if (TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().size() > 0)
             TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers().forEach(player -> {
                 context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + player.getUsername() + "(on <#91d177>" + player.getConnectedCloudService().orElseGet(null).getServiceName() + "<white>)")
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("<gray>Connect with " + player.getUsername() + "'s service.").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/server " + player.getConnectedCloudService().orElseGet(null).getServiceName())))));
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("§7Connect with " + player.getUsername() + "'s service.").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/server " + player.getConnectedCloudService().orElseGet(null).getServiceName())))));
             });
         else
             context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There are no players online."));
@@ -210,8 +211,10 @@ public class CloudCommand {
 
     private int startService(CommandContext<CommandSource> context) {
         TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(context.getArgument("group", String.class)).ifPresentOrElse(serviceGroup -> {
-            TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceGroup);
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<white>Trying to start one new service of group <gray>'<#00d4ff>" + serviceGroup.getGroupName() + "<gray>'."));
+            for (int i = 0; i < context.getArgument("count", Integer.class); i++) {
+                TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceGroup);
+            }
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<white>Trying to start " + (context.getArgument("count", Integer.class) == 1 ? "one" : context.getArgument("count", Integer.class)) + " new service of group <gray>'<#00d4ff>" + serviceGroup.getGroupName() + "<gray>'."));
         }, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no service group with that name.")));
         return 1;
     }
