@@ -41,6 +41,9 @@ public class ServiceBuilder {
     }
 
     public ServiceBuilder addTemplate(ITemplate template) {
+        if(templates == null)
+            templates = new LinkedList<>();
+
         templates.add(template);
         return this;
     }
