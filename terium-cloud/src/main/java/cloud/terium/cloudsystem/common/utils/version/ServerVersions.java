@@ -14,6 +14,7 @@ import java.net.URL;
 @Getter
 public enum ServerVersions {
     VELOCITY_3_2_0_SNAPSHOT("velocity-3.2.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/"),
+    PAPER_1_20_1("paper-1.20.1", "https://api.papermc.io/v2/projects/paper/versions/1.20.1/"),
     PAPER_1_19_4("paper-1.19.4", "https://api.papermc.io/v2/projects/paper/versions/1.19.4/"),
     PAPER_1_19_3("paper-1.19.3", "https://api.papermc.io/v2/projects/paper/versions/1.19.3/"),
     PAPER_1_19_2("paper-1.19.2", "https://api.papermc.io/v2/projects/paper/versions/1.19.2/"),
@@ -29,7 +30,8 @@ public enum ServerVersions {
     PURPUR_1_18_2("purpur-1.18.2", "https://api.purpurmc.org/v2/purpur/1.18.2/"),
     PURPUR_1_19_2("purpur-1.19.2", "https://api.purpurmc.org/v2/purpur/1.19.2/"),
     PURPUR_1_19_3("purpur-1.19.3", "https://api.purpurmc.org/v2/purpur/1.19.3/"),
-    PURPUR_1_19_4("purpur-1.19.4", "https://api.purpurmc.org/v2/purpur/1.19.4/");
+    PURPUR_1_19_4("purpur-1.19.4", "https://api.purpurmc.org/v2/purpur/1.19.4/"),
+    PURPUR_1_20_1("purpur-1.20.1", "https://api.purpurmc.org/v2/purpur/1.20.1/");
 
     private final String name;
     private final String url;

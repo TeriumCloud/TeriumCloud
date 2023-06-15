@@ -23,12 +23,27 @@ public class PermissionBukkitStartup extends JavaPlugin implements Listener {
     @EventHandler
     public void handlePlayerLogin(PlayerLoginEvent event) {
         try {
-            Field field = Class.forName("org.bukkit.craftbukkit.v1_19_R2.entity.CraftHumanEntity").getDeclaredField("perm");
+            Field field = reflectCraftClazz(".entity.CraftHumanEntity").getDeclaredField("perm");
             field.setAccessible(true);
             field.set(event.getPlayer(), new TeriumPermissionBaseBukkit(event.getPlayer()));
             field.setAccessible(false);
         } catch (NoSuchFieldException | IllegalAccessException exception) {
             exception.fillInStackTrace();
         }
+    }
+
+    private Class<?> reflectCraftClazz(String suffix) {
+        try {
+            String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            return Class.forName("org.bukkit.craftbukkit." + version + suffix);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            try {
+                return Class.forName("org.bukkit.craftbukkit" + suffix);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
