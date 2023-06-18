@@ -21,6 +21,15 @@ public class Logger {
             return;
         }
 
+        if(logType == LogType.SCREEN) {
+            if (NodeStartup.getNode().getConsoleManager() != null)
+                NodeStartup.getNode().getConsoleManager().getLineReader().printAbove(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + "§7" + message)));
+            else
+                System.out.println(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + "§f" + message)));
+
+            return;
+        }
+        
         if (NodeStartup.getNode().getConsoleManager() != null)
             NodeStartup.getNode().getConsoleManager().getLineReader().printAbove(LoggerColors.replaceColorCodes(("§f[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "§f] " + logType.getPrefix() + "§f" + message)));
         else

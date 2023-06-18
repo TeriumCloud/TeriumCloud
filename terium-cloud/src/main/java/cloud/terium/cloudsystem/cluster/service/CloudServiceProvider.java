@@ -55,7 +55,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
                     });
                 }
             }
-        }, 0, 60000);
+        }, 0, 60000 * 2);
     }
 
     public int getFreeServiceId(ICloudServiceGroup cloudServiceGroup) {
