@@ -125,8 +125,12 @@ public class ClusterStartup extends TeriumAPI {
 
         if(cloudConfig.checkUpdate()) {
             Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
-            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
-            Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
+            try {
+                FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+                Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
+            } catch (Exception exception) {
+                Logger.log("Download of latest teriumcloud-plugin.jar is failed.");
+            }
         }
 
         Logger.log("Starting phase §6two §fof the startup...", LogType.INFO);
