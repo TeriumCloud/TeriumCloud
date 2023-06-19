@@ -135,6 +135,7 @@ public class CloudService implements ICloudService {
             properties.setProperty("server-port", getPort() + "");
             properties.setProperty("server-ip", ClusterStartup.getCluster().getCloudConfig().serviceAddress());
             properties.setProperty("online-mode", "false");
+            properties.setProperty("max-players", maxPlayers + "");
 
             try (OutputStream outputStream = new FileOutputStream(serverProperties);
                  OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
