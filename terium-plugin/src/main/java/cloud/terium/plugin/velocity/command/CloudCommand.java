@@ -4,6 +4,7 @@ import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -21,6 +22,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
 public class CloudCommand {
@@ -86,6 +88,8 @@ public class CloudCommand {
                                 .then(RequiredArgumentBuilder.<CommandSource, String>argument("template", StringArgumentType.string())
                                         .suggests(this::templateSuggestion)
                                         .executes(this::copyService))))
+                .then(LiteralArgumentBuilder.<CommandSource>literal("stopUselessServices")
+                        .executes(this::stopUselessServices))
                 .build();
 
         return new BrigadierCommand(literalCommand);
@@ -103,6 +107,7 @@ public class CloudCommand {
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " list"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " modules"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " groups"));
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " stopUselessServices"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " start <group>"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " copy <service> <template>"));
         context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "/" + name + " service <service> shutdown|stop"));
@@ -214,7 +219,7 @@ public class CloudCommand {
             for (int i = 0; i < context.getArgument("count", Integer.class); i++) {
                 TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceGroup);
             }
-            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<white>Trying to start " + (context.getArgument("count", Integer.class) == 1 ? "one" : context.getArgument("count", Integer.class)) + " new service of group <gray>'<#00d4ff>" + serviceGroup.getGroupName() + "<gray>'."));
+            context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Trying to start " + (context.getArgument("count", Integer.class) == 1 ? "one" : context.getArgument("count", Integer.class)) + " new service of group <gray>'<#00d4ff>" + serviceGroup.getGroupName() + "<gray>'."));
         }, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no service group with that name.")));
         return 1;
     }
@@ -223,6 +228,16 @@ public class CloudCommand {
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(context.getArgument("service", String.class)).ifPresentOrElse(cloudService -> {
             TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(context.getArgument("template", String.class)).ifPresentOrElse(cloudService::copy, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no template with that name.")));
         }, () -> context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "<red>There is no service group with that name.")));
+        return 1;
+    }
+
+    private int stopUselessServices(CommandContext<CommandSource> context) {
+        TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
+            if (TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(group.getGroupName()).size() > group.getMinServices()) {
+                TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(group.getGroupName()).stream().filter(cloudService -> cloudService.getServiceState().equals(ServiceState.ONLINE) && cloudService.getOnlinePlayers() == 0).sorted(Comparator.comparing(ICloudService::getServiceId).reversed()).findFirst().ifPresent(ICloudService::shutdown);
+            }
+        });
+        context.getSource().sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Stopping all services from all service groups with enought online services<gray>."));
         return 1;
     }
 }
