@@ -208,15 +208,22 @@ public class CloudService implements ICloudService {
         if (ClusterStartup.getCluster().isDebugMode())
             Logger.log("Trying to stop service '§b" + getServiceName() + "§f'... [CloudService#shutdown]", LogType.INFO);
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutServiceExecuteCommand(getServiceName(), "stop"));
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (process != null)
-                    process.destroyForcibly();
-                if (!thread.isInterrupted())
-                    thread.interrupt();
-            }
-        }, 4000);
+        if(serviceState == ServiceState.PREPARING) {
+            if (process != null)
+                process.destroyForcibly();
+            if (!thread.isInterrupted())
+                thread.interrupt();
+        } else {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (process != null)
+                        process.destroyForcibly();
+                    if (!thread.isInterrupted())
+                        thread.interrupt();
+                }
+            }, 4000);
+        }
     }
 
     @SneakyThrows
