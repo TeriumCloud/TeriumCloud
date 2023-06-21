@@ -38,7 +38,7 @@ public class LoginListener {
             Optional<ICloudService> minecraftService = TeriumPlugin.getInstance().getFallback(player);
 
             if (minecraftService.isPresent()) {
-                if (minecraftService.get().isLocked()) {
+                if (minecraftService.get().isLocked() && !player.hasPermission("terium.locked.join")) {
                     player.disconnect(Component.text("§cThis service is locked!"));
                     return;
                 }
