@@ -1,17 +1,8 @@
 package cloud.terium.teriumapi.service;
 
-import cloud.terium.networking.packet.group.PacketPlayOutCreateLobbyGroup;
-import cloud.terium.networking.packet.group.PacketPlayOutCreateProxyGroup;
-import cloud.terium.networking.packet.group.PacketPlayOutCreateServerGroup;
-import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
-import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
-import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
-import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
-import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
-import cloud.terium.teriumapi.service.impl.CloudService;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.HashMap;
@@ -22,7 +13,6 @@ public class ServiceBuilder {
 
     private final String serviceName;
     private final int serviceId;
-    private INode node;
     private ICloudServiceGroup serviceGroup;
     private List<ITemplate> templates;
     private final HashMap<String, Object> propertyCache;
@@ -41,7 +31,7 @@ public class ServiceBuilder {
     }
 
     public ServiceBuilder addTemplate(ITemplate template) {
-        if(templates == null)
+        if (templates == null)
             templates = new LinkedList<>();
 
         templates.add(template);
@@ -55,11 +45,6 @@ public class ServiceBuilder {
 
     public ServiceBuilder setMaxMemory(int maxMemory) {
         this.maxMemory = maxMemory;
-        return this;
-    }
-
-    public ServiceBuilder setNode(INode node) {
-        this.node = node;
         return this;
     }
 
@@ -81,6 +66,6 @@ public class ServiceBuilder {
         if (templates == null)
             templates = new LinkedList<>(serviceGroup.getTemplates());
 
-        TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceName, serviceGroup, templates, serviceId, maximumPlayers, maxMemory, propertyCache);
+        TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceName, serviceGroup, templates, serviceId, maximumPlayers == 0 ? serviceGroup.getMaxPlayers() : maximumPlayers, maxMemory == 0 ? serviceGroup.getMaxPlayers() : maxMemory, propertyCache);
     }
 }
