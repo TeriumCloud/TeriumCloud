@@ -1,8 +1,8 @@
 package cloud.terium.cloudsystem.node.config;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.teriumapi.console.LogType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
