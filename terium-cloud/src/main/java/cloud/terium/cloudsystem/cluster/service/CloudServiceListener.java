@@ -3,12 +3,16 @@ package cloud.terium.cloudsystem.cluster.service;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.events.service.*;
+import cloud.terium.cloudsystem.common.template.Template;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.impl.CloudService;
+import cloud.terium.teriumapi.template.ITemplate;
+
+import java.nio.file.Path;
 
 public class CloudServiceListener implements Listener {
 
@@ -28,7 +32,7 @@ public class CloudServiceListener implements Listener {
         ClusterStartup.getCluster().getServiceProvider().addService(new CloudService(event.getServiceName(), event.getServiceId(), event.getPort(), event.getMemory(),
                 ClusterStartup.getCluster().getNodeProvider().getNodeByName(event.getNode()).orElseGet(null),
                 ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(event.getServiceGroup()).orElseGet(null),
-                event.getTemplates().stream().map(s -> ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(s).orElseGet(null)).toList(), event.getPropertyCache())); // TODO: Some templates are null
+                event.getTemplates().stream().map(s -> ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(s).orElse(new Template(s, Path.of("template//" + s)))).toList(), event.getPropertyCache())); // TODO: Some templates are null
     }
 
     @Subscribe

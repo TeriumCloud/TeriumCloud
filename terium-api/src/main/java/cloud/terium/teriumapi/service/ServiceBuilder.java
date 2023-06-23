@@ -64,7 +64,7 @@ public class ServiceBuilder {
         if (serviceGroup == null)
             throw new NullPointerException("cloud service group cannot be null");
         if (templates == null)
-            templates = new LinkedList<>(serviceGroup.getTemplates());
+            templates = new LinkedList<>();
 
         TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(serviceName, serviceGroup, templates, serviceId, maximumPlayers == 0 ? serviceGroup.getMaxPlayers() : maximumPlayers, maxMemory == 0 ? serviceGroup.getMaxPlayers() : maxMemory, propertyCache);
     }
