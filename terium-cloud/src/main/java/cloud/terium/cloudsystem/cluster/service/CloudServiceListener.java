@@ -28,7 +28,7 @@ public class CloudServiceListener implements Listener {
         ClusterStartup.getCluster().getServiceProvider().addService(new CloudService(event.getServiceName(), event.getServiceId(), event.getPort(), event.getMemory(),
                 ClusterStartup.getCluster().getNodeProvider().getNodeByName(event.getNode()).orElseGet(null),
                 ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(event.getServiceGroup()).orElseGet(null),
-                event.getTemplates().stream().map(s -> ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(s).orElseGet(null)).toList(), event.getPropertyCache()));
+                event.getTemplates().stream().map(s -> ClusterStartup.getCluster().getTemplateProvider().getTemplateByName(s).orElseGet(null)).toList(), event.getPropertyCache())); // TODO: Some templates are null
     }
 
     @Subscribe
@@ -70,7 +70,9 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceRemove(ServiceRemoveEvent event) {
-        ClusterStartup.getCluster().getServiceProvider().removeService(ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).orElseGet(null));
+        try {
+            ClusterStartup.getCluster().getServiceProvider().removeService(ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).orElseGet(null));
+        } catch (Exception ignored) {}
     }
 
     @Subscribe

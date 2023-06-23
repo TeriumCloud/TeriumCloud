@@ -9,6 +9,8 @@ import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.impl.CloudService;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class CloudServiceListener implements Listener {
 
     @Subscribe
@@ -41,9 +43,9 @@ public class CloudServiceListener implements Listener {
                 case "full" ->
                         new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getPort(), event.getMaxPlayers(), event.getMemory(), event.getPropertyCache()).start();
                 case "group_with_custom_name" ->
-                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getServiceGroup().getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getServiceGroup().hasPort() ? event.getServiceGroup().getPort() : event.getPort(), event.getMaxPlayers(), event.getMemory()).start();
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getServiceGroup().getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getServiceGroup().hasPort() ? event.getServiceGroup().getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
                 case "group_template_and_custom_name" ->
-                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getServiceGroup().hasPort() ? event.getServiceGroup().getPort() : event.getPort(), event.getMaxPlayers(), event.getMemory()).start();
+                        new cloud.terium.cloudsystem.node.service.CloudService(event.getName(), event.getTemplates(), event.getServiceGroup(), event.getServiceGroup().getServiceType(), event.getServiceId(), event.getServiceGroup().hasPort() ? event.getServiceGroup().getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), event.getMaxPlayers(), event.getMemory()).start();
             }
     }
 
