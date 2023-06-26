@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-@Module(name = "permission", author = "Jxnnik(ByRaudy)", version = "1.5-OXYGEN", description = "", reloadable = true, moduleType = ModuleType.ALL)
+@Module(name = "permission", author = "Jxnnik(ByRaudy)", version = "1.6-OXYGEN", description = "", reloadable = true, moduleType = ModuleType.ALL)
 @Getter
 @Setter
 public class TeriumPermissionModule implements IModule {

@@ -21,7 +21,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    compileOnly 'cloud.terium:terium-api:1.5-OXYGEN'
+    compileOnly 'cloud.terium:terium-api:1.6-OXYGEN'
     compileOnly 'commons-io:commons-io:2.6'
     implementation 'io.netty:netty-all:4.1.79.Final'
 }
