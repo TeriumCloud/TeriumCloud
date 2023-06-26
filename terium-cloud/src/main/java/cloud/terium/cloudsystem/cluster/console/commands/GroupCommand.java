@@ -36,7 +36,7 @@ public class GroupCommand extends Command {
                         } else Logger.log("group create lobby/server [name] [version] [static] [memory]", LogType.INFO);
                     } else {
                         if (args.length == 7 || args.length == 8) {
-                            ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createProxyGroup(args[2], "Default proxy group", args[7] == null ? ClusterStartup.getCluster().getThisNode() : ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[7].replace("-node=", "")).orElseGet(null), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
+                            ClusterStartup.getCluster().getServiceGroupProvider().registerServiceGroup(ClusterStartup.getCluster().getServiceGroupFactory().createProxyGroup(args[2], "Default proxy group", args.length == 7 ? ClusterStartup.getCluster().getThisNode() : ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[7].replace("-node=", "")).orElseGet(null), List.of(ClusterStartup.getCluster().getTemplateFactory().createTemplate(args[2])), args[3], true, Boolean.parseBoolean(args[4]), Integer.parseInt(args[6]), 20, Integer.parseInt(args[5]), 1, 1));
                         } else Logger.log("group create proxy [name] [version] [static] [memory] [port]", LogType.INFO);
                     }
                 }
