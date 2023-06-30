@@ -1,7 +1,7 @@
 package cloud.terium.module.syncproxy.velocity;
 
-import cloud.terium.module.syncproxy.manager.ConfigManager;
 import cloud.terium.module.syncproxy.listener.CloudListener;
+import cloud.terium.module.syncproxy.manager.ConfigManager;
 import cloud.terium.module.syncproxy.velocity.listener.ProxyPingListener;
 import cloud.terium.module.syncproxy.velocity.listener.ServerConnectedListener;
 import cloud.terium.teriumapi.TeriumAPI;
@@ -12,8 +12,6 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-
-import java.util.concurrent.TimeUnit;
 
 @Getter
 @Setter
@@ -31,14 +29,14 @@ public class SyncproxyVelocityStartup {
         this.configManager = new ConfigManager();
     }
 
+    public static SyncproxyVelocityStartup getInstance() {
+        return instance;
+    }
+
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         proxyServer.getEventManager().register(this, new ProxyPingListener());
         proxyServer.getEventManager().register(this, new ServerConnectedListener());
         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new CloudListener());
-    }
-
-    public static SyncproxyVelocityStartup getInstance() {
-        return instance;
     }
 }

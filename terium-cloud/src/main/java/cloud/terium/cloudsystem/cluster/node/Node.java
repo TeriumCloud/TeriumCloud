@@ -1,18 +1,10 @@
 package cloud.terium.cloudsystem.cluster.node;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
-import cloud.terium.cloudsystem.cluster.utils.Logger;
-import cloud.terium.networking.TeriumFramework;
-import cloud.terium.networking.client.TeriumClient;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdowned;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeStarted;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
-import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.node.INode;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Node implements INode {
 
@@ -47,7 +39,8 @@ public class Node implements INode {
 
     @Override
     public boolean isConnected() {
-        if (ClusterStartup.getCluster().getNodeProvider().getClientFromNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(name).orElseGet(null)) == null) return false;
+        if (ClusterStartup.getCluster().getNodeProvider().getClientFromNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(name).orElseGet(null)) == null)
+            return false;
         return ClusterStartup.getCluster().getNodeProvider().getClientFromNode(ClusterStartup.getCluster().getNodeProvider().getNodeByName(name).orElseGet(null)).channel().isActive();
     }
 

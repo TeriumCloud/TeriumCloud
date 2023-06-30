@@ -7,10 +7,10 @@ include('terium-modules')
 include('terium-framework')
 
 initializeSubProjects("terium-modules",
-"notification-module",
-"permission-module",
-"syncproxy-module",
-"hubcommand-module")
+        "notification-module",
+        "permission-module",
+        "syncproxy-module",
+        "hubcommand-module")
 
 void initializeSubProjects(String rootProject, String... names) {
     for (final def name in names) {

@@ -13,7 +13,7 @@ public record PermissionGroup(String name, String prefix, String suffix, String 
 
 
     public void addPermission(String permission) {
-        if(!permissions.contains(permission)) {
+        if (!permissions.contains(permission)) {
             this.permissions.add(permission);
 
             if (TeriumAPI.getTeriumAPI().getProvider().getThisService() == null && !permissions.contains(permission)) {

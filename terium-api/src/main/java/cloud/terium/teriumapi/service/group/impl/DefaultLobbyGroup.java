@@ -26,8 +26,8 @@ public class DefaultLobbyGroup implements ICloudServiceGroup {
     private final ServiceType cloudServiceType = ServiceType.Lobby;
     private final String name;
     private final String groupTitle;
-    private INode node;
     private final List<ITemplate> templates;
+    private INode node;
     private String version;
     private int maximumPlayers;
     private boolean maintenance;

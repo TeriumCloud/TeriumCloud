@@ -130,7 +130,7 @@ public class ModuleProvider implements IModuleProvider {
         unloadModule(module);
         loadModule(new File("modules//" + module.getFileName()).getPath());
         System.clearProperty("module-reloading");
-        Logger.log("Successfully reloaded module '§b" + module.getName() +  "§f'.", LogType.INFO);
+        Logger.log("Successfully reloaded module '§b" + module.getName() + "§f'.", LogType.INFO);
     }
 
     @Override

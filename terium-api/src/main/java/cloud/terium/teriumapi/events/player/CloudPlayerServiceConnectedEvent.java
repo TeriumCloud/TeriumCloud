@@ -1,7 +1,7 @@
 package cloud.terium.teriumapi.events.player;
 
-import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
+import cloud.terium.teriumapi.event.Event;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 

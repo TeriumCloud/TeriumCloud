@@ -7,12 +7,12 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class PlayerCommandPreprocessListener implements Listener {
 
     @EventHandler
-    public void handle(PlayerCommandPreprocessEvent event){
+    public void handle(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage();
         if (message.equalsIgnoreCase("/rl") ||
                 message.equalsIgnoreCase("/reload") ||
                 message.equalsIgnoreCase("/rl confirm") ||
-                message.equalsIgnoreCase("/reload confirm")){
+                message.equalsIgnoreCase("/reload confirm")) {
 
             if (event.getPlayer().hasPermission("bukkit.command.reload")) {
                 event.setCancelled(true);

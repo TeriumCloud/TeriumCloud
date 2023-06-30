@@ -1,7 +1,6 @@
 package cloud.terium.teriumapi.service;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
@@ -13,9 +12,9 @@ public class ServiceBuilder {
 
     private final String serviceName;
     private final int serviceId;
+    private final HashMap<String, Object> propertyCache;
     private ICloudServiceGroup serviceGroup;
     private List<ITemplate> templates;
-    private final HashMap<String, Object> propertyCache;
     private int maximumPlayers;
     private int maxMemory;
 

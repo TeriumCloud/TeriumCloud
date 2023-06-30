@@ -48,14 +48,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import org.jline.utils.Log;
 import sun.misc.Signal;
 
 import java.io.File;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Enumeration;
 import java.util.LinkedList;
 
 @Getter
@@ -65,8 +65,6 @@ public class NodeStartup extends TeriumAPI {
     private static NodeStartup node;
     private final String ipAddress;
     private final CommandManager commandManager;
-    private NodeConfig nodeConfig;
-    private ConfigManager configManager;
     private final ConsoleManager consoleManager;
     private final TeriumNetworkProvider networking;
     private final NodeProvider nodeProvider;
@@ -81,6 +79,8 @@ public class NodeStartup extends TeriumAPI {
     private final ModuleProvider moduleProvider;
     private final TemplateFactory templateFactory;
     private final INode thisNode;
+    private NodeConfig nodeConfig;
+    private ConfigManager configManager;
 
     @SneakyThrows
     public NodeStartup() {
@@ -128,7 +128,7 @@ public class NodeStartup extends TeriumAPI {
         this.commandManager = new CommandManager();
         this.consoleManager = new ConsoleManager(commandManager);
 
-        if(nodeConfig.checkUpdate()) {
+        if (nodeConfig.checkUpdate()) {
             Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
             try {
                 FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));

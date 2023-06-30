@@ -2,8 +2,8 @@ package cloud.terium.cloudsystem.node.console;
 
 import cloud.terium.cloudsystem.common.event.events.console.RegisterCommandEvent;
 import cloud.terium.cloudsystem.common.event.events.console.SendConsoleEvent;
-import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 

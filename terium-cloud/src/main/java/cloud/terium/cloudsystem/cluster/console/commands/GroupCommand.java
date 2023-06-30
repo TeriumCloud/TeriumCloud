@@ -5,7 +5,6 @@ import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
-import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
@@ -236,12 +235,12 @@ public class GroupCommand extends Command {
                 }
             }
             case 7 -> {
-                if((args[1].equalsIgnoreCase("server") || args[1].equalsIgnoreCase("lobby")) && args[0].equalsIgnoreCase("create")) {
+                if ((args[1].equalsIgnoreCase("server") || args[1].equalsIgnoreCase("lobby")) && args[0].equalsIgnoreCase("create")) {
                     return ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().map(node -> "-node=" + node.getName()).toList();
                 }
             }
             case 8 -> {
-                if(args[1].equalsIgnoreCase("proxy") && args[0].equalsIgnoreCase("create")) {
+                if (args[1].equalsIgnoreCase("proxy") && args[0].equalsIgnoreCase("create")) {
                     return ClusterStartup.getCluster().getNodeProvider().getAllNodes().stream().map(node -> "-node=" + node.getName()).toList();
                 }
             }

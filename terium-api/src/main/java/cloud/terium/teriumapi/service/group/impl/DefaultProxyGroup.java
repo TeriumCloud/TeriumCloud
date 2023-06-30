@@ -25,10 +25,10 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
 
     private final String name;
     private final String groupTitle;
-    private INode node;
     private final List<ITemplate> templates;
     private final ServiceType cloudServiceType = ServiceType.Proxy;
     private final int port;
+    private INode node;
     private String version;
     private boolean maintenance;
     private boolean isStatic;

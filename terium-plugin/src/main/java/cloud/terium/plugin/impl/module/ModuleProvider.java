@@ -5,7 +5,9 @@ import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.module.ILoadedModule;
 import cloud.terium.teriumapi.module.IModuleProvider;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class ModuleProvider implements IModuleProvider {
 

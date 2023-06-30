@@ -1,8 +1,8 @@
 package cloud.terium.networking.packet.group;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.ArrayList;

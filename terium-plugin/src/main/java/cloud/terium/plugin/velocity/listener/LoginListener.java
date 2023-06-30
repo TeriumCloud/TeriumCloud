@@ -7,7 +7,6 @@ import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
-import cloud.terium.teriumapi.entity.impl.CloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
 import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;

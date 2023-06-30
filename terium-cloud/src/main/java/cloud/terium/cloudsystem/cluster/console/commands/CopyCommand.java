@@ -20,13 +20,14 @@ public class CopyCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        if(args.length == 2) {
+        if (args.length == 2) {
             TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(args[0]).ifPresentOrElse(cloudService -> TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(args[1]).ifPresentOrElse(template -> {
                 try {
                     Logger.log("Trying to copy '§b" + cloudService.getServiceName() + "§f' into template '§b" + template.getName() + "§f'...", LogType.INFO);
                     FileUtils.copyDirectory(new File((cloudService.getServiceGroup().isStatic() ? "static/" : "servers/") + cloudService.getServiceName()), template.getPath().toFile());
                     Logger.log("Successfully copied service '§b" + cloudService.getServiceName() + "§f'.", LogType.INFO);
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }, () -> Logger.log("Specific template not found.", LogType.ERROR)), () -> Logger.log("Specific service not found.", LogType.ERROR));
 
             return;

@@ -1,8 +1,8 @@
 package cloud.terium.cloudsystem.node.console.commands;
 
 import cloud.terium.cloudsystem.TeriumCloud;
-import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.cloudsystem.node.NodeStartup;
+import cloud.terium.cloudsystem.node.utils.Logger;
 import cloud.terium.teriumapi.console.command.Command;
 
 public class ClearCommand extends Command {

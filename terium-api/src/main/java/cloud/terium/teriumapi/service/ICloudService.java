@@ -7,7 +7,6 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public interface ICloudService extends Serializable {
     /**
      * Get the service id of a service
      *
-     * @return int This returns the service of the service.
+     * @return int This returns the sevice id of the service.
      */
     int getServiceId();
 

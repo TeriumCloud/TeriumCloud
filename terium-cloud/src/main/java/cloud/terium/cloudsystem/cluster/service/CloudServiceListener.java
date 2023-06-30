@@ -7,10 +7,8 @@ import cloud.terium.cloudsystem.common.template.Template;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
-import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.impl.CloudService;
-import cloud.terium.teriumapi.template.ITemplate;
 
 import java.nio.file.Path;
 
@@ -76,7 +74,8 @@ public class CloudServiceListener implements Listener {
     public void handleServiceRemove(ServiceRemoveEvent event) {
         try {
             ClusterStartup.getCluster().getServiceProvider().removeService(ClusterStartup.getCluster().getServiceProvider().getServiceByName(event.getCloudService()).orElseGet(null));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Subscribe

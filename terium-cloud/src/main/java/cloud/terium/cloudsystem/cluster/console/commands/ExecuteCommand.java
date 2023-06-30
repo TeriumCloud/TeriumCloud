@@ -17,7 +17,7 @@ public class ExecuteCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        if(args.length >= 2) {
+        if (args.length >= 2) {
             TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(args[0]).ifPresentOrElse(cloudService -> {
                 StringBuilder builder = new StringBuilder();
 

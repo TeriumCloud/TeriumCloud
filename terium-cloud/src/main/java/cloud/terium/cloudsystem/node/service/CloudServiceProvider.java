@@ -2,7 +2,6 @@ package cloud.terium.cloudsystem.node.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.node.NodeStartup;
-import cloud.terium.networking.packet.node.PacketPlayOutNodeUpdate;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
 import cloud.terium.teriumapi.service.ServiceState;

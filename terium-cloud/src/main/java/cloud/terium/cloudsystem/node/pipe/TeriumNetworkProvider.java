@@ -80,7 +80,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
             @Override
             protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object packet) {
                 try {
-                    if(packet instanceof Packet newPacket)
+                    if (packet instanceof Packet newPacket)
                         TeriumCloud.getTerium().getNetworkHandlerProvider().callSendingPacket(newPacket);
 
                     if (packet instanceof PacketPlayOutNodeAdd newPacket)
@@ -127,7 +127,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                         });
                     }
 
-                    if(packet instanceof PacketPlayOutServiceAddProperties newPacket) {
+                    if (packet instanceof PacketPlayOutServiceAddProperties newPacket) {
                         newPacket.propertiesCache().forEach((s, o) -> TeriumAPI.getTeriumAPI().getProvider().getThisService().addProperty(s, o));
                         TeriumAPI.getTeriumAPI().getProvider().getThisService().update();
                     }
@@ -146,7 +146,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     }
 
                     // module
-                    if(packet instanceof PacketPlayOutAddLoadedModule newPacket) {
+                    if (packet instanceof PacketPlayOutAddLoadedModule newPacket) {
                         NodeStartup.getNode().getProvider().getModuleProvider().getAllModules().add(new LoadedModule(newPacket.name()
                                 , newPacket.fileName(), newPacket.author(), newPacket.version(), newPacket.description(), newPacket.mainClass(), newPacket.reloadable(), newPacket.moduleType()));
                     }
@@ -191,7 +191,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
                     if (packet instanceof PacketPlayOutNodeStarted newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeLoggedInEvent(newPacket.node(), newPacket.address(), newPacket.maxMemory(), newPacket.masterKey()));
                     if (packet instanceof PacketPlayOutNodeShutdown newPacket) {
-                        if(newPacket.node().equals(NodeStartup.getNode().getThisNode().getName()))
+                        if (newPacket.node().equals(NodeStartup.getNode().getThisNode().getName()))
                             NodeStartup.getNode().shutdownCloud();
 
                         NodeStartup.getNode().getEventProvider().callEvent(new NodeShutdownEvent(newPacket.node()));
@@ -209,7 +209,7 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
                     // group packets
                     if (packet instanceof PacketPlayOutCreateLobbyGroup newPacket)
-                        NodeStartup.getNode().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(),  newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
+                        NodeStartup.getNode().getEventProvider().callEvent(new CreateLobbyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                     if (packet instanceof PacketPlayOutCreateProxyGroup newPacket)
                         NodeStartup.getNode().getEventProvider().callEvent(new CreateProxyGroupEvent(newPacket.name(), newPacket.groupTitle(), newPacket.node(), newPacket.templates(), newPacket.version(), newPacket.maintenance(), newPacket.isStatic(), newPacket.port(), newPacket.maximumPlayers(), newPacket.memory(), newPacket.minimalServices(), newPacket.maximalServices()));
                     if (packet instanceof PacketPlayOutCreateServerGroup newPacket)
@@ -239,7 +239,8 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
 
                         TeriumCloud.getTerium().getCloudUtils().setVersionGotChecked(true);
                     }
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         });
         sendPacket(new PacketPlayOutServiceRegister());

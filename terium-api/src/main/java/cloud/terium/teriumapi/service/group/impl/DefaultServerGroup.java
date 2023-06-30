@@ -25,9 +25,9 @@ public class DefaultServerGroup implements ICloudServiceGroup {
 
     private final String name;
     private final String groupTitle;
-    private INode node;
     private final List<ITemplate> templates;
     private final ServiceType cloudServiceType = ServiceType.Server;
+    private INode node;
     private String version;
     private int maximumPlayers;
     private boolean maintenance;

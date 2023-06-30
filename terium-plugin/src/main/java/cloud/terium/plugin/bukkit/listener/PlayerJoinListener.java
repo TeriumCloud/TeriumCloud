@@ -12,7 +12,7 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void handlePlayerJoin(PlayerJoinEvent event) {
-        if(TeriumAPI.getTeriumAPI().getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join")) {
+        if (TeriumAPI.getTeriumAPI().getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join")) {
             event.getPlayer().kickPlayer("§cThis service is locked.");
         }
 

@@ -16,7 +16,7 @@ public class StartCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[0]).ifPresentOrElse(serviceGroup -> ClusterStartup.getCluster().getServiceFactory().createService(serviceGroup), () -> Logger.log("A service group with that name isn't registered.", LogType.ERROR));
             return;
         }
@@ -26,7 +26,7 @@ public class StartCommand extends Command {
 
     @Override
     public List<String> tabComplete(String[] args) {
-        if(args.length == 1)
+        if (args.length == 1)
             return ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().stream().map(ICloudServiceGroup::getGroupName).toList();
 
         return super.tabComplete(args);

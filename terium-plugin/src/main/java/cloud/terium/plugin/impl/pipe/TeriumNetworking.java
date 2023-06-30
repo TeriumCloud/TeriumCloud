@@ -52,7 +52,6 @@ import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TeriumNetworking implements IDefaultTeriumNetworking {
@@ -123,7 +122,7 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                         });
                     }
 
-                    if(packet instanceof PacketPlayOutServiceAddProperties newPacket) {
+                    if (packet instanceof PacketPlayOutServiceAddProperties newPacket) {
                         newPacket.propertiesCache().forEach((s, o) -> TeriumAPI.getTeriumAPI().getProvider().getThisService().addProperty(s, o));
                         TeriumAPI.getTeriumAPI().getProvider().getThisService().update();
                     }

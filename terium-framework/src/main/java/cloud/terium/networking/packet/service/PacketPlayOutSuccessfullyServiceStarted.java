@@ -1,8 +1,8 @@
 package cloud.terium.networking.packet.service;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.node.INode;
+import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.ICloudService;
 
 import java.util.Optional;

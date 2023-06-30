@@ -8,7 +8,6 @@ import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceExecuteCommand;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
 import cloud.terium.networking.packet.service.PacketPlayOutUpdateService;
-import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.events.service.CloudServiceStartingEvent;
 import cloud.terium.teriumapi.module.ModuleType;
@@ -208,7 +207,7 @@ public class CloudService implements ICloudService {
         if (ClusterStartup.getCluster().isDebugMode())
             Logger.log("Trying to stop service '§b" + getServiceName() + "§f'... [CloudService#shutdown]", LogType.INFO);
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutServiceExecuteCommand(getServiceName(), "stop"));
-        if(serviceState == ServiceState.PREPARING) {
+        if (serviceState == ServiceState.PREPARING) {
             if (process != null)
                 process.destroyForcibly();
             if (!thread.isInterrupted())

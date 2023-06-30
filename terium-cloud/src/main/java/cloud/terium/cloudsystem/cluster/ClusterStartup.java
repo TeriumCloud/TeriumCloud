@@ -7,6 +7,8 @@ import cloud.terium.cloudsystem.cluster.console.CommandManager;
 import cloud.terium.cloudsystem.cluster.console.ConsoleListener;
 import cloud.terium.cloudsystem.cluster.console.ConsoleManager;
 import cloud.terium.cloudsystem.cluster.entity.CloudPlayerListener;
+import cloud.terium.cloudsystem.cluster.entity.CloudPlayerProvider;
+import cloud.terium.cloudsystem.cluster.module.ModuleProvider;
 import cloud.terium.cloudsystem.cluster.node.Node;
 import cloud.terium.cloudsystem.cluster.node.NodeListener;
 import cloud.terium.cloudsystem.cluster.node.NodeProvider;
@@ -16,12 +18,10 @@ import cloud.terium.cloudsystem.cluster.service.CloudServiceListener;
 import cloud.terium.cloudsystem.cluster.service.CloudServiceProvider;
 import cloud.terium.cloudsystem.cluster.service.group.ServiceGroupFactory;
 import cloud.terium.cloudsystem.cluster.service.group.ServiceGroupProvider;
-import cloud.terium.cloudsystem.cluster.template.TemplateListener;
-import cloud.terium.cloudsystem.cluster.utils.Logger;
-import cloud.terium.cloudsystem.cluster.entity.CloudPlayerProvider;
-import cloud.terium.cloudsystem.cluster.module.ModuleProvider;
 import cloud.terium.cloudsystem.cluster.template.TemplateFactory;
+import cloud.terium.cloudsystem.cluster.template.TemplateListener;
 import cloud.terium.cloudsystem.cluster.template.TemplateProvider;
+import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.EventProvider;
 import cloud.terium.cloudsystem.common.screen.ScreenProvider;
 import cloud.terium.networking.packet.node.PacketPlayOutNodeShutdown;
@@ -62,8 +62,6 @@ public class ClusterStartup extends TeriumAPI {
 
     private static ClusterStartup cluster;
     private final CommandManager commandManager;
-    private CloudConfig cloudConfig;
-    private ConfigManager configManager;
     private final ConsoleManager consoleManager;
     private final TeriumNetworkProvider networking;
     private final NodeProvider nodeProvider;
@@ -78,18 +76,20 @@ public class ClusterStartup extends TeriumAPI {
     private final ModuleProvider moduleProvider;
     private final TemplateFactory templateFactory;
     private final INode thisNode;
+    private CloudConfig cloudConfig;
+    private ConfigManager configManager;
 
     @SneakyThrows
     public ClusterStartup() {
         cluster = this;
         Logger.log("""
-                    §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
-                    §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
-                    §f   |    |______ |    \\_ __|__ |_____| |  |  | §b|_____  |_____ |_____| |_____| |_____/ §7[§f%version%§7]
-                                                                                                \s
-                    §7> §fTerium by ByRaudy(Jannik H.)\s
-                    §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
-                    """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
+                §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
+                §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
+                §f   |    |______ |    \\_ __|__ |_____| |  |  | §b|_____  |_____ |_____| |_____| |_____/ §7[§f%version%§7]
+                                                                                            \s
+                §7> §fTerium by ByRaudy(Jannik H.)\s
+                §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
+                """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
         Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Welcome to terium-cloud!"));
         Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "terium-cloud is starting phase §6one §fof the startup... Please wait a small while."));
 
@@ -123,7 +123,7 @@ public class ClusterStartup extends TeriumAPI {
         this.networking.getAllowedAddresses().add(thisNode.getAddress().getAddress().getHostAddress());
         this.networking.getAllowedAddresses().add(cloudConfig.ip());
 
-        if(cloudConfig.checkUpdate()) {
+        if (cloudConfig.checkUpdate()) {
             Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
             try {
                 FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
@@ -139,20 +139,20 @@ public class ClusterStartup extends TeriumAPI {
         consoleManager.clearScreen();
         Logger.clearAllLoggedMessags();
         Logger.log("""
-                    §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
-                    §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
-                    §f   |    |______ |    \\_ __|__ |_____| |  |  | §b|_____  |_____ |_____| |_____| |_____/ §7[§f%version%§7]
-                                                                                                \s
-                    §7> §fTerium by ByRaudy(Jannik H.)\s
-                    §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
-                                    
-                     §a> §fLoaded %commands% commands successfully.
-                     §a> §fLoaded %templates% templates successfully.
-                     §a> §fLoaded %groups% groups successfully.
-                     §a> §fLoaded %loaded_nodes% nodes successfully.
-                     §a> §fStarted terium-server on %ip%:%port%.
-                                    
-                    """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
+                §f_______ _______  ______ _____ _     _ _______ §b_______         _____  _     _ ______\s
+                §f   |    |______ |_____/   |   |     | |  |  | §b|       |      |     | |     | |     \\
+                §f   |    |______ |    \\_ __|__ |_____| |  |  | §b|_____  |_____ |_____| |_____| |_____/ §7[§f%version%§7]
+                                                                                            \s
+                §7> §fTerium by ByRaudy(Jannik H.)\s
+                §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
+                                
+                 §a> §fLoaded %commands% commands successfully.
+                 §a> §fLoaded %templates% templates successfully.
+                 §a> §fLoaded %groups% groups successfully.
+                 §a> §fLoaded %loaded_nodes% nodes successfully.
+                 §a> §fStarted terium-server on %ip%:%port%.
+                                
+                """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()).replace("%templates%", templateProvider.getAllTemplates().size() + "").replace("%commands%", commandManager.getBuildedCommands().keySet().size() + "")
                 .replace("%ip%", cloudConfig.ip()).replace("%port%", cloudConfig.port() + "").replace("%loaded_nodes%", nodeProvider.getAllNodes().stream().filter(node -> node != thisNode).toList().size() + "")
                 .replace("%groups%", serviceGroupProvider.getAllServiceGroups().size() + ""));
         this.moduleProvider.loadModules();

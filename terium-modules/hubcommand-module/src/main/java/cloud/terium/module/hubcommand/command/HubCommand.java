@@ -19,7 +19,7 @@ public class HubCommand implements SimpleCommand {
         Player player = (Player) invocation.source();
         ICloudPlayer cloudPlayer = TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(((Player) invocation.source()).getUniqueId()).orElseGet(null);
 
-        if(cloudPlayer.getConnectedCloudService().get().getServiceType().equals(ServiceType.Lobby)) {
+        if (cloudPlayer.getConnectedCloudService().get().getServiceType().equals(ServiceType.Lobby)) {
             player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandStartup.getInstance().getConfigManager().getJson().get("already.message").getAsString()));
             return;
         }
