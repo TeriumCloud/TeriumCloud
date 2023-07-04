@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -89,12 +90,11 @@ public class CloudService implements ICloudService {
         ClusterStartup.getCluster().getScreenProvider().addCloudService(this);
         ClusterStartup.getCluster().getServiceProvider().addService(this);
         ClusterStartup.getCluster().getServiceProvider().putServiceId(cloudServiceGroup, serviceId);
-        if (ClusterStartup.getCluster().isDebugMode())
-            Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
+        Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
     }
 
     @SneakyThrows
-    public void start() {
+    public void prepare() {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
@@ -125,7 +125,10 @@ public class CloudService implements ICloudService {
                 exception.printStackTrace();
             }
         }
+    }
 
+    @SneakyThrows
+    private void systemStart() {
         if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
             Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
@@ -190,6 +193,14 @@ public class CloudService implements ICloudService {
             Logger.log("Successfully stopped service '§b" + getServiceName() + "§f'.", LogType.INFO);
         });
         this.thread.start();
+    }
+
+    @SneakyThrows
+    public void start() {
+        Executors.newCachedThreadPool().execute(() -> {
+            prepare();
+            systemStart();
+        });
     }
 
     @Override

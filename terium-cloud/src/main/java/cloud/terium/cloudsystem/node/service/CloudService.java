@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -94,7 +95,7 @@ public class CloudService implements ICloudService {
     }
 
     @SneakyThrows
-    public void start() {
+    public void prepare() {
         this.folder.mkdirs();
         FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
@@ -105,7 +106,7 @@ public class CloudService implements ICloudService {
             } catch (IOException ignored) {
             }
         });
-        NodeStartup.getNode().getModuleProvider().getAllModules().stream().filter(module -> module.getModuleType() == ModuleType.valueOf(getServiceType().name())).forEach(module -> {
+        NodeStartup.getNode().getModuleProvider().getAllModules().stream().filter(module -> module.getModuleType() == ModuleType.valueOf(getServiceType().name()) || module.getModuleType() == ModuleType.ALL).forEach(module -> {
             try {
                 FileUtils.copyFileToDirectory(new File("modules//" + module.getFileName()), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
             } catch (IOException exception) {
@@ -125,7 +126,10 @@ public class CloudService implements ICloudService {
                 exception.printStackTrace();
             }
         }
+    }
 
+    @SneakyThrows
+    private void systemStart() {
         if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
             Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
@@ -134,6 +138,7 @@ public class CloudService implements ICloudService {
             properties.setProperty("server-port", getPort() + "");
             properties.setProperty("server-ip", NodeStartup.getNode().getNodeConfig().serviceAddress());
             properties.setProperty("online-mode", "false");
+            properties.setProperty("max-players", maxPlayers + "");
 
             try (OutputStream outputStream = new FileOutputStream(serverProperties);
                  OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
@@ -162,10 +167,13 @@ public class CloudService implements ICloudService {
 
         NodeStartup.getNode().getEventProvider().callEvent(new CloudServiceStartingEvent(this));
         this.thread = new Thread(() -> {
-            String[] command = new String[]{"java", "-jar", "-Xmx" + serviceGroup.getMemory() + "m", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().master().get("ip").getAsString(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().master().get("port").getAsString(), serviceGroup.getVersion() + ".jar", "nogui"};
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            String[] command = null;
+            if (serviceType == ServiceType.Proxy)
+                command = new String[]{"java", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=50", "-XX:-UseAdaptiveSizePolicy", "-XX:CompileThreshold=100", "-Dio.netty.recycler.maxCapacity=0", "-Dio.netty.recycler.maxCapacity.default=0", "-Djline.terminal=jline.UnsupportedTerminal", "-Xmx" + serviceGroup.getMemory() + "m", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().ip(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().port(), serviceGroup.getVersion() + ".jar"};
+            else
+                command = new String[]{"java", "-Xmx" + serviceGroup.getMemory() + "m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200", "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch", "-XX:G1NewSizePercent=30", "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M", "-XX:G1ReservePercent=20", "-XX:G1HeapWastePercent=5", "-XX:G1MixedGCCountTarget=4", "-XX:InitiatingHeapOccupancyPercent=15", "-XX:G1MixedGCLiveThresholdPercent=90", "-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem", "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs", "-Daikars.new.flags=true", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + NodeStartup.getNode().getNodeConfig().ip(), "-Dnetty-port=" + NodeStartup.getNode().getNodeConfig().port(), serviceGroup.getVersion() + ".jar", "--nogui", "--nojline", "--noconsole"};
+            ProcessBuilder processBuilder = new ProcessBuilder(command).directory(this.folder);
 
-            processBuilder.directory(this.folder);
             try {
                 this.process = processBuilder.start();
             } catch (IOException exception) {
@@ -186,6 +194,14 @@ public class CloudService implements ICloudService {
             Logger.log("Successfully stopped service '§b" + getServiceName() + "§f'.", LogType.INFO);
         });
         this.thread.start();
+    }
+
+    @SneakyThrows
+    public void start() {
+        Executors.newCachedThreadPool().execute(() -> {
+            prepare();
+            systemStart();
+        });
     }
 
     @Override
