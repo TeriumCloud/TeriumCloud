@@ -77,7 +77,7 @@ public class CloudService implements ICloudService {
         this.name = serviceName;
         this.serviceType = serviceType;
         this.serviceState = ServiceState.PREPARING;
-        this.templates = new ArrayList<>(templates);
+        this.templates = new LinkedList<>(templates);
         this.folder = serviceGroup.isStatic() ? new File("static//" + getServiceName()) : new File("servers//" + getServiceName());
         this.propertyMap = propertyMap;
         this.port = port;
