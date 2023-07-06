@@ -6,6 +6,7 @@ import cloud.terium.teriumapi.pipe.Packet;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,10 @@ public record PacketPlayOutCreateService(String serviceName, int serviceId, int 
     }
 
     public List<ITemplate> parsedTemplates() {
-        return TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getAllTemplates();
+        List<ITemplate> templateList = new ArrayList<>();
+        templates.forEach(template -> {
+            templateList.add(TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(template).orElseGet(null));
+        });
+        return templateList;
     }
 }
