@@ -52,9 +52,11 @@ public class NodeCommand extends Command {
                         ClusterStartup.getCluster().getNodeProvider().getNodeByName(args[1]).ifPresentOrElse(node -> {
                             ClusterStartup.getCluster().getCloudConfig().nodes().remove(args[1]);
                             ClusterStartup.getCluster().getConfigManager().save();
+                            ClusterStartup.getCluster().getNodeProvider().getNodes().remove(node.getName());
                             ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().stream().filter(serviceGroup -> serviceGroup.getGroupNode().getName().equals(args[1])).forEach(serviceGroup -> {
                                 serviceGroup.setGroupNode(ClusterStartup.getCluster().getThisNode());
                             });
+                            Logger.log("Successfully removed node '" + node.getName() + "'.", LogType.INFO);
                         }, () -> Logger.log("A node with that name isn't registered.", LogType.ERROR));
                     } else Logger.log("node remove [name]", LogType.INFO);
 

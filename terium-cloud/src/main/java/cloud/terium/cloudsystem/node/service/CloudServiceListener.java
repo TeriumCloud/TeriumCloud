@@ -34,6 +34,8 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
+        System.out.println("huhu");
+        System.out.println(event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()));
         if (event.getNode().getName().equals(NodeStartup.getNode().getThisNode().getName()))
             switch (event.getType()) {
                 case "group_only" ->

@@ -107,8 +107,8 @@ public class NodeStartup extends TeriumAPI {
         this.nodeConfig = configManager.toNodeConfig();
         this.networking = new TeriumNetworkProvider();
         this.thisNode = new Node(nodeConfig.name(), new InetSocketAddress(ipAddress, nodeConfig.port()), nodeConfig.memory(), true);
-        this.eventProvider = new EventProvider();
 
+        this.eventProvider = new EventProvider();
         this.eventProvider.subscribeListener(new ConsoleListener());
         this.eventProvider.subscribeListener(new CloudPlayerListener());
         this.eventProvider.subscribeListener(new CloudServiceListener());

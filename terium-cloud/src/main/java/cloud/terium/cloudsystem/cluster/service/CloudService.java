@@ -90,7 +90,8 @@ public class CloudService implements ICloudService {
         ClusterStartup.getCluster().getScreenProvider().addCloudService(this);
         ClusterStartup.getCluster().getServiceProvider().addService(this);
         ClusterStartup.getCluster().getServiceProvider().putServiceId(cloudServiceGroup, serviceId);
-        Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
+        if (ClusterStartup.getCluster().isDebugMode())
+            Logger.log("Successfully created service " + getServiceName() + ".", LogType.INFO);
     }
 
     @SneakyThrows
@@ -201,6 +202,9 @@ public class CloudService implements ICloudService {
             prepare();
             systemStart();
         });
+
+        ClusterStartup.getCluster().getThisNode().setUsedMemory(ClusterStartup.getCluster().getServiceProvider().gloablUsedMemory());
+        ClusterStartup.getCluster().getThisNode().update();
     }
 
     @Override
