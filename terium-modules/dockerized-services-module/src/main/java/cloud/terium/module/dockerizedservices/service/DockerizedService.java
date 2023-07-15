@@ -17,6 +17,7 @@ import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.PullImageCmd;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.*;
@@ -108,6 +109,16 @@ public class DockerizedService implements ICloudService {
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().putServiceId(cloudServiceGroup, serviceId);
     }
 
+    public boolean alive() {
+        if (this.containerId != null) {
+            try {
+                InspectContainerResponse.ContainerState result = TeriumDockerizedServices.getInstance().getDockerizedConfig().getDockerClient().inspectContainerCmd(this.containerId).withSize(false).exec().getState();
+                return result.getRunning() != null && result.getRunning();
+            } catch (NotFoundException ignored) {}
+        }
+        return false;
+    }
+
     @SneakyThrows
     public void prepare() {
         this.folder.mkdirs();
@@ -195,13 +206,13 @@ public class DockerizedService implements ICloudService {
                 .withName(getServiceName())
                 .withWorkingDir("/app")
                 .withStopSignal("SIGTERM")
-                .withPortBindings(PortBinding.parse(TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort() + ":" + TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort()),
-                        PortBinding.parse(port + ":" + port))
                 .withHostConfig(HostConfig.newHostConfig()
                         .withBinds(new Bind(folder.getAbsolutePath(), new Volume("/app")))
                         .withCapDrop(DROPPED_CAPABILITIES)
                         .withRestartPolicy(RestartPolicy.noRestart())
-                        .withNetworkMode("host"))
+                        .withNetworkMode("host")
+                        .withPortBindings(PortBinding.parse(TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort() + ":" + TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort()),
+                                PortBinding.parse(port + ":" + port)))
                 .withExposedPorts(ExposedPort.tcp(port), ExposedPort.udp(port), ExposedPort.tcp(TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort()), ExposedPort.udp(TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort()))
                 .withEntrypoint("java", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=50", "-XX:-UseAdaptiveSizePolicy", "-XX:CompileThreshold=100", "-Dio.netty.recycler.maxCapacity=0", "-Dio.netty.recycler.maxCapacity.default=0", "-Djline.terminal=jline.UnsupportedTerminal", "-Xmx" + serviceGroup.getMemory() + "m", "-jar", "-Dservicename=" + getServiceName(), "-Dservicenode=" + getServiceNode().getName(), "-Dnetty-address=" + TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getHostAddress(), "-Dnetty-port=" + TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().getPort(), serviceGroup.getVersion() + ".jar")
                 .exec()
@@ -227,14 +238,31 @@ public class DockerizedService implements ICloudService {
 
     public void shutdown() {
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceExecuteCommand(getServiceName(), "stop"));
-        if (this.containerId != null) {
-            try {
-                TeriumDockerizedServices.getInstance().getDockerizedConfig().getDockerClient().removeContainerCmd(this.containerId).withRemoveVolumes(true).withForce(true).exec();
-                TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole("Successfully stopped service '§b" + getServiceName() + "§f'.", LogType.INFO);
-                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
-                delete();
-                this.containerId = null;
-            } catch (NotFoundException ignored) {}
+        if (serviceState == ServiceState.PREPARING) {
+            if (this.containerId != null) {
+                try {
+                    TeriumDockerizedServices.getInstance().getDockerizedConfig().getDockerClient().removeContainerCmd(this.containerId).withRemoveVolumes(true).withForce(true).exec();
+                    TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole("Successfully stopped service '§b" + getServiceName() + "§f'.", LogType.INFO);
+                    TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
+                    delete();
+                    this.containerId = null;
+                } catch (NotFoundException ignored) {}
+            }
+        } else {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (containerId != null) {
+                        try {
+                            TeriumDockerizedServices.getInstance().getDockerizedConfig().getDockerClient().removeContainerCmd(containerId).withRemoveVolumes(true).withForce(true).exec();
+                            TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole("Successfully stopped service '§b" + getServiceName() + "§f'.", LogType.INFO);
+                            TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
+                            delete();
+                            containerId = null;
+                        } catch (NotFoundException ignored) {}
+                    }
+                }
+            }, 4000);
         }
     }
 

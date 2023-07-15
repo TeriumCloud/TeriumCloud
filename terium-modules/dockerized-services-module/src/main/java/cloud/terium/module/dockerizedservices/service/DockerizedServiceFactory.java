@@ -7,9 +7,25 @@ import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DockerizedServiceFactory implements ICloudServiceFactory {
+
+    public void startKeepAliveCheckForServices() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService instanceof DockerizedService).forEach(cloudService -> {
+                    if(cloudService instanceof DockerizedService dockerizedService) {
+                        if(!dockerizedService.alive())
+                            dockerizedService.shutdown();
+                    }
+                });
+            }
+        }, 0, 1000);
+    }
 
     @Override
     public void createService(ICloudServiceGroup serviceGroup) {

@@ -30,6 +30,7 @@ public class TeriumDockerizedServices implements IModule {
         configLoader = new ConfigLoader();
         dockerizedConfig = new DockerizedConfig();
 
+        serviceFactory.startKeepAliveCheckForServices();
         new DockerizedService(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName("Lobby").get()).start();
     }
 

@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CloudPlayerProvider implements ICloudPlayerProvider {
 
-    private final List<ICloudPlayer> onlinePlayers = new ArrayList<>();
+    private final List<ICloudPlayer> onlinePlayers = new CopyOnWriteArrayList<>();
 
     @Override
     public Optional<ICloudPlayer> getCloudPlayer(String username) {
