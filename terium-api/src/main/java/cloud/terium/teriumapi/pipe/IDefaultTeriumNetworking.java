@@ -4,6 +4,10 @@ import io.netty.channel.Channel;
 
 public interface IDefaultTeriumNetworking {
 
+    String getHostAddress();
+
+    int getPort();
+
     Channel getChannel();
 
     void addHandler(Handler handler);

@@ -54,8 +54,8 @@
 
 ## Supported Minecraft Versions
 
-- [Paper](https://papermc.io) 1.12.2 - 1.19.4
-- [Purpur](https://purpurmc.org/) 1.16.5 - 1.19.4
+- [Paper](https://papermc.io) 1.12.2 - 1.20.1
+- [Purpur](https://purpurmc.org/) 1.16.5 - 1.20.1
 - [Velocity](https://velocitypowered.com)
 
 ## Thanks to

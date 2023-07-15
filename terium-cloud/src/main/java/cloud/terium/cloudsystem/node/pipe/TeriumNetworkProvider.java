@@ -247,6 +247,16 @@ public class TeriumNetworkProvider implements IDefaultTeriumNetworking {
     }
 
     @Override
+    public String getHostAddress() {
+        return NodeStartup.getNode().getNodeConfig().master().get("ip").getAsString();
+    }
+
+    @Override
+    public int getPort() {
+        return NodeStartup.getNode().getNodeConfig().master().get("port").getAsInt();
+    }
+
+    @Override
     public Channel getChannel() {
         return teriumClient.getChannel();
     }

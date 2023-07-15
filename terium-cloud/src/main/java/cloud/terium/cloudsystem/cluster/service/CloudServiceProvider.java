@@ -77,13 +77,6 @@ public class CloudServiceProvider implements ICloudServiceProvider {
         cloudServiceIdCache.get(serviceGroup).remove((Object) id);
     }
 
-    public long gloablUsedMemory() {
-        AtomicLong globalUsedMemory = new AtomicLong();
-        ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceNode().getName().equals(ClusterStartup.getCluster().getThisNode().getName())).forEach(cloudService -> globalUsedMemory.getAndAdd(cloudService.getMaxMemory()));
-
-        return globalUsedMemory.get();
-    }
-
     public void addService(ICloudService cloudService) {
         cloudServiceCache.put(cloudService.getServiceName(), cloudService);
     }

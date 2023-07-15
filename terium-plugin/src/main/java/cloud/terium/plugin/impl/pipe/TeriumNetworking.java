@@ -59,7 +59,6 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
     private final TeriumClient teriumClient;
     private final List<Handler> handlers;
 
-    @SneakyThrows
     public TeriumNetworking() {
         teriumClient = new TeriumClient(System.getProperty("netty-address"), Integer.parseInt(System.getProperty("netty-port")));
         this.handlers = new ArrayList<>();
@@ -253,6 +252,16 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
         });
 
         sendPacket(new PacketPlayOutServiceRegister());
+    }
+
+    @Override
+    public String getHostAddress() {
+        return System.getProperty("netty-address");
+    }
+
+    @Override
+    public int getPort() {
+        return Integer.parseInt(System.getProperty("netty-port"));
     }
 
     @Override
