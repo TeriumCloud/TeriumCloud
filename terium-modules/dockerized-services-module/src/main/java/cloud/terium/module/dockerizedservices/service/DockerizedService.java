@@ -239,7 +239,14 @@ public class DockerizedService implements ICloudService {
 
     @Override
     public void forceShutdown() {
-        shutdown();
+        if (this.containerId != null) {
+            try {
+                TeriumDockerizedServices.getInstance().getDockerizedConfig().getDockerClient().removeContainerCmd(this.containerId).withRemoveVolumes(true).withForce(true).exec();
+                TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole("Successfully stopped docker-container of service '§b" + getServiceName() + "§f'.", LogType.INFO);
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceRemove(getServiceName()));
+                delete();
+            } catch (NotFoundException ignored) {}
+        }
     }
 
     public void shutdown() {
