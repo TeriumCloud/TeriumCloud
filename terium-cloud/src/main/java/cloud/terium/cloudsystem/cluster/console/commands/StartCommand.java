@@ -2,13 +2,16 @@ package cloud.terium.cloudsystem.cluster.console.commands;
 
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
+import cloud.terium.cloudsystem.common.event.events.service.ServiceCreateEvent;
 import cloud.terium.networking.packet.service.PacketPlayOutCreateService;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class StartCommand extends Command {
@@ -22,7 +25,11 @@ public class StartCommand extends Command {
         if (args.length == 1) {
             ClusterStartup.getCluster().getServiceGroupProvider().getServiceGroupByName(args[0]).ifPresentOrElse(serviceGroup -> {
                 if (ClusterStartup.getCluster().getThisNode().getName().equals(serviceGroup.getGroupNode().getName()))
-                    ClusterStartup.getCluster().getServiceFactory().createService(serviceGroup);
+                    if(ClusterStartup.getCluster().getServiceFactory().containsServiceGroup(serviceGroup)) {
+                        ClusterStartup.getCluster().getServiceFactory().createService(serviceGroup);
+                    } else {
+                        TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new ServiceCreateEvent(serviceGroup.getGroupName(), ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : -1, serviceGroup.getMaxPlayers(), serviceGroup.getMemory(), serviceGroup.getGroupNode(), serviceGroup, serviceGroup.getTemplates(), new LinkedHashMap<>(), "group_only"));
+                    }
                 else {
                     ClusterStartup.getCluster().getNodeProvider().getClientFromNode(serviceGroup.getGroupNode()).writeAndFlush(new PacketPlayOutCreateService(serviceGroup.getGroupName(), -1, serviceGroup.hasPort() ? serviceGroup.getPort() : -1, serviceGroup.getMaxPlayers(), serviceGroup.getMemory(), serviceGroup.getGroupNode().getName(), serviceGroup.getGroupName(), serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), new HashMap<>(), "group_only"));
                 }

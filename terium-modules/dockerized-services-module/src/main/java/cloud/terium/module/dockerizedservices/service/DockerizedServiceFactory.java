@@ -5,13 +5,12 @@ import cloud.terium.teriumapi.service.ICloudServiceFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DockerizedServiceFactory implements ICloudServiceFactory {
+
+    private final List<ICloudServiceGroup> bindedServiceGroups = new LinkedList<>();
 
     public void startKeepAliveCheckForServices() {
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -55,5 +54,20 @@ public class DockerizedServiceFactory implements ICloudServiceFactory {
     @Override
     public void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates) {
         new DockerizedService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), serviceGroup.getMaxPlayers(), serviceGroup.getMemory()).start();
+    }
+
+    @Override
+    public boolean containsServiceGroup(ICloudServiceGroup serviceGroup) {
+        return bindedServiceGroups.contains(serviceGroup);
+    }
+
+    @Override
+    public void bindServiceGroup(ICloudServiceGroup serviceGroup) {
+        this.bindedServiceGroups.add(serviceGroup);
+    }
+
+    @Override
+    public void unbindServiceGroup(ICloudServiceGroup serviceGroup) {
+        this.bindedServiceGroups.remove(serviceGroup);
     }
 }

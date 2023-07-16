@@ -26,6 +26,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
     public void registerServiceGroup(ICloudServiceGroup serviceGroup) {
         serviceGroups.add(serviceGroup);
         serviceGroupCache.put(serviceGroup.getGroupName(), serviceGroup);
+        TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().bindServiceGroup(serviceGroup);
         NodeStartup.getNode().getServiceProvider().createEmptyListForGroup(serviceGroup);
     }
 

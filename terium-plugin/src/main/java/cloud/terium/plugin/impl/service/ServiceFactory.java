@@ -40,4 +40,23 @@ public class ServiceFactory implements ICloudServiceFactory {
     public void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates) {
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutCreateService(serviceName, -1, serviceGroup.hasPort() ? serviceGroup.getPort() : -1, serviceGroup.getMaxPlayers(), serviceGroup.getMemory(), serviceGroup.getGroupNode().getName(), serviceGroup.getGroupName(), templates.stream().map(ITemplate::getName).toList(), new HashMap<>(), "group_template_and_custom_name"));
     }
+
+    @Override
+    public boolean containsServiceGroup(ICloudServiceGroup iCloudServiceGroup) {
+        // NOT SUPPORTED FOR SERVER PROCESSES
+        // ONLY MAIN PROCESS(CLOUD-SYSTEM) IS SUPPORTED
+        return false;
+    }
+
+    @Override
+    public void bindServiceGroup(ICloudServiceGroup iCloudServiceGroup) {
+        // NOT SUPPORTED FOR SERVER PROCESSES
+        // ONLY MAIN PROCESS(CLOUD-SYSTEM) IS SUPPORTED
+    }
+
+    @Override
+    public void unbindServiceGroup(ICloudServiceGroup iCloudServiceGroup) {
+        // NOT SUPPORTED FOR SERVER PROCESSES
+        // ONLY MAIN PROCESS(CLOUD-SYSTEM) IS SUPPORTED
+    }
 }

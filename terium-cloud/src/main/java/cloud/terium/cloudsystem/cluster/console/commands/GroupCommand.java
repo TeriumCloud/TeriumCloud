@@ -166,7 +166,6 @@ public class GroupCommand extends Command {
             }
 
             if (args[0].equalsIgnoreCase("list")) {
-                // TODO: Add online services count (after implement cloud services)
                 if (ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().size() > 0)
                     ClusterStartup.getCluster().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
                         Logger.log("Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: " + ClusterStartup.getCluster().getServiceGroupProvider().getOnlineServicesFromServiceGroup(serviceGroup.getGroupName()) + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), LogType.INFO);

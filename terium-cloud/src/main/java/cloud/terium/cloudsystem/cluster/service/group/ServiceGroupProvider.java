@@ -4,6 +4,7 @@ import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.event.events.group.GroupUpdateEvent;
 import cloud.terium.networking.packet.group.PacketPlayOutGroupAdd;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
@@ -46,6 +47,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                 serviceGroup.getTemplates().stream().map(ITemplate::getName).toList(), serviceGroup.getServiceType(), serviceGroup.getVersion(), serviceGroup.isMaintenance(), serviceGroup.isStatic(),
                 serviceGroup.hasPort(), serviceGroup.getPort(), serviceGroup.getMaxPlayers(), serviceGroup.getMemory(), serviceGroup.getMinServices(), serviceGroup.getMaxServices()));
         Logger.log("Successfully created service-group '§b" + serviceGroup.getGroupName() + "§f'.", LogType.INFO);
+        TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().bindServiceGroup(serviceGroup);
     }
 
     @SneakyThrows
@@ -67,6 +69,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                         serviceGroup.get("maximal_services").getAsInt());
                 this.serviceGroupCache.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
                 this.serviceGroups.add(iCloudServiceGroup);
+                TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().bindServiceGroup(iCloudServiceGroup);
             }
             case Server -> {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultServerGroup(serviceGroup.get("group_name").getAsString(),
@@ -82,6 +85,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                         serviceGroup.get("maximal_services").getAsInt());
                 this.serviceGroupCache.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
                 this.serviceGroups.add(iCloudServiceGroup);
+                TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().bindServiceGroup(iCloudServiceGroup);
             }
             case Lobby -> {
                 ICloudServiceGroup iCloudServiceGroup = new DefaultLobbyGroup(serviceGroup.get("group_name").getAsString(),
@@ -97,6 +101,7 @@ public class ServiceGroupProvider implements ICloudServiceGroupProvider {
                         serviceGroup.get("maximal_services").getAsInt());
                 this.serviceGroupCache.put(serviceGroup.get("group_name").getAsString(), iCloudServiceGroup);
                 this.serviceGroups.add(iCloudServiceGroup);
+                TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().bindServiceGroup(iCloudServiceGroup);
             }
         }
 

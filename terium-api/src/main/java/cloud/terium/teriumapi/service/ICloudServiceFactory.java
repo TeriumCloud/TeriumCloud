@@ -64,4 +64,26 @@ public interface ICloudServiceFactory {
      * @param templates
      */
     void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates);
+
+    /**
+     * Checks if the defined service group is binded to this service factory.
+     *
+     * @param cloudServiceGroup
+     * @return boolean
+     */
+    boolean containsServiceGroup(ICloudServiceGroup cloudServiceGroup);
+
+    /**
+     * Add a service group who starts the service over this service factory.
+     *
+     * @param cloudServiceGroup
+     */
+    void bindServiceGroup(ICloudServiceGroup cloudServiceGroup);
+
+    /**
+     * Remove a service group who starts the service over this service factory.
+     *
+     * @param cloudServiceGroup
+     */
+    void unbindServiceGroup(ICloudServiceGroup cloudServiceGroup);
 }
