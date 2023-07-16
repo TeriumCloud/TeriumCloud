@@ -2,6 +2,8 @@ package cloud.terium.cloudsystem.cluster.service;
 
 import cloud.terium.cloudsystem.TeriumCloud;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
+import cloud.terium.cloudsystem.common.event.events.service.ServiceCreateEvent;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ICloudServiceProvider;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -32,7 +34,7 @@ public class CloudServiceProvider implements ICloudServiceProvider {
                         if (getServicesByGroupName(group.getGroupName()).size() < group.getMaxServices() &&
                                 getServicesByGroupName(group.getGroupName()).stream().filter(iCloudService -> iCloudService.getServiceState().equals(ServiceState.ONLINE) ||
                                         iCloudService.getServiceState().equals(ServiceState.PREPARING)).toList().size() < group.getMinServices()) {
-                            ClusterStartup.getCluster().getServiceFactory().createService(group);
+                            TeriumAPI.getTeriumAPI().getProvider().getEventProvider().callEvent(new ServiceCreateEvent(group.getGroupName(), ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(group), group.hasPort() ? group.getPort() : -1, group.getMaxPlayers(), group.getMemory(), group.getGroupNode(), group, group.getTemplates(), new LinkedHashMap<>(), "group_only"));
                         }
                     });
                 }
