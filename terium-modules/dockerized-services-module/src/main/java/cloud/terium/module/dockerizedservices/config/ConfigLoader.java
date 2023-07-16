@@ -17,9 +17,10 @@ public class ConfigLoader {
     private final Gson gson;
     private final ExecutorService pool;
     private JsonObject json;
+    private IncludedGroupsLoader includedGroupsLoader;
 
     public ConfigLoader() {
-        new IncludedGroupsLoader();
+        this.includedGroupsLoader = new IncludedGroupsLoader();
         this.file = new File("modules/dockerized-services/config.json");
         this.gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         this.pool = Executors.newFixedThreadPool(2);
@@ -62,5 +63,9 @@ public class ConfigLoader {
 
     public JsonObject getJson() {
         return json;
+    }
+
+    public IncludedGroupsLoader getIncludedGroupsLoader() {
+        return includedGroupsLoader;
     }
 }

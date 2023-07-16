@@ -63,6 +63,6 @@ public class IncludedGroupsLoader {
     }
 
     public JsonObject getJson() {
-        return json;
+        return json.get("includedGroups").getAsJsonObject();
     }
 }
