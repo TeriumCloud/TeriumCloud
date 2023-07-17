@@ -3,6 +3,7 @@ package cloud.terium.module.dockerizedservices;
 import cloud.terium.cloudsystem.common.utils.logger.Logger;
 import cloud.terium.module.dockerizedservices.config.ConfigLoader;
 import cloud.terium.module.dockerizedservices.config.DockerizedConfig;
+import cloud.terium.module.dockerizedservices.console.DockerizedServicesCommand;
 import cloud.terium.module.dockerizedservices.service.DockerizedServiceListener;
 import cloud.terium.module.dockerizedservices.service.DockerizedServiceFactory;
 import cloud.terium.teriumapi.TeriumAPI;
@@ -33,6 +34,7 @@ public class TeriumDockerizedServices implements IModule {
         dockerizedConfig = new DockerizedConfig();
 
         serviceFactory.startKeepAliveCheckForServices();
+        TeriumAPI.getTeriumAPI().getFactory().getCommandFactory().registerCommand(new DockerizedServicesCommand());
         TeriumAPI.getTeriumAPI().getProvider().getEventProvider().subscribeListener(new DockerizedServiceListener());
         configLoader.getIncludedGroupsLoader().getJson().keySet().stream().filter(s -> !s.equals("exampleGroup")).forEach(s -> {
             TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().unbindServiceGroup(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getServiceGroupByName(s).orElseGet(null));
