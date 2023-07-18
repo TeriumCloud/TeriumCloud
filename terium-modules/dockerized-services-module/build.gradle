@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'cloud.terium.module'
-version = '1.6-OXYGEN'
+version = '1.7-OXYGEN'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -14,14 +14,14 @@ repositories {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
-    compileOnly 'cloud.terium:terium-api:1.6-OXYGEN'
+    compileOnly 'cloud.terium:terium-api:1.7-OXYGEN'
     compileOnly 'cloud.terium:terium-framework:latest'
-    compileOnly 'cloud.terium:terium-cloud:1.6-OXYGEN'
+    compileOnly 'cloud.terium:terium-cloud:1.7-OXYGEN'
 
 
     implementation 'com.github.docker-java:docker-java-core:3.3.2'
     implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.2'
 
-    annotationProcessor 'cloud.terium:terium-api:1.6-OXYGEN'
+    annotationProcessor 'cloud.terium:terium-api:1.7-OXYGEN'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
