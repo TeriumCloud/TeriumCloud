@@ -22,9 +22,15 @@ public class ServerConnectedListener {
         optionalICloudPlayer.ifPresent(cloudPlayer -> SyncproxyVelocityStartup.getInstance().getProxyServer().getScheduler().buildTask(SyncproxyVelocityStartup.getInstance(), () -> SyncproxyVelocityStartup.getInstance().getProxyServer().getAllPlayers().forEach(players -> player.sendPlayerListHeaderAndFooter(
                 MiniMessage.miniMessage().deserialize(SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("tablist_header").getAsString()
                         .replace("%server%", cloudPlayer.getConnectedCloudService().get().getServiceName())
-                        .replace("%group_title%", cloudPlayer.getConnectedCloudService().get().getServiceGroup().getGroupTitle())),
+                        .replace("%group_title%", cloudPlayer.getConnectedCloudService().get().getServiceGroup().getGroupTitle())
+                        .replace("%local_players%", cloudPlayer.getConnectedCloudService().orElseGet(null).getOnlinePlayers() + "")
+                        .replace("%online_players%", TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers() + "")
+                        .replace("%maximum_players%", TeriumAPI.getTeriumAPI().getProvider().getThisService().getMaxPlayers() + "")),
                 MiniMessage.miniMessage().deserialize(SyncproxyVelocityStartup.getInstance().getConfigManager().getJson().get("tablist_footer").getAsString()
                         .replace("%server%", cloudPlayer.getConnectedCloudService().get().getServiceName())
-                        .replace("%group_title%", cloudPlayer.getConnectedCloudService().get().getServiceGroup().getGroupTitle()))))).delay(1, TimeUnit.SECONDS).schedule());
+                        .replace("%group_title%", cloudPlayer.getConnectedCloudService().get().getServiceGroup().getGroupTitle())
+                        .replace("%local_players%", cloudPlayer.getConnectedCloudService().orElseGet(null).getOnlinePlayers() + "")
+                        .replace("%online_players%", TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getOnlinePlayers() + "")
+                        .replace("%maximum_players%", TeriumAPI.getTeriumAPI().getProvider().getThisService().getMaxPlayers() + ""))))).delay(1, TimeUnit.SECONDS).schedule());
     }
 }

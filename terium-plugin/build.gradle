@@ -16,7 +16,7 @@ compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenCentral()
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
-    maven { url = uri("https://repo.jxnnik.dev/releases") }
+    maven { url = uri("https://repo.terium.cloud/releases") }
 }
 
 dependencies {
