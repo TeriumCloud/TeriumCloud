@@ -11,7 +11,8 @@ initializeSubProjects("terium-modules",
         "permission-module",
         "syncproxy-module",
         "hubcommand-module",
-        "dockerized-services-module")
+        "dockerized-services-module",
+        "ki-analysis-module")
 
 void initializeSubProjects(String rootProject, String... names) {
     for (final def name in names) {

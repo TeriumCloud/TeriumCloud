@@ -21,6 +21,7 @@ public class CloudServiceListener implements Listener {
             cloudService.setLocked(event.isLocked());
             cloudService.setUsedMemory((long) event.getMemory());
             cloudService.setOnlinePlayers(event.getPlayers());
+            cloudService.getPropertyMap().clear();
             event.getPropertyCache().forEach(cloudService::addProperty);
         });
     }
