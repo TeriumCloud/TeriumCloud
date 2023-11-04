@@ -48,9 +48,9 @@
 
 ## Supported Java Versions
 
-- Java 15 and lower - Not Supported
-- Java 16 and higher - Supported
-- Java 16 - Recommended
+- Java 16 and lower - Not Supported
+- Java 17 and higher - Supported
+- Java 17 - Recommended
 
 ## Supported Minecraft Versions
 
