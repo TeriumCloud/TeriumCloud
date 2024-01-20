@@ -36,15 +36,15 @@ public class CloudUtils {
         if (!data.exists()) {
             Logger.log("Downloading spigot.yml, velocity.toml and teriumcloud-plugin...");
             Logger.log("Trying to download 'spigot.yml'...");
-            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/spigot.yml"), new File("data//versions//spigot.yml"));
+            FileUtils.copyURLToFile(new URL("hhttps://raw.githubusercontent.com/TeriumCloud/external-file-save/main/spigot.yml"), new File("data//versions//spigot.yml"));
             Logger.log("Successfully to downloaded 'spigot.yml'.");
             Thread.sleep(1000);
             Logger.log("Trying to download 'velocity.toml'...");
-            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/velocity.toml"), new File("data//versions//velocity.toml"));
+            FileUtils.copyURLToFile(new URL("https://raw.githubusercontent.com/TeriumCloud/external-file-save/main/velocity.toml"), new File("data//versions//velocity.toml"));
             Logger.log("Successfully to downloaded 'velocity.toml'.");
             Thread.sleep(1000);
             Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
-            FileUtils.copyURLToFile(new URL("https://terium.cloud/utils/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+            FileUtils.copyURLToFile(new URL("https://github.com/TeriumCloud/external-file-save/raw/main/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
             Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
         }
         data.mkdirs();
