@@ -13,8 +13,10 @@ import java.net.URL;
 
 @Getter
 public enum ServerVersions {
-    VELOCITY_3_3_0_SNAPSHOT("velocity-3.3.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/"),
+    VELOCITY_3_3_0_SNAPSHOT("velocity-3.3.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.3.0-SNAPSHOT/"),
     VELOCITY_3_2_0_SNAPSHOT("velocity-3.2.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/"),
+    PAPER_1_20_6("paper-1.20.6", "https://api.papermc.io/v2/projects/paper/versions/1.20.6/"),
+    PAPER_1_20_5("paper-1.20.5", "https://api.papermc.io/v2/projects/paper/versions/1.20.5/"),
     PAPER_1_20_4("paper-1.20.4", "https://api.papermc.io/v2/projects/paper/versions/1.20.4/"),
     PAPER_1_20_3("paper-1.20.3", "https://api.papermc.io/v2/projects/paper/versions/1.20.3/"),
     PAPER_1_20_2("paper-1.20.2", "https://api.papermc.io/v2/projects/paper/versions/1.20.2/"),
@@ -38,7 +40,9 @@ public enum ServerVersions {
     PURPUR_1_20_1("purpur-1.20.1", "https://api.purpurmc.org/v2/purpur/1.20.1/"),
     PURPUR_1_20_2("purpur-1.20.2", "https://api.purpurmc.org/v2/purpur/1.20.2/"),
     PURPUR_1_20_3("purpur-1.20.3", "https://api.purpurmc.org/v2/purpur/1.20.3/"),
-    PURPUR_1_20_4("purpur-1.20.4", "https://api.purpurmc.org/v2/purpur/1.20.4/");
+    PURPUR_1_20_4("purpur-1.20.4", "https://api.purpurmc.org/v2/purpur/1.20.4/"),
+    PURPUR_1_20_5("purpur-1.20.5", "https://api.purpurmc.org/v2/purpur/1.20.5/"),
+    PURPUR_1_20_6("purpur-1.20.6", "https://api.purpurmc.org/v2/purpur/1.20.6/");
 
     private final String name;
     private final String url;

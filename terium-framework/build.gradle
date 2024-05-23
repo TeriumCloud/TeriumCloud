@@ -14,16 +14,15 @@ version = '1.0.0'
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://repo.terium.cloud/releases") }
 }
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    compileOnly 'cloud.terium:terium-api:1.7-OXYGEN'
     compileOnly 'commons-io:commons-io:2.6'
     implementation 'io.netty:netty-all:4.1.79.Final'
+    implementation fileTree(dir: '../terium-api/build/libs', include: 'terium-api.jar')
 }
 
 shadowJar {

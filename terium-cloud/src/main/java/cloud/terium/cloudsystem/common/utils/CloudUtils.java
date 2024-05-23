@@ -36,7 +36,7 @@ public class CloudUtils {
         if (!data.exists()) {
             Logger.log("Downloading spigot.yml, velocity.toml and teriumcloud-plugin...");
             Logger.log("Trying to download 'spigot.yml'...");
-            FileUtils.copyURLToFile(new URL("hhttps://raw.githubusercontent.com/TeriumCloud/external-file-save/main/spigot.yml"), new File("data//versions//spigot.yml"));
+            FileUtils.copyURLToFile(new URL("https://raw.githubusercontent.com/TeriumCloud/external-file-save/main/spigot.yml"), new File("data//versions//spigot.yml"));
             Logger.log("Successfully to downloaded 'spigot.yml'.");
             Thread.sleep(1000);
             Logger.log("Trying to download 'velocity.toml'...");
