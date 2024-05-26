@@ -15,6 +15,7 @@ import cloud.terium.plugin.bukkit.TeriumBukkitStartup;
 import cloud.terium.plugin.impl.module.LoadedModule;
 import cloud.terium.plugin.impl.node.Node;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
+import cloud.terium.plugin.waterfall.TeriumWaterfallStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.impl.CloudPlayer;
 import cloud.terium.teriumapi.events.config.ReloadConfigEvent;
@@ -32,6 +33,7 @@ import cloud.terium.teriumapi.events.service.CloudServiceUpdateEvent;
 import cloud.terium.teriumapi.pipe.Handler;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
 import cloud.terium.teriumapi.pipe.Packet;
+import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.impl.DefaultLobbyGroup;
 import cloud.terium.teriumapi.service.group.impl.DefaultProxyGroup;
@@ -39,13 +41,10 @@ import cloud.terium.teriumapi.service.group.impl.DefaultServerGroup;
 import cloud.terium.teriumapi.service.impl.CloudService;
 import cloud.terium.teriumapi.template.ITemplate;
 import cloud.terium.teriumapi.template.impl.Template;
-import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.SneakyThrows;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -53,6 +52,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TeriumNetworking implements IDefaultTeriumNetworking {
 
@@ -207,32 +207,78 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
                     if (TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(TeriumPlugin.getInstance().getThisName()).isPresent()) {
                         if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceType().equals(ServiceType.Proxy)) {
                             if (packet instanceof PacketPlayOutSuccessfullyServiceStarted packetAdd) {
-                                if (!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(packetAdd.serviceName()).orElseGet(null).getServiceType().equals(ServiceType.Proxy)) {
-                                    if (TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetAdd.serviceName()).isPresent()) {
-                                        return;
+                                Optional<ICloudService> serviceOpt = TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(packetAdd.serviceName());
+                                ICloudService service = serviceOpt.orElse(null);
+
+                                if (service != null && !service.getServiceType().equals(ServiceType.Proxy)) {
+                                    if (isVelocity()) {
+                                        if (TeriumVelocityStartup.getInstance().checkServerIsRegistered(packetAdd.serviceName()))
+                                            return;
+                                    } else {
+                                        if(TeriumWaterfallStartup.getInstance().checkServerIsRegistered(packetAdd.serviceName()))
+                                            return;
                                     }
 
-                                    TeriumVelocityStartup.getInstance().getProxyServer().registerServer(new ServerInfo(packetAdd.serviceName(), new InetSocketAddress(packetAdd.parsedNode().orElseGet(null).getAddress().getAddress().getHostAddress(), packetAdd.parsedCloudService().orElseGet(null).getPort())));
+                                    InetSocketAddress address = new InetSocketAddress(
+                                            packetAdd.parsedNode().orElse(null).getAddress().getAddress().getHostAddress(),
+                                            packetAdd.parsedCloudService().orElse(null).getPort());
+
+                                    if (isVelocity())
+                                        TeriumVelocityStartup.getInstance().registerServer(service, address);
+                                    else
+                                        TeriumWaterfallStartup.getInstance().registerServer(service, address);
                                 }
                             }
 
                             if (packet instanceof PacketPlayOutServiceRemove packetRemove) {
-                                TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).ifPresentOrElse(registeredServer -> TeriumVelocityStartup.getInstance().getProxyServer().unregisterServer(registeredServer.getServerInfo()), () -> {
-                                    System.out.println("This server isn't registered! (" + packetRemove.serviceName() + ")");
-                                });
+                                if (isVelocity()) {
+                                    TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetRemove.serviceName()).ifPresentOrElse(
+                                            registeredServer -> TeriumVelocityStartup.getInstance().getProxyServer().unregisterServer(registeredServer.getServerInfo()),
+                                            () -> System.out.println("This server isn't registered! (" + packetRemove.serviceName() + ")")
+                                    );
+                                } else {
+                                    net.md_5.bungee.api.config.ServerInfo serverInfo = TeriumWaterfallStartup.getInstance().getProxy().getServers().get(packetRemove.serviceName());
+                                    if (serverInfo != null) {
+                                        TeriumWaterfallStartup.getInstance().getProxy().getServers().remove(packetRemove.serviceName());
+                                    } else {
+                                        System.out.println("This server isn't registered! (" + packetRemove.serviceName() + ")");
+                                    }
+                                }
                             }
 
                             if (packet instanceof PacketPlayOutCloudPlayerDisconnect disconnect) {
-                                TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(disconnect.cloudPlayer()).ifPresent(player -> player.disconnect(disconnect.message().contains("§") ? Component.text(disconnect.message()) : MiniMessage.miniMessage().deserialize(disconnect.message())));
+                                if (!TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().getVersion().contains("bungeecord")) {
+                                    TeriumVelocityStartup.getInstance().disconnectPlayer(TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(disconnect.cloudPlayer()).orElse(null), disconnect.message());
+                                } else {
+                                    if (TeriumWaterfallStartup.getInstance().getProxy().getPlayer(disconnect.cloudPlayer()) != null) {
+                                        TeriumWaterfallStartup.getInstance().disconnectPlayer(TeriumWaterfallStartup.getInstance().getProxy().getPlayer(disconnect.cloudPlayer()), disconnect.message());
+                                    }
+                                }
                             }
 
                             if (packet instanceof PacketPlayOutCloudPlayerConnect packetConnect) {
-                                TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(packetConnect.cloudPlayer()).ifPresent(player -> player.createConnectionRequest(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetConnect.cloudService()).orElse(null)).connect());
+                                if (isVelocity()) {
+                                    TeriumVelocityStartup.getInstance().getProxyServer().getPlayer(packetConnect.cloudPlayer()).ifPresent(player ->
+                                            player.createConnectionRequest(TeriumVelocityStartup.getInstance().getProxyServer().getServer(packetConnect.cloudService()).orElse(null)).connect()
+                                    );
+                                } else {
+                                    net.md_5.bungee.api.config.ServerInfo serverInfo = TeriumWaterfallStartup.getInstance().getProxy().getServerInfo(packetConnect.cloudService());
+                                    if (TeriumWaterfallStartup.getInstance().getProxy().getPlayer(packetConnect.cloudPlayer()) != null && serverInfo != null) {
+                                        TeriumWaterfallStartup.getInstance().getProxy().getPlayer(packetConnect.cloudPlayer()).connect(serverInfo);
+                                    }
+                                }
                             }
 
-                            if (packet instanceof PacketPlayOutServiceExecuteCommand newPacket)
-                                if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName().equals(newPacket.cloudService()))
-                                    TeriumVelocityStartup.getInstance().executeCommand(newPacket.command());
+                            if (packet instanceof PacketPlayOutServiceExecuteCommand newPacket) {
+                                if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName().equals(newPacket.cloudService())) {
+                                    if (isVelocity()) {
+                                        TeriumVelocityStartup.getInstance().executeCommand(newPacket.command());
+                                    } else {
+                                        TeriumWaterfallStartup.getInstance().getProxy().getPluginManager().dispatchCommand(TeriumWaterfallStartup.getInstance().getProxy().getConsole(), newPacket.command()
+                                        );
+                                    }
+                                }
+                            }
                         } else {
                             if (packet instanceof PacketPlayOutServiceExecuteCommand newPacket)
                                 if (TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName().equals(newPacket.cloudService()))
@@ -253,6 +299,10 @@ public class TeriumNetworking implements IDefaultTeriumNetworking {
         });
 
         sendPacket(new PacketPlayOutServiceRegister());
+    }
+
+    private boolean isVelocity() {
+        return TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().getVersion().contains("velocity");
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.net.URL;
 public enum ServerVersions {
     VELOCITY_3_3_0_SNAPSHOT("velocity-3.3.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.3.0-SNAPSHOT/"),
     VELOCITY_3_2_0_SNAPSHOT("velocity-3.2.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/"),
+    BUNGEECORD_LATEST("bungeecord-latest", "https://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar"),
     PAPER_1_20_6("paper-1.20.6", "https://api.papermc.io/v2/projects/paper/versions/1.20.6/"),
     PAPER_1_20_5("paper-1.20.5", "https://api.papermc.io/v2/projects/paper/versions/1.20.5/"),
     PAPER_1_20_4("paper-1.20.4", "https://api.papermc.io/v2/projects/paper/versions/1.20.4/"),
@@ -54,26 +55,30 @@ public enum ServerVersions {
 
     @SneakyThrows
     public static String getLatestVersion(ServerVersions serverVersion) {
-        HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(serverVersion.getUrl()).openConnection();
-        httpURLConnection.setRequestMethod("GET");
-        httpURLConnection.connect();
+        if(!serverVersion.name.contains("bungeecord")) {
+            HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(serverVersion.getUrl()).openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.connect();
 
-        String line = "";
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-        StringBuilder response = new StringBuilder();
-        while ((line = bufferedReader.readLine()) != null) {
-            response.append(line);
-        }
-        bufferedReader.close();
+            String line = "";
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            while ((line = bufferedReader.readLine()) != null) {
+                response.append(line);
+            }
+            bufferedReader.close();
 
-        if (serverVersion.getName().startsWith("purpur-")) {
-            JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonObject().get("all").getAsJsonArray();
-            int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
-            return serverVersion.getUrl() + latestBuild + "/download";
-        } else {
-            JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonArray();
-            int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
-            return serverVersion.getUrl() + "builds/" + latestBuild + "/downloads/" + serverVersion.getName() + "-" + latestBuild + ".jar";
+            if (serverVersion.getName().startsWith("purpur-")) {
+                JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonObject().get("all").getAsJsonArray();
+                int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
+                return serverVersion.getUrl() + latestBuild + "/download";
+            } else {
+                JsonArray jsonArray = new JsonParser().parse(response.toString()).getAsJsonObject().get("builds").getAsJsonArray();
+                int latestBuild = jsonArray.get(jsonArray.size() - 1).getAsInt();
+                return serverVersion.getUrl() + "builds/" + latestBuild + "/downloads/" + serverVersion.getName() + "-" + latestBuild + ".jar";
+            }
         }
+
+        return serverVersion.url;
     }
 }

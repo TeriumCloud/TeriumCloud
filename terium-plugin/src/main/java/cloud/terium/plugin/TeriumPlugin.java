@@ -34,6 +34,7 @@ import cloud.terium.teriumapi.template.ITemplateFactory;
 import cloud.terium.teriumapi.template.ITemplateProvider;
 import com.velocitypowered.api.proxy.Player;
 import lombok.Getter;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
@@ -216,6 +217,17 @@ public final class TeriumPlugin extends TeriumAPI {
                 .filter(service -> !service.isLocked())
                 .filter(service -> (player.getCurrentServer().isEmpty()
                         || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
+                .min(Comparator.comparing(ICloudService::getOnlinePlayers));
+    }
+
+    public @NotNull Optional<ICloudService> getWaterfallFallback(final ProxiedPlayer player) {
+        return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream()
+                .filter(service -> service.getServiceState().equals(ServiceState.ONLINE))
+                .filter(service -> !service.getServiceGroup().getServiceType().equals(ServiceType.Proxy))
+                .filter(service -> service.getServiceGroup().getServiceType().equals(ServiceType.Lobby))
+                .filter(service -> !service.isLocked())
+                /*.filter(service -> (player.getServer() != null)
+                        && !player.getServer().getInfo().getName().equals(service.getServiceName()))*/
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers));
     }
 

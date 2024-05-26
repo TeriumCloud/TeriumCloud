@@ -97,7 +97,7 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void prepare() {
         this.folder.mkdirs();
-        FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
+        FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : (serviceGroup.getVersion().contains("bungeecord") ? "data//versions//config.yml" : "data//versions//velocity.toml")), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
         FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
         templates.forEach(template -> {
@@ -157,9 +157,14 @@ public class CloudService implements ICloudService {
             }
         } else {
             Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            if(!serviceGroup.getVersion().contains("bungeecord")) {
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            } else {
+                this.replaceInFile(new File(this.folder, "config.yml"), "%port%", port + "");
+                this.replaceInFile(new File(this.folder, "config.yml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            }
         }
 
         ClusterStartup.getCluster().getNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), serviceId, port, maxPlayers, getMaxMemory(),

@@ -4,11 +4,18 @@ import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.command.CloudCommand;
 import cloud.terium.plugin.velocity.listener.LoginListener;
 import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
+import cloud.terium.teriumapi.service.ICloudService;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
+import java.net.InetSocketAddress;
 
 @Getter
 public class TeriumVelocityStartup {
@@ -46,5 +53,18 @@ public class TeriumVelocityStartup {
 
     public void executeCommand(String command) {
         TeriumVelocityStartup.getInstance().getProxyServer().getCommandManager().executeAsync(TeriumVelocityStartup.getInstance().getProxyServer().getConsoleCommandSource(), command);
+    }
+
+    public void disconnectPlayer(Player player, String message) {
+        player.disconnect(message.contains("§") ? Component.text(message) : MiniMessage.miniMessage().deserialize(message));
+    }
+
+    public void registerServer(ICloudService cloudService, InetSocketAddress address) {
+        proxyServer.registerServer(new ServerInfo(cloudService.getServiceName(), address));
+    }
+
+
+    public boolean checkServerIsRegistered(String serviceName) {
+        return TeriumVelocityStartup.getInstance().getProxyServer().getServer(serviceName).isPresent();
     }
 }
