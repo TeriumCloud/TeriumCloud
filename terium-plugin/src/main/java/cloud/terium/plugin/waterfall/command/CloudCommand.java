@@ -1,17 +1,17 @@
 package cloud.terium.plugin.waterfall.command;
 
 import cloud.terium.plugin.TeriumPlugin;
+import cloud.terium.plugin.waterfall.TeriumWaterfallStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.template.ITemplate;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CloudCommand extends Command implements TabExecutor {
+
+    private final BungeeAudiences audiences = BungeeAudiences.builder(TeriumWaterfallStartup.getInstance()).build();
 
     public CloudCommand(String name) {
         super(name);
@@ -86,7 +88,7 @@ public class CloudCommand extends Command implements TabExecutor {
                     sender.sendMessage(new TextComponent("§cUsage: /" + getName() + " copy <service> <template>"));
                 }
                 break;
-            case "stopUselessServices":
+            case "stopuselessservices":
                 if (sender.hasPermission("terium.command.stopUselessServices") || sender.hasPermission("terium.command.*")) {
                     stopUselessServices(sender);
                 } else {
@@ -113,32 +115,37 @@ public class CloudCommand extends Command implements TabExecutor {
     }
 
     private void list(CommandSender sender) {
+        Audience audience = (sender instanceof Player) ? audiences.player((ProxiedPlayer) sender) : Audience.audience(audiences.sender(sender));
         sender.sendMessage(new TextComponent(" "));
         TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(group -> {
-            sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "Services from group '<#96908c>" + group.getGroupName() + "<white>':"));
+            audience(sender).sendMessage(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "Services from group '<#96908c>" + group.getGroupName() + "<white>':"));
             TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(group.getGroupName()).forEach(service ->
                     sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Name: <#c49b9b>" + service.getServiceName() + "<white> | State: " + "<" + service.getServiceState().getHex() + ">" + service.getServiceState() + "<white> | Players: <#a7c7d6>" + service.getOnlinePlayers() + "<white>/<#a79ed9>" + service.getMaxPlayers() + "<white>")));
 
             sender.sendMessage(new TextComponent(" "));
         });
     }
+    
+    private Audience audience(CommandSender sender) {
+        return (sender instanceof Player) ? audiences.player((ProxiedPlayer) sender) : Audience.audience(audiences.sender(sender));
+    }
 
     private void modules(CommandSender sender) {
         if (TeriumAPI.getTeriumAPI().getProvider().getModuleProvider().getAllModules().size() > 0)
             TeriumAPI.getTeriumAPI().getProvider().getModuleProvider().getAllModules().forEach(module -> {
-                sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + module.getName() + "(<#96908c>" + module.getFileName() + "<white>) by <#87a19c>" + module.getAuthor() + "<white> version <#87a19c>" + module.getVersion() + "<white>."));
+                audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + module.getName() + "(<#96908c>" + module.getFileName() + "<white>) by <#87a19c>" + module.getAuthor() + "<white> version <#87a19c>" + module.getVersion() + "<white>.")));
             });
         else
-            sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>There are no loaded modules."));
+            audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>There are no loaded modules.")));
     }
 
     private void groups(CommandSender sender) {
         if (TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().size() > 0)
             TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getAllServiceGroups().forEach(serviceGroup -> {
-                sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: " + TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getOnlineServicesFromServiceGroup(serviceGroup.getGroupName()) + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).collect(Collectors.joining(", "))));
+                audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "Name: " + serviceGroup.getGroupName() + "(" + serviceGroup.getServiceType().toString().toUpperCase() + ") - Online services: " + TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getOnlineServicesFromServiceGroup(serviceGroup.getGroupName()) + " - Templates: " + serviceGroup.getTemplates().stream().map(ITemplate::getName).collect(Collectors.joining(", ")))));
             });
         else
-            sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>There are no loaded service groups."));
+            audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>There are no loaded service groups.")));
     }
 
     private void serviceCommand(CommandSender sender, String[] args) {
@@ -149,24 +156,24 @@ public class CloudCommand extends Command implements TabExecutor {
                     case "shutdown":
                     case "stop":
                         service.shutdown();
-                        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<green>Service '" + serviceName + "' has been shut down."));
+                        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<green>Service '" + serviceName + "' has been shut down.")));
                         break;
                     default:
-                        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>Invalid service command. Use shutdown or stop."));
+                        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>Invalid service command. Use shutdown or stop.")));
                 }
             } else {
                 serviceInfo(sender, service);
             }
-        }, () -> sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>A service with that name isn't registered.")));
+        }, () -> audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>A service with that name isn't registered."))));
     }
 
     private void serviceInfo(CommandSender sender, ICloudService service) {
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "Information about '" + service.getServiceName() + "':"));
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>State: " + "<" + service.getServiceState().getHex() + ">" + service.getServiceState() + "<white>"));
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Group: <#c49b9b>" + service.getServiceGroup().getGroupName() + "<white>"));
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Type: <#c49b9b>" + service.getServiceGroup().getServiceType().name() + "<white>"));
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Players: <#a7c7d6>" + service.getOnlinePlayers() + "<white>/<#a79ed9>" + service.getMaxPlayers() + "<white>"));
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Host: <#c49b9b>" + service.getServiceGroup().getGroupNode().getAddress().getAddress().getHostAddress() + ":" + service.getPort() + "<white>"));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "Information about '" + service.getServiceName() + "':")));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>State: " + "<" + service.getServiceState().getHex() + ">" + service.getServiceState() + "<white>")));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Group: <#c49b9b>" + service.getServiceGroup().getGroupName() + "<white>")));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Type: <#c49b9b>" + service.getServiceGroup().getServiceType().name() + "<white>")));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Players: <#a7c7d6>" + service.getOnlinePlayers() + "<white>/<#a79ed9>" + service.getMaxPlayers() + "<white>")));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + " <gray>● <white>Host: <#c49b9b>" + service.getServiceGroup().getGroupNode().getAddress().getAddress().getHostAddress() + ":" + service.getPort() + "<white>")));
     }
 
     private void playerCommand(CommandSender sender, String[] args) {
@@ -177,24 +184,24 @@ public class CloudCommand extends Command implements TabExecutor {
             if (args.length > 2) {
                 switch (args[2].toLowerCase()) {
                     case "kick":
-                        player.disconnect(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "You have been kicked from the network!"));
-                        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<green>Player '" + playerName + "' has been kicked."));
+                        player.disconnect(new TextComponent(MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(TeriumPlugin.getInstance().getPrefix() + "You have been kicked from the network!"))));
+                        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<green>Player '" + playerName + "' has been kicked.")));
                         break;
                     case "connect":
                         if (args.length > 3) {
                             TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(playerName).ifPresent(cloudPlayer -> cloudPlayer.connectWithService(TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(args[3]).orElseGet(null)));
                         } else {
-                            sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>Usage: /" + getName() + " player <player> connect <service>"));
+                            audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>Usage: /" + getName() + " player <player> connect <service>")));
                         }
                         break;
                     default:
-                        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>Invalid player command. Use kick or connect."));
+                        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>Invalid player command. Use kick or connect.")));
                 }
             } else {
-                sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>Usage: /" + getName() + " player <player> [kick|connect <service>]"));
+                audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>Usage: /" + getName() + " player <player> [kick|connect <service>]")));
             }
         } else {
-            sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>A player with that name isn't online."));
+            audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>A player with that name isn't online.")));
         }
     }
 
@@ -205,8 +212,8 @@ public class CloudCommand extends Command implements TabExecutor {
             for (int i = 0; i < count; i++) {
                 TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().createService(group);
             }
-            sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<green>Started " + count + " services from group '" + groupName + "'."));
-        }, () -> sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>A group with that name isn't registered.")));
+            audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<green>Started " + count + " services from group '" + groupName + "'.")));
+        }, () -> audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>A group with that name isn't registered."))));
     }
 
     private void copyService(CommandSender sender, String[] args) {
@@ -215,9 +222,9 @@ public class CloudCommand extends Command implements TabExecutor {
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(serviceName).ifPresentOrElse(service -> {
             TeriumAPI.getTeriumAPI().getProvider().getTemplateProvider().getTemplateByName(templateName).ifPresentOrElse(template -> {
                 service.copy(template);
-                sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<green>Service '" + serviceName + "' has been copied to template '" + templateName + "'."));
-            }, () -> sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>A template with that name isn't registered.")));
-        }, () -> sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<red>A service with that name isn't registered.")));
+                audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<green>Service '" + serviceName + "' has been copied to template '" + templateName + "'.")));
+            }, () -> audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>A template with that name isn't registered."))));
+        }, () -> audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<red>A service with that name isn't registered."))));
     }
 
     private void stopUselessServices(CommandSender sender) {
@@ -227,7 +234,7 @@ public class CloudCommand extends Command implements TabExecutor {
                 .collect(Collectors.toList());
 
         servicesToStop.forEach(ICloudService::shutdown);
-        sender.sendMessage(new TextComponent(TeriumPlugin.getInstance().getPrefix() + "<green>Stopped " + servicesToStop.size() + " useless services."));
+        audience(sender).sendMessage(MiniMessage.miniMessage().deserialize((TeriumPlugin.getInstance().getPrefix() + "<green>Stopped " + servicesToStop.size() + " useless services.")));
     }
 
     @Override
