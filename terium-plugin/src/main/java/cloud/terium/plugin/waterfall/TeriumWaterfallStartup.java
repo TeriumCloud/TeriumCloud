@@ -27,8 +27,7 @@ public class TeriumWaterfallStartup extends Plugin {
         try {
             teriumBridge = new TeriumPlugin();
             teriumBridge.getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement ->
-                    getProxy().getPluginManager().registerCommand(this, new CloudCommand(jsonElement.getAsString()))
-            );
+                    getProxy().getPluginManager().registerCommand(this, new CloudCommand(jsonElement.getAsString())));
 
             getProxy().getPluginManager().registerListener(this, new LoginListener());
             getProxy().getPluginManager().registerListener(this, new ServerConnectedListener());
