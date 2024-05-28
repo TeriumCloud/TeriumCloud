@@ -1,4 +1,4 @@
 name: terium-plugin
 version: "1.7-OXYGEN"
 author: Jxnnik
-main: cloud.terium.plugin.waterfall.TeriumWaterfallStartup
+main: cloud.terium.plugin.bungeecord.TeriumBungeecordStartup

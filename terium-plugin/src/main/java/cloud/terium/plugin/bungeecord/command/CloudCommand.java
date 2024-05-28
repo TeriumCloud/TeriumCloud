@@ -1,7 +1,7 @@
-package cloud.terium.plugin.waterfall.command;
+package cloud.terium.plugin.bungeecord.command;
 
 import cloud.terium.plugin.TeriumPlugin;
-import cloud.terium.plugin.waterfall.TeriumWaterfallStartup;
+import cloud.terium.plugin.bungeecord.TeriumBungeecordStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class CloudCommand extends Command implements TabExecutor {
 
-    private final BungeeAudiences audiences = BungeeAudiences.builder(TeriumWaterfallStartup.getInstance()).build();
+    private final BungeeAudiences audiences = BungeeAudiences.builder(TeriumBungeecordStartup.getInstance()).build();
 
     public CloudCommand(String name) {
         super(name);
@@ -61,28 +61,48 @@ public class CloudCommand extends Command implements TabExecutor {
                 }
             }
             case "service" -> {
-                if (args.length > 1 && (sender.hasPermission("terium.command.service") || sender.hasPermission("terium.command.*"))) {
+                if(sender.hasPermission("terium.command.service") || sender.hasPermission("terium.command.*")) {
+                    sender.sendMessage(new TextComponent("§cYou don't have permission to execute this command!"));
+                    return;
+                }
+
+                if (args.length > 1) {
                     serviceCommand(sender, args);
                 } else {
                     sender.sendMessage(new TextComponent("§cUsage: /" + getName() + " service <service> [shutdown|stop]"));
                 }
             }
             case "player" -> {
-                if (args.length > 1 && (sender.hasPermission("terium.command.player") || sender.hasPermission("terium.command.*"))) {
+                if(sender.hasPermission("terium.command.service") || sender.hasPermission("terium.command.*")) {
+                    sender.sendMessage(new TextComponent("§cYou don't have permission to execute this command!"));
+                    return;
+                }
+
+                if (args.length > 1) {
                     playerCommand(sender, args);
                 } else {
                     sender.sendMessage(new TextComponent("§cUsage: /" + getName() + " player <player> [kick|connect <service>]"));
                 }
             }
             case "start" -> {
-                if (args.length > 2 && (sender.hasPermission("terium.command.start") || sender.hasPermission("terium.command.*"))) {
+                if(sender.hasPermission("terium.command.service") || sender.hasPermission("terium.command.*")) {
+                    sender.sendMessage(new TextComponent("§cYou don't have permission to execute this command!"));
+                    return;
+                }
+
+                if (args.length > 2) {
                     startService(sender, args);
                 } else {
                     sender.sendMessage(new TextComponent("§cUsage: /" + getName() + " start <group> <count>"));
                 }
             }
             case "copy" -> {
-                if (args.length > 2 && (sender.hasPermission("terium.command.copy") || sender.hasPermission("terium.command.*"))) {
+                if(sender.hasPermission("terium.command.service") || sender.hasPermission("terium.command.*")) {
+                    sender.sendMessage(new TextComponent("§cYou don't have permission to execute this command!"));
+                    return;
+                }
+
+                if (args.length > 2) {
                     copyService(sender, args);
                 } else {
                     sender.sendMessage(new TextComponent("§cUsage: /" + getName() + " copy <service> <template>"));

@@ -1,9 +1,9 @@
-package cloud.terium.plugin.waterfall;
+package cloud.terium.plugin.bungeecord;
 
 import cloud.terium.plugin.TeriumPlugin;
-import cloud.terium.plugin.waterfall.command.CloudCommand;
-import cloud.terium.plugin.waterfall.listener.LoginListener;
-import cloud.terium.plugin.waterfall.listener.ServerConnectedListener;
+import cloud.terium.plugin.bungeecord.command.CloudCommand;
+import cloud.terium.plugin.bungeecord.listener.LoginListener;
+import cloud.terium.plugin.bungeecord.listener.ServerConnectedListener;
 import cloud.terium.teriumapi.service.ICloudService;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
@@ -13,10 +13,10 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 import java.net.InetSocketAddress;
 
-public class TeriumWaterfallStartup extends Plugin {
+public class TeriumBungeecordStartup extends Plugin {
 
     @Getter
-    private static TeriumWaterfallStartup instance;
+    private static TeriumBungeecordStartup instance;
     private static TeriumPlugin teriumBridge;
 
     @Override

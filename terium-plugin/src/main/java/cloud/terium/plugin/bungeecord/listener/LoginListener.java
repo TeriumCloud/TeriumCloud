@@ -1,10 +1,10 @@
-package cloud.terium.plugin.waterfall.listener;
+package cloud.terium.plugin.bungeecord.listener;
 
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
 import cloud.terium.plugin.TeriumPlugin;
-import cloud.terium.plugin.waterfall.TeriumWaterfallStartup;
+import cloud.terium.plugin.bungeecord.TeriumBungeecordStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -41,7 +41,7 @@ public class LoginListener implements Listener {
                 }
 
                 TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
-                    cloudService.setOnlinePlayers(TeriumWaterfallStartup.getInstance().getProxy().getOnlineCount() + 1);
+                    cloudService.setOnlinePlayers(TeriumBungeecordStartup.getInstance().getProxy().getOnlineCount() + 1);
                     cloudService.update();
                 });
             } else {
@@ -61,7 +61,7 @@ public class LoginListener implements Listener {
     public void handlePlayerChooseInitialServer(ServerConnectEvent event) {
         Optional<ICloudService> cloudService = TeriumPlugin.getInstance().getWaterfallFallback(event.getPlayer());
 
-        cloudService.ifPresentOrElse(service -> event.setTarget(TeriumWaterfallStartup.getInstance().getProxy().getServerInfo(service.getServiceName())), () -> {
+        cloudService.ifPresentOrElse(service -> event.setTarget(TeriumBungeecordStartup.getInstance().getProxy().getServerInfo(service.getServiceName())), () -> {
             event.getPlayer().sendMessage(new TextComponent("<red>No fallback server found."));
         });
 
@@ -86,7 +86,7 @@ public class LoginListener implements Listener {
         });
 
         TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServiceByName(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceName()).ifPresent(cloudService -> {
-            cloudService.setOnlinePlayers(TeriumWaterfallStartup.getInstance().getProxy().getOnlineCount());
+            cloudService.setOnlinePlayers(TeriumBungeecordStartup.getInstance().getProxy().getOnlineCount());
             cloudService.update();
         });
     }

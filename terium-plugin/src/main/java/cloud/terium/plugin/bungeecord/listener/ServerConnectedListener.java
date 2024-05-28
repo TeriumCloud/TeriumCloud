@@ -1,8 +1,8 @@
-package cloud.terium.plugin.waterfall.listener;
+package cloud.terium.plugin.bungeecord.listener;
 
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnectedService;
 import cloud.terium.plugin.TeriumPlugin;
-import cloud.terium.plugin.waterfall.TeriumWaterfallStartup;
+import cloud.terium.plugin.bungeecord.TeriumBungeecordStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -31,7 +31,7 @@ public class ServerConnectedListener implements Listener {
 
         if (player.isConnected()) {
             TeriumPlugin.getInstance().getWaterfallFallback(player).filter(service -> !event.getKickedFrom().getName().equals("fallback")).ifPresent(service -> {
-                ServerInfo registeredServer = TeriumWaterfallStartup.getInstance().getProxy().getServerInfo(service.getServiceName());
+                ServerInfo registeredServer = TeriumBungeecordStartup.getInstance().getProxy().getServerInfo(service.getServiceName());
                 if (registeredServer != null) {
                     if (event.getKickedFrom() != null && event.getKickedFrom().getName().equals(registeredServer.getName())) {
                         event.setCancelServer(registeredServer);
