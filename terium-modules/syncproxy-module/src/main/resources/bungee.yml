@@ -1,0 +1,5 @@
+name: teriummodule-syncproxy
+version: "1.7-OXYGEN"
+author: Jxnnik
+main: cloud.terium.module.syncproxy.bungeecord.SyncproxyBungeecordStartup
+depend: [terium-plugin]
