@@ -1,5 +1,6 @@
 package cloud.terium.module.notification;
 
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.module.IModule;
 import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.module.annotation.Module;

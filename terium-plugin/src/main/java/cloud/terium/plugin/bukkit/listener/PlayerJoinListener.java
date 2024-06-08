@@ -23,12 +23,6 @@ public class PlayerJoinListener implements Listener {
             cloudPlayer.updateUsername(event.getPlayer().getName());
             cloudPlayer.updateConnectedService(TeriumAPI.getTeriumAPI().getProvider().getThisService());
 
-            try {
-                Property prop = ((GameProfile) event.getPlayer().getClass().getDeclaredMethod("getProfile").invoke(event.getPlayer())).getProperties().get("textures").iterator().next();
-                cloudPlayer.updateSkinData(prop.getValue(), prop.getSignature());
-            } catch (Exception ignored) {
-            }
-
             cloudPlayer.update();
         });
     }

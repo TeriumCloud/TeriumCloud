@@ -1,0 +1,5 @@
+name: teriummodule-permission
+version: "1.7-OXYGEN"
+author: Jxnnik
+main: cloud.terium.module.permission.bungeecord.PermissionBungeeCordStartup
+depend: [terium-plugin]

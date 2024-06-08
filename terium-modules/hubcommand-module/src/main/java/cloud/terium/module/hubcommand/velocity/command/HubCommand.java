@@ -1,6 +1,6 @@
-package cloud.terium.module.hubcommand.command;
+package cloud.terium.module.hubcommand.velocity.command;
 
-import cloud.terium.module.hubcommand.velocity.HubCommandStartup;
+import cloud.terium.module.hubcommand.velocity.HubCommandVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
 import cloud.terium.teriumapi.service.ICloudService;
@@ -20,7 +20,7 @@ public class HubCommand implements SimpleCommand {
         ICloudPlayer cloudPlayer = TeriumAPI.getTeriumAPI().getProvider().getCloudPlayerProvider().getCloudPlayer(((Player) invocation.source()).getUniqueId()).orElseGet(null);
 
         if (cloudPlayer.getConnectedCloudService().get().getServiceType().equals(ServiceType.Lobby)) {
-            player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandStartup.getInstance().getConfigManager().getJson().get("already.message").getAsString()));
+            player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandVelocityStartup.getInstance().getConfigManager().getJson().get("already.message").getAsString()));
             return;
         }
 
@@ -31,7 +31,7 @@ public class HubCommand implements SimpleCommand {
                         || !player.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers)).ifPresentOrElse(cloudService -> {
                     cloudPlayer.connectWithService(cloudService);
-                    player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandStartup.getInstance().getConfigManager().getJson().get("successful.message").getAsString()));
-                }, () -> player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandStartup.getInstance().getConfigManager().getJson().get("unavailable.message").getAsString())));
+                    player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandVelocityStartup.getInstance().getConfigManager().getJson().get("successful.message").getAsString()));
+                }, () -> player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(HubCommandVelocityStartup.getInstance().getConfigManager().getJson().get("unavailable.message").getAsString())));
     }
 }

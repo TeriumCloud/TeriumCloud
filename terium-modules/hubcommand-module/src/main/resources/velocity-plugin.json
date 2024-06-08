@@ -11,5 +11,5 @@
       "optional": false
     }
   ],
-  "main": "cloud.terium.module.hubcommand.velocity.HubCommandStartup"
+  "main": "cloud.terium.module.hubcommand.velocity.HubCommandVelocityStartup"
 }

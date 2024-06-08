@@ -23,15 +23,12 @@ import java.util.Arrays;
 @Setter
 public class TeriumPermissionModule implements IModule {
 
+    @Getter
     private static TeriumPermissionModule instance;
     private ConfigManager configManager;
     private PermissionGroupManager permissionGroupManager;
     private PermissionUserManager permissionUserManager;
     private UserFileManager userFileManager;
-
-    public static TeriumPermissionModule getInstance() {
-        return instance;
-    }
 
     @Override
     public void onEnable() {

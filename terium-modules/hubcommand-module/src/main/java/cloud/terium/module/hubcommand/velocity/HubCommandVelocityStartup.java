@@ -1,20 +1,20 @@
 package cloud.terium.module.hubcommand.velocity;
 
-import cloud.terium.module.hubcommand.command.HubCommand;
+import cloud.terium.module.hubcommand.velocity.command.HubCommand;
 import cloud.terium.module.hubcommand.manager.ConfigManager;
 import com.google.inject.Inject;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 
 @Getter
-public class HubCommandStartup {
+public class HubCommandVelocityStartup {
 
-    private static HubCommandStartup instance;
+    private static HubCommandVelocityStartup instance;
     private final ProxyServer proxyServer;
     private final ConfigManager configManager;
 
     @Inject
-    public HubCommandStartup(ProxyServer proxyServer) {
+    public HubCommandVelocityStartup(ProxyServer proxyServer) {
         instance = this;
         this.proxyServer = proxyServer;
         this.configManager = new ConfigManager();
@@ -22,7 +22,7 @@ public class HubCommandStartup {
         this.proxyServer.getCommandManager().register(this.proxyServer.getCommandManager().metaBuilder("hub").build(), new HubCommand());
     }
 
-    public static HubCommandStartup getInstance() {
+    public static HubCommandVelocityStartup getInstance() {
         return instance;
     }
 }
