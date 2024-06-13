@@ -206,9 +206,9 @@ public class GroupCommand extends Command {
                     return Arrays.asList("fallback-node", "template");
             }
             case 4 -> {
-                if (args[1].equalsIgnoreCase("lobby") || args[1].equalsIgnoreCase("server"))
+                if (args[1].equals("lobby") || args[1].equals("server"))
                     return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> name.startsWith("paper") || name.startsWith("purpur")).toList();
-                if (args[1].equalsIgnoreCase("proxy"))
+                if (args[1].equals("proxy"))
                     return Arrays.stream(ServerVersions.values()).map(ServerVersions::getName).filter(name -> !name.startsWith("paper")).filter(name -> !name.startsWith("purpur")).toList();
 
                 if (args[0].equalsIgnoreCase("update")) {
