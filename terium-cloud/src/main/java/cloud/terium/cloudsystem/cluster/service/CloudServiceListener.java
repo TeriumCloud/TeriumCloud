@@ -45,7 +45,7 @@ public class CloudServiceListener implements Listener {
                     case "group_with_templates" ->
                             ClusterStartup.getCluster().getServiceFactory().createService(event.getServiceGroup(), event.getTemplates());
                     case "full" ->
-                            ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates(), event.getServiceId(), event.getMaxPlayers(), event.getMemory(), event.getPropertyCache());
+                        ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates(), event.getServiceId(), event.getMaxPlayers(), event.getMemory(), event.getPropertyCache());
                     case "group_with_custom_name" ->
                             ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup());
                     case "group_template_and_custom_name" ->

@@ -53,11 +53,11 @@ public class CloudService implements ICloudService {
     private Thread thread;
 
     public CloudService(ICloudServiceGroup cloudServiceGroup) {
-        this(cloudServiceGroup.getTemplates(), cloudServiceGroup, ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.hasPort() ? cloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000));
+        this(cloudServiceGroup.getTemplates(), cloudServiceGroup, ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.hasPort() ? (ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().isEmpty() ? cloudServiceGroup.getPort() : (cloudServiceGroup.getPort() + ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().size())) : ThreadLocalRandom.current().nextInt(20000, 50000));
     }
 
     public CloudService(ICloudServiceGroup cloudServiceGroup, List<ITemplate> templates) {
-        this(templates, cloudServiceGroup, ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.hasPort() ? cloudServiceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), cloudServiceGroup.getMaxPlayers());
+        this(templates, cloudServiceGroup, ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(cloudServiceGroup), cloudServiceGroup.hasPort() ? (ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().isEmpty() ? cloudServiceGroup.getPort() : (cloudServiceGroup.getPort() + ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().size())) : ThreadLocalRandom.current().nextInt(20000, 50000), cloudServiceGroup.getMaxPlayers());
     }
 
     public CloudService(List<ITemplate> templates, ICloudServiceGroup cloudServiceGroup, int serviceId, int port) {

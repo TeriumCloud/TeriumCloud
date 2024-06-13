@@ -13,14 +13,14 @@ repositories {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
-    compileOnly 'cloud.terium:terium-api:1.7-OXYGEN'
-    compileOnly 'cloud.terium:terium-framework:latest'
-    compileOnly 'cloud.terium:terium-cloud:1.7-OXYGEN'
+    compileOnly fileTree(dir: '../../terium-api/build/libs', include: 'terium-api.jar')
+    compileOnly fileTree(dir: '../../terium-framework/build/libs', include: '*.jar')
+    compileOnly fileTree(dir: '../../terium-cloud/build/libs', include: 'terium-OXYGEN.jar')
 
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'com.github.docker-java:docker-java-core:3.3.2'
     implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.2'
 
-    annotationProcessor 'cloud.terium:terium-api:1.7-OXYGEN'
+    annotationProcessor fileTree(dir: '../../terium-api/build/libs', include: 'terium-api.jar')
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 }

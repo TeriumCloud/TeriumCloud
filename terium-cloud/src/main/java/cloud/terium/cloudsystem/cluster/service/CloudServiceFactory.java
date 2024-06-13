@@ -26,22 +26,22 @@ public class CloudServiceFactory implements ICloudServiceFactory {
 
     @Override
     public void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates, int serviceId, int maxPlayers, int memory) {
-        new CloudService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), serviceId, serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), maxPlayers, memory).start();
+        new CloudService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), serviceId, serviceGroup.hasPort() ? (ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().isEmpty() ? serviceGroup.getPort() : (serviceGroup.getPort() + ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().size())) : ThreadLocalRandom.current().nextInt(20000, 50000), maxPlayers, memory).start();
     }
 
     @Override
     public void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates, int serviceId, int maxPlayers, int memory, HashMap<String, Object> hashMap) {
-        new CloudService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), serviceId, serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), maxPlayers, memory, hashMap).start();
+        new CloudService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), serviceId, serviceGroup.hasPort() ? (ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().isEmpty() ? serviceGroup.getPort() : (serviceGroup.getPort() + ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().size())) : ThreadLocalRandom.current().nextInt(20000, 50000), maxPlayers, memory, hashMap).start();
     }
 
     @Override
     public void createService(String serviceName, ICloudServiceGroup serviceGroup) {
-        new CloudService(serviceName, serviceGroup.getTemplates(), serviceGroup, serviceGroup.getServiceType(), ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), serviceGroup.getMaxPlayers(), serviceGroup.getMemory()).start();
+        new CloudService(serviceName, serviceGroup.getTemplates(), serviceGroup, serviceGroup.getServiceType(), ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? (ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().isEmpty() ? serviceGroup.getPort() : (serviceGroup.getPort() + ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().size())) : ThreadLocalRandom.current().nextInt(20000, 50000), serviceGroup.getMaxPlayers(), serviceGroup.getMemory()).start();
     }
 
     @Override
     public void createService(String serviceName, ICloudServiceGroup serviceGroup, List<ITemplate> templates) {
-        new CloudService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? serviceGroup.getPort() : ThreadLocalRandom.current().nextInt(20000, 50000), serviceGroup.getMaxPlayers(), serviceGroup.getMemory()).start();
+        new CloudService(serviceName, templates, serviceGroup, serviceGroup.getServiceType(), ClusterStartup.getCluster().getServiceProvider().getFreeServiceId(serviceGroup), serviceGroup.hasPort() ? (ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().isEmpty() ? serviceGroup.getPort() : (serviceGroup.getPort() + ClusterStartup.getCluster().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceGroup().hasPort()).toList().size())) : ThreadLocalRandom.current().nextInt(20000, 50000), serviceGroup.getMaxPlayers(), serviceGroup.getMemory()).start();
     }
 
     @Override
