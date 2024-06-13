@@ -1,5 +1,5 @@
 [![Banner](https://i.imgur.com/xypsvWn.png)](https://terium.cloud)
-[![Version](https://img.shields.io/badge/Terium%20Version-v1.6--OXYGEN-blue?style=for-the-badge&logo=appveyor)](https://terium.cloud/download/terium-1.7-OXYGEN.zip) [![Discord](https://img.shields.io/badge/Discord%20Server-JOIN%20NOW-%237289da?style=for-the-badge&logo=discord)](https://discord.com/invite/5VrY59sffQ) [![Twitter](https://img.shields.io/twitter/follow/teriumcloud?color=%231DA1F2&logo=twitter&style=for-the-badge)](https://twitter.com/@teriumcloud)
+[![Version](https://img.shields.io/badge/Terium%20Version-v1.6--OXYGEN-blue?style=for-the-badge&logo=appveyor)](https://terium.cloud/download/terium-1.7-OXYGEN.zip) [![Discord](https://img.shields.io/badge/Discord%20Server-JOIN%20NOW-%237289da?style=for-the-badge&logo=discord)](https://discord.gg/RM8FDnwRxm) [![Twitter](https://img.shields.io/twitter/follow/teriumcloud?color=%231DA1F2&logo=twitter&style=for-the-badge)](https://twitter.com/@teriumcloud)
 
 ## Terium
 
@@ -26,7 +26,7 @@
 - [Latest Release](https://github.com/TeriumCloud/Terium/releases)
 - [Documentation](https://github.com/TeriumCloud/Terium/wiki)
 - [GitHub repo](https://github.com/TeriumCloud/Terium)
-- [Discord Support](https://discord.com/invite/5VrY59sffQ)
+- [Discord Support](https://discord.gg/RM8FDnwRxm)
 
 ## Installation (MASTER/CLUSTER)
 
@@ -62,6 +62,6 @@
 
 Thanks to all partners of TeriumCloud and persons who helped:
 
-- [invis-cloud.de](https://invis-cloud.de) (Hosting solution)
 - [TGamings](https://github.com/TGamings)
+- [Jxnnik](https://github.com/ByRaudy)
 - [MenschenToaster](https://github.com/MenschenToaster)
