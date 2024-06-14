@@ -3,6 +3,7 @@ package cloud.terium.cloudsystem.cluster.console.commands;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
+import cloud.terium.cloudsystem.node.template.TemplateFactory;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.service.ServiceType;
@@ -71,8 +72,20 @@ public class GroupCommand extends Command {
                                         serviceGroup.setMaintenance(Boolean.parseBoolean(args[3]));
                                 }
                                 case "static" -> {
-                                    if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false"))
-                                        serviceGroup.setStatic(Boolean.parseBoolean(args[3]));
+                                    if (args[3].equalsIgnoreCase("true")) {
+                                        ClusterStartup.getCluster().getTemplateFactory().createTemplate("Backup");
+                                        serviceGroup.setStatic(true);
+                                        Optional<ITemplate> iTemplate = ClusterStartup.getCluster().getTemplateProvider().getTemplateByName("Backup");
+                                        serviceGroup.getTemplates().add(0, iTemplate.get());
+                                        serviceGroup.update();
+
+                                    } else if (args[3].equalsIgnoreCase("false")) {
+                                        if (ClusterStartup.getCluster().getTemplateProvider().getTemplateByName("Backup").isPresent()) {
+                                            ClusterStartup.getCluster().getTemplateFactory().deleteTemplate("Backup");
+                                        }
+                                        serviceGroup.setStatic(false);
+                                        serviceGroup.update();
+                                    }
                                 }
                                 case "version" -> {
                                     if (!serviceGroup.getServiceType().equals(ServiceType.Proxy)) {
