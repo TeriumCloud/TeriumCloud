@@ -5,6 +5,7 @@ include('terium-cloud')
 include('terium-plugin')
 include('terium-modules')
 include('terium-framework')
+include ('terium-minestom-extension')
 
 initializeSubProjects("terium-modules",
         "notification-module",
