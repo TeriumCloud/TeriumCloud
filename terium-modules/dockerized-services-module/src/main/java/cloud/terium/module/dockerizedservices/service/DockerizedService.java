@@ -1,7 +1,7 @@
 package cloud.terium.module.dockerizedservices.service;
 
+import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.module.dockerizedservices.TeriumDockerizedServices;
-import cloud.terium.module.dockerizedservices.utils.ServerVersions;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceExecuteCommand;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceRemove;
