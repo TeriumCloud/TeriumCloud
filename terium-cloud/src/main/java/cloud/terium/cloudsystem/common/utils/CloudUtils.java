@@ -29,7 +29,7 @@ public class CloudUtils {
         this.isInScreen = false;
         this.firstStart = false;
         this.versionGotChecked = false;
-        this.version = "1.7-OXYGEN";
+        this.version = "1.8-OXYGEN";
         this.playerList = new ArrayList<>();
 
         File data = new File("data//versions");
@@ -48,7 +48,7 @@ public class CloudUtils {
             Logger.log("Successfully to downloaded 'config.yml'.");
             Thread.sleep(1000);
             Logger.log("Trying to download 'teriumcloud-plugin.jar'...");
-            FileUtils.copyURLToFile(new URL("https://github.com/TeriumCloud/external-file-save/raw/main/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
+            FileUtils.copyURLToFile(new URL("https://raw.githubusercontent.com/TeriumCloud/external-file-save/main/teriumcloud-plugin.jar"), new File("data//versions//teriumcloud-plugin.jar"));
             Logger.log("Successfully to downloaded 'teriumcloud-plugin.jar'.");
         }
         data.mkdirs();

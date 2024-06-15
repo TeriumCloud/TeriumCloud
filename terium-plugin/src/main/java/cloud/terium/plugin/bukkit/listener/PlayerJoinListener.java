@@ -1,8 +1,6 @@
 package cloud.terium.plugin.bukkit.listener;
 
 import cloud.terium.teriumapi.TeriumAPI;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -97,7 +97,7 @@ public class NodeStartup extends TeriumAPI {
                  §f  |    |______ |_____/   |   |     | |  |  | §b| \\  | |     | |     \\ |______
                  §f  |    |______ |    \\_ __|__ |_____| |  |  | §b|  \\_| |_____| |_____/ |______ §7[§f%version%§7]
                                                                                                  \s
-                 §7> §fTerium by ByRaudy(Jannik H.)\s
+                 §7> §fTerium by ByRaudy(Jannik H.) §7& §fveteex(Niklas S.)\s
                  §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                  """.replace("%version%", TeriumCloud.getTerium().getCloudUtils().getVersion()));
         Logger.log(("[" + DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + "\u001B[0m] " + LogType.INFO.getPrefix() + "Welcome to terium-cloud!"));
@@ -148,7 +148,7 @@ public class NodeStartup extends TeriumAPI {
                  §f  |    |______ |_____/   |   |     | |  |  | §b| \\  | |     | |     \\ |______
                  §f  |    |______ |    \\_ __|__ |_____| |  |  | §b|  \\_| |_____| |_____/ |______ §7[§f%version%§7]
                                                                                                  \s
-                §7> §fTerium by ByRaudy(Jannik H.)\s
+                §7> §fTerium by ByRaudy(Jannik H.) §7& §fveteex(Niklas S.)\s
                 §7> §fDiscord: §bterium.cloud/discord §f| Twitter: §b@teriumcloud§f
                                  
                  §a> §fConnected with terium-server on %ip%:%port%.

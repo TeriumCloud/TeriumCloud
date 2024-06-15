@@ -13,7 +13,7 @@ import cloud.terium.teriumapi.module.ModuleType;
 import cloud.terium.teriumapi.module.annotation.Module;
 import lombok.Getter;
 
-@Module(name = "dockerized-services-module", author = "Jxnnik(ByRaudy)", version = "1.7-OXYGEN", description = "", reloadable = true, moduleType = ModuleType.CLOUD_ONLY)
+@Module(name = "dockerized-services-module", author = "Jxnnik(ByRaudy)", version = "1.8-OXYGEN", description = "", reloadable = true, moduleType = ModuleType.CLOUD_ONLY)
 @Getter
 public class TeriumDockerizedServices implements IModule {
 
