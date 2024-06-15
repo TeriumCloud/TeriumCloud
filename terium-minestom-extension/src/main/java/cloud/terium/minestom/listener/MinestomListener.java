@@ -1,6 +1,5 @@
 package cloud.terium.minestom.listener;
 
-import cloud.terium.minestom.MinestomExtension;
 import cloud.terium.teriumapi.TeriumAPI;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.Event;

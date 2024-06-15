@@ -3,7 +3,6 @@ package cloud.terium.minestom;
 import cloud.terium.minestom.listener.MinestomListener;
 import lombok.Getter;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.extensions.Extension;
 
 @Getter
