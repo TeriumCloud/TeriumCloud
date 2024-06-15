@@ -4,12 +4,16 @@ import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.cloudsystem.node.template.TemplateFactory;
+import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
 import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -73,18 +77,33 @@ public class GroupCommand extends Command {
                                 }
                                 case "static" -> {
                                     if (args[3].equalsIgnoreCase("true")) {
-                                        ClusterStartup.getCluster().getTemplateFactory().createTemplate("Backup");
                                         serviceGroup.setStatic(true);
-                                        Optional<ITemplate> iTemplate = ClusterStartup.getCluster().getTemplateProvider().getTemplateByName("Backup");
-                                        serviceGroup.getTemplates().add(0, iTemplate.get());
                                         serviceGroup.update();
 
-                                    } else if (args[3].equalsIgnoreCase("false")) {
-                                        if (ClusterStartup.getCluster().getTemplateProvider().getTemplateByName("Backup").isPresent()) {
-                                            ClusterStartup.getCluster().getTemplateFactory().deleteTemplate("Backup");
+                                        if(!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(serviceGroup.getGroupName()).isEmpty()) {
+                                            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(serviceGroup.getGroupName()).forEach(iCloudService -> {
+                                                try {
+                                                    FileUtils.copyDirectory(new File("servers//" + iCloudService.getServiceName()), new File("static//" + iCloudService.getServiceName()));
+                                                    iCloudService.shutdown();
+                                                } catch (IOException exception) {
+                                                    exception.printStackTrace();
+                                                }
+                                            });
                                         }
+                                    } else if (args[3].equalsIgnoreCase("false")) {
                                         serviceGroup.setStatic(false);
                                         serviceGroup.update();
+
+                                        if(!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(serviceGroup.getGroupName()).isEmpty()) {
+                                            TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getServicesByGroupName(serviceGroup.getGroupName()).forEach(iCloudService -> {
+                                                try {
+                                                    FileUtils.deleteDirectory(new File("static//" + iCloudService.getServiceName()));
+                                                    iCloudService.shutdown();
+                                                } catch (IOException exception) {
+                                                    exception.printStackTrace();
+                                                }
+                                            });
+                                        }
                                     }
                                 }
                                 case "version" -> {
