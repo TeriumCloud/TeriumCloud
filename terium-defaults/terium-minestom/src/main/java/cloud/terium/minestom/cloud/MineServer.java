@@ -22,7 +22,7 @@ public class MineServer extends TeriumExtension {
         PlacementRules.init();
 
         /*
-            This is important to paste this in every Minestom Server project
+            This code snipe is important to paste this in every Minestom Server project
          */
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addEventCallback(AsyncPlayerPreLoginEvent.class, event -> {
@@ -42,6 +42,6 @@ public class MineServer extends TeriumExtension {
             TeriumAPI.getTeriumAPI().getProvider().getThisService().update();
         });
 
-        minecraftServer.start("", TeriumAPI.getTeriumAPI().getProvider().getThisService().getPort());
+        minecraftServer.start(TeriumAPI.getTeriumAPI().getProvider().getThisNode().getAddress().getAddress().getHostAddress(), TeriumAPI.getTeriumAPI().getProvider().getThisService().getPort());
     }
 }

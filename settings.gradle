@@ -6,6 +6,10 @@ include('terium-plugin')
 include('terium-modules')
 include('terium-framework')
 include('terium-extension-util')
+include('terium-defaults')
+
+initializeSubProjects("terium-defaults",
+        "terium-minestom")
 
 initializeSubProjects("terium-modules",
         "notification-module",
