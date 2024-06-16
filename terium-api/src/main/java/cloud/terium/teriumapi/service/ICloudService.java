@@ -22,7 +22,7 @@ public interface ICloudService extends Serializable {
     /**
      * Get the service id of a service
      *
-     * @return int This returns the sevice id of the service.
+     * @return int This returns the service id of the service.
      */
     int getServiceId();
 
@@ -34,7 +34,7 @@ public interface ICloudService extends Serializable {
     int getPort();
 
     /**
-     * Get the ICloudServiceGroup of the serivce
+     * Get the ICloudServiceGroup of the service
      *
      * @return ICloudServiceGroup This returns the ICloudServiceGroup of the service.
      */
