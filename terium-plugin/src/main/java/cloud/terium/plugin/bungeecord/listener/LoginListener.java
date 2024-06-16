@@ -1,9 +1,9 @@
 package cloud.terium.plugin.bungeecord.listener;
 
+import cloud.terium.extension.TeriumExtension;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
-import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.bungeecord.TeriumBungeecordStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
@@ -32,7 +32,7 @@ public class LoginListener implements Listener {
         });
 
         if (!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllLobbyServices().isEmpty()) {
-            Optional<ICloudService> minecraftService = TeriumPlugin.getInstance().getWaterfallFallback(player);
+            Optional<ICloudService> minecraftService = TeriumExtension.getInstance().getFallback(player.getUniqueId());
 
             if (minecraftService.isPresent()) {
                 if (minecraftService.get().isLocked() && !player.hasPermission("terium.locked.join")) {
@@ -59,7 +59,7 @@ public class LoginListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void handlePlayerChooseInitialServer(ServerConnectEvent event) {
-        Optional<ICloudService> cloudService = TeriumPlugin.getInstance().getWaterfallFallback(event.getPlayer());
+        Optional<ICloudService> cloudService = TeriumExtension.getInstance().getFallback(event.getPlayer().getUniqueId());
 
         cloudService.ifPresentOrElse(service -> event.setTarget(TeriumBungeecordStartup.getInstance().getProxy().getServerInfo(service.getServiceName())), () -> {
             event.getPlayer().sendMessage(new TextComponent("<red>No fallback server found."));

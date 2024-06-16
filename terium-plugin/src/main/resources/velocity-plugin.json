@@ -1,6 +1,6 @@
 {
-  "id": "teriumplugin-velocity",
-  "name": "TeriumPlugin",
+  "id": "TeriumExtension-velocity",
+  "name": "TeriumExtension",
   "version": "1.8-OXYGEN",
   "authors": [
     "Jxnnik(ByRaudy)"
