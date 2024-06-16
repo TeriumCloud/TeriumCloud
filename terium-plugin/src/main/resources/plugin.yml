@@ -1,5 +1,5 @@
 name: terium-plugin
-version: '1.8-OXYGEN'
+version: '2.0-FLUORINE-dev'
 main: cloud.terium.plugin.bukkit.TeriumBukkitStartup
 author: ByRaudy
 

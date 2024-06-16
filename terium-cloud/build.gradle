@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'cloud.terium'
-version '1.8-OXYGEN'
+version '2.0-FLUORINE-dev'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -27,7 +27,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveFileName.set("terium-OXYGEN.jar")
+    archiveFileName.set("terium-FLUORINE.jar")
 }
 
 jar {

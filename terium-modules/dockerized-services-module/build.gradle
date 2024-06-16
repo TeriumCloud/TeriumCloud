@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'cloud.terium.module'
-version = '1.8-OXYGEN'
+version = '2.0-FLUORINE-dev'
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -15,7 +15,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
     compileOnly fileTree(dir: '../../terium-api/build/libs', include: 'terium-api.jar')
     compileOnly fileTree(dir: '../../terium-framework/build/libs', include: '*.jar')
-    compileOnly fileTree(dir: '../../terium-cloud/build/libs', include: 'terium-OXYGEN.jar')
+    compileOnly fileTree(dir: '../../terium-cloud/build/libs', include: 'terium-FLUORINE.jar')
 
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'com.github.docker-java:docker-java-core:3.3.2'

@@ -1,4 +1,4 @@
 name: teriummodule-permission
-version: '1.8-OXYGEN'
+version: '2.0-FLUORINE-dev'
 main: cloud.terium.module.permission.bukkit.PermissionBukkitStartup
 author: ByRaudy

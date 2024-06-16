@@ -167,7 +167,7 @@ public abstract class TeriumExtension extends TeriumAPI {
 
             @Override
             public String getVersion() {
-                return "1.8-OXYGEN";
+                return "2.0-FLUORINE-dev";
             }
         };
     }

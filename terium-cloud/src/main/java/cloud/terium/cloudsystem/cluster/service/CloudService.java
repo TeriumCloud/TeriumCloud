@@ -146,7 +146,7 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     private void systemStart() {
         if ((serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server)) {
-            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
                 return;
 
             Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
@@ -174,7 +174,7 @@ public class CloudService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
-            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
                 return;
 
             Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
