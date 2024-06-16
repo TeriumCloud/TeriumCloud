@@ -148,36 +148,32 @@ public class CloudService implements ICloudService {
         if ((serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server)) {
             Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
 
-            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
-                return;
+            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM)) {
+                Properties properties = new Properties();
+                File serverProperties = new File(this.folder, "server.properties");
+                properties.setProperty("server-name", getServiceName());
+                properties.setProperty("server-port", getPort() + "");
+                properties.setProperty("server-ip", NodeStartup.getNode().getNodeConfig().serviceAddress());
+                properties.setProperty("online-mode", "false");
+                properties.setProperty("max-players", maxPlayers + "");
 
-            Properties properties = new Properties();
-            File serverProperties = new File(this.folder, "server.properties");
-            properties.setProperty("server-name", getServiceName());
-            properties.setProperty("server-port", getPort() + "");
-            properties.setProperty("server-ip", NodeStartup.getNode().getNodeConfig().serviceAddress());
-            properties.setProperty("online-mode", "false");
-            properties.setProperty("max-players", maxPlayers + "");
+                try (OutputStream outputStream = new FileOutputStream(serverProperties);
+                     OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
 
-            try (OutputStream outputStream = new FileOutputStream(serverProperties);
-                 OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
+                    properties.store(writer, null);
+                }
 
-                properties.store(writer, null);
-            }
+                properties = new Properties();
+                File eula = new File(this.folder, "eula.txt");
 
-            properties = new Properties();
-            File eula = new File(this.folder, "eula.txt");
+                eula.createNewFile();
+                properties.setProperty("eula", "true");
 
-            eula.createNewFile();
-            properties.setProperty("eula", "true");
-
-            try (OutputStream outputStream = new FileOutputStream(eula)) {
-                properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
+                try (OutputStream outputStream = new FileOutputStream(eula)) {
+                    properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
+                }
             }
         } else {
-            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
-                return;
-
             Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
             if(!serviceGroup.getVersion().contains("bungeecord")) {
                 this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
