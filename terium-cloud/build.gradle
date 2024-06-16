@@ -32,6 +32,6 @@ shadowJar {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'cloud.terium.cloudsystem.TeriumCloud'
+        attributes 'Main-Class': 'cloud.terium.cloudsystem.TeriumCloud', 'Multi-Release': true
     }
 }

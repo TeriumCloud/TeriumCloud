@@ -1,0 +1,3 @@
+rootProject.name = 'terium-defaults'
+
+include("terium-minestom")
