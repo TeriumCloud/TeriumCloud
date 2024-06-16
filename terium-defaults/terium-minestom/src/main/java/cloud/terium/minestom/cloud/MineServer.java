@@ -10,7 +10,9 @@ import net.minestom.server.event.player.PlayerCommandEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.extras.PlacementRules;
+import net.minestom.server.extras.bungee.BungeeCordProxy;
 import net.minestom.server.extras.optifine.OptifineSupport;
+import net.minestom.server.extras.velocity.VelocityProxy;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 
@@ -23,7 +25,14 @@ public class MineServer extends TeriumExtension {
 
         /*
             This code snipe is important to paste this in every Minestom Server project
+
+            START
          */
+        if(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().getVersion().contains("bungeecord"))
+            BungeeCordProxy.enable();
+
+        if(TeriumAPI.getTeriumAPI().getProvider().getThisService().getServiceGroup().getVersion().contains("velocity"))
+            VelocityProxy.enable("SECRET FROM COPIED FORWARDING.SECRET OF YOUR VELOCITY SERVICE");
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addEventCallback(AsyncPlayerPreLoginEvent.class, event -> {
             if (TeriumAPI.getTeriumAPI().getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join"))
@@ -43,5 +52,10 @@ public class MineServer extends TeriumExtension {
         });
 
         minecraftServer.start(TeriumAPI.getTeriumAPI().getProvider().getThisNode().getAddress().getAddress().getHostAddress(), TeriumAPI.getTeriumAPI().getProvider().getThisService().getPort());
+        /*
+            END
+         */
+
+        // your code
     }
 }
