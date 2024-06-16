@@ -97,9 +97,12 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void prepare() {
         this.folder.mkdirs();
-        FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : (serviceGroup.getVersion().contains("bungeecord") ? "data//versions//config.yml" : "data//versions//velocity.toml")), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
+        if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase()).equals(ServerVersions.MINESTOM)) {
+            FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : (serviceGroup.getVersion().contains("bungeecord") ? "data//versions//config.yml" : "data//versions//velocity.toml")), folder);
+            FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
+        }
+
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
@@ -119,18 +122,27 @@ public class CloudService implements ICloudService {
             if (file.getName().contains(".jar"))
                 hasJarFile.set(true);
         });
-        if (!hasJarFile.get()) {
-            try {
-                FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
-            } catch (IOException exception) {
-                exception.printStackTrace();
+        if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase()).equals(ServerVersions.MINESTOM)) {
+            if (!hasJarFile.get()) {
+                try {
+                    FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
             }
+
+            return;
         }
+
+        Logger.log("No minestom.jar found in service-directory.", LogType.ERROR);
     }
 
     @SneakyThrows
     private void systemStart() {
-        if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
+        if ((serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server)) {
+            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase()).equals(ServerVersions.MINESTOM))
+                return;
+
             Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
@@ -156,6 +168,9 @@ public class CloudService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
+            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase()).equals(ServerVersions.MINESTOM))
+                return;
+
             Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
             if(!serviceGroup.getVersion().contains("bungeecord")) {
                 this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());

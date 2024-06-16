@@ -17,6 +17,8 @@ public enum ServerVersions {
     VELOCITY_3_2_0_SNAPSHOT("velocity-3.2.0-SNAPSHOT", "https://api.papermc.io/v2/projects/velocity/versions/3.2.0-SNAPSHOT/"),
     BUNGEECORD_LATEST("bungeecord-latest", "https://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar"),
 
+    MINESTOM("minestom", null),
+
     SPIGOT_1_16_5("spigot-1.16.5", "https://download.getbukkit.org/spigot/spigot-1.16.5.jar"),
     SPIGOT_1_17_1("spigot-1.17.1", "https://download.getbukkit.org/spigot/spigot-1.17.1.jar"),
     SPIGOT_1_18_1("spigot-1.18.1", "https://download.getbukkit.org/spigot/spigot-1.18.1.jar"),
