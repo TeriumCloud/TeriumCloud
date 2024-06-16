@@ -1,9 +1,9 @@
 package cloud.terium.plugin.velocity.listener;
 
+import cloud.terium.extension.TeriumExtension;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerJoin;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerQuit;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerRegister;
-import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.entity.ICloudPlayer;
@@ -34,7 +34,7 @@ public class LoginListener {
         });
 
         if (!TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllLobbyServices().isEmpty()) {
-            Optional<ICloudService> minecraftService = TeriumPlugin.getInstance().getFallback(player);
+            Optional<ICloudService> minecraftService = TeriumExtension.getInstance().getFallback(player.getUniqueId());
 
             if (minecraftService.isPresent()) {
                 if (minecraftService.get().isLocked() && !player.hasPermission("terium.locked.join")) {
@@ -61,7 +61,7 @@ public class LoginListener {
 
     @Subscribe
     public void handlePlayerChooseInitialServer(final @NotNull PlayerChooseInitialServerEvent event) {
-        Optional<ICloudService> cloudService = TeriumPlugin.getInstance().getFallback(event.getPlayer());
+        Optional<ICloudService> cloudService = TeriumExtension.getInstance().getFallback(event.getPlayer().getUniqueId());
 
         event.setInitialServer(cloudService
                 .flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))

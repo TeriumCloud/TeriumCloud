@@ -1,24 +1,31 @@
 package cloud.terium.plugin.bukkit;
 
-import cloud.terium.plugin.TeriumPlugin;
+import cloud.terium.extension.TeriumExtension;
 import cloud.terium.plugin.bukkit.listener.PlayerCommandPreprocessListener;
 import cloud.terium.plugin.bukkit.listener.PlayerJoinListener;
 import cloud.terium.plugin.bukkit.listener.PlayerQuitListener;
+import cloud.terium.teriumapi.service.ICloudService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.net.InetSocketAddress;
+import java.util.Optional;
+import java.util.UUID;
+
 public class TeriumBukkitStartup extends JavaPlugin {
 
     private static TeriumBukkitStartup instance;
-
-    public static TeriumBukkitStartup getInstance() {
-        return instance;
-    }
+    private TeriumExtension extension;
 
     @Override
     public void onLoad() {
-        new TeriumPlugin();
+        extension = new TeriumExtension() {
+            @Override
+            public void executeCommand(String command) {
+                Bukkit.getScheduler().runTask(TeriumBukkitStartup.instance, () -> Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command));
+            }
+        };
     }
 
     @Override
@@ -32,9 +39,5 @@ public class TeriumBukkitStartup extends JavaPlugin {
         pluginManager.registerEvents(new PlayerCommandPreprocessListener(), this);
 
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin succeed...");
-    }
-
-    public void executeCommand(String command) {
-        Bukkit.getScheduler().runTask(this, () -> Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command));
     }
 }

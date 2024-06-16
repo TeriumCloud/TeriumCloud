@@ -1,7 +1,7 @@
 package cloud.terium.plugin.velocity.listener;
 
+import cloud.terium.extension.TeriumExtension;
 import cloud.terium.networking.packet.player.PacketPlayOutCloudPlayerConnectedService;
-import cloud.terium.plugin.TeriumPlugin;
 import cloud.terium.plugin.velocity.TeriumVelocityStartup;
 import cloud.terium.teriumapi.TeriumAPI;
 import com.velocitypowered.api.event.Subscribe;
@@ -27,7 +27,7 @@ public class ServerConnectedListener {
     @Subscribe
     public void handleKickedFromServer(final @NotNull KickedFromServerEvent event) {
         if (event.getPlayer().isActive()) {
-            TeriumPlugin.getInstance().getFallback(event.getPlayer()).filter(service -> !event.getServer().getServerInfo().getName().equals("fallback")).flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
+            TeriumExtension.getInstance().getFallback(event.getPlayer().getUniqueId()).filter(service -> !event.getServer().getServerInfo().getName().equals("fallback")).flatMap(service -> TeriumVelocityStartup.getInstance().getProxyServer().getServer(service.getServiceName()))
                     .ifPresent(registeredServer -> {
                         if (event.getServer() != null && event.getServer().getServerInfo().getName().equals(registeredServer.getServerInfo().getName())) {
                             event.setResult(KickedFromServerEvent.Notify.create(event.getServerKickReason().orElse(Component.empty())));
