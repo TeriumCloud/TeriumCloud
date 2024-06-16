@@ -97,9 +97,12 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     public void prepare() {
         this.folder.mkdirs();
-        FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : "data//versions//velocity.toml"), folder);
         FileUtils.copyDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "templates//Global//server" : "templates//Global//proxy"), folder);
-        FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
+        if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM)) {
+            FileUtils.copyFileToDirectory(new File(serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server ? "data//versions//spigot.yml" : (serviceGroup.getVersion().contains("bungeecord") ? "data//versions//config.yml" : "data//versions//velocity.toml")), folder);
+            FileUtils.copyFileToDirectory(new File("data//versions//teriumcloud-plugin.jar"), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//plugins") : new File("servers//" + getServiceName() + "//plugins"));
+        }
+
         templates.forEach(template -> {
             try {
                 FileUtils.copyDirectory(template.getPath().toFile(), folder);
@@ -115,23 +118,38 @@ public class CloudService implements ICloudService {
         });
 
         AtomicBoolean hasJarFile = new AtomicBoolean(false);
-        Arrays.stream(folder.listFiles()).forEach(file -> {
-            if (file.getName().contains(".jar"))
-                hasJarFile.set(true);
-        });
-        if (!hasJarFile.get()) {
-            try {
-                FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
-            } catch (IOException exception) {
-                exception.printStackTrace();
+        if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM)) {
+            Arrays.stream(folder.listFiles()).forEach(file -> {
+                if (file.getName().contains(".jar"))
+                    hasJarFile.set(true);
+            });
+
+            if (!hasJarFile.get()) {
+                try {
+                    FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_").replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        } else {
+            Arrays.stream(folder.listFiles()).forEach(file -> {
+                if (file.getName().contains("minestom.jar"))
+                    hasJarFile.set(true);
+            });
+
+            if(!hasJarFile.get()) {
+                cloud.terium.cloudsystem.cluster.utils.Logger.log("No minestom.jar found in service-directory.", LogType.ERROR);
             }
         }
     }
 
     @SneakyThrows
     private void systemStart() {
-        if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
-            Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
+        if ((serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server)) {
+            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+                return;
+
+            cloud.terium.cloudsystem.cluster.utils.Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
             properties.setProperty("server-name", getServiceName());
@@ -156,10 +174,18 @@ public class CloudService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
-            Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+                return;
+
+            cloud.terium.cloudsystem.cluster.utils.Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
+            if(!serviceGroup.getVersion().contains("bungeecord")) {
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            } else {
+                this.replaceInFile(new File(this.folder, "config.yml"), "%port%", port + "");
+                this.replaceInFile(new File(this.folder, "config.yml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            }
         }
 
         NodeStartup.getNode().getNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), serviceId, port, maxPlayers, getMaxMemory(),

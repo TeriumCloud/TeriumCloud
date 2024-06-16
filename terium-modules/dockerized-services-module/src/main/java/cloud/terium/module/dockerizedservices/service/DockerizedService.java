@@ -1,5 +1,6 @@
 package cloud.terium.module.dockerizedservices.service;
 
+import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
 import cloud.terium.module.dockerizedservices.TeriumDockerizedServices;
 import cloud.terium.networking.packet.service.PacketPlayOutServiceAdd;
@@ -18,10 +19,8 @@ import cloud.terium.teriumapi.service.group.ICloudServiceGroup;
 import cloud.terium.teriumapi.template.ITemplate;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.api.command.PullImageCmd;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.*;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
@@ -30,8 +29,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
@@ -126,15 +123,27 @@ public class DockerizedService implements ICloudService {
         });
 
         AtomicBoolean hasJarFile = new AtomicBoolean(false);
-        Arrays.stream(folder.listFiles()).forEach(file -> {
-            if (file.getName().contains(".jar"))
-                hasJarFile.set(true);
-        });
-        if (!hasJarFile.get()) {
-            try {
-                FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
-            } catch (IOException exception) {
-                exception.printStackTrace();
+        if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM)) {
+            Arrays.stream(folder.listFiles()).forEach(file -> {
+                if (file.getName().contains(".jar"))
+                    hasJarFile.set(true);
+            });
+
+            if (!hasJarFile.get()) {
+                try {
+                    FileUtils.copyURLToFile(new URL(ServerVersions.getLatestVersion(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_").replace(".", "_").replace("-", "_")))), serviceGroup.isStatic() ? new File("static//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar") : new File("servers//" + getServiceName() + "//" + serviceGroup.getVersion() + ".jar"));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        } else {
+            Arrays.stream(folder.listFiles()).forEach(file -> {
+                if (file.getName().contains("minestom.jar"))
+                    hasJarFile.set(true);
+            });
+
+            if(!hasJarFile.get()) {
+                Logger.log("No minestom.jar found in service-directory.", LogType.ERROR);
             }
         }
 
@@ -156,8 +165,11 @@ public class DockerizedService implements ICloudService {
 
     @SneakyThrows
     private void systemStart() {
-        if (serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server) {
-            TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole("Service '§b" + getServiceName() + "§f' is starting in docker-container.", LogType.INFO);
+        if ((serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server)) {
+            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+                return;
+
+            Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
             properties.setProperty("server-name", getServiceName());
@@ -182,10 +194,18 @@ public class DockerizedService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
-            TeriumAPI.getTeriumAPI().getProvider().getConsoleProvider().sendConsole("Service '§b" + getServiceName() + "§f' is starting in docker container on port " + port + ".", LogType.INFO);
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
-            this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+                return;
+
+            Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
+            if(!serviceGroup.getVersion().contains("bungeecord")) {
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
+                this.replaceInFile(new File(this.folder, "velocity.toml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            } else {
+                this.replaceInFile(new File(this.folder, "config.yml"), "%port%", port + "");
+                this.replaceInFile(new File(this.folder, "config.yml"), "%max_players%", serviceGroup.getMaxPlayers() + "");
+            }
         }
 
         TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().sendPacket(new PacketPlayOutServiceAdd(getServiceName(), serviceId, port, maxPlayers, getMaxMemory(),
