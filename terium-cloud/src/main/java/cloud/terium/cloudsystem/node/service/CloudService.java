@@ -138,7 +138,7 @@ public class CloudService implements ICloudService {
             });
 
             if(!hasJarFile.get()) {
-                cloud.terium.cloudsystem.cluster.utils.Logger.log("No minestom.jar found in service-directory.", LogType.ERROR);
+                Logger.log("No minestom.jar found in service-directory.", LogType.ERROR);
             }
         }
     }
@@ -146,10 +146,11 @@ public class CloudService implements ICloudService {
     @SneakyThrows
     private void systemStart() {
         if ((serviceGroup.getServiceType() == ServiceType.Lobby || serviceGroup.getServiceType() == ServiceType.Server)) {
-            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+            Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
+
+            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
                 return;
 
-            cloud.terium.cloudsystem.cluster.utils.Logger.log("Service '§b" + getServiceName() + "§f' is starting.", LogType.INFO);
             Properties properties = new Properties();
             File serverProperties = new File(this.folder, "server.properties");
             properties.setProperty("server-name", getServiceName());
@@ -174,10 +175,10 @@ public class CloudService implements ICloudService {
                 properties.store(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8), "Auto eula agreement by TeriumCloud.");
             }
         } else {
-            if(!ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
+            if(ServerVersions.valueOf(serviceGroup.getVersion().toUpperCase().replace("-", "_").replace(".", "_")).equals(ServerVersions.MINESTOM))
                 return;
 
-            cloud.terium.cloudsystem.cluster.utils.Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
+            Logger.log("Service '§b" + getServiceName() + "§f' is starting on port " + port + ".", LogType.INFO);
             if(!serviceGroup.getVersion().contains("bungeecord")) {
                 this.replaceInFile(new File(this.folder, "velocity.toml"), "%name%", getServiceName());
                 this.replaceInFile(new File(this.folder, "velocity.toml"), "%port%", port + "");
