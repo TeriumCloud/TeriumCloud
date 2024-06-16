@@ -1,5 +1,5 @@
 [![Banner](https://i.imgur.com/xypsvWn.png)](https://terium.cloud)
-[![Version](https://img.shields.io/badge/Terium%20Version-v1.8--OXYGEN-blue?style=for-the-badge&logo=appveyor)](https://terium.cloud/download/terium-1.8-OXYGEN.zip) [![Discord](https://img.shields.io/badge/Discord%20Server-JOIN%20NOW-%237289da?style=for-the-badge&logo=discord)](https://discord.gg/RM8FDnwRxm) [![Twitter](https://img.shields.io/twitter/follow/teriumcloud?color=%231DA1F2&logo=twitter&style=for-the-badge)](https://twitter.com/@teriumcloud)
+[![Version](https://img.shields.io/badge/Terium%20Version-v2.0--FLUORINE--dev-blue?style=for-the-badge&logo=appveyor)](https://terium.cloud/download/terium-2.0-FLUORINE-dev.zip) [![Discord](https://img.shields.io/badge/Discord%20Server-JOIN%20NOW-%237289da?style=for-the-badge&logo=discord)](https://discord.gg/RM8FDnwRxm) [![Twitter](https://img.shields.io/twitter/follow/teriumcloud?color=%231DA1F2&logo=twitter&style=for-the-badge)](https://twitter.com/@teriumcloud)
 
 ## Terium
 
@@ -18,8 +18,8 @@
 - Basic and simple api
 - Module system
 - Multi-root (Master/Wrapper)
-- [Velocity](https://velocitypowered.com) support
-- [Paper](https://papermc.io) and [Purpur](https://purpurmc.org/) support
+- [Velocity](https://velocitypowered.com) and [Bungeecord](https://www.spigotmc.org/wiki/bungeecord/) support
+- [Paper](https://papermc.io), [Purpur](https://purpurmc.org/), [Spigot](https://www.spigotmc.org/) and [Minestom](https://minestom.net/) support
 
 ## Links
 
@@ -30,7 +30,7 @@
 
 ## Installation (MASTER/CLUSTER)
 
-- Download the .zip folder and move the terium-OXYGEN.jar and the start-master.sh file to your folder
+- Download the .zip folder and move the terium-FLUORINE.jar and the start-master.sh file to your folder
 - Give the start-master.sh file '777' rights (Only on linux systems)
 - Execute start-master.sh
 - Everything will be downloaded and created automatically.
@@ -38,12 +38,12 @@
 
 ## Installation (WRAPPER/NODE)
 
-- Download the .zip folder and move the terium-OXYGEN.jar and the start-node.sh file to your folder
+- Download the .zip folder and move the terium-FLUORINE.jar and the start-node.sh file to your folder
 - Give the start-node.sh file '777' rights (Only on linux systems)
 - Execute start-node.sh
 - Everything will be downloaded and created automatically.
 - Add all informations about your master in the config.json under "master".
-- Now you need to go into your master console and type: "node add CURRENT-NODE-NAME YOUR-IP YOUR-PORT"
+- Now you need to go into your master console and type: "node add NODE-NAME NODE-IP NODE-PORT"
 - After that you execute the start-node.sh again and enjoy your mulit-root action!
 
 ## Supported Java Versions
@@ -54,14 +54,17 @@
 
 ## Supported Minecraft Versions
 
-- [Paper](https://papermc.io) 1.12.2 - 1.20.1
-- [Purpur](https://purpurmc.org/) 1.16.5 - 1.20.1
+- [Paper](https://papermc.io) 1.16.5 - 1.20.6
+- [Purpur](https://purpurmc.org/) 1.16.5 - 1.20.6
+- [Spigot](https://www.spigotmc.org/) 1.16.5 - 1.20.6
+- [Minestom](https://minestom.net/) 1.16.5 - 1.20.6
+- [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/)
 - [Velocity](https://velocitypowered.com)
 
 ## Thanks to
 
-Thanks to all partners of TeriumCloud and persons who helped:
+Thanks to all persons who helped:
 
+- [ByRaudy (Jannik)](https://github.com/ByRaudy)
 - [TGamings](https://github.com/TGamings)
-- [Jxnnik](https://github.com/ByRaudy)
 - [MenschenToaster](https://github.com/MenschenToaster)

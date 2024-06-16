@@ -29,7 +29,7 @@ public class CloudUtils {
         this.isInScreen = false;
         this.firstStart = false;
         this.versionGotChecked = false;
-        this.version = "1.8-OXYGEN";
+        this.version = "2.0-FLUORINE-dev";
         this.playerList = new ArrayList<>();
 
         File data = new File("data//versions");

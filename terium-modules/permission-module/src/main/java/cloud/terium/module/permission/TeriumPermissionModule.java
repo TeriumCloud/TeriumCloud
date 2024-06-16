@@ -18,7 +18,7 @@ import lombok.Setter;
 import java.io.File;
 import java.util.Arrays;
 
-@Module(name = "permission", author = "Jxnnik(ByRaudy)", version = "1.8-OXYGEN", description = "", reloadable = true, moduleType = ModuleType.ALL)
+@Module(name = "permission", author = "Jxnnik(ByRaudy)", version = "2.0-FLUORINE-dev", description = "", reloadable = true, moduleType = ModuleType.ALL)
 @Getter
 @Setter
 public class TeriumPermissionModule implements IModule {
