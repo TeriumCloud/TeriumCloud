@@ -96,15 +96,22 @@ public abstract class TeriumExtension extends TeriumAPI {
     }
 
     public void successfulStart() {
+        System.out.println("sout1");
         teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(thisName, System.getProperty("servicenode")));
+        System.out.println("sout2");
         teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
+        System.out.println("sout3");
         getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
+        System.out.println("sout4");
         getTeriumAPI().getProvider().getThisService().update();
+        System.out.println("sout5");
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                System.out.println("sout6");
                 getProvider().getThisService().setUsedMemory(usedMemory());
+                System.out.println("sout7");
                 getProvider().getThisService().update();
             }
         }, 0, 2000);
