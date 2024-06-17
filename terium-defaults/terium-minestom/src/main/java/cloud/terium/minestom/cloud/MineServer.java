@@ -16,22 +16,22 @@ public class MineServer extends TeriumExtension {
     private static TeriumExtension extension;
 
     public static void main(String[] args) {
+        // Your code
         MinecraftServer minecraftServer = MinecraftServer.init();
         OptifineSupport.enable();
         PlacementRules.init();
-
-        extension = new TeriumExtension() {
-            @Override
-            public void executeCommand(String command) {
-                MinecraftServer.getSchedulerManager().buildTask(() -> MinecraftServer.getCommandManager().getDispatcher().execute(MinecraftServer.getCommandManager().getConsoleSender(), command));
-            }
-        };
 
         /*
             This code snipe is important to paste this in every Minestom Server project
 
             START
          */
+        extension = new TeriumExtension() {
+            @Override
+            public void executeCommand(String command) {
+                MinecraftServer.getSchedulerManager().buildTask(() -> MinecraftServer.getCommandManager().getDispatcher().execute(MinecraftServer.getCommandManager().getConsoleSender(), command));
+            }
+        };
         extension.successfulStart();
 
         if(extension.getProvider().getThisService().getServiceGroup().getVersion().contains("bungeecord")) {
