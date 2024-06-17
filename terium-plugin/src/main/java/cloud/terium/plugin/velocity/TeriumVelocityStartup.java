@@ -46,6 +46,7 @@ public class TeriumVelocityStartup extends TeriumExtension {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         System.out.println("§aTrying to start velocity terium-plugin...");
         try {
+            successfulStart();
             getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement -> proxyServer.getCommandManager().register(new CloudCommand().build(jsonElement.getAsString())));
 
             proxyServer.getEventManager().register(this, new LoginListener());

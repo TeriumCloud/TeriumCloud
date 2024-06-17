@@ -32,6 +32,8 @@ public class MineServer extends TeriumExtension {
 
             START
          */
+        extension.successfulStart();
+
         if(extension.getProvider().getThisService().getServiceGroup().getVersion().contains("bungeecord")) {
             BungeeCordProxy.enable();
         }
