@@ -17,6 +17,7 @@ import java.net.InetSocketAddress;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TeriumBungeecordStartup extends Plugin {
 
@@ -86,6 +87,7 @@ public class TeriumBungeecordStartup extends Plugin {
                     return getProxy().getServers().containsKey(serviceName);
                 }
             };
+            teriumBridge.successfulStart();
             teriumBridge.getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement ->
                     getProxy().getPluginManager().registerCommand(this, new CloudCommand(jsonElement.getAsString())));
 

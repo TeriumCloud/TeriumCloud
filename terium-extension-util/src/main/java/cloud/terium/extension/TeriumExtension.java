@@ -1,7 +1,5 @@
 package cloud.terium.extension;
 
-import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
-import cloud.terium.networking.packet.service.PacketPlayOutSuccessfullyServiceStarted;
 import cloud.terium.extension.impl.config.ConfigManager;
 import cloud.terium.extension.impl.console.CommandFactory;
 import cloud.terium.extension.impl.console.ConsoleProvider;
@@ -16,6 +14,8 @@ import cloud.terium.extension.impl.service.group.ServiceGroupFactory;
 import cloud.terium.extension.impl.service.group.ServiceGroupProvider;
 import cloud.terium.extension.impl.template.TemplateFactory;
 import cloud.terium.extension.impl.template.TemplateProvider;
+import cloud.terium.networking.packet.PacketPlayOutCheckVersion;
+import cloud.terium.networking.packet.service.PacketPlayOutSuccessfullyServiceStarted;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.api.ICloudFactory;
 import cloud.terium.teriumapi.api.ICloudProvider;
@@ -27,7 +27,10 @@ import cloud.terium.teriumapi.module.IModuleProvider;
 import cloud.terium.teriumapi.node.INode;
 import cloud.terium.teriumapi.node.INodeProvider;
 import cloud.terium.teriumapi.pipe.IDefaultTeriumNetworking;
-import cloud.terium.teriumapi.service.*;
+import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ICloudServiceFactory;
+import cloud.terium.teriumapi.service.ICloudServiceProvider;
+import cloud.terium.teriumapi.service.ServiceState;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupFactory;
 import cloud.terium.teriumapi.service.group.ICloudServiceGroupProvider;
 import cloud.terium.teriumapi.template.ITemplateFactory;
@@ -35,7 +38,10 @@ import cloud.terium.teriumapi.template.ITemplateProvider;
 import lombok.Getter;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 @Getter
 public abstract class TeriumExtension extends TeriumAPI {
@@ -87,24 +93,21 @@ public abstract class TeriumExtension extends TeriumAPI {
         this.moduleProvider = new ModuleProvider();
 
         thisName = System.getProperty("servicename");
+    }
+
+    public void successfulStart() {
+        teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(thisName, System.getProperty("servicenode")));
+        teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
+        getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
+        getTeriumAPI().getProvider().getThisService().update();
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(thisName, System.getProperty("servicenode")));
-                teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
-                getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
-                getTeriumAPI().getProvider().getThisService().update();
-
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        getProvider().getThisService().setUsedMemory(usedMemory());
-                        getProvider().getThisService().update();
-                    }
-                }, 0, 2000);
+                getProvider().getThisService().setUsedMemory(usedMemory());
+                getProvider().getThisService().update();
             }
-        }, 1500);
+        }, 0, 2000);
     }
 
     @Override
