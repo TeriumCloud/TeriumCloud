@@ -17,7 +17,7 @@ public class TeriumMinestomExtension {
 
     private final TeriumExtension extension;
 
-    /*
+    /**
      * Method to implement every needed terium-cloud utils.
      * ! DO NOT EXECUTE IN YOUR CODE 'minecraftServer#start()' ITS IMPLEMENTED IN THE TERIUM-EXTENSION !
      */
