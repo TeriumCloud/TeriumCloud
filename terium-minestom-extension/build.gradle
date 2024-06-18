@@ -1,0 +1,32 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'cloud.terium'
+version = '2.0-FLUORINE-dev'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url 'https://repo.velocitypowered.com/snapshots/' }
+    maven { url 'https://libraries.minecraft.net' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'com.github.Minestom:Minestom:25176e9b9d'
+    implementation fileTree(dir: '../terium-api/build/libs', include: 'terium-api.jar')
+    implementation fileTree(dir: '../terium-extension-util/build/libs', include: 'teriumcloud-extension-util.jar')
+}
+
+shadowJar {
+    archiveFileName.set("terium-minestom-extension.jar")
+}

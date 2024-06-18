@@ -1,54 +1,40 @@
-package cloud.terium.minestom.cloud;
+package cloud.terium.minestom.extension;
 
 import cloud.terium.extension.TeriumExtension;
+import cloud.terium.minestom.extension.proxy.BungeeCord;
+import cloud.terium.minestom.extension.proxy.Velocity;
+import cloud.terium.minestom.extension.proxy.util.Proxy;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.AsyncPlayerPreLoginEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
-import net.minestom.server.extras.PlacementRules;
-import net.minestom.server.extras.optifine.OptifineSupport;
+import net.minestom.server.extras.bungee.BungeeCordProxy;
+import net.minestom.server.extras.velocity.VelocityProxy;
 import net.minestom.server.utils.time.TimeUnit;
 
-public class MineServer extends TeriumExtension {
+public class TeriumMinestomExtension {
 
-    private static TeriumExtension extension;
+    private final TeriumExtension extension;
 
-    public static void main(String[] args) {
-        // Your code
-        MinecraftServer minecraftServer = MinecraftServer.init();
-        OptifineSupport.enable();
-        PlacementRules.init();
-
-        /*
-            This code snipe is important to paste this in every Minestom Server project
-
-            START
-         */
-
+    /*
+     * Method to implement every needed terium-cloud utils.
+     * ! DO NOT EXECUTE IN YOUR CODE 'minecraftServer#start()' ITS IMPLEMENTED IN THE TERIUM-EXTENSION !
+     */
+    public TeriumMinestomExtension(MinecraftServer minecraftServer, Proxy proxy) {
+        System.out.println(0);
         extension = new TeriumExtension() {
             @Override
             public void executeCommand(String command) {
                 MinecraftServer.getSchedulerManager().buildTask(() -> MinecraftServer.getCommandManager().getDispatcher().execute(MinecraftServer.getCommandManager().getConsoleSender(), command));
             }
         };
-        System.out.println("bevor successful started");
-        extension.successfulStart();
-        System.out.println("after successful started");
-
-        System.out.println("bevor scheduler");
+        System.out.println(1);
         MinecraftServer.getSchedulerManager().buildTask(() -> {
-            System.out.println("in scheduler");
-            /*
-            if(extension.getProvider().getThisService().getServiceGroup().getVersion().contains("bungeecord")) {
-                BungeeCordProxy.enable();
-            }
+            System.out.println(2);
+            extension.successfulStart();
 
-            if(extension.getProvider().getThisService().getServiceGroup().getVersion().contains("velocity")) {
-                VelocityProxy.enable("PASTE YOUR VELOCITY SECRET KEY HERE");
-            }
-             */
-
+            System.out.println(3);
             GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
             globalEventHandler.addEventCallback(AsyncPlayerPreLoginEvent.class, event -> {
                 if (extension.getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join"))
@@ -62,19 +48,24 @@ public class MineServer extends TeriumExtension {
                 });
             });
 
+            System.out.println(4);
+
             globalEventHandler.addEventCallback(PlayerDisconnectEvent.class, event -> {
                 extension.getProvider().getThisService().setOnlinePlayers(MinecraftServer.getConnectionManager().getOnlinePlayers().size() - 1);
                 extension.getProvider().getThisService().update();
             });
 
+            System.out.println(5);
+
+            if(proxy instanceof Velocity velocity)
+                VelocityProxy.enable(velocity.getForwardingSecret());
+            else if(proxy instanceof BungeeCord)
+                BungeeCordProxy.enable();
+            else System.out.println("No vaild Proxy-Instance found!");
+
+            System.out.println(6);
+
             minecraftServer.start(extension.getProvider().getThisNode().getAddress().getAddress().getHostAddress(), extension.getProvider().getThisService().getPort());
-        }).delay((long) 1.5, TimeUnit.SECOND).schedule();
-        System.out.println("after scheduler");
-
-        /*
-            END
-         */
-
-        // your code
+        }).delay(2, TimeUnit.SECOND).schedule();
     }
 }

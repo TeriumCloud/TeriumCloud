@@ -4,6 +4,7 @@ import cloud.terium.extension.TeriumExtension;
 import cloud.terium.plugin.bungeecord.command.CloudCommand;
 import cloud.terium.plugin.bungeecord.listener.LoginListener;
 import cloud.terium.plugin.bungeecord.listener.ServerConnectedListener;
+import cloud.terium.plugin.bungeecord.listener.cloud.BungeeMinestomHandler;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -87,9 +88,13 @@ public class TeriumBungeecordStartup extends Plugin {
                     return getProxy().getServers().containsKey(serviceName);
                 }
             };
-            teriumBridge.successfulStart();
-            teriumBridge.getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement ->
-                    getProxy().getPluginManager().registerCommand(this, new CloudCommand(jsonElement.getAsString())));
+            getProxy().getScheduler().schedule(this, () -> {
+                teriumBridge.successfulStart();
+                TeriumAPI.getTeriumAPI().getProvider().getTeriumNetworking().addHandler(new BungeeMinestomHandler());
+                teriumBridge.getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement ->
+                        getProxy().getPluginManager().registerCommand(this, new CloudCommand(jsonElement.getAsString())));
+            }, (long) 1.5, TimeUnit.SECONDS);
+
 
             getProxy().getPluginManager().registerListener(this, new LoginListener());
             getProxy().getPluginManager().registerListener(this, new ServerConnectedListener());

@@ -74,7 +74,7 @@ public abstract class TeriumExtension extends TeriumAPI {
     // Utils
     private final String thisName;
 
-    public TeriumExtension() {
+    protected TeriumExtension() {
         super();
         instance = this;
         this.configManager = new ConfigManager();
@@ -93,25 +93,17 @@ public abstract class TeriumExtension extends TeriumAPI {
         this.moduleProvider = new ModuleProvider();
 
         thisName = System.getProperty("servicename");
+        teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(thisName, System.getProperty("servicenode")));
+        teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
     }
 
     public void successfulStart() {
-        System.out.println("sout1");
-        teriumNetworking.sendPacket(new PacketPlayOutSuccessfullyServiceStarted(thisName, System.getProperty("servicenode")));
-        System.out.println("sout2");
-        teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
-        System.out.println("sout3");
-        getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
-        System.out.println("sout4");
-        getTeriumAPI().getProvider().getThisService().update();
-        System.out.println("sout5");
-
+        getProvider().getThisService().setServiceState(ServiceState.ONLINE);
+        getProvider().getThisService().update();
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("sout6");
                 getProvider().getThisService().setUsedMemory(usedMemory());
-                System.out.println("sout7");
                 getProvider().getThisService().update();
             }
         }, 0, 2000);

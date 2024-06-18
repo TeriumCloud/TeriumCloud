@@ -4,6 +4,7 @@ import cloud.terium.extension.TeriumExtension;
 import cloud.terium.plugin.velocity.command.CloudCommand;
 import cloud.terium.plugin.velocity.listener.LoginListener;
 import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
+import cloud.terium.plugin.velocity.listener.cloud.VelocityMinestomHandler;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -24,10 +25,12 @@ import java.net.InetSocketAddress;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class TeriumVelocityStartup extends TeriumExtension {
 
+    @Getter
     private static TeriumVelocityStartup instance;
     private final ProxyServer proxyServer;
 
@@ -38,15 +41,14 @@ public class TeriumVelocityStartup extends TeriumExtension {
         this.proxyServer = proxyServer;
     }
 
-    public static TeriumVelocityStartup getInstance() {
-        return instance;
-    }
-
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         System.out.println("§aTrying to start velocity terium-plugin...");
         try {
-            successfulStart();
+            getProxyServer().getScheduler().buildTask(this, () -> {
+                this.successfulStart();
+                this.getTeriumNetworking().addHandler(new VelocityMinestomHandler());
+            }).delay((long) 1.5, TimeUnit.SECONDS).schedule();
             getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement -> proxyServer.getCommandManager().register(new CloudCommand().build(jsonElement.getAsString())));
 
             proxyServer.getEventManager().register(this, new LoginListener());

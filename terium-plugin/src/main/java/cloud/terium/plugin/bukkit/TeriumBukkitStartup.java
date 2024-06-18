@@ -26,14 +26,11 @@ public class TeriumBukkitStartup extends JavaPlugin {
                 Bukkit.getScheduler().runTask(TeriumBukkitStartup.instance, () -> Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command));
             }
         };
-
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            extension.successfulStart();
-        }, 15);
     }
 
     @Override
     public void onEnable() {
+        extension.successfulStart();
         instance = this;
         Bukkit.getConsoleSender().sendMessage("§aStartup of bukkit terium-plugin...");
 
