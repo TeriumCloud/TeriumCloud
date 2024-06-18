@@ -1,6 +1,9 @@
-package cloud.terium.minestom;
+package cloud.terium.minestom.extension;
 
 import cloud.terium.extension.TeriumExtension;
+import cloud.terium.minestom.extension.proxy.BungeeCord;
+import cloud.terium.minestom.extension.proxy.Velocity;
+import cloud.terium.minestom.extension.proxy.util.Proxy;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.GlobalEventHandler;
@@ -14,16 +17,24 @@ public class TeriumMinestomExtension {
 
     private final TeriumExtension extension;
 
-    public TeriumMinestomExtension(MinecraftServer minecraftServer) {
+    /*
+     * Method to implement every needed terium-cloud utils.
+     * ! DO NOT EXECUTE IN YOUR CODE 'minecraftServer#start()' ITS IMPLEMENTED IN THE TERIUM-EXTENSION !
+     */
+    public TeriumMinestomExtension(MinecraftServer minecraftServer, Proxy proxy) {
+        System.out.println(0);
         extension = new TeriumExtension() {
             @Override
             public void executeCommand(String command) {
                 MinecraftServer.getSchedulerManager().buildTask(() -> MinecraftServer.getCommandManager().getDispatcher().execute(MinecraftServer.getCommandManager().getConsoleSender(), command));
             }
         };
+        System.out.println(1);
         MinecraftServer.getSchedulerManager().buildTask(() -> {
+            System.out.println(2);
             extension.successfulStart();
 
+            System.out.println(3);
             GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
             globalEventHandler.addEventCallback(AsyncPlayerPreLoginEvent.class, event -> {
                 if (extension.getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join"))
@@ -37,27 +48,24 @@ public class TeriumMinestomExtension {
                 });
             });
 
+            System.out.println(4);
+
             globalEventHandler.addEventCallback(PlayerDisconnectEvent.class, event -> {
                 extension.getProvider().getThisService().setOnlinePlayers(MinecraftServer.getConnectionManager().getOnlinePlayers().size() - 1);
                 extension.getProvider().getThisService().update();
             });
 
-            MinecraftServer.getSchedulerManager().buildTask(() -> {
-                if (extension.getProvider().getThisService().getPropertyMap().containsKey("proxyType")) {
-                    if (((String) extension.getProvider().getThisService().getProperty("proxyType")).contains("bungeecord")) {
-                        BungeeCordProxy.enable();
-                        System.out.println("TERIUM: Successfully init BungeeCordProxy.class.");
-                    }
+            System.out.println(5);
 
-                    if (((String) extension.getProvider().getThisService().getProperty("proxyType")).contains("velocity")) {
-                        System.out.println("velocity auf die 1");
-                        VelocityProxy.enable((String) extension.getProvider().getThisService().getProperty("forwarding-secret"));
-                        System.out.println("TERIUM: Successfully init VelocityProxy.class.");
-                    }
-                }
+            if(proxy instanceof Velocity velocity)
+                VelocityProxy.enable(velocity.getForwardingSecret());
+            else if(proxy instanceof BungeeCord)
+                BungeeCordProxy.enable();
+            else System.out.println("No vaild Proxy-Instance found!");
 
-                minecraftServer.start(extension.getProvider().getThisNode().getAddress().getAddress().getHostAddress(), extension.getProvider().getThisService().getPort());
-            }).delay(2, TimeUnit.SECOND).schedule();
+            System.out.println(6);
+
+            minecraftServer.start(extension.getProvider().getThisNode().getAddress().getAddress().getHostAddress(), extension.getProvider().getThisService().getPort());
         }).delay(2, TimeUnit.SECOND).schedule();
     }
 }
