@@ -74,7 +74,7 @@ public abstract class TeriumExtension extends TeriumAPI {
     // Utils
     private final String thisName;
 
-    public TeriumExtension() {
+    protected TeriumExtension() {
         super();
         instance = this;
         this.configManager = new ConfigManager();
@@ -101,9 +101,9 @@ public abstract class TeriumExtension extends TeriumAPI {
         System.out.println("sout2");
         teriumNetworking.sendPacket(new PacketPlayOutCheckVersion(getProvider().getVersion()));
         System.out.println("sout3");
-        getTeriumAPI().getProvider().getThisService().setServiceState(ServiceState.ONLINE);
+        getProvider().getThisService().setServiceState(ServiceState.ONLINE);
         System.out.println("sout4");
-        getTeriumAPI().getProvider().getThisService().update();
+        getProvider().getThisService().update();
         System.out.println("sout5");
 
         new Timer().schedule(new TimerTask() {
