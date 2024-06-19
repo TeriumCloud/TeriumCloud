@@ -4,7 +4,6 @@ import cloud.terium.extension.TeriumExtension;
 import cloud.terium.plugin.velocity.command.CloudCommand;
 import cloud.terium.plugin.velocity.listener.LoginListener;
 import cloud.terium.plugin.velocity.listener.ServerConnectedListener;
-import cloud.terium.plugin.velocity.listener.cloud.VelocityMinestomHandler;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.service.ICloudService;
 import cloud.terium.teriumapi.service.ServiceState;
@@ -45,10 +44,7 @@ public class TeriumVelocityStartup extends TeriumExtension {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         System.out.println("§aTrying to start velocity terium-plugin...");
         try {
-            getProxyServer().getScheduler().buildTask(this, () -> {
-                this.successfulStart();
-                this.getTeriumNetworking().addHandler(new VelocityMinestomHandler());
-            }).delay((long) 1.5, TimeUnit.SECONDS).schedule();
+            getProxyServer().getScheduler().buildTask(this, this::successfulStart).delay((long) 1.5, TimeUnit.SECONDS).schedule();
             getConfigManager().getJson().get("command-aliases").getAsJsonArray().forEach(jsonElement -> proxyServer.getCommandManager().register(new CloudCommand().build(jsonElement.getAsString())));
 
             proxyServer.getEventManager().register(this, new LoginListener());
@@ -88,15 +84,15 @@ public class TeriumVelocityStartup extends TeriumExtension {
 
     @Override
     public @NotNull Optional<ICloudService> getFallback(final UUID player) {
-        Player parsedPlayer = getProxyServer().getPlayer(player).orElseThrow();
+        //Player parsedPlayer = getProxyServer().getPlayer(player).orElseThrow();
 
         return TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream()
                 .filter(service -> service.getServiceState().equals(ServiceState.ONLINE))
                 .filter(service -> !service.getServiceGroup().getServiceType().equals(ServiceType.Proxy))
                 .filter(service -> service.getServiceGroup().getServiceType().equals(ServiceType.Lobby))
                 .filter(service -> !service.isLocked())
-                .filter(service -> (parsedPlayer.getCurrentServer().isEmpty()
-                        || !parsedPlayer.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))
+                /*.filter(service -> (parsedPlayer.getCurrentServer().isEmpty()
+                        || !parsedPlayer.getCurrentServer().get().getServerInfo().getName().equals(service.getServiceName())))*/
                 .min(Comparator.comparing(ICloudService::getOnlinePlayers));
     }
 
