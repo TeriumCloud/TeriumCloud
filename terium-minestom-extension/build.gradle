@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.Minestom:Minestom:25176e9b9d'
+    compileOnly 'dev.hollowcube:minestom-ce:5347c0b11f'
     implementation fileTree(dir: '../terium-api/build/libs', include: 'terium-api.jar')
     implementation fileTree(dir: '../terium-extension-util/build/libs', include: 'teriumcloud-extension-util.jar')
 }
