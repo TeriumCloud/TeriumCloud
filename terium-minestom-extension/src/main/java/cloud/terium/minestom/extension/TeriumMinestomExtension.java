@@ -7,6 +7,7 @@ import cloud.terium.minestom.extension.proxy.util.Proxy;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.GlobalEventHandler;
+import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.AsyncPlayerPreLoginEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.extras.bungee.BungeeCordProxy;
@@ -38,7 +39,7 @@ public class TeriumMinestomExtension {
                 extension.successfulStart();
 
                 GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
-                globalEventHandler.addListener(AsyncPlayerPreLoginEvent.class, event -> {
+                globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
                     if (extension.getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join"))
                         event.getPlayer().kick(Component.text("§cThis service is locked."));
                     extension.getProvider().getThisService().setOnlinePlayers(MinecraftServer.getConnectionManager().getOnlinePlayers().size());
