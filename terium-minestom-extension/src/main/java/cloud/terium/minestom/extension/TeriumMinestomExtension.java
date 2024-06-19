@@ -7,6 +7,7 @@ import cloud.terium.minestom.extension.proxy.util.Proxy;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.GlobalEventHandler;
+import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.AsyncPlayerPreLoginEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.extras.bungee.BungeeCordProxy;
@@ -38,7 +39,7 @@ public class TeriumMinestomExtension {
                 extension.successfulStart();
 
                 GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
-                globalEventHandler.addEventCallback(AsyncPlayerPreLoginEvent.class, event -> {
+                globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
                     if (extension.getProvider().getThisService().isLocked() && !event.getPlayer().hasPermission("terium.locked.join"))
                         event.getPlayer().kick(Component.text("§cThis service is locked."));
                     extension.getProvider().getThisService().setOnlinePlayers(MinecraftServer.getConnectionManager().getOnlinePlayers().size());
@@ -50,19 +51,19 @@ public class TeriumMinestomExtension {
                     });
                 });
 
-                globalEventHandler.addEventCallback(PlayerDisconnectEvent.class, event -> {
+                globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {
                     extension.getProvider().getThisService().setOnlinePlayers(MinecraftServer.getConnectionManager().getOnlinePlayers().size() - 1);
                     extension.getProvider().getThisService().update();
                 });
 
-                if(proxy instanceof Velocity velocity)
+                if (proxy instanceof Velocity velocity)
                     VelocityProxy.enable(velocity.getForwardingSecret());
-                else if(proxy instanceof BungeeCord)
+                else if (proxy instanceof BungeeCord)
                     BungeeCordProxy.enable();
                 else System.out.println("No vaild Proxy-Instance found!");
 
                 minecraftServer.start(extension.getProvider().getThisNode().getAddress().getAddress().getHostAddress(), extension.getProvider().getThisService().getPort());
             }
-        }, 0, 2000);
+        }, 2000);
     }
 }
