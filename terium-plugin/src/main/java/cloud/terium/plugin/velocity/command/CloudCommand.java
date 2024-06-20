@@ -70,6 +70,7 @@ public class CloudCommand {
                                                 .executes(this::sendPlayer))))
                         .executes(this::players))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("start")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.service") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("group", StringArgumentType.string())
                                 .suggests(this::groupSuggestion)
@@ -78,6 +79,7 @@ public class CloudCommand {
                                         .suggests((context, builder) -> builder.suggest(1).suggest(2).buildFuture())
                                         .executes(this::startService))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("copy")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.service") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::help)
                         .then(RequiredArgumentBuilder.<CommandSource, String>argument("service", StringArgumentType.string())
                                 .suggests((context, builder) -> {
@@ -89,6 +91,7 @@ public class CloudCommand {
                                         .suggests(this::templateSuggestion)
                                         .executes(this::copyService))))
                 .then(LiteralArgumentBuilder.<CommandSource>literal("stopUselessServices")
+                        .requires(commandSource -> commandSource.hasPermission("terium.command.stopUselessServices") || commandSource.hasPermission("terium.command.*"))
                         .executes(this::stopUselessServices))
                 .build();
 
