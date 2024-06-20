@@ -56,12 +56,6 @@ public class TeriumMinestomExtension {
                     extension.getProvider().getThisService().update();
                 });
 
-                if (proxy instanceof Velocity velocity)
-                    VelocityProxy.enable(velocity.getForwardingSecret());
-                else if (proxy instanceof BungeeCord)
-                    BungeeCordProxy.enable();
-                else System.out.println("No vaild Proxy-Instance found!");
-
                 minecraftServer.start(extension.getProvider().getThisNode().getAddress().getAddress().getHostAddress(), extension.getProvider().getThisService().getPort());
             }
         }, 2000);
