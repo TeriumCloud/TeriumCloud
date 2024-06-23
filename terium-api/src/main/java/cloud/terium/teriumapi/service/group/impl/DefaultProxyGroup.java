@@ -14,7 +14,9 @@ import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
@@ -73,6 +75,14 @@ public class DefaultProxyGroup implements ICloudServiceGroup {
         json.addProperty("memory", memory);
         json.addProperty("minimal_services", minimalServices);
         json.addProperty("maximal_services", maximalServices);
+
+        executorService.execute(() -> {
+            try (InputStream inputStream = new URL("https://terium.cloud/download/server-icon.png").openStream()) {
+               Files.copy(inputStream, new File("templates/" + getGroupName() + "/server-icon.png").toPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         executorService.execute(() -> {
             try (final OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(new File("groups/" + name + ".json").toPath()), StandardCharsets.UTF_8)) {
