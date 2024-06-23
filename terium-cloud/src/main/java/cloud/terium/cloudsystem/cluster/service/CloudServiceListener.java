@@ -9,6 +9,7 @@ import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 import cloud.terium.teriumapi.service.ICloudService;
+import cloud.terium.teriumapi.service.ServiceType;
 import cloud.terium.teriumapi.service.impl.CloudService;
 
 import java.nio.file.Path;
@@ -37,6 +38,12 @@ public class CloudServiceListener implements Listener {
 
     @Subscribe
     public void handleServiceCreate(ServiceCreateEvent event) {
+        if(TeriumAPI.getTeriumAPI().getProvider().getServiceGroupProvider().getProxyGroups().isEmpty())
+            return;
+
+        if(!event.getServiceGroup().getServiceType().equals(ServiceType.Proxy) && TeriumAPI.getTeriumAPI().getProvider().getServiceProvider().getAllServices().stream().filter(cloudService -> cloudService.getServiceType().equals(ServiceType.Proxy)).toList().isEmpty())
+            return;
+
         if (TeriumAPI.getTeriumAPI().getFactory().getServiceFactory().containsServiceGroup(event.getServiceGroup())) {
             if (event.getNode().getName().equals(ClusterStartup.getCluster().getThisNode().getName())) {
                 switch (event.getType()) {
@@ -45,7 +52,7 @@ public class CloudServiceListener implements Listener {
                     case "group_with_templates" ->
                             ClusterStartup.getCluster().getServiceFactory().createService(event.getServiceGroup(), event.getTemplates());
                     case "full" ->
-                        ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates(), event.getServiceId(), event.getMaxPlayers(), event.getMemory(), event.getPropertyCache());
+                            ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup(), event.getTemplates(), event.getServiceId(), event.getMaxPlayers(), event.getMemory(), event.getPropertyCache());
                     case "group_with_custom_name" ->
                             ClusterStartup.getCluster().getServiceFactory().createService(event.getName(), event.getServiceGroup());
                     case "group_template_and_custom_name" ->
