@@ -7,8 +7,6 @@ import cloud.terium.cloudsystem.common.event.events.console.SendConsoleEvent;
 import cloud.terium.teriumapi.event.Listener;
 import cloud.terium.teriumapi.event.Subscribe;
 
-;
-
 public class ConsoleListener implements Listener {
 
     @Subscribe
