@@ -3,7 +3,6 @@ package cloud.terium.cloudsystem.cluster.console.commands;
 import cloud.terium.cloudsystem.cluster.ClusterStartup;
 import cloud.terium.cloudsystem.cluster.utils.Logger;
 import cloud.terium.cloudsystem.common.utils.version.ServerVersions;
-import cloud.terium.cloudsystem.node.template.TemplateFactory;
 import cloud.terium.teriumapi.TeriumAPI;
 import cloud.terium.teriumapi.console.LogType;
 import cloud.terium.teriumapi.console.command.Command;
